@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+//import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
@@ -8,7 +8,7 @@ import HelloWorld from './components/HelloWorld.vue'
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <!-- <HelloWorld msg="You did it!" /> -->
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
@@ -16,9 +16,34 @@ import HelloWorld from './components/HelloWorld.vue'
       </nav>
     </div>
   </header>
+  <h1>{{ title }}</h1>
+  <h2>Add a new task</h2>
 
+<div>
+   <input type="text"
+     v-model="newTask"
+     placeholder="Add a new task"
+   >
+</div>
+
+<div v-if="newTask.length > 0">
+   <h3>New task preview</h3>
+   <p>{{ newTask }}</p>
+</div>
   <RouterView />
 </template>
+
+<script lang="ts">
+export default {
+  data() {
+    return {
+      title: 'My To Do App',
+      newTask: ''
+    }
+  }
+}
+</script>
+
 
 <style scoped>
 header {
