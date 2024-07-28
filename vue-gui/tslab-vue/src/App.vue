@@ -19,7 +19,7 @@ import { ParametricGrid } from "./../../../pgrid.ts"
     </div>
   </header>
   <h1>{{ title }}</h1>
-  <h2>Add a new task</h2>
+  <h2>Grid Data Entry</h2>
 
 <div>
    <input type="text"
@@ -28,26 +28,50 @@ import { ParametricGrid } from "./../../../pgrid.ts"
    >
 </div>
 
+<div>
+   <input type="text"
+     v-model="pgwidth"
+     placeholder="Width of new PG"
+   >
+</div>
+
 <div v-if="newTask.length > 0">
    <h3>New task preview</h3>
    <p>{{ newTask }}</p>
 </div>
+
+<div v-if="pgwidth.length > 0">
+   <h3>PG width</h3>
+   <p>{{ pgwidth }}</p>
+</div>
+
+
+<button @click="pgfactory(pgwidth)">Make Grid</button>
+
+
   <RouterView />
 </template>
 
 <script lang="ts">
 
-var pgrid: ParametricGrid<number> = new ParametricGrid(10, 8, 555);
-pgrid.setLocation(8,4,100);
-pgrid.setLocation(9,3,200);
-console.log(pgrid);
+function pgfactory(pgwidth: number) {
+  pgwidth++;
+  console.log("PG Width = ", pgwidth)
+  var pgrid: ParametricGrid<number> = new ParametricGrid(pgwidth, 8, 555);
+  pgrid.setLocation(8,4,100);
+  pgrid.setLocation(9,3,200);
+  console.log(pgrid);
+}
+
+
 
 
 export default {
   data() {
     return {
       title: 'My To Do App',
-      newTask: ''
+      newTask: '',
+      pgwidth: 0
     }
   }
 }
