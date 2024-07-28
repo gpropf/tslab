@@ -57,13 +57,13 @@ import { ParametricGrid } from "./../../../pgrid.ts"
 function pgfactory(pgwidth: number) {
   pgwidth++;
   console.log("PG Width = ", pgwidth)
-  var pgrid: ParametricGrid<number> = new ParametricGrid(pgwidth, 8, 555);
-  pgrid.setLocation(8,4,100);
-  pgrid.setLocation(9,3,200);
-  console.log(pgrid);
+  pgGlobal = new ParametricGrid(pgwidth, 8, 555);
+  pgGlobal.setLocation(8,4,100);
+  pgGlobal.setLocation(9,3,200);
+  console.log(pgGlobal);
 }
 
-
+var pgGlobal: ParametricGrid<number>
 
 
 export default {
@@ -71,7 +71,7 @@ export default {
     return {
       title: 'My To Do App',
       newTask: '',
-      pgwidth: 0
+      pgwidth: 0      
     }
   }
 }
