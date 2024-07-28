@@ -1,11 +1,11 @@
-function logArray<T>(arr: T[]): void {
-    arr.forEach(element => console.log(element));
-}
+// function logArray<T>(arr: T[]): void {
+//     arr.forEach(element => console.log(element));
+// }
 
 //let numbers = [1, 2, 3];
 //logArray<number>(numbers); 
 
-class ParametricGrid<T> {
+export class ParametricGrid<T> {
     private _width: number;
     private _height: number;
     private _grid: T[][] = [];
@@ -37,6 +37,8 @@ class ParametricGrid<T> {
       }
 }
 
-var pgrid: ParametricGrid<number> = new ParametricGrid(10, 8, 555);
-pgrid.setLocation(8,4,100);
-console.log(pgrid);
+
+
+// var pgrid: ParametricGrid<number> = new ParametricGrid(10, 8, 555);
+// pgrid.setLocation(8,4,100);
+// console.log(pgrid);
