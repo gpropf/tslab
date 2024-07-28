@@ -1,5 +1,7 @@
 <script setup lang="ts">
+/// <reference path="./../../../pgrid.ts"/>
 import { RouterLink, RouterView } from 'vue-router'
+import { ParametricGrid } from "./../../../pgrid.ts"
 //import HelloWorld from './components/HelloWorld.vue'
 </script>
 
@@ -34,6 +36,13 @@ import { RouterLink, RouterView } from 'vue-router'
 </template>
 
 <script lang="ts">
+
+var pgrid: ParametricGrid<number> = new ParametricGrid(10, 8, 555);
+pgrid.setLocation(8,4,100);
+pgrid.setLocation(9,3,200);
+console.log(pgrid);
+
+
 export default {
   data() {
     return {
