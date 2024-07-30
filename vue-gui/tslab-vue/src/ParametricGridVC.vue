@@ -9,7 +9,7 @@ const props = defineProps<{
     height: number
 }>()
 
-var pgGlobal = new ParametricGrid<number>(props.width, props.height, 8);
+var pgGlobal = new ParametricGrid<any>(props.width, props.height, 10);
 pgGlobal.setLocation(2, 1, 12)
 console.log(pgGlobal);
 </script>
@@ -17,14 +17,14 @@ console.log(pgGlobal);
 
 
 <template>
-    <button @click="count++; pgGlobal.setLocation(3, 2, count)">You clicked me {{ count }} times.></button>
+    <button @click="count++; pgGlobal.setLocation(3, 2, count * 5)">You clicked me {{ count }} times.></button>
     <div>{{ pgGlobal.width }}</div>
     <div>{{ pgGlobal.height }}</div>
-    <ol>
-        <li v-for="(row, y) in pgGlobal._grid">
-            <ol> 
-                <li v-for="(cellval, x) in row"><div :style="{ 'font-size': cellval + 'px' }">{{ cellval }} ,{{ x }}, {{ y }}</div></li>
-            </ol>
-        </li>
-    </ol>
+    <svg viewBox="0 0 4 3" width="320" height="200" xmlns="http://www.w3.org/2000/svg">
+        <svg v-for="(row, y) in pgGlobal._grid" xmlns="http://www.w3.org/2000/svg">
+            
+                <svg v-for="(cellval, x) in row"><rect :x="x" :y="y" width="1" height="1" :fill="'rgb(200, 200, ' + cellval + ')'"/></svg>
+            
+        </svg>
+    </svg>
 </template>
