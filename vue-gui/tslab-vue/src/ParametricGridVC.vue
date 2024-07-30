@@ -9,7 +9,7 @@ const props = defineProps<{
     height: number
 }>()
 
-var pgGlobal = new ParametricGrid<number>(props.width, props.height, 3);
+var pgGlobal = new ParametricGrid<number>(props.width, props.height, 8);
 pgGlobal.setLocation(2, 1, 12)
 console.log(pgGlobal);
 </script>
@@ -21,9 +21,9 @@ console.log(pgGlobal);
     <div>{{ pgGlobal.width }}</div>
     <div>{{ pgGlobal.height }}</div>
     <ol>
-        <li v-for="row in pgGlobal._grid">
-            <ol>
-                <li v-for="cellval in row">{{ cellval }}</li>
+        <li v-for="(row, y) in pgGlobal._grid">
+            <ol> 
+                <li v-for="(cellval, x) in row"><div :style="{ 'font-size': cellval + 'px' }">{{ cellval }} ,{{ x }}, {{ y }}</div></li>
             </ol>
         </li>
     </ol>
