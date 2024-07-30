@@ -20,8 +20,8 @@ export class ParametricGrid<T> {
             //     this._grid[i].push(new T())
             // }
         //}  
-        this._grid = new Array(width).fill(undefined).map(
-            () => new Array(height).fill(initialValue));   
+        this._grid = new Array(height).fill(undefined).map(
+            () => new Array(width).fill(initialValue));   
       }
     
       public get width() {
@@ -33,7 +33,7 @@ export class ParametricGrid<T> {
       }
 
       public setLocation(x: number, y: number, v: T) {
-        this._grid[x][y] = v;
+        this._grid[y][x] = v;
       }
 }
 

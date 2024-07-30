@@ -43,7 +43,7 @@ import ParametricGridVC from './ParametricGridVC.vue';
 
 
     <button @click="pgfactory(pgwidth)">Make Grid</button>
-    <ParametricGridVC :width=10 :height="8"/>
+    <ParametricGridVC :width=4 :height="3"/>
 
     <RouterView />
   </div>
