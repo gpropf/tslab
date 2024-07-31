@@ -34,6 +34,7 @@ export class ParametricGrid<T> {
 
       public setLocation(x: number, y: number, v: T) {
         this._grid[y][x] = v;
+        console.log("Location: ", x, ":", y)
       }
 }
 
