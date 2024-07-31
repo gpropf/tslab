@@ -4,6 +4,9 @@ import { RouterLink, RouterView } from 'vue-router'
 import { ParametricGrid } from "./../../../pgrid.ts"
 import ParametricGridVC from './ParametricGridVC.vue';
 //import HelloWorld from './components/HelloWorld.vue'
+
+function vizFn(cellval: number) { let colorInfo: ColorInfo = {fillRGB:`rgb(${cellval},${cellval},${cellval})`}; return colorInfo;}
+
 </script>
 
 <template>
@@ -43,7 +46,7 @@ import ParametricGridVC from './ParametricGridVC.vue';
 
 
     <button @click="pgfactory(pgwidth)">Make Grid</button>
-    <ParametricGridVC :width=4 :height="3"/>
+    <ParametricGridVC :width=4 :height="3" :vizFn="vizFn"/>
 
     <RouterView />
   </div>

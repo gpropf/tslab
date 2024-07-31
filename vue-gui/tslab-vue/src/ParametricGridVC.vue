@@ -2,11 +2,18 @@
 import { ref } from 'vue'
 import { ParametricGrid } from "./../../../pgrid.ts"
 
+interface ColorInfo {
+    fillRGB: string;
+}
+
+type ObjectVisualizationFn = (a: any) => ColorInfo
+
 const count = ref(10)
 
 const props = defineProps<{
     width: number,
-    height: number
+    height: number,
+    vizFn: ObjectVisualizationFn
 }>()
 
 var pgGlobal = new ParametricGrid<any>(props.width, props.height, 100);
@@ -23,7 +30,7 @@ console.log(pgGlobal);
     <svg viewBox="0 0 4 3" width="320" height="200" xmlns="http://www.w3.org/2000/svg">
         <svg v-for="(row, y) in pgGlobal._grid" xmlns="http://www.w3.org/2000/svg">
             
-                <svg v-for="(cellval, x) in row"><rect @click="pgGlobal.setLocation(x, y, 250); $forceUpdate()" :x="x" :y="y" width="1" height="1" :fill="'rgb(200, 200, ' + cellval + ')'"/></svg>
+                <svg v-for="(cellval, x) in row"><rect @click="pgGlobal.setLocation(x, y, 250); console.log(vizFn(cellval)); $forceUpdate()" :x="x" :y="y" width="1" height="1" :fill="vizFn(cellval).fillRGB"/></svg>
             
         </svg>
     </svg>
