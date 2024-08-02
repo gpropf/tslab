@@ -5,7 +5,9 @@ import { ParametricGrid } from "./../../../pgrid.ts"
 import ParametricGridVC from './ParametricGridVC.vue';
 //import HelloWorld from './components/HelloWorld.vue'
 
-function vizFn(cellval: number) { let colorInfo: ColorInfo = {fillRGB:`rgb(${cellval},${cellval},${cellval})`}; return colorInfo;}
+function vizFn(cellval: number) {
+  let colorInfo: ColorInfo = {fillRGB:`rgb(${cellval},${cellval},${cellval})`}; return colorInfo;
+}
 
 </script>
 
@@ -33,6 +35,9 @@ function vizFn(cellval: number) { let colorInfo: ColorInfo = {fillRGB:`rgb(${cel
     <div>
       <input type="text" v-model="pgwidth" placeholder="Width of new PG">
     </div>
+    <div>
+      <input type="text" v-model="pgheight" placeholder="Height of new PG">
+    </div>
 
     <div v-if="newTask.length > 0">
       <h3>New task preview</h3>
@@ -46,7 +51,7 @@ function vizFn(cellval: number) { let colorInfo: ColorInfo = {fillRGB:`rgb(${cel
 
 
     <button @click="pgfactory(pgwidth)">Make Grid</button>
-    <ParametricGridVC :width=4 :height="3" :vizFn="vizFn"/>
+    <ParametricGridVC :width=4 :height="3" :vizFn="vizFn" :defaultValue="75"/>
 
     <RouterView />
   </div>
@@ -71,7 +76,9 @@ export default {
     return {
       title: 'My To Do App',
       newTask: '',
-      pgwidth: 0
+      pgwidth: 0,
+      pgheight: 0
+
     }
   }
 }

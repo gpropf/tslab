@@ -13,10 +13,11 @@ const count = ref(10)
 const props = defineProps<{
     width: number,
     height: number,
-    vizFn: ObjectVisualizationFn
+    vizFn: ObjectVisualizationFn,
+    defaultValue: any
 }>()
 
-var pgGlobal = new ParametricGrid<any>(props.width, props.height, 100);
+var pgGlobal = new ParametricGrid<any>(props.width, props.height, props.defaultValue);
 pgGlobal.setLocation(2, 1, 12)
 console.log(pgGlobal);
 </script>
