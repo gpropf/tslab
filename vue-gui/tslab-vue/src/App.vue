@@ -12,9 +12,9 @@ function vizFn(cellval: number) {
 
 //import HelloWorld from './components/HelloWorld.vue'
 
-function createPGVC(inwidth: number)
+function createPGVC(inwidth: number, inheight: number)
 {
-  var ComponentClass = createApp(ParametricGridVC, {width: inwidth, height: 5, vizFn: vizFn, defaultValue:175})
+  var ComponentClass = createApp(ParametricGridVC, {width: inwidth, height: inheight, vizFn: vizFn, defaultValue:175})
 //var pg = new ComponentClass(20, 16, 555);
   const wrapper = document.createElement("div")
   ComponentClass.mount(wrapper)
@@ -65,7 +65,7 @@ function createPGVC(inwidth: number)
 
 
     <!-- <button @click="pgfactory(pgwidth)">Make Grid</button> -->
-    <button @click="createPGVC(parseInt(pgwidth))">New Grid</button>
+    <button @click="createPGVC(parseInt(pgwidth), parseInt(pgheight))">New Grid</button>
     <ParametricGridVC :width=4 :height="3" :vizFn="vizFn" :defaultValue="75"/>
 
     <RouterView />
