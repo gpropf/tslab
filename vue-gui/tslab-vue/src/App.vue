@@ -3,11 +3,25 @@
 import { RouterLink, RouterView } from 'vue-router'
 import { ParametricGrid } from "./../../../pgrid.ts"
 import ParametricGridVC from './ParametricGridVC.vue';
-//import HelloWorld from './components/HelloWorld.vue'
+//import Vue from 'vue'
+import { createApp } from 'vue';
 
 function vizFn(cellval: number) {
   let colorInfo: ColorInfo = {fillRGB:`rgb(${cellval},${cellval},${cellval})`}; return colorInfo;
 }
+
+//import HelloWorld from './components/HelloWorld.vue'
+
+function createPGVC(inwidth: number)
+{
+  var ComponentClass = createApp(ParametricGridVC, {width: inwidth, height: 5, vizFn: vizFn, defaultValue:175})
+//var pg = new ComponentClass(20, 16, 555);
+  const wrapper = document.createElement("div")
+  ComponentClass.mount(wrapper)
+  document.body.appendChild(wrapper)
+}
+
+
 
 </script>
 
@@ -50,7 +64,8 @@ function vizFn(cellval: number) {
     </div>
 
 
-    <button @click="pgfactory(pgwidth)">Make Grid</button>
+    <!-- <button @click="pgfactory(pgwidth)">Make Grid</button> -->
+    <button @click="createPGVC(parseInt(pgwidth))">New Grid</button>
     <ParametricGridVC :width=4 :height="3" :vizFn="vizFn" :defaultValue="75"/>
 
     <RouterView />
