@@ -48,13 +48,3 @@ const newTask = inject<number>("newTask", 75);
     </svg>
 </template>
 
-<script lang="ts">
-export default {
-  data() {
-    return {
-      title: 'PGVC'    
-
-    }
-  }
-}
-</script>
