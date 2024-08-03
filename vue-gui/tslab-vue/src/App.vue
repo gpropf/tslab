@@ -76,14 +76,14 @@ provide('newTask', newTask);
 
 <script lang="ts">
 
-function pgfactory(pgwidth: number) {
-  pgwidth++;
-  console.log("PG Width = ", pgwidth)
-  pgGlobal = new ParametricGrid(pgwidth, 8, 555);
-  pgGlobal.setLocation(8, 4, 100);
-  pgGlobal.setLocation(9, 3, 200);
-  console.log(pgGlobal);
-}
+// function pgfactory(pgwidth: number) {
+//   pgwidth++;
+//   console.log("PG Width = ", pgwidth)
+//   pgGlobal = new ParametricGrid(pgwidth, 8, 555);
+//   pgGlobal.setLocation(8, 4, 100);
+//   pgGlobal.setLocation(9, 3, 200);
+//   console.log(pgGlobal);
+// }
 
 var pgGlobal: ParametricGrid<number>
 
