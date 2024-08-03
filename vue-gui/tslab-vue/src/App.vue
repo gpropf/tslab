@@ -5,6 +5,7 @@ import { ParametricGrid } from "./../../../pgrid.ts"
 import ParametricGridVC from './ParametricGridVC.vue';
 //import Vue from 'vue'
 import { createApp } from 'vue';
+import { ref, provide } from 'vue'
 
 function vizFn(cellval: number) {
   let colorInfo: ColorInfo = {fillRGB:`rgb(${cellval},${cellval},${cellval})`}; return colorInfo;
@@ -21,7 +22,8 @@ function createPGVC(inwidth: number, inheight: number)
   document.body.appendChild(wrapper)
 }
 
-
+const newTask = ref(0);
+provide('newTask', newTask);
 
 </script>
 
