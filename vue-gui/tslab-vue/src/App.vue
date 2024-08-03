@@ -22,7 +22,7 @@ function createPGVC(inwidth: number, inheight: number)
   document.body.appendChild(wrapper)
 }
 
-const newTask = ref(0);
+const newTask: number = ref(0);
 provide('newTask', newTask);
 
 </script>
@@ -68,7 +68,7 @@ provide('newTask', newTask);
 
     <!-- <button @click="pgfactory(pgwidth)">Make Grid</button> -->
     <button @click="createPGVC(parseInt(pgwidth), parseInt(pgheight))">New Grid</button>
-    <ParametricGridVC :width=4 :height="3" :vizFn="vizFn" :defaultValue="75"/>
+    <ParametricGridVC :width=4 :height="3" :vizFn="vizFn" :defaultValue="100"/>
 
     <RouterView />
   </div>
@@ -92,7 +92,7 @@ export default {
   data() {
     return {
       title: 'My To Do App',
-      newTask: '',
+      newTask: 125,
       pgwidth: 0,
       pgheight: 0
 
