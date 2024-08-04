@@ -46,8 +46,13 @@ provide('newTask', newTask);
     <h2>Grid Data Entry</h2>
 
     <div>
+      <input type="text" v-model="newTask" placeholder="Test of provide/inject value">
+    </div>
+
+    <div>
       <input type="text" v-model="onClickValue" placeholder="onClickValue">
     </div>
+
 
     <div>
       <input type="text" v-model="pgwidth" placeholder="Width of new PG">
@@ -57,8 +62,8 @@ provide('newTask', newTask);
     </div>
 
     <div v-if="newTask.length > 0">
-      <h3>New task preview</h3>
-      <p>{{ onClickValue }}</p>
+      <h3>Test of provide/inject value</h3>
+      <p>{{ newTask }}</p>
     </div>
 
     <div v-if="pgwidth.length > 0">

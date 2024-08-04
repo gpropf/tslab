@@ -39,6 +39,7 @@ const newTask = inject<number>("newTask", 75);
     <div>WIDTH: {{ parametricGrid.width }}</div>
     <div>HEIGHT: {{ parametricGrid.height }}</div>
     <div>Click val: {{ onClickValue }}</div>
+    <div>Provide/inject test val: {{ newTask }}</div>
     <div v-if="programaticallyCreated">This PG was created dynamically!
         <svg :viewBox="viewBox" width="320" height="200" xmlns="http://www.w3.org/2000/svg">
     <svg v-for="(row, y) in parametricGrid._grid" xmlns="http://www.w3.org/2000/svg">
