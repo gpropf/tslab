@@ -15,7 +15,9 @@ const props = defineProps<{
     width: number,
     height: number,
     vizFn: ObjectVisualizationFn,
-    defaultValue: any
+    defaultValue: any,
+    onClickValue: any,
+    programaticallyCreated: boolean
 }>()
 
 let pgGlobal = new ParametricGrid<any>(props.width, props.height, props.defaultValue);
@@ -36,15 +38,24 @@ const newTask = inject<number>("newTask", 75);
     <button @click="count++; pgGlobal.setLocation(3, 2, count * 5)">You clicked me {{ count }} times.></button>
     <div>WIDTH: {{ pgGlobal.width }}</div>
     <div>HEIGHT: {{ pgGlobal.height }}</div>
-    <div>NEWTASK: {{ newTask }}</div>
-
+    <div>Click val: {{ onClickValue }}</div>
+    <div v-if="programaticallyCreated">This PG was created dynamically!
+        <svg :viewBox="viewBox" width="320" height="200" xmlns="http://www.w3.org/2000/svg">
+    <svg v-for="(row, y) in pgGlobal._grid" xmlns="http://www.w3.org/2000/svg">
+            
+            <svg v-for="(cellval, x) in row"><rect @click="pgGlobal.setLocation(x, y, onClickValue.value); console.log(vizFn(onClickValue.value)); $forceUpdate()" :x="x" :y="y" width="1" height="1" :fill="vizFn(cellval).fillRGB"/></svg>
+        
+    </svg></svg>
+</div>
+    <div v-else="programaticallyCreated">This PG was NOT created dynamically!
     
     <svg :viewBox="viewBox" width="320" height="200" xmlns="http://www.w3.org/2000/svg">
         <svg v-for="(row, y) in pgGlobal._grid" xmlns="http://www.w3.org/2000/svg">
             
-                <svg v-for="(cellval, x) in row"><rect @click="pgGlobal.setLocation(x, y, newTask); console.log(vizFn(newTask)); $forceUpdate()" :x="x" :y="y" width="1" height="1" :fill="vizFn(cellval).fillRGB"/></svg>
+                <svg v-for="(cellval, x) in row"><rect @click="pgGlobal.setLocation(x, y, onClickValue); console.log(vizFn(onClickValue)); $forceUpdate()" :x="x" :y="y" width="1" height="1" :fill="vizFn(cellval).fillRGB"/></svg>
             
         </svg>
     </svg>
+</div>
 </template>
 

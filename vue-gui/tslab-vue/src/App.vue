@@ -11,17 +11,18 @@ function vizFn(cellval: number) {
   let colorInfo: ColorInfo = {fillRGB:`rgb(${cellval},${cellval},${cellval})`}; return colorInfo;
 }
 
-//import HelloWorld from './components/HelloWorld.vue'
+
 
 function createPGVC(inwidth: number, inheight: number)
 {
-  var ComponentClass = createApp(ParametricGridVC, {width: inwidth, height: inheight, vizFn: vizFn, defaultValue:175})
+  var ComponentClass = createApp(ParametricGridVC, {width: inwidth, height: inheight, vizFn: vizFn, defaultValue:175, onClickValue: onClickValue, programaticallyCreated: true})
 //var pg = new ComponentClass(20, 16, 555);
   const wrapper = document.createElement("div")
   ComponentClass.mount(wrapper)
   document.body.appendChild(wrapper)
 }
 
+const onClickValue = ref(0)
 const newTask: number = ref(0);
 provide('newTask', newTask);
 
@@ -45,7 +46,7 @@ provide('newTask', newTask);
     <h2>Grid Data Entry</h2>
 
     <div>
-      <input type="text" v-model="newTask" placeholder="Add a new task">
+      <input type="text" v-model="onClickValue" placeholder="onClickValue">
     </div>
 
     <div>
@@ -57,7 +58,7 @@ provide('newTask', newTask);
 
     <div v-if="newTask.length > 0">
       <h3>New task preview</h3>
-      <p>{{ newTask }}</p>
+      <p>{{ onClickValue }}</p>
     </div>
 
     <div v-if="pgwidth.length > 0">
@@ -68,7 +69,7 @@ provide('newTask', newTask);
 
     <!-- <button @click="pgfactory(pgwidth)">Make Grid</button> -->
     <button @click="createPGVC(parseInt(pgwidth), parseInt(pgheight))">New Grid</button>
-    <ParametricGridVC :width=4 :height="3" :vizFn="vizFn" :defaultValue="100"/>
+    <ParametricGridVC :width=4 :height="3" :vizFn="vizFn" :defaultValue="100" :onClickValue="onClickValue" :programaticallyCreated="false"/>
 
     <RouterView />
   </div>
