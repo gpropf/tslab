@@ -17,9 +17,10 @@ function createPGVC(inwidth: number, inheight: number)
 {
   var ComponentClass = createApp(ParametricGridVC, {width: inwidth, height: inheight, vizFn: vizFn, defaultValue:175, onClickValue: onClickValue, programaticallyCreated: true})
 //var pg = new ComponentClass(20, 16, 555);
-  const wrapper = document.createElement("div")
-  ComponentClass.mount(wrapper)
-  document.body.appendChild(wrapper)
+  const wrapper = document.getElementById("dynamic_content")
+  const newDiv = document.createElement("div")
+  ComponentClass.mount(newDiv)
+  wrapper.appendChild(newDiv)
 }
 
 const onClickValue = ref(0)
@@ -75,6 +76,8 @@ provide('newTask', newTask);
     <!-- <button @click="pgfactory(pgwidth)">Make Grid</button> -->
     <button @click="createPGVC(parseInt(pgwidth), parseInt(pgheight))">New Grid</button>
     <ParametricGridVC :width=4 :height="3" :vizFn="vizFn" :defaultValue="100" :onClickValue="onClickValue" :programaticallyCreated="false"/>
+
+    <div id="dynamic_content"></div>
 
     <RouterView />
   </div>
