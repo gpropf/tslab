@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ParametricGrid } from "./../../../pgrid.ts"
+import { ParametricGrid } from "./../../../pgrid"
 import { inject } from "vue";
 
-interface ColorInfo {
+export interface ColorInfo {
     fillRGB: string;
 }
 
@@ -38,7 +38,7 @@ const newTask = inject<number>("newTask", 75);
 
     <div v-if="programaticallyCreated"><div>This PG was created dynamically!</div>
         <svg :viewBox="viewBox" width="320" height="200" xmlns="http://www.w3.org/2000/svg">
-            <svg v-for="(row, y) in parametricGrid._grid" xmlns="http://www.w3.org/2000/svg">
+            <svg v-for="(row, y) in parametricGrid.grid" xmlns="http://www.w3.org/2000/svg">
                 <svg v-for="(cellval, x) in row">
                     <rect
                         @click="parametricGrid.setLocation(x, y, onClickValue.value); console.log(vizFn(onClickValue.value)); $forceUpdate()"
@@ -49,7 +49,7 @@ const newTask = inject<number>("newTask", 75);
     </div>
     <div v-else="programaticallyCreated"><div>This PG was NOT created dynamically!</div>
         <svg :viewBox="viewBox" width="320" height="200" xmlns="http://www.w3.org/2000/svg">
-            <svg v-for="(row, y) in parametricGrid._grid" xmlns="http://www.w3.org/2000/svg">
+            <svg v-for="(row, y) in parametricGrid.grid" xmlns="http://www.w3.org/2000/svg">
                 <svg v-for="(cellval, x) in row">
                     <rect
                         @click="parametricGrid.setLocation(x, y, onClickValue); console.log(vizFn(onClickValue)); $forceUpdate()"

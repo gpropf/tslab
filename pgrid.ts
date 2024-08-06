@@ -32,6 +32,10 @@ export class ParametricGrid<T> {
         return this._height;
       }
 
+      public get grid() {
+        return this._grid;
+      }
+
       public setLocation(x: number, y: number, v: T) {
         this._grid[y][x] = v;
         console.log("Location: ", x, ":", y)

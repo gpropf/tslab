@@ -1,9 +1,9 @@
 <script setup lang="ts">
 /// <reference path="./../../../pgrid.ts"/>
 import { RouterLink, RouterView } from 'vue-router'
-import { ParametricGrid } from "./../../../pgrid.ts"
+import { ParametricGrid } from "./../../../pgrid"
 import ParametricGridVC from './ParametricGridVC.vue';
-//import Vue from 'vue'
+import { type ColorInfo } from './ParametricGridVC.vue';
 import { createApp } from 'vue';
 import { ref, provide } from 'vue'
 
@@ -13,13 +13,19 @@ function vizFn(cellval: number) {
 
 
 
-function createPGVC(inwidth: number, inheight: number) {
-  var ComponentClass = createApp(ParametricGridVC, { width: inwidth, height: inheight, vizFn: vizFn, defaultValue: 175, onClickValue: onClickValue, programaticallyCreated: true })
+function createPGVC(inwidth: string, inheight: string) {
+  var ComponentClass = createApp(ParametricGridVC, {
+    width: parseInt(inwidth), height: parseInt(inheight),
+    vizFn: vizFn, defaultValue: 175, onClickValue: onClickValue, programaticallyCreated: true
+  })
   //var pg = new ComponentClass(20, 16, 555);
   const wrapper = document.getElementById("dynamic_content")
-  const newDiv = document.createElement("div")
-  ComponentClass.mount(newDiv)
-  wrapper.appendChild(newDiv)
+  if (wrapper) {
+    const newDiv = document.createElement("div")
+    ComponentClass.mount(newDiv)
+    wrapper.appendChild(newDiv)
+  }
+
 }
 
 const onClickValue = ref(0)
@@ -56,7 +62,7 @@ provide('newTask', newTask);
     <div>
       <input type="text" v-model="pgheight" placeholder="Height of new PG">
     </div>
-    <div v-if="newTask.length > 0">
+    <!-- <div v-if="newTask.length > 0">
       <h3>Test of provide/inject value</h3>
       <p>{{ newTask }}</p>
     </div>
@@ -64,10 +70,10 @@ provide('newTask', newTask);
     <div v-if="pgwidth.length > 0">
       <h3>PG width</h3>
       <p>{{ pgwidth }}</p>
-    </div>
+    </div> -->
 
     <!-- <button @click="pgfactory(pgwidth)">Make Grid</button> -->
-    <button @click="createPGVC(parseInt(pgwidth), parseInt(pgheight))">New Grid</button>
+    <button @click="createPGVC(pgwidth.toString(), pgheight.toString())">New Grid</button>
     <ParametricGridVC :width=4 :height="3" :vizFn="vizFn" :defaultValue="100" :onClickValue="onClickValue"
       :programaticallyCreated="false" />
 
