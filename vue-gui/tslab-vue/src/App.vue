@@ -8,15 +8,14 @@ import { createApp } from 'vue';
 import { ref, provide } from 'vue'
 
 function vizFn(cellval: number) {
-  let colorInfo: ColorInfo = {fillRGB:`rgb(${cellval},${cellval},${cellval})`}; return colorInfo;
+  let colorInfo: ColorInfo = { fillRGB: `rgb(${cellval},${cellval},${cellval})` }; return colorInfo;
 }
 
 
 
-function createPGVC(inwidth: number, inheight: number)
-{
-  var ComponentClass = createApp(ParametricGridVC, {width: inwidth, height: inheight, vizFn: vizFn, defaultValue:175, onClickValue: onClickValue, programaticallyCreated: true})
-//var pg = new ComponentClass(20, 16, 555);
+function createPGVC(inwidth: number, inheight: number) {
+  var ComponentClass = createApp(ParametricGridVC, { width: inwidth, height: inheight, vizFn: vizFn, defaultValue: 175, onClickValue: onClickValue, programaticallyCreated: true })
+  //var pg = new ComponentClass(20, 16, 555);
   const wrapper = document.getElementById("dynamic_content")
   const newDiv = document.createElement("div")
   ComponentClass.mount(newDiv)
@@ -33,7 +32,6 @@ provide('newTask', newTask);
   <div>
     <header>
       <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
       <div class="wrapper">
         <!-- <HelloWorld msg="You did it!" /> -->
 
@@ -49,19 +47,15 @@ provide('newTask', newTask);
     <div>
       <input type="text" v-model="newTask" placeholder="Test of provide/inject value">
     </div>
-
     <div>
       <input type="text" v-model="onClickValue" placeholder="onClickValue">
     </div>
-
-
     <div>
       <input type="text" v-model="pgwidth" placeholder="Width of new PG">
     </div>
     <div>
       <input type="text" v-model="pgheight" placeholder="Height of new PG">
     </div>
-
     <div v-if="newTask.length > 0">
       <h3>Test of provide/inject value</h3>
       <p>{{ newTask }}</p>
@@ -72,10 +66,10 @@ provide('newTask', newTask);
       <p>{{ pgwidth }}</p>
     </div>
 
-
     <!-- <button @click="pgfactory(pgwidth)">Make Grid</button> -->
     <button @click="createPGVC(parseInt(pgwidth), parseInt(pgheight))">New Grid</button>
-    <ParametricGridVC :width=4 :height="3" :vizFn="vizFn" :defaultValue="100" :onClickValue="onClickValue" :programaticallyCreated="false"/>
+    <ParametricGridVC :width=4 :height="3" :vizFn="vizFn" :defaultValue="100" :onClickValue="onClickValue"
+      :programaticallyCreated="false" />
 
     <div id="dynamic_content"></div>
 
@@ -85,17 +79,8 @@ provide('newTask', newTask);
 
 <script lang="ts">
 
-// function pgfactory(pgwidth: number) {
-//   pgwidth++;
-//   console.log("PG Width = ", pgwidth)
-//   pgGlobal = new ParametricGrid(pgwidth, 8, 555);
-//   pgGlobal.setLocation(8, 4, 100);
-//   pgGlobal.setLocation(9, 3, 200);
-//   console.log(pgGlobal);
-// }
 
 var pgGlobal: ParametricGrid<number>
-
 
 export default {
   data() {
