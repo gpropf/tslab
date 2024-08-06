@@ -23,7 +23,7 @@ function createPGVC(inwidth: number, inheight: number) {
 }
 
 const onClickValue = ref(0)
-const newTask: number = ref(0);
+const newTask = ref(0);
 provide('newTask', newTask);
 
 </script>
