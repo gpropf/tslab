@@ -79,7 +79,6 @@ provide('newTask', newTask);
 
 <script lang="ts">
 
-
 var pgGlobal: ParametricGrid<number>
 
 export default {
