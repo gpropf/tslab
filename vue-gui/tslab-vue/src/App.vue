@@ -73,7 +73,7 @@ provide('newTask', newTask);
     </div> -->
 
     <!-- <button @click="pgfactory(pgwidth)">Make Grid</button> -->
-    <button @click="createPGVC(pgwidth.toString(), pgheight.toString())">New Grid</button>
+    <button @click="createPGVC(pgwidth, pgheight)">New Grid</button>
     <ParametricGridVC :width=4 :height="3" :vizFn="vizFn" :defaultValue="100" :onClickValue="onClickValue"
       :programaticallyCreated="false" />
 
@@ -92,8 +92,8 @@ export default {
     return {
       title: 'My To Do App',
       newTask: 125,
-      pgwidth: 0,
-      pgheight: 0
+      pgwidth: '',
+      pgheight: ''
 
     }
   }
