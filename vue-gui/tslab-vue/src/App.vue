@@ -37,14 +37,14 @@ provide('newTask', newTask);
 <template>
   <div>
     <header>
-      <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+      <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
       <div class="wrapper">
         <!-- <HelloWorld msg="You did it!" /> -->
 
-        <nav>
+        <!-- <nav>
           <RouterLink to="/">Home</RouterLink>
           <RouterLink to="/about">About</RouterLink>
-        </nav>
+        </nav> -->
       </div>
     </header>
     <h1>{{ title }}</h1>
@@ -79,7 +79,7 @@ provide('newTask', newTask);
 
     <div id="dynamic_content"></div>
 
-    <RouterView />
+    <!-- <RouterView /> -->
   </div>
 </template>
 
