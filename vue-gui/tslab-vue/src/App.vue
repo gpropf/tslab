@@ -7,8 +7,18 @@ import { type ColorInfo } from './ParametricGridVC.vue';
 import { createApp } from 'vue';
 import { ref, provide } from 'vue'
 
-function vizFn(cellval: number) {
-  let colorInfo: ColorInfo = { fillRGB: `rgb(${cellval},${cellval},${cellval})` }; return colorInfo;
+const numberToColorMap  = new Map();
+numberToColorMap.set(0, "#000000");
+numberToColorMap.set(1, "#00FF00");
+numberToColorMap.set(2, "#00AA00");
+numberToColorMap.set(3, "#FF00FF");
+numberToColorMap.set(4, "#AA00AA");
+numberToColorMap.set(5, "#00AAFF");
+const numColors = numberToColorMap.size;
+
+function vizFn(cellval: number) {  
+  let hexColor = numberToColorMap.get(cellval % numColors);
+  let colorInfo: ColorInfo = { fillRGB: `${hexColor}` }; return colorInfo;
 }
 
 
