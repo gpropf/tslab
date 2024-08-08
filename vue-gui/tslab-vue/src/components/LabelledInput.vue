@@ -1,14 +1,22 @@
 <script setup lang="ts">
 const firstName = defineModel('firstName')
 const lastName = defineModel('lastName')
+
+const props = defineProps<{
+    inputType: string,
+    placeholder?: string,
+    id?: string
+}>()
+
+
 </script>
 
 
 
 <template>
-    <div>
-        <input type="text" v-model="firstName" />
-        <input type="text" v-model="lastName" />
+    <div :id="id">
+        <input :type="inputType" v-model="firstName" :placeholder="placeholder"/>
+        <input :type="inputType" v-model="lastName" :placeholder="placeholder"/>
     </div>
 </template>
 

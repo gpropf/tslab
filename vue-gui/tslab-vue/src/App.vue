@@ -44,7 +44,7 @@ const onClickValue = ref(0)
 const newTask = ref(0);
 const testDatum = ref(null);
 const first = ref("Greg");
-const last = ref("P-ro");
+const last = ref("");
 provide('newTask', newTask);
 
 </script>
@@ -63,7 +63,7 @@ provide('newTask', newTask);
       </div>
     </header>
     <h1>{{ title }}</h1>
-    <LabelledInput v-model:first-name="first" v-model:last-name="last"/>
+    <LabelledInput v-model:first-name="first" v-model:last-name="last" id="LI-test1" inputType="text" placeholder="Enter Name"/>
     <h2>Grid Data Entry</h2>
     <p>Input value: {{ first }}</p>
     <div>
