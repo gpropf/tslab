@@ -6,6 +6,8 @@ import ParametricGridVC from './ParametricGridVC.vue';
 import { type ColorInfo } from './ParametricGridVC.vue';
 import { createApp } from 'vue';
 import { ref, provide } from 'vue'
+//import HelloWorld from './components/HelloWorld.vue';
+import LabelledInput from './components/LabelledInput.vue';
 
 const numberToColorMap  = new Map();
 numberToColorMap.set(0, "#000000");
@@ -40,6 +42,7 @@ function createPGVC(inwidth: string, inheight: string) {
 
 const onClickValue = ref(0)
 const newTask = ref(0);
+const testDatum = ref(null);
 provide('newTask', newTask);
 
 </script>
@@ -58,8 +61,9 @@ provide('newTask', newTask);
       </div>
     </header>
     <h1>{{ title }}</h1>
+    <LabelledInput label="foo field" inputType="text" placeholder="42" id="test1" v-model="testDatum"></LabelledInput>
     <h2>Grid Data Entry</h2>
-
+    <p>Input value: {{ testDatum }}</p>
     <div>
       <input type="text" v-model="newTask" placeholder="Test of provide/inject value">
     </div>
