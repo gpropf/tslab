@@ -63,7 +63,7 @@ provide('newTask', newTask);
       </div>
     </header>
     <h1>{{ title }}</h1>
-    <LabelledInput v-model:first-name="first" v-model:last-name="last" id="LI-test1" inputType="text" placeholder="Enter Name"/>
+    <LabelledInput v-model:first-name="first" v-model:last-name="last" id="LI-test1" inputType="text" placeholder="Enter Name" componentName="CNAME"/>
     <h2>Grid Data Entry</h2>
     <p>Input value: {{ first }}</p>
     <div>

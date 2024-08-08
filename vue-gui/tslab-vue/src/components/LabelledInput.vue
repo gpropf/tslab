@@ -1,13 +1,17 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+
 const firstName = defineModel('firstName')
 const lastName = defineModel('lastName')
 
 const props = defineProps<{
     inputType: string,
+    componentName: string,
     placeholder?: string,
     id?: string
 }>()
 
+const innerId = computed(() => { return props.id + "-inner"})
 
 </script>
 
@@ -15,8 +19,8 @@ const props = defineProps<{
 
 <template>
     <div :id="id">
-        <input :type="inputType" v-model="firstName" :placeholder="placeholder"/>
-        <input :type="inputType" v-model="lastName" :placeholder="placeholder"/>
+        <label :for="innerId">{{ componentName }}</label>
+        <input :type="inputType" v-model="firstName" :placeholder="placeholder" :id="innerId"/>        
     </div>
 </template>
 
