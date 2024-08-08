@@ -9,7 +9,7 @@ import { ref, provide } from 'vue'
 //import HelloWorld from './components/HelloWorld.vue';
 import LabelledInput from './components/LabelledInput.vue';
 
-const numberToColorMap  = new Map();
+const numberToColorMap = new Map();
 numberToColorMap.set(0, "#000000");
 numberToColorMap.set(1, "#00FF00");
 numberToColorMap.set(2, "#00AA00");
@@ -18,7 +18,7 @@ numberToColorMap.set(4, "#AA00AA");
 numberToColorMap.set(5, "#00AAFF");
 const numColors = numberToColorMap.size;
 
-function vizFn(cellval: number) {  
+function vizFn(cellval: number) {
   let hexColor = numberToColorMap.get(cellval % numColors);
   let colorInfo: ColorInfo = { fillRGB: `${hexColor}` }; return colorInfo;
 }
@@ -43,6 +43,8 @@ function createPGVC(inwidth: string, inheight: string) {
 const onClickValue = ref(0)
 const newTask = ref(0);
 const testDatum = ref(null);
+const first = ref("Greg");
+const last = ref("P-ro");
 provide('newTask', newTask);
 
 </script>
@@ -61,9 +63,9 @@ provide('newTask', newTask);
       </div>
     </header>
     <h1>{{ title }}</h1>
-    <LabelledInput label="foo field" inputType="text" placeholder="42" id="test1" v-model="testDatum"></LabelledInput>
+    <LabelledInput v-model:first-name="first" v-model:last-name="last"/>
     <h2>Grid Data Entry</h2>
-    <p>Input value: {{ testDatum }}</p>
+    <p>Input value: {{ first }}</p>
     <div>
       <input type="text" v-model="newTask" placeholder="Test of provide/inject value">
     </div>
