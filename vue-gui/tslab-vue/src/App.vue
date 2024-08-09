@@ -23,12 +23,16 @@ function vizFn(cellval: number) {
   let colorInfo: ColorInfo = { fillRGB: `${hexColor}` }; return colorInfo;
 }
 
+function conversionFn(v: string) {
+  return parseInt(v);
+}
+
 
 
 function createPGVC(inwidth: string, inheight: string) {
   var ComponentClass = createApp(ParametricGridVC, {
     width: parseInt(inwidth), height: parseInt(inheight),
-    vizFn: vizFn, defaultValue: 175, onClickValue: onClickValue, programaticallyCreated: true
+    vizFn: vizFn, defaultValue: 175, onClickValue: onClickValue, programaticallyCreated: true, conversionFn:conversionFn
   })
   //var pg = new ComponentClass(20, 16, 555);
   const wrapper = document.getElementById("dynamic_content")
@@ -92,7 +96,7 @@ provide('newTask', newTask);
     <!-- <button @click="pgfactory(pgwidth)">Make Grid</button> -->
     <button @click="createPGVC(pgwidth, pgheight)">New Grid</button>
     <ParametricGridVC :width=4 :height="3" :vizFn="vizFn" :defaultValue="100" :onClickValue="onClickValue"
-      :programaticallyCreated="false" />
+      :programaticallyCreated="false" :conversionFn="conversionFn"/>
 
     <div id="dynamic_content"></div>
 

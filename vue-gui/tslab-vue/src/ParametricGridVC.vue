@@ -8,6 +8,7 @@ export interface ColorInfo {
 }
 
 type ObjectVisualizationFn = (a: any) => ColorInfo
+type ConversionFn = (a: any) => any
 
 const count = ref(10)
 
@@ -18,6 +19,7 @@ const props = defineProps<{
     defaultValue: any,
     onClickValue: any,
     programaticallyCreated: boolean
+    conversionFn: ConversionFn
 }>()
 
 let parametricGrid = new ParametricGrid<any>(props.width, props.height, props.defaultValue);
@@ -41,7 +43,7 @@ const newTask = inject<number>("newTask", 75);
             <svg v-for="(row, y) in parametricGrid.grid" xmlns="http://www.w3.org/2000/svg">
                 <svg v-for="(cellval, x) in row">
                     <rect
-                        @click="parametricGrid.setLocation(x, y, onClickValue.value); console.log(vizFn(onClickValue.value)); $forceUpdate()"
+                        @click="parametricGrid.setLocation(x, y, conversionFn(onClickValue.value)); console.log(parametricGrid); console.log(vizFn(conversionFn(onClickValue.value))); $forceUpdate()"
                         :x="x" :y="y" width="1" height="1" :fill="vizFn(cellval).fillRGB" />
                 </svg>
             </svg>
@@ -52,7 +54,7 @@ const newTask = inject<number>("newTask", 75);
             <svg v-for="(row, y) in parametricGrid.grid" xmlns="http://www.w3.org/2000/svg">
                 <svg v-for="(cellval, x) in row">
                     <rect
-                        @click="parametricGrid.setLocation(x, y, onClickValue); console.log(vizFn(onClickValue)); $forceUpdate()"
+                        @click="parametricGrid.setLocation(x, y, conversionFn(onClickValue)); console.log(parametricGrid); console.log(vizFn(conversionFn(onClickValue))); $forceUpdate()"
                         :x="x" :y="y" width="1" height="1" :fill="vizFn(cellval).fillRGB" />
                 </svg>
             </svg>
