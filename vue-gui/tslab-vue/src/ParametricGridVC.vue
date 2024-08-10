@@ -27,7 +27,7 @@ let parametricGrid = new ParametricGrid<any>(props.width, props.height, props.de
 console.log(parametricGrid);
 var viewBox = `0 0 ${props.width} ${props.height}`;
 
-const newTask = inject<number>("newTask", 75);
+//const newTask = inject<number>("newTask", 75);
 
 </script>
 
