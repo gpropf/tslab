@@ -44,12 +44,12 @@ function createPGVC(inwidth: string, inheight: string) {
 
 }
 
-const onClickValue = ref()
-const newTask = ref(0);
+const onClickValue = ref(null)
+//const newTask = ref(0);
 const testDatum = ref(null);
 const first = ref("Greg");
 const last = ref("");
-provide('newTask', newTask);
+//provide('newTask', newTask);
 
 </script>
 
@@ -111,11 +111,9 @@ var pgGlobal: ParametricGrid<number>
 export default {
   data() {
     return {
-      title: 'My To Do App',
-      newTask: 125,
+      title: 'My To Do App',    
       pgwidth: '',
       pgheight: ''
-
     }
   }
 }
