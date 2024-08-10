@@ -44,7 +44,7 @@ function createPGVC(inwidth: string, inheight: string) {
 
 }
 
-const onClickValue = ref(0)
+const onClickValue = ref()
 const newTask = ref(0);
 const testDatum = ref(null);
 const first = ref("Greg");
@@ -71,9 +71,9 @@ provide('newTask', newTask);
       placeholder="Enter Name" componentName="CNAME" />
     <h2>Grid Data Entry</h2>
     <p>Input value: {{ first }}</p>
-    <div>
+    <!-- <div>
       <input type="text" v-model="newTask" placeholder="Test of provide/inject value">
-    </div>
+    </div> -->
     <div>
       <input type="text" v-model="onClickValue" placeholder="onClickValue">
     </div>

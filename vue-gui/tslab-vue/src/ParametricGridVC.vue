@@ -23,7 +23,7 @@ const props = defineProps<{
 }>()
 
 let parametricGrid = new ParametricGrid<any>(props.width, props.height, props.defaultValue);
-parametricGrid.setLocation(2, 1, 120)
+//parametricGrid.setLocation(2, 1, 120)
 console.log(parametricGrid);
 var viewBox = `0 0 ${props.width} ${props.height}`;
 
@@ -32,11 +32,11 @@ const newTask = inject<number>("newTask", 75);
 </script>
 
 <template>
-    <button @click="count++; parametricGrid.setLocation(3, 2, count * 5)">You clicked me {{ count }} times.></button>
+    <!-- <button @click="count++; parametricGrid.setLocation(3, 2, count * 5)">You clicked me {{ count }} times.></button>
     <div>WIDTH: {{ parametricGrid.width }}</div>
     <div>HEIGHT: {{ parametricGrid.height }}</div>
     <div>Click val: {{ onClickValue }}</div>
-    <div>Provide/inject test val: {{ newTask }}</div>
+    <div>Provide/inject test val: {{ newTask }}</div> -->
 
     <div v-if="programaticallyCreated"><div>This PG was created dynamically!</div>
         <svg :viewBox="viewBox" width="320" height="200" xmlns="http://www.w3.org/2000/svg">
