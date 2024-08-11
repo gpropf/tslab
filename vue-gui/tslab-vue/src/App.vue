@@ -32,12 +32,13 @@ function conversionFn(v: string) {
 function createPGVC(inwidth: string, inheight: string) {
   var ComponentClass = createApp(ParametricGridVC, {
     width: parseInt(inwidth), height: parseInt(inheight),
-    vizFn: vizFn, defaultValue: 175, onClickValue: onClickValue, programaticallyCreated: true, conversionFn:conversionFn
+    vizFn: vizFn, defaultValue: 1, onClickValue: onClickValue, programaticallyCreated: true, conversionFn:conversionFn
   })
   //var pg = new ComponentClass(20, 16, 555);
   const wrapper = document.getElementById("dynamic_content")
   if (wrapper) {
     const newDiv = document.createElement("div")
+    newDiv.className = "rule"
     ComponentClass.mount(newDiv)
     wrapper.appendChild(newDiv)
   }
@@ -55,17 +56,17 @@ const last = ref("");
 
 <template>
   <div>
-    <header>
+    <!-- <header> -->
       <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
-      <div class="wrapper">
+      <!-- <div class="wrapper"> -->
         <!-- <HelloWorld msg="You did it!" /> -->
 
         <!-- <nav>
           <RouterLink to="/">Home</RouterLink>
           <RouterLink to="/about">About</RouterLink>
         </nav> -->
-      </div>
-    </header>
+      <!-- </div> -->
+    <!-- </header> -->
     <h1>{{ title }}</h1>
     <LabelledInput v-model:first-name="first" v-model:last-name="last" id="LI-test1" inputType="text"
       placeholder="Enter Name" componentName="CNAME" />
@@ -95,10 +96,10 @@ const last = ref("");
 
     <!-- <button @click="pgfactory(pgwidth)">Make Grid</button> -->
     <button @click="createPGVC(pgwidth, pgheight)">New Grid</button>
-    <ParametricGridVC :width=4 :height="3" :vizFn="vizFn" :defaultValue="100" :onClickValue="onClickValue"
-      :programaticallyCreated="false" :conversionFn="conversionFn"/>
+    <!-- <ParametricGridVC :width=4 :height="3" :vizFn="vizFn" :defaultValue="0" :onClickValue="onClickValue"
+      :programaticallyCreated="false" :conversionFn="conversionFn"/> -->
 
-    <div id="dynamic_content"></div>
+    <div id="dynamic_content" class="rules"></div>
 
     <!-- <RouterView /> -->
   </div>
@@ -120,7 +121,20 @@ export default {
 </script>
 
 
-<style scoped>
+<style>
+
+.rules {
+  height: 250px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.rules>* {
+  flex: 1 1 300px;
+}
+
+
 header {
   line-height: 1.5;
   max-height: 100vh;

@@ -32,12 +32,6 @@ var viewBox = `0 0 ${props.width} ${props.height}`;
 </script>
 
 <template>
-    <!-- <button @click="count++; parametricGrid.setLocation(3, 2, count * 5)">You clicked me {{ count }} times.></button>
-    <div>WIDTH: {{ parametricGrid.width }}</div>
-    <div>HEIGHT: {{ parametricGrid.height }}</div>
-    <div>Click val: {{ onClickValue }}</div>
-    <div>Provide/inject test val: {{ newTask }}</div> -->
-
     <div v-if="programaticallyCreated"><div>This PG was created dynamically!</div>
         <svg :viewBox="viewBox" width="320" height="200" xmlns="http://www.w3.org/2000/svg">
             <svg v-for="(row, y) in parametricGrid.grid" xmlns="http://www.w3.org/2000/svg">
