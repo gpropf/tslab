@@ -96,8 +96,8 @@ const last = ref("");
 
     <!-- <button @click="pgfactory(pgwidth)">Make Grid</button> -->
     <button @click="createPGVC(pgwidth, pgheight)">New Grid</button>
-    <!-- <ParametricGridVC :width=4 :height="3" :vizFn="vizFn" :defaultValue="0" :onClickValue="onClickValue"
-      :programaticallyCreated="false" :conversionFn="conversionFn"/> -->
+    <ParametricGridVC :width="4" :height="3" :vizFn="vizFn" :defaultValue="0" :onClickValue="onClickValue"
+      :programaticallyCreated="false" :conversionFn="conversionFn"/>
 
     <div id="dynamic_content" class="rules"></div>
 
