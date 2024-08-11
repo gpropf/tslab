@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-const firstName = defineModel('firstName')
-const lastName = defineModel('lastName')
+//const firstName = defineModel('firstName')
+//const lastName = defineModel('lastName')
+const inputValue = defineModel('inputValue')
 
 const props = defineProps<{
     inputType: string,
@@ -20,7 +21,7 @@ const innerId = computed(() => { return props.id + "-inner"})
 <template>
     <div :id="id">
         <label :for="innerId">{{ componentName }}</label>
-        <input :type="inputType" v-model="firstName" :placeholder="placeholder" :id="innerId"/>        
+        <input :type="inputType" v-model="inputValue" :placeholder="placeholder" :id="innerId"/>        
     </div>
 </template>
 
