@@ -15,6 +15,8 @@ const count = ref(10)
 const props = defineProps<{
     width: number,
     height: number,
+    screenWidth: number,
+    screenHeight: number,
     vizFn: ObjectVisualizationFn,
     defaultValue: any,
     onClickValue: any,
@@ -44,7 +46,7 @@ var viewBox = `0 0 ${props.width} ${props.height}`;
         </svg>
     </div>
     <div v-else="programaticallyCreated"><div>This PG was NOT created dynamically!</div>
-        <svg :viewBox="viewBox" width="320" height="200" xmlns="http://www.w3.org/2000/svg">
+        <svg :viewBox="viewBox" :width="props.screenWidth" :height="props.screenHeight" xmlns="http://www.w3.org/2000/svg">
             <svg v-for="(row, y) in parametricGrid.grid" xmlns="http://www.w3.org/2000/svg">
                 <svg v-for="(cellval, x) in row">
                     <rect

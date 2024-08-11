@@ -32,7 +32,8 @@ function conversionFn(v: string) {
 function createPGVC(inwidth: string, inheight: string) {
   var ComponentClass = createApp(ParametricGridVC, {
     width: parseInt(inwidth), height: parseInt(inheight),
-    vizFn: vizFn, defaultValue: 1, onClickValue: onClickValue, programaticallyCreated: true, conversionFn: conversionFn
+    vizFn: vizFn, defaultValue: 1, onClickValue: onClickValue, programaticallyCreated: true, conversionFn: conversionFn,
+    screenWidth: 150, screenHeight: 100
   })
   //var pg = new ComponentClass(20, 16, 555);
   const wrapper = document.getElementById("dynamic_content")
@@ -45,7 +46,7 @@ function createPGVC(inwidth: string, inheight: string) {
 
 }
 
-const onClickValue = ref(null)
+const onClickValue = ref(1)
 //const newTask = ref(0);
 const testDatum = ref(null);
 const first = ref("Greg");
@@ -59,38 +60,25 @@ const mainGridHeight = ref(4);
 
 <template>
   <div>
-    <h1>{{ title }}</h1>
-    <LabelledInput v-model:first-name="first" v-model:last-name="last" id="LI-test1" inputType="text"
-      placeholder="Enter Name" componentName="CNAME" />
+    <h1>{{ title }}</h1>    
     <LabelledInput v-model:inputValue="mainGridWidth" id="main-grid-width-id" inputType="text"
       placeholder="Enter Main Grid Width" componentName="Main Grid Width" />
       <LabelledInput v-model:inputValue="mainGridHeight" id="main-grid-height-id" inputType="text"
       placeholder="Enter Main Grid Height" componentName="Main Grid Height" />
     <h2>Grid Data Entry</h2>
     <p>Input value: {{ first }}</p>
-    <div>
-      <input type="text" v-model="onClickValue" placeholder="onClickValue">
-    </div>
+    <LabelledInput v-model:inputValue="onClickValue" id="on-click-value-id" inputType="text"
+      placeholder="Enter Color index number for grids" componentName="Color index" />
     <div>
       <input type="text" v-model="pgwidth" placeholder="Width of new PG">
     </div>
     <div>
       <input type="text" v-model="pgheight" placeholder="Height of new PG">
-    </div>
-    <!-- <div v-if="newTask.length > 0">
-      <h3>Test of provide/inject value</h3>
-      <p>{{ newTask }}</p>
-    </div>
-
-    <div v-if="pgwidth.length > 0">
-      <h3>PG width</h3>
-      <p>{{ pgwidth }}</p>
-    </div> -->
-
-    <!-- <button @click="pgfactory(pgwidth)">Make Grid</button> -->
+    </div>    
+    
     <button @click="createPGVC(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
-    <ParametricGridVC :key="mainGridKey" :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
+    <ParametricGridVC :key="mainGridKey" :screenWidth="600" :screenHeight="400" :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
       :onClickValue="onClickValue" :programaticallyCreated="false" :conversionFn="conversionFn" />
 
     <div id="dynamic_content" class="rules"></div>
@@ -106,7 +94,7 @@ var pgGlobal: ParametricGrid<number>
 export default {
   data() {
     return {
-      title: 'My To Do App',
+      title: 'Pixel Reactor v3.0',
       pgwidth: '',
       pgheight: ''
     }
