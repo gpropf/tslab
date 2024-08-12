@@ -52,18 +52,20 @@ const testDatum = ref(null);
 const first = ref("Greg");
 const last = ref("");
 const mainGridKey = ref(0);
-const mainGridWidth = ref(5);
-const mainGridHeight = ref(4);
+const mainGridWidth = ref("5");
+const mainGridHeight = ref("4");
+const screenWidth = ref(600);
+const screenHeight = ref(400);
 //provide('newTask', newTask);
 
 </script>
 
 <template>
   <div>
-    <h1>{{ title }}</h1>    
+    <h1>{{ title }}</h1>
     <LabelledInput v-model:inputValue="mainGridWidth" id="main-grid-width-id" inputType="text"
       placeholder="Enter Main Grid Width" componentName="Main Grid Width" />
-      <LabelledInput v-model:inputValue="mainGridHeight" id="main-grid-height-id" inputType="text"
+    <LabelledInput v-model:inputValue="mainGridHeight" id="main-grid-height-id" inputType="text"
       placeholder="Enter Main Grid Height" componentName="Main Grid Height" />
     <h2>Grid Data Entry</h2>
     <p>Input value: {{ first }}</p>
@@ -74,11 +76,13 @@ const mainGridHeight = ref(4);
     </div>
     <div>
       <input type="text" v-model="pgheight" placeholder="Height of new PG">
-    </div>    
-    
+    </div>
+
     <button @click="createPGVC(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
-    <ParametricGridVC :key="mainGridKey" :screenWidth="600" :screenHeight="400" :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
+    
+    <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
+      :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
       :onClickValue="onClickValue" :programaticallyCreated="false" :conversionFn="conversionFn" />
 
     <div id="dynamic_content" class="rules"></div>

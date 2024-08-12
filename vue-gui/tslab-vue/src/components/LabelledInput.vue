@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-//const firstName = defineModel('firstName')
-//const lastName = defineModel('lastName')
+/* 
+We make inputValue a string because it doesn't seem to work if it's a number.
+Also, we don't know the actual type of the input data. If we need a number,
+ we use parseInt, parseFloat, etc...
+*/
 const inputValue = defineModel('inputValue')
 
 const props = defineProps<{
@@ -12,7 +15,7 @@ const props = defineProps<{
     id?: string
 }>()
 
-const innerId = computed(() => { return props.id + "-inner"})
+const innerId = computed(() => { return props.id + "-inner" })
 
 </script>
 
@@ -21,7 +24,7 @@ const innerId = computed(() => { return props.id + "-inner"})
 <template>
     <div :id="id">
         <label :for="innerId">{{ componentName }}</label>
-        <input :type="inputType" v-model="inputValue" :placeholder="placeholder" :id="innerId"/>        
+        <input :type="inputType" v-model="inputValue" :placeholder="placeholder" :id="innerId" />
     </div>
 </template>
 
