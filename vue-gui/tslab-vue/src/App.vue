@@ -46,7 +46,7 @@ function createPGVC(inwidth: string, inheight: string) {
 
 }
 
-const onClickValue = ref(1)
+const onClickValue = ref("1")
 //const newTask = ref(0);
 const testDatum = ref(null);
 const first = ref("Greg");
@@ -80,7 +80,7 @@ const screenHeight = ref(400);
 
     <button @click="createPGVC(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
-    
+
     <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
       :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
       :onClickValue="onClickValue" :programaticallyCreated="false" :conversionFn="conversionFn" />
