@@ -6,43 +6,66 @@
 //logArray<number>(numbers); 
 
 export class ParametricGrid<T> {
-    private _width: number;
-    private _height: number;
-    private _grid: T[][] = [];
+  private _width: number;
+  private _height: number;
+  private _grid: T[][] = [];
 
-    constructor(width: number, height: number, initialValue: T) {
-        this._width = width;
-        this._height = height;
-        //for (var i:number = 0; i++; i < width){
-           // this._grid.push([]);
-            // for (var j: number = 0; j < height; j++) {
-                
-            //     this._grid[i].push(new T())
-            // }
-        //}  
-        this._grid = new Array(height).fill(undefined).map(
-            () => new Array(width).fill(initialValue));   
-      }
-    
-      public get width() {
-        return this._width;
-      }
+  constructor(width: number, height: number, initialValue: T, grid?: T[][]) {
+    this._width = width;
+    this._height = height;
+    if (grid) {
+      this._grid = grid
+    }
+    else {
+      this._grid = new Array(height).fill(undefined).map(
+        () => new Array(width).fill(initialValue));
+    }
+  }
 
-      public get height() {
-        return this._height;
-      }
+  public get width() {
+    return this._width;
+  }
 
-      public get grid() {
-        return this._grid;
-      }
+  public get height() {
+    return this._height;
+  }
 
-      public setLocation(x: number, y: number, v: T) {
-        this._grid[y][x] = v;
-        console.log("Location: ", x, ":", y)
-      }
+  public get grid() {
+    return this._grid;
+  }
+
+  public setLocation(x: number, y: number, v: T) {
+    this._grid[y][x] = v;
+    console.log("Location: ", x, ":", y)
+  }
+
+  public set grid(g: T[][]) {
+    this._grid = g;
+  }
+
+  public toJSON(): Object {
+    return {
+      width: this._width,
+      height: this._height,
+      grid: this._grid,
+      type: "ParametricGrid",
+      parameterType: "number"
+    }
+  }
+
+  public reviver(s: string) {
+
+  }
 }
 
-
+export function pgFactory(s: string) {
+  let obj = JSON.parse(s);
+  if (obj.type == "ParametricGrid") {
+    //console.log(`obj.type: ${obj.type}`)
+    var pgrid: ParametricGrid<number> = new ParametricGrid(obj.width, obj.height, 777, obj.grid);
+    return pgrid;
+  }
+}
 
 // var pgrid: ParametricGrid<number> = new ParametricGrid(10, 8, 555);
 // pgrid.setLocation(8,4,100);
