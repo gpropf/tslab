@@ -1,7 +1,7 @@
 <script setup lang="ts">
-/// <reference path="./../../../pgrid.ts"/>
+/// <reference path="./../../../ParametricGrid.ts"/>
 import { RouterLink, RouterView } from 'vue-router'
-import { ParametricGrid } from "./../../../pgrid"
+import { ParametricGrid } from "./../../../ParametricGrid"
 import ParametricGridVC from './ParametricGridVC.vue';
 import { type ColorInfo } from './ParametricGridVC.vue';
 import { createApp } from 'vue';

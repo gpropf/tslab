@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ParametricGrid } from "./../../../pgrid"
+import { ParametricGrid } from "./../../../ParametricGrid"
 import { inject } from "vue";
 
 export interface ColorInfo {
