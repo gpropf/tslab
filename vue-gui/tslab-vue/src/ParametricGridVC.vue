@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ParametricGrid } from "./../../../ParametricGrid"
-import { inject } from "vue";
+//import { inject } from "vue";
 
 export interface ColorInfo {
     fillRGB: string;
@@ -10,7 +10,7 @@ export interface ColorInfo {
 type ObjectVisualizationFn = (a: any) => ColorInfo
 type ConversionFn = (a: any) => any
 
-const count = ref(10)
+//const count = ref(10)
 
 const props = defineProps<{
     width: number,
@@ -36,8 +36,8 @@ var viewBox = `0 0 ${props.width} ${props.height}`;
 <template>
     <div v-if="programaticallyCreated"><div>This PG was created dynamically!</div>
         <svg :viewBox="viewBox" :width="props.screenWidth" :height="props.screenHeight" xmlns="http://www.w3.org/2000/svg">
-            <svg v-for="(row, y) in parametricGrid.grid" xmlns="http://www.w3.org/2000/svg">
-                <svg v-for="(cellval, x) in row">
+            <svg :key="y" v-for="(row, y) in parametricGrid.grid" xmlns="http://www.w3.org/2000/svg">
+                <svg :key="x" v-for="(cellval, x) in row">
                     <rect
                         @click="parametricGrid.setLocation(x, y, conversionFn(onClickValue.value)); console.log(parametricGrid); console.log(vizFn(conversionFn(onClickValue.value))); $forceUpdate()"
                         :x="x" :y="y" width="1" height="1" :fill="vizFn(cellval).fillRGB" />
@@ -45,10 +45,10 @@ var viewBox = `0 0 ${props.width} ${props.height}`;
             </svg>
         </svg>
     </div>
-    <div v-else="programaticallyCreated"><div>This PG was NOT created dynamically!</div>
+    <div v-else><div>This PG was NOT created dynamically!</div>
         <svg :viewBox="viewBox" :width="props.screenWidth" :height="props.screenHeight" xmlns="http://www.w3.org/2000/svg">
-            <svg v-for="(row, y) in parametricGrid.grid" xmlns="http://www.w3.org/2000/svg">
-                <svg v-for="(cellval, x) in row">
+            <svg :key="y" v-for="(row, y) in parametricGrid.grid" xmlns="http://www.w3.org/2000/svg">
+                <svg :key="x" v-for="(cellval, x) in row">
                     <rect
                         @click="parametricGrid.setLocation(x, y, conversionFn(onClickValue)); console.log(parametricGrid); console.log(vizFn(conversionFn(onClickValue))); $forceUpdate()"
                         :x="x" :y="y" width="1" height="1" :fill="vizFn(cellval).fillRGB" />
