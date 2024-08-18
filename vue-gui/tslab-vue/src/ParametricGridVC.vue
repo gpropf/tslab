@@ -10,7 +10,8 @@ export interface ColorInfo {
     fillRGB: string;
 }
 
-//export const r1 = ref(55)
+const store = useCounterStore();
+const { count, doubleCount, increment, addRule } = store;
 
 type ObjectVisualizationFn = (a: any) => ColorInfo
 type ConversionFn = (a: any) => any
@@ -38,13 +39,10 @@ var viewBox = `0 0 ${props.width} ${props.height}`;
 let rckt = new Rocket();
 rckt.addFuel(10);
 
-// const PGrid = {
-//     data: function () {
-//         return {
-//             'pgrid': parametricGrid
-//         }
-//     }
-// }
+increment();
+addRule(parametricGrid)
+
+//addRule(parametricGrid);
 
 </script>
 
