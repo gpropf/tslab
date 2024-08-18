@@ -5,8 +5,22 @@
 //let numbers = [1, 2, 3];
 //logArray<number>(numbers); 
 
+function logFuel(target: Function, context: any) {
+  const original = target.prototype.addFuel;
+  target.prototype.addFuel = function (message: string) {
+    console.log(`Before adding fuel, total fuel: ${this.fuel}`);
+    original.apply(this, arguments);
+    console.log(`After adding fuel, total fuel: ${this.fuel}`);
+  };
+}
 
-
+@logFuel
+class Rocket {
+  fuel: number = 11;
+  addFuel(amount: number) {
+    this.fuel += amount;
+  }
+}
 
 
 export class ParametricGrid<T> {
@@ -71,6 +85,7 @@ export function pgFactory(s: string) {
   }
 }
 
+export { Rocket }
 // var pgrid: ParametricGrid<number> = new ParametricGrid(10, 8, 555);
 // pgrid.setLocation(8,4,100);
 // console.log(pgrid);

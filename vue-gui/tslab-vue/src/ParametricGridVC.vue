@@ -1,6 +1,6 @@
 <script setup lang="ts">
 //import { ref } from 'vue'
-import { ParametricGrid } from "./../../../ParametricGrid"
+import { ParametricGrid, Rocket } from "./../../../ParametricGrid"
 //import { inject } from "vue";
 
 export interface ColorInfo {
@@ -30,6 +30,8 @@ console.log(parametricGrid);
 var viewBox = `0 0 ${props.width} ${props.height}`;
 
 //const newTask = inject<number>("newTask", 75);
+let rckt = new Rocket();
+rckt.addFuel(10);
 
 </script>
 
