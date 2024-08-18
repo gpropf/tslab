@@ -5,6 +5,10 @@
 //let numbers = [1, 2, 3];
 //logArray<number>(numbers); 
 
+
+
+
+
 export class ParametricGrid<T> {
   private _width: number;
   private _height: number;

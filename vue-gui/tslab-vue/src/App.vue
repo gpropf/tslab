@@ -1,11 +1,11 @@
 <script setup lang="ts">
 /// <reference path="./../../../ParametricGrid.ts"/>
-import { RouterLink, RouterView } from 'vue-router'
-import { ParametricGrid } from "./../../../ParametricGrid"
+//import { RouterLink, RouterView } from 'vue-router'
+//import { ParametricGrid } from "./../../../ParametricGrid"
 import ParametricGridVC from './ParametricGridVC.vue';
 import { type ColorInfo } from './ParametricGridVC.vue';
 import { createApp } from 'vue';
-import { ref, provide } from 'vue'
+import { ref } from 'vue'
 //import HelloWorld from './components/HelloWorld.vue';
 import LabelledInput from './components/LabelledInput.vue';
 
@@ -48,9 +48,9 @@ function createPGVC(inwidth: string, inheight: string) {
 
 const onClickValue = ref("1")
 //const newTask = ref(0);
-const testDatum = ref(null);
+//const testDatum = ref(null);
 const first = ref("Greg");
-const last = ref("");
+//const last = ref("");
 const mainGridKey = ref(0);
 const mainGridWidth = ref("5");
 const mainGridHeight = ref("4");
@@ -93,7 +93,7 @@ const screenHeight = ref(400);
 
 <script lang="ts">
 
-var pgGlobal: ParametricGrid<number>
+//var pgGlobal: ParametricGrid<number>
 
 export default {
   data() {
