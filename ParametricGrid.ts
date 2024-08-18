@@ -14,7 +14,7 @@ function logFuel(target: Function, context: any) {
   };
 }
 
-@logFuel
+//@logFuel
 class Rocket {
   fuel: number = 11;
   addFuel(amount: number) {

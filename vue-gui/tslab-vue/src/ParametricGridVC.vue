@@ -1,4 +1,7 @@
 <script setup lang="ts">
+
+import { useCounterStore } from '@/stores/counter'
+
 //import { ref } from 'vue'
 import { ParametricGrid, Rocket } from "./../../../ParametricGrid"
 //import { inject } from "vue";
@@ -6,6 +9,8 @@ import { ParametricGrid, Rocket } from "./../../../ParametricGrid"
 export interface ColorInfo {
     fillRGB: string;
 }
+
+//export const r1 = ref(55)
 
 type ObjectVisualizationFn = (a: any) => ColorInfo
 type ConversionFn = (a: any) => any
@@ -33,11 +38,21 @@ var viewBox = `0 0 ${props.width} ${props.height}`;
 let rckt = new Rocket();
 rckt.addFuel(10);
 
+// const PGrid = {
+//     data: function () {
+//         return {
+//             'pgrid': parametricGrid
+//         }
+//     }
+// }
+
 </script>
 
 <template>
-    <div v-if="programaticallyCreated"><div>This PG was created dynamically!</div>
-        <svg :viewBox="viewBox" :width="props.screenWidth" :height="props.screenHeight" xmlns="http://www.w3.org/2000/svg">
+    <div v-if="programaticallyCreated">
+        <div>This PG was created dynamically!</div>
+        <svg :viewBox="viewBox" :width="props.screenWidth" :height="props.screenHeight"
+            xmlns="http://www.w3.org/2000/svg">
             <svg :key="y" v-for="(row, y) in parametricGrid.grid" xmlns="http://www.w3.org/2000/svg">
                 <svg :key="x" v-for="(cellval, x) in row">
                     <rect
@@ -47,8 +62,10 @@ rckt.addFuel(10);
             </svg>
         </svg>
     </div>
-    <div v-else><div>This PG was NOT created dynamically!</div>
-        <svg :viewBox="viewBox" :width="props.screenWidth" :height="props.screenHeight" xmlns="http://www.w3.org/2000/svg">
+    <div v-else>
+        <div>This PG was NOT created dynamically!</div>
+        <svg :viewBox="viewBox" :width="props.screenWidth" :height="props.screenHeight"
+            xmlns="http://www.w3.org/2000/svg">
             <svg :key="y" v-for="(row, y) in parametricGrid.grid" xmlns="http://www.w3.org/2000/svg">
                 <svg :key="x" v-for="(cellval, x) in row">
                     <rect

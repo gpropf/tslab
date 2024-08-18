@@ -5,9 +5,13 @@
 import ParametricGridVC from './ParametricGridVC.vue';
 import { type ColorInfo } from './ParametricGridVC.vue';
 import { createApp } from 'vue';
+//import { createPinia } from 'pinia'
+//import { defineStore } from 'pinia'
 import { ref } from 'vue'
 //import HelloWorld from './components/HelloWorld.vue';
 import LabelledInput from './components/LabelledInput.vue';
+
+
 
 const numberToColorMap = new Map();
 numberToColorMap.set(0, "#000000");
@@ -18,6 +22,8 @@ numberToColorMap.set(4, "#AA00AA");
 numberToColorMap.set(5, "#00AAFF");
 const numColors = numberToColorMap.size;
 
+const rules: any[] = [];
+
 function vizFn(cellval: number) {
   let hexColor = numberToColorMap.get(cellval % numColors);
   let colorInfo: ColorInfo = { fillRGB: `${hexColor}` }; return colorInfo;
@@ -26,7 +32,6 @@ function vizFn(cellval: number) {
 function conversionFn(v: string) {
   return parseInt(v);
 }
-
 
 
 function createPGVC(inwidth: string, inheight: string) {
@@ -42,6 +47,7 @@ function createPGVC(inwidth: string, inheight: string) {
     newDiv.className = "rule"
     ComponentClass.mount(newDiv)
     wrapper.appendChild(newDiv)
+    rules.push(ComponentClass)
   }
 
 }
@@ -58,7 +64,20 @@ const screenWidth = ref(600);
 const screenHeight = ref(400);
 //provide('newTask', newTask);
 
+// const useRuleStore = defineStore('rules', () => {
+//   const count = ref(0)
+//   const name = ref('Eduardo')
+//   const doubleCount = computed(() => count.value * 2)
+//   function increment() {
+//     count.value++
+//   }
+
+//   return { count, name, doubleCount, increment }
+// })
+
 </script>
+
+
 
 <template>
   <div>
@@ -80,6 +99,8 @@ const screenHeight = ref(400);
 
     <button @click="createPGVC(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
+    <button @click="console.log(rules[0])">View First Rule</button>
+
 
     <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
       :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
