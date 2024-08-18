@@ -58,8 +58,8 @@ const onClickValue = ref("1")
 const first = ref("Greg");
 //const last = ref("");
 const mainGridKey = ref(0);
-const mainGridWidth = ref("5");
-const mainGridHeight = ref("4");
+const mainGridWidth = ref("60");
+const mainGridHeight = ref("40");
 const screenWidth = ref(600);
 const screenHeight = ref(400);
 //provide('newTask', newTask);
