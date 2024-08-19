@@ -4,8 +4,8 @@ import { ParametricGrid } from "../../../../ParametricGrid"
 
 export const useCounterStore = defineStore('counter', () => {
   const count = ref(0)
-  const ruleCount = ref(0)
-  const ruleGrids = ref([])
+  //const ruleCount = ref(0)
+  //const ruleGrids = ref([])
   const ruleGridMap = ref(new Map<string, ParametricGrid<any>>);
   const doubleCount = computed(() => count.value * 2)
   function increment() {
@@ -22,7 +22,7 @@ export const useCounterStore = defineStore('counter', () => {
     console.log(ruleGridMap.value)
   }
   function getRule(id: string) {
-    let rg = ruleGridMap.value.get(id)
+    const rg = ruleGridMap.value.get(id)
     console.log(rg)
   }
   
