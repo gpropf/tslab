@@ -11,7 +11,7 @@ export interface ColorInfo {
 }
 
 const store = useCounterStore();
-const { count, doubleCount, increment, addRule } = store;
+const { count, doubleCount, ruleGridMap, increment, addRule, setRule, getRule } = store;
 
 type ObjectVisualizationFn = (a: any) => ColorInfo
 type ConversionFn = (a: any) => any
@@ -27,12 +27,13 @@ const props = defineProps<{
     defaultValue: any,
     onClickValue: any,
     programaticallyCreated: boolean
-    conversionFn: ConversionFn
+    conversionFn: ConversionFn,
+    id: string
 }>()
 
 let parametricGrid = new ParametricGrid<any>(props.width, props.height, props.defaultValue);
 //parametricGrid.setLocation(2, 1, 120)
-console.log(parametricGrid);
+//console.log(parametricGrid);
 var viewBox = `0 0 ${props.width} ${props.height}`;
 
 //const newTask = inject<number>("newTask", 75);
@@ -41,6 +42,7 @@ rckt.addFuel(10);
 
 increment();
 addRule(parametricGrid)
+setRule(props.id, parametricGrid)
 
 //addRule(parametricGrid);
 
@@ -54,7 +56,7 @@ addRule(parametricGrid)
             <svg :key="y" v-for="(row, y) in parametricGrid.grid" xmlns="http://www.w3.org/2000/svg">
                 <svg :key="x" v-for="(cellval, x) in row">
                     <rect
-                        @click="parametricGrid.setLocation(x, y, conversionFn(onClickValue.value)); console.log(parametricGrid); console.log(vizFn(conversionFn(onClickValue.value))); $forceUpdate()"
+                        @click="parametricGrid.setLocation(x, y, conversionFn(onClickValue.value)); console.log(getRule(props.id)); console.log(vizFn(conversionFn(onClickValue.value))); $forceUpdate()"
                         :x="x" :y="y" width="1" height="1" :fill="vizFn(cellval).fillRGB" />
                 </svg>
             </svg>
@@ -67,7 +69,7 @@ addRule(parametricGrid)
             <svg :key="y" v-for="(row, y) in parametricGrid.grid" xmlns="http://www.w3.org/2000/svg">
                 <svg :key="x" v-for="(cellval, x) in row">
                     <rect
-                        @click="parametricGrid.setLocation(x, y, conversionFn(onClickValue)); console.log(parametricGrid); console.log(vizFn(conversionFn(onClickValue))); $forceUpdate()"
+                        @click="parametricGrid.setLocation(x, y, conversionFn(onClickValue)); console.log(getRule(props.id)); console.log(vizFn(conversionFn(onClickValue))); $forceUpdate()"
                         :x="x" :y="y" width="1" height="1" :fill="vizFn(cellval).fillRGB" />
                 </svg>
             </svg>

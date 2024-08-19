@@ -1,4 +1,7 @@
 <script setup lang="ts">
+
+import { useCounterStore } from '@/stores/counter'
+
 /// <reference path="./../../../ParametricGrid.ts"/>
 //import { RouterLink, RouterView } from 'vue-router'
 //import { ParametricGrid } from "./../../../ParametricGrid"
@@ -11,7 +14,8 @@ import { ref } from 'vue'
 //import HelloWorld from './components/HelloWorld.vue';
 import LabelledInput from './components/LabelledInput.vue';
 
-
+const store = useCounterStore();
+const { count, doubleCount, ruleGridMap, increment, addRule, setRule, getRule } = store;
 
 const numberToColorMap = new Map();
 numberToColorMap.set(0, "#000000");
@@ -22,7 +26,7 @@ numberToColorMap.set(4, "#AA00AA");
 numberToColorMap.set(5, "#00AAFF");
 const numColors = numberToColorMap.size;
 
-const rules: any[] = [];
+//const rules: any[] = [];
 
 function vizFn(cellval: number) {
   let hexColor = numberToColorMap.get(cellval % numColors);
@@ -34,11 +38,12 @@ function conversionFn(v: string) {
 }
 
 
+
 function createPGVC(inwidth: string, inheight: string) {
   var ComponentClass = createApp(ParametricGridVC, {
     width: parseInt(inwidth), height: parseInt(inheight),
     vizFn: vizFn, defaultValue: 1, onClickValue: onClickValue, programaticallyCreated: true, conversionFn: conversionFn,
-    screenWidth: 150, screenHeight: 100
+    screenWidth: 150, screenHeight: 100, id: newRuleId.value
   })
   //var pg = new ComponentClass(20, 16, 555);
   const wrapper = document.getElementById("dynamic_content")
@@ -47,12 +52,14 @@ function createPGVC(inwidth: string, inheight: string) {
     newDiv.className = "rule"
     ComponentClass.mount(newDiv)
     wrapper.appendChild(newDiv)
-    rules.push(ComponentClass)
+    //rules.push(ComponentClass)
   }
 
 }
 
+const newRuleId = ref("newrule")
 const onClickValue = ref("1")
+const mainGridName = ref("MAIN")
 //const newTask = ref(0);
 //const testDatum = ref(null);
 const first = ref("Greg");
@@ -62,6 +69,7 @@ const mainGridWidth = ref("60");
 const mainGridHeight = ref("40");
 const screenWidth = ref(600);
 const screenHeight = ref(400);
+
 //provide('newTask', newTask);
 
 // const useRuleStore = defineStore('rules', () => {
@@ -99,12 +107,14 @@ const screenHeight = ref(400);
 
     <button @click="createPGVC(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
-    <button @click="console.log(rules[0])">View First Rule</button>
+    <!-- <button @click="console.log(rules[0])">View First Rule</button> -->
+    <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
+    placeholder="Enter Id string for new rule" componentName="New Rule Id" />
 
 
     <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
       :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
-      :onClickValue="onClickValue" :programaticallyCreated="false" :conversionFn="conversionFn" />
+      :onClickValue="onClickValue" :programaticallyCreated="false" :conversionFn="conversionFn" :id="mainGridName" />
 
     <div id="dynamic_content" class="rules"></div>
 
