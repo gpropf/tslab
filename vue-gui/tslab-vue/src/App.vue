@@ -15,7 +15,7 @@ import { ref } from 'vue'
 import LabelledInput from './components/LabelledInput.vue';
 
 const store = useCounterStore();
-const { count, doubleCount, ruleGridMap, increment, addRule, setRule, getRule } = store;
+const { count, doubleCount, ruleGridMap, increment, setRule, getRule } = store;
 
 const numberToColorMap = new Map();
 numberToColorMap.set(0, "#000000");

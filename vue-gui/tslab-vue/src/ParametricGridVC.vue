@@ -11,7 +11,7 @@ export interface ColorInfo {
 }
 
 const store = useCounterStore();
-const { count, doubleCount, ruleGridMap, increment, addRule, setRule, getRule } = store;
+const { count, doubleCount, ruleGridMap, increment, setRule, getRule } = store;
 
 type ObjectVisualizationFn = (a: any) => ColorInfo
 type ConversionFn = (a: any) => any
@@ -41,7 +41,7 @@ let rckt = new Rocket();
 rckt.addFuel(10);
 
 increment();
-addRule(parametricGrid)
+//addRule(parametricGrid)
 setRule(props.id, parametricGrid)
 
 //addRule(parametricGrid);
