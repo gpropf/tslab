@@ -1,12 +1,12 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { ParametricGrid } from "../../../../ParametricGrid"
+import { ParametricGrid, RuleGrid } from "../../../../ParametricGrid"
 
 export const useRulesStore = defineStore('rules', () => {
   //const count = ref(0)
   //const ruleCount = ref(0)
   //const ruleGrids = ref([])
-  const ruleGridMap = ref(new Map<string, ParametricGrid<any>>);
+  const ruleGridMap = ref(new Map<string, RuleGrid<any>>);
   //const doubleCount = computed(() => count.value * 2)
   // function increment() {
   //   count.value++
@@ -17,7 +17,7 @@ export const useRulesStore = defineStore('rules', () => {
   //   console.log("Adding Rule with PG: ", ruleGrid)
   //   console.log("There are now", ruleCount.value, "rules.")
   // }
-  function setRule(id: string, pgrid: ParametricGrid<any>) {
+  function setRule(id: string, pgrid: RuleGrid<any>) {
     ruleGridMap.value.set(id, pgrid)
     console.log(ruleGridMap.value)
   }

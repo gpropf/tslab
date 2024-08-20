@@ -4,7 +4,7 @@
 import { useRulesStore } from '@/stores/rules'
 
 //import { ref } from 'vue'
-import { ParametricGrid, Rocket } from "./../../../ParametricGrid"
+import { ParametricGrid, RuleGrid, Rocket } from "./../../../ParametricGrid"
 //import { inject } from "vue";
 
 export interface ColorInfo {
@@ -35,7 +35,7 @@ const props = defineProps<{
     id: string
 }>()
 
-let parametricGrid = new ParametricGrid<any>(props.width, props.height, props.defaultValue);
+let parametricGrid = new RuleGrid<any>(props.width, props.height, props.defaultValue);
 //parametricGrid.setLocation(2, 1, 120)
 //console.log(parametricGrid);
 var viewBox = `0 0 ${props.width} ${props.height}`;
