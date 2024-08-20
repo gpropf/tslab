@@ -52,13 +52,19 @@ export class ParametricGrid<T> {
     return this._grid;
   }
 
+  public set grid(g: T[][]) {
+    this._grid = g;
+  }
+  
   public setLocation(x: number, y: number, v: T) {
     this._grid[y][x] = v;
     console.log("Location: ", x, ":", y)
   }
 
-  public set grid(g: T[][]) {
-    this._grid = g;
+  public getLocation(x: number, y: number): T {    
+    let v = this._grid[y][x];
+    console.log(`Location (${x},${y}) = ${v}`);
+    return v;
   }
 
   public toJSON(): Object {
