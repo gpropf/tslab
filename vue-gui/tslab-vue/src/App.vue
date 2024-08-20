@@ -2,6 +2,7 @@
 
 //import { useCounterStore } from '@/stores/counter'
 import { useRulesStore } from '@/stores/rules'
+import { ParametricGrid } from "./../../../ParametricGrid"
 
 /// <reference path="./../../../ParametricGrid.ts"/>
 //import { RouterLink, RouterView } from 'vue-router'
@@ -45,9 +46,11 @@ function conversionFn(v: string) {
 function testMatchAt(ruleName: string) {
   let mainGrid = getRule("MAIN")
   let ruleGrid = getRule(ruleName)
-  let matches: boolean = mainGrid.simpleMatchAt(ruleGrid, 2, 1);
-  
-  console.log("Grid Match = ", matches);
+  let matches: boolean = false
+  if (mainGrid instanceof ParametricGrid && ruleGrid instanceof ParametricGrid) {
+    matches = mainGrid.simpleMatchAt(ruleGrid, 2, 1);
+    console.log("Grid Match = ", matches);
+  }
   return matches;
 }
 
@@ -123,7 +126,7 @@ const screenHeight = ref(400);
 
     <!-- <button @click="console.log(rules[0])">View First Rule</button> -->
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
-    placeholder="Enter Id string for new rule" componentName="New Rule Id" />
+      placeholder="Enter Id string for new rule" componentName="New Rule Id" />
 
 
     <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
