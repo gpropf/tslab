@@ -24,6 +24,7 @@ export const useRulesStore = defineStore('rules', () => {
   function getRule(id: string) {
     const rg = ruleGridMap.value.get(id)
     console.log(rg)
+    return rg
   }
   
 

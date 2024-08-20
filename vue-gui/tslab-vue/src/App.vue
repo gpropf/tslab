@@ -42,7 +42,14 @@ function conversionFn(v: string) {
   return parseInt(v);
 }
 
-
+function testMatchAt(ruleName: string) {
+  let mainGrid = getRule("MAIN")
+  let ruleGrid = getRule(ruleName)
+  let matches: boolean = mainGrid.simpleMatchAt(ruleGrid, 2, 1);
+  
+  console.log("Grid Match = ", matches);
+  return matches;
+}
 
 function createPGVC(inwidth: string, inheight: string) {
   var ComponentClass = createApp(ParametricGridVC, {
@@ -112,6 +119,8 @@ const screenHeight = ref(400);
 
     <button @click="createPGVC(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
+    <button @click="testMatchAt('newrule')">Test Match</button>
+
     <!-- <button @click="console.log(rules[0])">View First Rule</button> -->
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
     placeholder="Enter Id string for new rule" componentName="New Rule Id" />

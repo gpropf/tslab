@@ -22,6 +22,7 @@ class Rocket {
   }
 }
 
+export type Vec2d = [number, number]
 
 export class ParametricGrid<T> {
   private _width: number;
@@ -65,6 +66,28 @@ export class ParametricGrid<T> {
     let v = this._grid[y][x];
     console.log(`Location (${x},${y}) = ${v}`);
     return v;
+  }
+
+  public wrapCoordinates(inVec: Vec2d): Vec2d {
+    let [x, y] = inVec;
+    return [x % this._width, y % this._height]
+  }
+
+  public simpleMatchAt(otherGrid: ParametricGrid<T>, offsetX: number, offsetY: number): boolean {
+    let rawGrid = otherGrid.grid;
+    for (let y in rawGrid) {
+      let thisY = y + offsetY;
+      for (let x in rawGrid[y]) {
+        let otherVal = rawGrid[y][x];
+        let thisX = x + offsetX;
+        let thisVec: Vec2d = [thisX, thisY];
+        thisVec = this.wrapCoordinates(thisVec);
+        let [wx, wy] = thisVec
+        let thisVal = this._grid[wy][wx];
+        if (thisVal != otherVal) return false;
+      }
+    }
+    return true;
   }
 
   public toJSON(): Object {
