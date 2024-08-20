@@ -2,6 +2,8 @@
 //     arr.forEach(element => console.log(element));
 // }
 
+import exp from "constants";
+
 //let numbers = [1, 2, 3];
 //logArray<number>(numbers); 
 
@@ -132,6 +134,24 @@ export function pgFactory(s: string) {
     //console.log(`obj.type: ${obj.type}`)
     var pgrid: ParametricGrid<number> = new ParametricGrid(obj.width, obj.height, 777, obj.grid);
     return pgrid;
+  }
+}
+
+export class RuleGrid<T> extends ParametricGrid<T> {
+  private _priority: number = 0;
+
+  constructor(width: number, height: number, initialValue: T, grid?: T[][]) {
+    super(width, height, initialValue, grid);
+
+    this._priority = 100;
+  }
+
+  public get priority() {
+    return this._priority;
+  }
+
+  public set priority(p: number) {
+    this._priority = p;
   }
 }
 
