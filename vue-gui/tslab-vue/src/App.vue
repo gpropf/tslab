@@ -48,7 +48,7 @@ function testMatchAt(ruleName: string) {
   let ruleGrid = getRule(ruleName)
   let matches: boolean = false
   if (mainGrid instanceof ParametricGrid && ruleGrid instanceof ParametricGrid) {
-    matches = mainGrid.simpleMatchAt(ruleGrid, 2, 1);
+    matches = mainGrid.simpleMatchAt(ruleGrid, 1, 1);
     console.log("Grid Match = ", matches);
   }
   return matches;

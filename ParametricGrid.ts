@@ -74,20 +74,23 @@ export class ParametricGrid<T> {
   }
 
   public simpleMatchAt(otherGrid: ParametricGrid<T>, offsetX: number, offsetY: number): boolean {
-    let rawGrid = otherGrid.grid;
-    let y: any = 0;
-    for (y in rawGrid) {
+    let rawGrid: T[][] = otherGrid.grid;
+    let y: number = 0;
+    for (y = 0; y < otherGrid.height; y++) {
       let thisY = y + offsetY;
       //alert(y, thisY)
-      let x: any = 0;
-      for (let x in rawGrid[y]) {
+      let x: number = 0;
+      for (x = 0; x < otherGrid.width; x++) {
         let otherVal: T = rawGrid[y][x];
         let thisX: any = x + offsetX;
         let thisVec: Vec2d = [thisX, thisY];
         thisVec = this.wrapCoordinates(thisVec);
         let [wx, wy] = thisVec
         let thisVal = this._grid[wy][wx];
-        if (thisVal != otherVal) return false;
+        if (thisVal != otherVal) {
+          console.log(`thisVal: ${thisVal}, otherVal: ${otherVal}. This loc: ${thisVec}, Other loc: ${[x,y]}`)
+          return false;
+        }
       }
     }
     return true;
