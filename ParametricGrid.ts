@@ -56,13 +56,13 @@ export class ParametricGrid<T> {
   public set grid(g: T[][]) {
     this._grid = g;
   }
-  
+
   public setLocation(x: number, y: number, v: T) {
     this._grid[y][x] = v;
     console.log("Location: ", x, ":", y)
   }
 
-  public getLocation(x: number, y: number): T {    
+  public getLocation(x: number, y: number): T {
     let v = this._grid[y][x];
     console.log(`Location (${x},${y}) = ${v}`);
     return v;
@@ -72,6 +72,21 @@ export class ParametricGrid<T> {
     let [x, y] = inVec;
     return [x % this._width, y % this._height]
   }
+
+  public findMatches(otherGrid: ParametricGrid<T>): Vec2d[] {
+    let matches: Vec2d[] = [];
+    for (let y: number = 0; y < this._height; y++) {
+      for (let x: number = 0; x < this._width; x++) {
+        let match: boolean = this.simpleMatchAt(otherGrid, x, y);
+        if (match) {
+          let matchLoc: Vec2d = [x, y]
+          matches.push(matchLoc);
+        }
+      }
+    }
+    return matches;
+  }
+
 
   public simpleMatchAt(otherGrid: ParametricGrid<T>, offsetX: number, offsetY: number): boolean {
     let rawGrid: T[][] = otherGrid.grid;
@@ -88,7 +103,7 @@ export class ParametricGrid<T> {
         let [wx, wy] = thisVec
         let thisVal = this._grid[wy][wx];
         if (thisVal != otherVal) {
-          console.log(`thisVal: ${thisVal}, otherVal: ${otherVal}. This loc: ${thisVec}, Other loc: ${[x,y]}`)
+          //console.log(`thisVal: ${thisVal}, otherVal: ${otherVal}. This loc: ${thisVec}, Other loc: ${[x, y]}`)
           return false;
         }
       }
