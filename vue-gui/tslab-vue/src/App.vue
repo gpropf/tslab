@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
-import { useCounterStore } from '@/stores/counter'
+//import { useCounterStore } from '@/stores/counter'
+import { useRulesStore } from '@/stores/rules'
 
 /// <reference path="./../../../ParametricGrid.ts"/>
 //import { RouterLink, RouterView } from 'vue-router'
@@ -14,8 +15,12 @@ import { ref } from 'vue'
 //import HelloWorld from './components/HelloWorld.vue';
 import LabelledInput from './components/LabelledInput.vue';
 
-const store = useCounterStore();
-const { count, doubleCount, ruleGridMap, increment, setRule, getRule } = store;
+//const store = useCounterStore();
+//const { count, doubleCount, ruleGridMap, increment, setRule, getRule } = store;
+
+const rules = useRulesStore();
+const { ruleGridMap, setRule, getRule } = rules;
+
 
 const numberToColorMap = new Map();
 numberToColorMap.set(0, "#000000");

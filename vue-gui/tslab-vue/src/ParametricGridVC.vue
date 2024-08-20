@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
-import { useCounterStore } from '@/stores/counter'
+//import { useCounterStore } from '@/stores/counter'
+import { useRulesStore } from '@/stores/rules'
 
 //import { ref } from 'vue'
 import { ParametricGrid, Rocket } from "./../../../ParametricGrid"
@@ -10,8 +11,11 @@ export interface ColorInfo {
     fillRGB: string;
 }
 
-const store = useCounterStore();
-const { count, doubleCount, ruleGridMap, increment, setRule, getRule } = store;
+//const store = useCounterStore();
+//const { count, doubleCount, ruleGridMap, increment, setRule, getRule } = store;
+
+const rules = useRulesStore();
+const { ruleGridMap, setRule, getRule } = rules;
 
 type ObjectVisualizationFn = (a: any) => ColorInfo
 type ConversionFn = (a: any) => any
@@ -40,7 +44,7 @@ var viewBox = `0 0 ${props.width} ${props.height}`;
 let rckt = new Rocket();
 rckt.addFuel(10);
 
-increment();
+//increment();
 //addRule(parametricGrid)
 setRule(props.id, parametricGrid)
 
