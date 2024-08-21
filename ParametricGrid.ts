@@ -155,6 +155,11 @@ export class RuleGrid<T> extends ParametricGrid<T> {
   }
 }
 
+export class TransformMatrix {
+  // For left handed coordinate system we use [cos(t), sin(-t); sin(t), cos(-t)] 
+  // for the rotation part.
+}
+
 export { Rocket }
 // var pgrid: ParametricGrid<number> = new ParametricGrid(10, 8, 555);
 // pgrid.setLocation(8,4,100);
