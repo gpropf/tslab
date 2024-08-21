@@ -7,8 +7,8 @@ import { ParametricGrid } from "./../../../ParametricGrid"
 /// <reference path="./../../../ParametricGrid.ts"/>
 //import { RouterLink, RouterView } from 'vue-router'
 //import { ParametricGrid } from "./../../../ParametricGrid"
-import ParametricGridVC from './ParametricGridVC.vue';
-import { type ColorInfo } from './ParametricGridVC.vue';
+import RuleGridVC from './RuleGridVC.vue';
+import { type ColorInfo } from './RuleGridVC.vue';
 import { createApp } from 'vue';
 //import { createPinia } from 'pinia'
 //import { defineStore } from 'pinia'
@@ -66,7 +66,7 @@ function testFindMatches(ruleName: string) {
 }
 
 function createPGVC(inwidth: string, inheight: string) {
-  var ComponentClass = createApp(ParametricGridVC, {
+  var ComponentClass = createApp(RuleGridVC, {
     width: parseInt(inwidth), height: parseInt(inheight),
     vizFn: vizFn, defaultValue: 1, onClickValue: onClickValue, programaticallyCreated: true, conversionFn: conversionFn,
     screenWidth: 150, screenHeight: 100, id: newRuleId.value
@@ -140,7 +140,7 @@ const screenHeight = ref(400);
       placeholder="Enter Id string for new rule" componentName="New Rule Id" />
 
 
-    <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
+    <RuleGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
       :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
       :onClickValue="onClickValue" :programaticallyCreated="false" :conversionFn="conversionFn" :id="mainGridName" />
 
