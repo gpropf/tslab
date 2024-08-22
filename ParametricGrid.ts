@@ -7,6 +7,8 @@
 //let numbers = [1, 2, 3];
 //logArray<number>(numbers); 
 
+export type Vec2d = [x: number, y: number]
+
 function logFuel(target: Function, context: any) {
   const original = target.prototype.addFuel;
   target.prototype.addFuel = function (message: string) {
@@ -26,10 +28,10 @@ class Rocket {
 
 
 export class TransformMatrix {
-  private r1c1: number;
-  private r1c2: number;
-  private r2c1: number;
-  private r2c2: number;
+  private r1c1: number = 0;
+  private r1c2: number = 0;
+  private r2c1: number = 0;
+  private r2c2: number = 0;
   private translationX: number;
   private translationY: number;
 
@@ -49,8 +51,8 @@ export class TransformMatrix {
   public multiplyByVec(v: Vec2d): Vec2d {
     let vout: Vec2d =
       [
-        this.r1c1 * v.x + this.r1c2 * v.y + this.translationX,
-        this.r2c1 * v.x + this.r2c2 * v.y + this.translationY
+        this.r1c1 * v[0] + this.r1c2 * v[1] + this.translationX,
+        this.r2c1 * v[0] + this.r2c2 * v[1] + this.translationY
       ]
     return vout;
   }
@@ -58,7 +60,7 @@ export class TransformMatrix {
   // for the rotation part.
 }
 
-export type Vec2d = [x: number, y: number]
+
 
 export class ParametricGrid<T> {
   private _width: number;
@@ -171,17 +173,20 @@ export function pgFactory(s: string) {
   }
 }
 
+export const rotationMap = new Map<number, TransformMatrix>();
+rotationMap.set(0, new TransformMatrix(0, [0, 0], [1, 0, 0, 1]));
+rotationMap.set(90, new TransformMatrix(Math.PI / 2, [0, 0], [0, -1, 1, 0]))
 
 
 export class RuleGrid<T> extends ParametricGrid<T> {
   private _priority?: number = 0;
   //public r0 = 
-  public static readonly rotationMap: Map<number, TransformMatrix> = {
-    0: new TransformMatrix(0, [0, 0]),
-    90: new TransformMatrix(Math.PI / 2, [0, 0]),
-    180: new TransformMatrix(Math.PI, [0, 0]),
-    270: new TransformMatrix(Math.PI * 3 / 2, [0, 0])
-  }
+  // public static readonly rotationMap: Map<number, TransformMatrix> = {
+  //   0: new TransformMatrix(0, [0, 0], [1, 0, 0, 1]),
+  //   90: new TransformMatrix(Math.PI / 2, [0, 0], [0, -1, 1, 0]),
+  //   180: new TransformMatrix(Math.PI, [0, 0], [-1, 0, 0, -1]),
+  //   270: new TransformMatrix(Math.PI * 3 / 2, [0, 0], [0, 1, -1, 0])
+  // }
 
 
   constructor(width: number, height: number, initialValue: T, grid?: T[][]) {

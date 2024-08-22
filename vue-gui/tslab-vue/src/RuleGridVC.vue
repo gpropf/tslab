@@ -4,7 +4,8 @@
 import { useRulesStore } from '@/stores/rules'
 
 //import { ref } from 'vue'
-import { ParametricGrid, RuleGrid, Rocket } from "./../../../ParametricGrid"
+import { ParametricGrid, RuleGrid, Rocket, TransformMatrix, rotationMap } from "./../../../ParametricGrid"
+import { type Vec2d } from "./../../../ParametricGrid"
 //import { inject } from "vue";
 
 export interface ColorInfo {
@@ -49,6 +50,15 @@ rckt.addFuel(10);
 setRule(props.id, parametricGrid)
 
 //addRule(parametricGrid);
+function rotateVec(v: Vec2d) {
+    let rm: TransformMatrix | undefined = rotationMap.get(90);
+    if (rm) {
+        let rmat = rm.multiplyByVec(v);
+        return rmat;
+    }
+    return null;
+    
+}
 
 </script>
 
@@ -73,7 +83,7 @@ setRule(props.id, parametricGrid)
             <svg :key="y" v-for="(row, y) in parametricGrid.grid" xmlns="http://www.w3.org/2000/svg">
                 <svg :key="x" v-for="(cellval, x) in row">
                     <rect
-                        @click="parametricGrid.setLocation(x, y, conversionFn(onClickValue)); console.log(getRule(props.id)); console.log(vizFn(conversionFn(onClickValue))); $forceUpdate()"
+                        @click="parametricGrid.setLocation(x, y, conversionFn(onClickValue)); console.log(rotateVec([x,y])); console.log(getRule(props.id)); console.log(vizFn(conversionFn(onClickValue))); $forceUpdate()"
                         :x="x" :y="y" width="1" height="1" :fill="vizFn(cellval).fillRGB" />
                 </svg>
             </svg>
