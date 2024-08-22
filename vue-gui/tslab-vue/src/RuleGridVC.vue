@@ -36,9 +36,9 @@ const props = defineProps<{
     id: string
 }>()
 
-let parametricGrid = new RuleGrid<any>(props.width, props.height, props.defaultValue);
-//parametricGrid.setLocation(2, 1, 120)
-//console.log(parametricGrid);
+let ruleGrid = new RuleGrid<any>(props.width, props.height, props.defaultValue);
+//ruleGrid.setLocation(2, 1, 120)
+//console.log(ruleGrid);
 var viewBox = `0 0 ${props.width} ${props.height}`;
 
 //const newTask = inject<number>("newTask", 75);
@@ -46,10 +46,10 @@ let rckt = new Rocket();
 rckt.addFuel(10);
 
 //increment();
-//addRule(parametricGrid)
-setRule(props.id, parametricGrid)
+//addRule(ruleGrid)
+setRule(props.id, ruleGrid)
 
-//addRule(parametricGrid);
+//addRule(ruleGrid);
 function rotateVec(v: Vec2d) {
     let rm: TransformMatrix | undefined = rotationMap.get(90);
     if (rm) {
@@ -67,10 +67,10 @@ function rotateVec(v: Vec2d) {
         <div>This PG was created dynamically!</div>
         <svg :viewBox="viewBox" :width="props.screenWidth" :height="props.screenHeight"
             xmlns="http://www.w3.org/2000/svg">
-            <svg :key="y" v-for="(row, y) in parametricGrid.grid" xmlns="http://www.w3.org/2000/svg">
+            <svg :key="y" v-for="(row, y) in ruleGrid.grid" xmlns="http://www.w3.org/2000/svg">
                 <svg :key="x" v-for="(cellval, x) in row">
                     <rect
-                        @click="parametricGrid.setLocation(x, y, conversionFn(onClickValue.value)); console.log(getRule(props.id)); console.log(vizFn(conversionFn(onClickValue.value))); $forceUpdate()"
+                        @click="ruleGrid.setLocation(x, y, conversionFn(onClickValue.value)); console.log(getRule(props.id)); console.log(vizFn(conversionFn(onClickValue.value))); $forceUpdate()"
                         :x="x" :y="y" width="1" height="1" :fill="vizFn(cellval).fillRGB" />
                 </svg>
             </svg>
@@ -80,10 +80,10 @@ function rotateVec(v: Vec2d) {
         <div>This PG was NOT created dynamically!</div>
         <svg :viewBox="viewBox" :width="props.screenWidth" :height="props.screenHeight"
             xmlns="http://www.w3.org/2000/svg">
-            <svg :key="y" v-for="(row, y) in parametricGrid.grid" xmlns="http://www.w3.org/2000/svg">
+            <svg :key="y" v-for="(row, y) in ruleGrid.grid" xmlns="http://www.w3.org/2000/svg">
                 <svg :key="x" v-for="(cellval, x) in row">
                     <rect
-                        @click="parametricGrid.setLocation(x, y, conversionFn(onClickValue)); console.log(rotateVec([x,y])); console.log(getRule(props.id)); console.log(vizFn(conversionFn(onClickValue))); $forceUpdate()"
+                        @click="ruleGrid.setLocation(x, y, conversionFn(onClickValue)); console.log(rotateVec([x,y])); console.log(getRule(props.id)); console.log(vizFn(conversionFn(onClickValue))); $forceUpdate()"
                         :x="x" :y="y" width="1" height="1" :fill="vizFn(cellval).fillRGB" />
                 </svg>
             </svg>
