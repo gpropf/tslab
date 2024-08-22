@@ -24,7 +24,41 @@ class Rocket {
   }
 }
 
-export type Vec2d = [number, number]
+
+export class TransformMatrix {
+  private r1c1: number;
+  private r1c2: number;
+  private r2c1: number;
+  private r2c2: number;
+  private translationX: number;
+  private translationY: number;
+
+  constructor(clockwiseRotation: number, translation: Vec2d, hardcodedValues?: number[]) {
+    if (hardcodedValues) {
+      [this.r1c1, this.r1c2, this.r2c1, this.r2c2] = hardcodedValues;
+    }
+    else {
+      this.r1c1 = Math.cos(clockwiseRotation);
+      this.r1c2 = Math.sin(-clockwiseRotation);
+      this.r2c1 = Math.sin(clockwiseRotation);
+      this.r2c1 = Math.cos(-clockwiseRotation);
+    }
+    [this.translationX, this.translationY] = translation;
+  }
+
+  public multiplyByVec(v: Vec2d): Vec2d {
+    let vout: Vec2d =
+      [
+        this.r1c1 * v.x + this.r1c2 * v.y + this.translationX,
+        this.r2c1 * v.x + this.r2c2 * v.y + this.translationY
+      ]
+    return vout;
+  }
+  // For left handed coordinate system we use [cos(t), sin(-t); sin(t), cos(-t)] 
+  // for the rotation part.
+}
+
+export type Vec2d = [x: number, y: number]
 
 export class ParametricGrid<T> {
   private _width: number;
@@ -137,8 +171,18 @@ export function pgFactory(s: string) {
   }
 }
 
+
+
 export class RuleGrid<T> extends ParametricGrid<T> {
   private _priority?: number = 0;
+  //public r0 = 
+  public static readonly rotationMap: Map<number, TransformMatrix> = {
+    0: new TransformMatrix(0, [0, 0]),
+    90: new TransformMatrix(Math.PI / 2, [0, 0]),
+    180: new TransformMatrix(Math.PI, [0, 0]),
+    270: new TransformMatrix(Math.PI * 3 / 2, [0, 0])
+  }
+
 
   constructor(width: number, height: number, initialValue: T, grid?: T[][]) {
     super(width, height, initialValue, grid);
@@ -155,10 +199,6 @@ export class RuleGrid<T> extends ParametricGrid<T> {
   }
 }
 
-export class TransformMatrix {
-  // For left handed coordinate system we use [cos(t), sin(-t); sin(t), cos(-t)] 
-  // for the rotation part.
-}
 
 export { Rocket }
 // var pgrid: ParametricGrid<number> = new ParametricGrid(10, 8, 555);
