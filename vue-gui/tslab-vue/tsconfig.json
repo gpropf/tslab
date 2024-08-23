@@ -1,4 +1,4 @@
-{  
+{
   "files": [],
   "references": [
     {
@@ -12,6 +12,6 @@
     }
   ],
   "compilerOptions": {
-    "sourceMap": true
+    "sourceMap": true,
   }
 }
