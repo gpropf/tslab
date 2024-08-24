@@ -15,6 +15,7 @@ import { createApp } from 'vue';
 import { ref } from 'vue'
 //import HelloWorld from './components/HelloWorld.vue';
 import LabelledInput from './components/LabelledInput.vue';
+import { isMainThread } from 'worker_threads';
 
 //const store = useCounterStore();
 //const { count, doubleCount, ruleGridMap, increment, setRule, getRule } = store;
@@ -69,7 +70,7 @@ function createPGVC(inwidth: string, inheight: string) {
   var ComponentClass = createApp(RuleGridVC, {
     width: parseInt(inwidth), height: parseInt(inheight),
     vizFn: vizFn, defaultValue: 1, onClickValue: onClickValue, programaticallyCreated: true, conversionFn: conversionFn,
-    screenWidth: 150, screenHeight: 100, id: newRuleId.value
+    screenWidth: 150, screenHeight: 100, id: newRuleId.value, isRuleGrid: true
   })
   //var pg = new ComponentClass(20, 16, 555);
   const wrapper = document.getElementById("dynamic_content")
@@ -86,10 +87,6 @@ function createPGVC(inwidth: string, inheight: string) {
 const newRuleId = ref("newrule")
 const onClickValue = ref("1")
 const mainGridName = ref("MAIN")
-//const newTask = ref(0);
-//const testDatum = ref(null);
-const first = ref("Greg");
-//const last = ref("");
 const mainGridKey = ref(0);
 const mainGridWidth = ref("60");
 const mainGridHeight = ref("40");
@@ -120,8 +117,7 @@ const screenHeight = ref(400);
       placeholder="Enter Main Grid Width" componentName="Main Grid Width" />
     <LabelledInput v-model:inputValue="mainGridHeight" id="main-grid-height-id" inputType="text"
       placeholder="Enter Main Grid Height" componentName="Main Grid Height" />
-    <h2>Grid Data Entry</h2>
-    <p>Input value: {{ first }}</p>
+    <h2>Grid Data Entry</h2>    
     <LabelledInput v-model:inputValue="onClickValue" id="on-click-value-id" inputType="text"
       placeholder="Enter Color index number for grids" componentName="Color index" />
     <div>
@@ -142,7 +138,8 @@ const screenHeight = ref(400);
 
     <RuleGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
       :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
-      :onClickValue="onClickValue" :programaticallyCreated="false" :conversionFn="conversionFn" :id="mainGridName" />
+      :onClickValue="onClickValue" :programaticallyCreated="false" :conversionFn="conversionFn" :id="mainGridName"
+      :isRuleGrid="false" />
 
     <div id="dynamic_content" class="rules"></div>
 
