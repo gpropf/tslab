@@ -15,7 +15,8 @@ import { createApp } from 'vue';
 import { ref } from 'vue'
 //import HelloWorld from './components/HelloWorld.vue';
 import LabelledInput from './components/LabelledInput.vue';
-import { isMainThread } from 'worker_threads';
+import ParametricGridVC from './components/ParametricGridVC.vue';
+//import { isMainThread } from 'worker_threads';
 
 //const store = useCounterStore();
 //const { count, doubleCount, ruleGridMap, increment, setRule, getRule } = store;
@@ -136,7 +137,7 @@ const screenHeight = ref(400);
       placeholder="Enter Id string for new rule" componentName="New Rule Id" />
 
 
-    <RuleGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
+    <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
       :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
       :onClickValue="onClickValue" :programaticallyCreated="false" :conversionFn="conversionFn" :id="mainGridName"
       :isRuleGrid="false" />
