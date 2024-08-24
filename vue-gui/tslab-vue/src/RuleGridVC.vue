@@ -84,7 +84,7 @@ function rotateVec(v: Vec2d) {
             <svg :key="y" v-for="(row, y) in ruleGrid.grid" xmlns="http://www.w3.org/2000/svg">
                 <svg :key="x" v-for="(cellval, x) in row">
                     <rect
-                        @click="ruleGrid.setLocation(x, y, conversionFn(onClickValue)); console.log(rotateVec([x,y])); console.log(getRule(props.id)); console.log(vizFn(conversionFn(onClickValue))); $forceUpdate()"
+                        @click="ruleGrid.setLocation(x, y, conversionFn(onClickValue)); console.log(getRule(props.id)); console.log(vizFn(conversionFn(onClickValue))); $forceUpdate()"
                         :x="x" :y="y" width="1" height="1" :fill="vizFn(cellval).fillRGB" />
                 </svg>
             </svg>
