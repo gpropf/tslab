@@ -33,11 +33,10 @@ const props = defineProps<{
     onClickValue: any,
     programaticallyCreated: boolean
     conversionFn: ConversionFn,
-    id: string,
-    isRuleGrid: boolean
+    id: string    
 }>()
 
-let ruleGrid = new RuleGrid<any>(props.width, props.height, props.defaultValue, props.isRuleGrid);
+let ruleGrid = new RuleGrid<any>(props.width, props.height, props.defaultValue);
 //ruleGrid.setLocation(2, 1, 120)
 //console.log(ruleGrid);
 var viewBox = `0 0 ${props.width} ${props.height}`;

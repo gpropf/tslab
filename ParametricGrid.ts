@@ -181,15 +181,14 @@ rotationMap.set(270, new TransformMatrix(Math.PI * 3 / 2, [0, 0], [0, 1, -1, 0])
 
 export class RuleGrid<T> extends ParametricGrid<T> {
   private _priority?: number = 0;
-  private _isRuleGrid: boolean;
+  
 
   private _rotatedGrids = new Map<number, ParametricGrid<T>>();
 
   public setLocation(x: number, y: number, v: T) {
     //console.log("BEFORE setLocation 0")
-    super.setLocation(x, y, v);
-    if (!this._isRuleGrid) return;
-    
+    super.setLocation(x, y, v);   
+
     let r90 = rotationMap.get(90);
     if (r90) {
       let v90 = r90.multiplyByVec([x, y])
@@ -219,15 +218,14 @@ export class RuleGrid<T> extends ParametricGrid<T> {
 
   }
 
-  constructor(width: number, height: number, initialValue: T, isRuleGrid: boolean, grid?: T[][]) {
-    super(width, height, initialValue, grid);
-    this._isRuleGrid = isRuleGrid;
+  constructor(width: number, height: number, initialValue: T, grid?: T[][]) {
+    super(width, height, initialValue, grid);    
     this._priority = 100;
-    if (this._isRuleGrid) {
+    
       this._rotatedGrids.set(90, new ParametricGrid<T>(this.height, this.width, initialValue));
       this._rotatedGrids.set(180, new ParametricGrid<T>(this.width, this.height, initialValue));
       this._rotatedGrids.set(270, new ParametricGrid<T>(this.height, this.width, initialValue));
-    }
+    
   }
 
   public get priority(): number | undefined {
