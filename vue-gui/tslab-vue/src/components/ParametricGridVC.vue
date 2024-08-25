@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import { useRulesStore } from '@/stores/rules'
-import { ParametricGrid, RuleGrid, Rocket } from "../../../../ParametricGrid"
+import { ParametricGrid, RuleGrid } from "../../../../ParametricGrid"
 
 export interface ColorInfo {
     fillRGB: string;

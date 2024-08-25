@@ -18,15 +18,6 @@ function logFuel(target: Function, context: any) {
   };
 }
 
-//@logFuel
-class Rocket {
-  fuel: number = 11;
-  addFuel(amount: number) {
-    this.fuel += amount;
-  }
-}
-
-
 export class TransformMatrix {
   private r1c1: number = 0;
   private r1c2: number = 0;
@@ -59,8 +50,6 @@ export class TransformMatrix {
   // For left handed coordinate system we use [cos(t), sin(-t); sin(t), cos(-t)] 
   // for the rotation part.
 }
-
-
 
 export class ParametricGrid<T> {
   private _width: number;
@@ -236,9 +225,3 @@ export class RuleGrid<T> extends ParametricGrid<T> {
     this._priority = p;
   }
 }
-
-
-export { Rocket }
-// var pgrid: ParametricGrid<number> = new ParametricGrid(10, 8, 555);
-// pgrid.setLocation(8,4,100);
-// console.log(pgrid);
