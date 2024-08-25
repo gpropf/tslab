@@ -27,12 +27,7 @@ const props = defineProps<{
 }>()
 
 let parametricGrid = new ParametricGrid<any>(props.width, props.height, props.defaultValue);
-
-var viewBox = `0 0 ${props.width} ${props.height}`;
-
-
-let rckt = new Rocket();
-rckt.addFuel(10);
+let viewBox = `0 0 ${props.width} ${props.height}`;
 
 setRule(props.id, parametricGrid as RuleGrid<any>)
 

@@ -1,29 +1,21 @@
 <script setup lang="ts">
 
-//import { useCounterStore } from '@/stores/counter'
+
 import { useRulesStore } from '@/stores/rules'
 import { ParametricGrid,  } from "./../../../ParametricGrid"
 
 /// <reference path="./../../../ParametricGrid.ts"/>
-//import { RouterLink, RouterView } from 'vue-router'
-//import { ParametricGrid } from "./../../../ParametricGrid"
+
 import RuleGridVC from './components/RuleGridVC.vue';
 import { type ColorInfo } from './components/ParametricGridVC.vue';
 import { createApp } from 'vue';
-//import { createPinia } from 'pinia'
-//import { defineStore } from 'pinia'
+
 import { ref } from 'vue'
-//import HelloWorld from './components/HelloWorld.vue';
 import LabelledInput from './components/LabelledInput.vue';
 import ParametricGridVC from './components/ParametricGridVC.vue';
-//import { isMainThread } from 'worker_threads';
-
-//const store = useCounterStore();
-//const { count, doubleCount, ruleGridMap, increment, setRule, getRule } = store;
 
 const rules = useRulesStore();
 const { ruleGridMap, setRule, getRule } = rules;
-
 
 const numberToColorMap = new Map();
 numberToColorMap.set(0, "#000000");
@@ -33,8 +25,6 @@ numberToColorMap.set(3, "#FF00FF");
 numberToColorMap.set(4, "#AA00AA");
 numberToColorMap.set(5, "#00AAFF");
 const numColors = numberToColorMap.size;
-
-//const rules: any[] = [];
 
 function vizFn(cellval: number) {
   let hexColor = numberToColorMap.get(cellval % numColors);
@@ -52,8 +42,7 @@ function testFindMatches(ruleName: string) {
   if (mainGrid instanceof ParametricGrid && ruleGrid instanceof ParametricGrid) {
     let matches = mainGrid.findMatches(ruleGrid);
     console.log("MATCHES: ", matches)
-  }
-  
+  }  
 }
 
 function createPGVC(inwidth: string, inheight: string) {
@@ -62,16 +51,14 @@ function createPGVC(inwidth: string, inheight: string) {
     vizFn: vizFn, defaultValue: 1, onClickValue: onClickValue, programaticallyCreated: true, conversionFn: conversionFn,
     screenWidth: 150, screenHeight: 100, id: newRuleId.value
   })
-  //var pg = new ComponentClass(20, 16, 555);
+  
   const wrapper = document.getElementById("dynamic_content")
   if (wrapper) {
     const newDiv = document.createElement("div")
     newDiv.className = "rule"
     ComponentClass.mount(newDiv)
-    wrapper.appendChild(newDiv)
-    //rules.push(ComponentClass)
+    wrapper.appendChild(newDiv)  
   }
-
 }
 
 const newRuleId = ref("newrule")
@@ -83,21 +70,7 @@ const mainGridHeight = ref("40");
 const screenWidth = ref(600);
 const screenHeight = ref(400);
 
-//provide('newTask', newTask);
-
-// const useRuleStore = defineStore('rules', () => {
-//   const count = ref(0)
-//   const name = ref('Eduardo')
-//   const doubleCount = computed(() => count.value * 2)
-//   function increment() {
-//     count.value++
-//   }
-
-//   return { count, name, doubleCount, increment }
-// })
-
 </script>
-
 
 
 <template>
@@ -121,24 +94,18 @@ const screenHeight = ref(400);
     <button @click="mainGridKey++">Resize Main Grid</button>
     <button @click="testFindMatches('newrule')">Test Match</button>
 
-    <!-- <button @click="console.log(rules[0])">View First Rule</button> -->
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
       placeholder="Enter Id string for new rule" componentName="New Rule Id" />
-
 
     <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
       :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
       :onClickValue="onClickValue" :programaticallyCreated="false" :conversionFn="conversionFn" :id="mainGridName" />
 
     <div id="dynamic_content" class="rules"></div>
-
-    <!-- <RouterView /> -->
   </div>
 </template>
 
 <script lang="ts">
-
-//var pgGlobal: ParametricGrid<number>
 
 export default {
   data() {
