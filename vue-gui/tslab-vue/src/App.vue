@@ -2,13 +2,13 @@
 
 //import { useCounterStore } from '@/stores/counter'
 import { useRulesStore } from '@/stores/rules'
-import { ParametricGrid } from "./../../../ParametricGrid"
+import { ParametricGrid,  } from "./../../../ParametricGrid"
 
 /// <reference path="./../../../ParametricGrid.ts"/>
 //import { RouterLink, RouterView } from 'vue-router'
 //import { ParametricGrid } from "./../../../ParametricGrid"
-import RuleGridVC from './RuleGridVC.vue';
-import { type ColorInfo } from './RuleGridVC.vue';
+import RuleGridVC from './components/RuleGridVC.vue';
+import { type ColorInfo } from './components/ParametricGridVC.vue';
 import { createApp } from 'vue';
 //import { createPinia } from 'pinia'
 //import { defineStore } from 'pinia'
