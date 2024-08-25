@@ -2,7 +2,7 @@
 
 
 import { useRulesStore } from '@/stores/rules'
-import { ParametricGrid,  } from "./../../../ParametricGrid"
+import { ParametricGrid, RuleGrid,  } from "./../../../ParametricGrid"
 
 /// <reference path="./../../../ParametricGrid.ts"/>
 
@@ -39,7 +39,7 @@ function testFindMatches(ruleName: string) {
   let mainGrid = getRule("MAIN")
   let ruleGrid = getRule(ruleName)
   let matches: boolean = false
-  if (mainGrid instanceof ParametricGrid && ruleGrid instanceof ParametricGrid) {
+  if (mainGrid instanceof ParametricGrid && ruleGrid instanceof RuleGrid) {
     let matches = mainGrid.findMatches(ruleGrid);
     console.log("MATCHES: ", matches)
     let matches90 = mainGrid.findMatches90(ruleGrid);
