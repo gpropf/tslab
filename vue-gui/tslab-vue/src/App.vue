@@ -47,6 +47,12 @@ function testFindMatches(ruleName: string) {
   }  
 }
 
+function testFindAllMatches(ruleName: string) {
+  let mainGrid = getRule("MAIN")
+  let ruleGrid = getRule(ruleName)
+  mainGrid?.simpleMatchAllTransforms(ruleGrid);
+}
+
 function createPGVC(inwidth: string, inheight: string) {
   var ComponentClass = createApp(RuleGridVC, {
     width: parseInt(inwidth), height: parseInt(inheight),
@@ -98,7 +104,7 @@ const screenHeight = ref(400);
 
     <button @click="createPGVC(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
-    <button @click="testFindMatches('newrule')">Test Match</button>
+    <button @click="testFindAllMatches('newrule')">Test Match</button>
 
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
       placeholder="Enter Id string for new rule" componentName="New Rule Id" />
