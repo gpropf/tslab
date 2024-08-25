@@ -42,6 +42,8 @@ function testFindMatches(ruleName: string) {
   if (mainGrid instanceof ParametricGrid && ruleGrid instanceof ParametricGrid) {
     let matches = mainGrid.findMatches(ruleGrid);
     console.log("MATCHES: ", matches)
+    let matches90 = mainGrid.findMatches90(ruleGrid);
+    console.log("MATCHES 90: ", matches90)
   }  
 }
 
