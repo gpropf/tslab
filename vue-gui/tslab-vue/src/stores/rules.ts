@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { ParametricGrid, RuleGrid } from "../../../../ParametricGrid"
+import { RuleGrid } from "../../../../ParametricGrid"
 
 export const useRulesStore = defineStore('rules', () => {
   //const count = ref(0)

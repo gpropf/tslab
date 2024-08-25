@@ -4,9 +4,9 @@
 import { useRulesStore } from '@/stores/rules'
 
 //import { ref } from 'vue'
-import { ParametricGrid, RuleGrid, Rocket, TransformMatrix, rotationMap } from "../../../../ParametricGrid"
-import { type Vec2d } from '../../../../ParametricGrid';
-import { inject } from "vue";
+import { ParametricGrid, RuleGrid, Rocket } from "../../../../ParametricGrid"
+//import { type Vec2d } from '../../../../ParametricGrid';
+//import { inject } from "vue";
 
 export interface ColorInfo {
     fillRGB: string;
@@ -50,15 +50,15 @@ rckt.addFuel(10);
 setRule(props.id, parametricGrid as RuleGrid<any>)
 
 //addRule(ruleGrid);
-function rotateVec(v: Vec2d) {
-    let rm: TransformMatrix | undefined = rotationMap.get(90);
-    if (rm) {
-        let rmat = rm.multiplyByVec(v);
-        return rmat;
-    }
-    return null;
+// function rotateVec(v: Vec2d) {
+//     let rm: TransformMatrix | undefined = rotationMap.get(90);
+//     if (rm) {
+//         let rmat = rm.multiplyByVec(v);
+//         return rmat;
+//     }
+//     return null;
     
-}
+// }
 
 </script>
 
