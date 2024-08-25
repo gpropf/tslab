@@ -68,24 +68,19 @@ export class ParametricGrid<T> {
     }
   }
 
-  public simpleMatchTransformedRule(otherGrid: RuleGrid<T>, offsetX: number, offsetY: number, ruleKey: string): boolean {
-    let transformedGrid = otherGrid.getTransformedGrid(ruleKey);
-    let rawGrid: T[][] | undefined = transformedGrid?.grid;
-    if (rawGrid === undefined) return false;
-    let y: number = 0;
-    for (y = 0; y < transformedGrid.height; y++) {
+  public simpleMatchRawGrid(rawGrid: T[][], offsetX: number, offsetY: number,
+    rawGridWidth: number, rawGridHeight: number): boolean {
+    //let y: number = 0;
+    for (let y = 0; y < rawGridHeight; y++) {
       let thisY = y + offsetY;
       //alert(y, thisY)
-      let x: number = 0;
-      for (x = 0; x < transformedGrid.width; x++) {
+      //let x: number = 0;
+      for (let x = 0; x < rawGridWidth; x++) {
         let otherVal: T = rawGrid[y][x];
         let thisX: any = x + offsetX;
         let thisVec: Vec2d = [thisX, thisY];
         thisVec = this.wrapCoordinates(thisVec);
-        let [wx, wy] = thisVec
-        if ( wx == 2 && wy == 0) {
-          console.log(`TEST ${x}, ${y}`)
-        }
+        let [wx, wy] = thisVec;
         let thisVal = this.grid[wy][wx];
         if (thisVal != otherVal) {
           //console.log(`thisVal: ${thisVal}, otherVal: ${otherVal}. This loc: ${thisVec}, Other loc: ${[x, y]}`)
@@ -94,6 +89,38 @@ export class ParametricGrid<T> {
       }
     }
     return true;
+  }
+
+  public simpleMatchTransformedRule(otherGrid: RuleGrid<T>, offsetX: number, offsetY: number, ruleKey: string): boolean {
+    let transformedGrid = otherGrid.getTransformedGrid(ruleKey);
+    if (transformedGrid === undefined) return false;
+    let rawGrid: T[][] | undefined = transformedGrid.grid;
+    if (rawGrid === undefined) return false;
+
+    return this.simpleMatchRawGrid(rawGrid, offsetX, offsetY, transformedGrid.width, transformedGrid.height)
+
+    // let y: number = 0;
+    // for (y = 0; y < transformedGrid.height; y++) {
+    //   let thisY = y + offsetY;
+    //   //alert(y, thisY)
+    //   let x: number = 0;
+    //   for (x = 0; x < transformedGrid.width; x++) {
+    //     let otherVal: T = rawGrid[y][x];
+    //     let thisX: any = x + offsetX;
+    //     let thisVec: Vec2d = [thisX, thisY];
+    //     thisVec = this.wrapCoordinates(thisVec);
+    //     let [wx, wy] = thisVec
+    //     if (wx == 2 && wy == 0) {
+    //       console.log(`TEST ${x}, ${y}`)
+    //     }
+    //     let thisVal = this.grid[wy][wx];
+    //     if (thisVal != otherVal) {
+    //       //console.log(`thisVal: ${thisVal}, otherVal: ${otherVal}. This loc: ${thisVec}, Other loc: ${[x, y]}`)
+    //       return false;
+    //     }
+    //   }
+    // }
+    // return true;
   }
 
   public get width() {
@@ -212,13 +239,13 @@ rotationMap.set("r270", new TransformMatrix(Math.PI * 3 / 2, [0, 0], [0, 1, -1, 
 
 export class RuleGrid<T> extends ParametricGrid<T> {
   private _priority?: number = 0;
-  
+
 
   private _rotatedGrids = new Map<string, ParametricGrid<T>>();
 
   public setLocation(x: number, y: number, v: T) {
     //console.log("BEFORE setLocation 0")
-    super.setLocation(x, y, v);   
+    super.setLocation(x, y, v);
 
     let r90 = rotationMap.get("r90");
     if (r90) {
@@ -250,7 +277,7 @@ export class RuleGrid<T> extends ParametricGrid<T> {
   }
 
 
-  
+
 
 
 
@@ -261,13 +288,13 @@ export class RuleGrid<T> extends ParametricGrid<T> {
   }
 
   constructor(width: number, height: number, initialValue: T, grid?: T[][]) {
-    super(width, height, initialValue, grid);    
+    super(width, height, initialValue, grid);
     this._priority = 100;
-    
-      this._rotatedGrids.set("r90", new ParametricGrid<T>(this.height, this.width, initialValue));
-      this._rotatedGrids.set("r180", new ParametricGrid<T>(this.width, this.height, initialValue));
-      this._rotatedGrids.set("r270", new ParametricGrid<T>(this.height, this.width, initialValue));
-    
+
+    this._rotatedGrids.set("r90", new ParametricGrid<T>(this.height, this.width, initialValue));
+    this._rotatedGrids.set("r180", new ParametricGrid<T>(this.width, this.height, initialValue));
+    this._rotatedGrids.set("r270", new ParametricGrid<T>(this.height, this.width, initialValue));
+
   }
 
   public getTransformedGrid(gridKey: string) {
