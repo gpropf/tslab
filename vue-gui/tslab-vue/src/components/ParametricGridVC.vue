@@ -1,27 +1,17 @@
 <script setup lang="ts">
 
-//import { useCounterStore } from '@/stores/counter'
 import { useRulesStore } from '@/stores/rules'
-
-//import { ref } from 'vue'
 import { ParametricGrid, RuleGrid, Rocket } from "../../../../ParametricGrid"
-//import { type Vec2d } from '../../../../ParametricGrid';
-//import { inject } from "vue";
 
 export interface ColorInfo {
     fillRGB: string;
 }
-
-//const store = useCounterStore();
-//const { count, doubleCount, ruleGridMap, increment, setRule, getRule } = store;
 
 const rules = useRulesStore();
 const { ruleGridMap, setRule, getRule } = rules;
 
 type ObjectVisualizationFn = (a: any) => ColorInfo
 type ConversionFn = (a: any) => any
-
-//const count = ref(10)
 
 const props = defineProps<{
     width: number,
@@ -37,28 +27,14 @@ const props = defineProps<{
 }>()
 
 let parametricGrid = new ParametricGrid<any>(props.width, props.height, props.defaultValue);
-//ruleGrid.setLocation(2, 1, 120)
-//console.log(ruleGrid);
+
 var viewBox = `0 0 ${props.width} ${props.height}`;
 
-//const newTask = inject<number>("newTask", 75);
+
 let rckt = new Rocket();
 rckt.addFuel(10);
 
-//increment();
-//addRule(ruleGrid)
 setRule(props.id, parametricGrid as RuleGrid<any>)
-
-//addRule(ruleGrid);
-// function rotateVec(v: Vec2d) {
-//     let rm: TransformMatrix | undefined = rotationMap.get(90);
-//     if (rm) {
-//         let rmat = rm.multiplyByVec(v);
-//         return rmat;
-//     }
-//     return null;
-    
-// }
 
 </script>
 
