@@ -313,7 +313,7 @@ export class RuleGrid<T> extends ParametricGrid<T> {
   constructor(width: number, height: number, initialValue: T, grid?: T[][]) {
     super(width, height, initialValue, grid);
     this._priority = 100;
-
+    this._rotatedGrids.set("r0", this as ParametricGrid<T>);
     this._rotatedGrids.set("r90", new ParametricGrid<T>(this.height, this.width, initialValue));
     this._rotatedGrids.set("r180", new ParametricGrid<T>(this.width, this.height, initialValue));
     this._rotatedGrids.set("r270", new ParametricGrid<T>(this.height, this.width, initialValue));
