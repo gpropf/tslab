@@ -162,46 +162,46 @@ export function pgFactory(s: string) {
   }
 }
 
-export const rotationMap = new Map<number, TransformMatrix>();
-rotationMap.set(0, new TransformMatrix(0, [0, 0], [1, 0, 0, 1]));
-rotationMap.set(90, new TransformMatrix(Math.PI / 2, [0, 0], [0, -1, 1, 0]))
-rotationMap.set(180, new TransformMatrix(Math.PI, [0, 0], [-1, 0, 0, -1]))
-rotationMap.set(270, new TransformMatrix(Math.PI * 3 / 2, [0, 0], [0, 1, -1, 0]))
+export const rotationMap = new Map<string, TransformMatrix>();
+rotationMap.set("r0", new TransformMatrix(0, [0, 0], [1, 0, 0, 1]));
+rotationMap.set("r90", new TransformMatrix(Math.PI / 2, [0, 0], [0, -1, 1, 0]))
+rotationMap.set("r180", new TransformMatrix(Math.PI, [0, 0], [-1, 0, 0, -1]))
+rotationMap.set("r270", new TransformMatrix(Math.PI * 3 / 2, [0, 0], [0, 1, -1, 0]))
 
 export class RuleGrid<T> extends ParametricGrid<T> {
   private _priority?: number = 0;
   
 
-  private _rotatedGrids = new Map<number, ParametricGrid<T>>();
+  private _rotatedGrids = new Map<string, ParametricGrid<T>>();
 
   public setLocation(x: number, y: number, v: T) {
     //console.log("BEFORE setLocation 0")
     super.setLocation(x, y, v);   
 
-    let r90 = rotationMap.get(90);
+    let r90 = rotationMap.get("r90");
     if (r90) {
       let v90 = r90.multiplyByVec([x, y])
       let [x90, y90] = v90;
       console.log("BEFORE setLocation 90")
-      this._rotatedGrids.get(90)?.setLocation(x90 + this.height - 1, y90, v)
+      this._rotatedGrids.get("r90")?.setLocation(x90 + this.height - 1, y90, v)
       console.log("R90:", x90, y90);
     }
 
-    let r180 = rotationMap.get(180)
+    let r180 = rotationMap.get("r180")
     if (r180) {
       let v180 = r180.multiplyByVec([x, y]);
       let [x180, y180] = v180;
       console.log("BEFORE setLocation 180")
-      this._rotatedGrids.get(180)?.setLocation(x180 + this.width - 1, y180 + this.height - 1, v);
+      this._rotatedGrids.get("r180")?.setLocation(x180 + this.width - 1, y180 + this.height - 1, v);
       console.log("R180:", x180, y180)
     }
 
-    let r270 = rotationMap.get(270);
+    let r270 = rotationMap.get("r270");
     if (r270) {
       let v270 = r270.multiplyByVec([x, y]);
       let [x270, y270] = v270;
       console.log("BEFORE setLocation 270")
-      this._rotatedGrids.get(270)?.setLocation(x270, y270 + this.width - 1, v)
+      this._rotatedGrids.get("r270")?.setLocation(x270, y270 + this.width - 1, v)
       console.log("R270:", x270, y270)
     }
 
@@ -211,9 +211,9 @@ export class RuleGrid<T> extends ParametricGrid<T> {
     super(width, height, initialValue, grid);    
     this._priority = 100;
     
-      this._rotatedGrids.set(90, new ParametricGrid<T>(this.height, this.width, initialValue));
-      this._rotatedGrids.set(180, new ParametricGrid<T>(this.width, this.height, initialValue));
-      this._rotatedGrids.set(270, new ParametricGrid<T>(this.height, this.width, initialValue));
+      this._rotatedGrids.set("r90", new ParametricGrid<T>(this.height, this.width, initialValue));
+      this._rotatedGrids.set("r180", new ParametricGrid<T>(this.width, this.height, initialValue));
+      this._rotatedGrids.set("r270", new ParametricGrid<T>(this.height, this.width, initialValue));
     
   }
 
