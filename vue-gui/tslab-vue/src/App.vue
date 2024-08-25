@@ -83,12 +83,16 @@ const screenHeight = ref(400);
     <h2>Grid Data Entry</h2>    
     <LabelledInput v-model:inputValue="onClickValue" id="on-click-value-id" inputType="text"
       placeholder="Enter Color index number for grids" componentName="Color index" />
-    <div>
+      <LabelledInput v-model:inputValue="pgwidth" id="rule-grid-width" inputType="text"
+      placeholder="Enter width for rulegrid" componentName="Rulegrid Width" />
+      <LabelledInput v-model:inputValue="pgheight" id="rule-grid-height" inputType="text"
+      placeholder="Enter height for rulegrid" componentName="Rulegrid Height" />
+    <!-- <div>
       <input type="text" v-model="pgwidth" placeholder="Width of new PG">
-    </div>
-    <div>
+    </div> -->
+    <!-- <div>
       <input type="text" v-model="pgheight" placeholder="Height of new PG">
-    </div>
+    </div> -->
 
     <button @click="createPGVC(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
