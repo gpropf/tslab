@@ -245,7 +245,7 @@ export function pgFactory(s: string) {
   let obj = JSON.parse(s);
   if (obj.type == "ParametricGrid") {
     //console.log(`obj.type: ${obj.type}`)
-    var pgrid: ParametricGrid<number> = new ParametricGrid(obj.width, obj.height, 777, obj.grid);
+    let pgrid: ParametricGrid<number> = new ParametricGrid(obj.width, obj.height, 777, obj.grid);
     return pgrid;
   }
 }
