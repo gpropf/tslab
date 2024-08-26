@@ -10,8 +10,8 @@ export interface ColorInfo {
 const rules = useRulesStore();
 const { ruleGridMap, setRule, getRule } = rules;
 
-type ObjectVisualizationFn = (a: any) => ColorInfo
-type ConversionFn = (a: any) => any
+export type ObjectVisualizationFn = (a: any) => ColorInfo
+export type ConversionFn = (a: any) => any
 
 const props = defineProps<{
     width: number,
