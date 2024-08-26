@@ -47,7 +47,7 @@ function createPGVC(inwidth: string, inheight: string) {
   let ComponentClass = createApp(RuleGridVC, {
     width: parseInt(inwidth), height: parseInt(inheight),
     vizFn: vizFn, defaultValue: 1, onClickValue: onClickValue, programaticallyCreated: true, conversionFn: conversionFn,
-    screenWidth: 150, screenHeight: 100, id: newRuleId.value
+    screenWidth: 150, screenHeight: 100, id: newRuleId.value, priority: 50
   })
   
   const wrapper = document.getElementById("dynamic_content")

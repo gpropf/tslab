@@ -4,6 +4,7 @@ import { useRulesStore } from '@/stores/rules'
 import { RuleGrid } from "./../../../../ParametricGrid"
 import { type ColorInfo } from "./ParametricGridVC.vue"
 import SVGGrid from './SVGGrid.vue';
+import LabelledInput from './LabelledInput.vue';
 
 const rules = useRulesStore();
 const { ruleGridMap, setRule, getRule } = rules;
@@ -22,7 +23,8 @@ const props = defineProps<{
     onClickValue: any,
     programaticallyCreated: boolean
     conversionFn: ConversionFn,
-    id: string
+    id: string,
+    priority: number
 }>()
 
 let ruleGrid = new RuleGrid<any>(props.width, props.height, props.defaultValue);
@@ -33,6 +35,8 @@ setRule(props.id, ruleGrid)
 </script>
 
 <template>
+    <LabelledInput v-model:inputValue="ruleGrid.priority" id="rule-grid-priority" inputType="text"
+    placeholder="Enter priority for rule" componentName="Rule Priority" />
     <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight"
       :width="props.width" :height="props.height" :vizFn="props.vizFn" :defaultValue="0"
       :onClickValue="props.onClickValue" :programaticallyCreated="true" :conversionFn="props.conversionFn"

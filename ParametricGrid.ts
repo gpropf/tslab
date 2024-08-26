@@ -331,6 +331,7 @@ export class RuleGrid<T> extends ParametricGrid<T> {
   }
 
   public set priority(p: number) {
+    //console.log(`Old Priority = ${this._priority}, New Priority = ${p}`)
     this._priority = p;
   }
 }
