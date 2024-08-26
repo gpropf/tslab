@@ -3,6 +3,7 @@
 import { useRulesStore } from '@/stores/rules'
 import { RuleGrid } from "./../../../../ParametricGrid"
 import { type ColorInfo } from "./ParametricGridVC.vue"
+import SVGGrid from './SVGGrid.vue';
 
 const rules = useRulesStore();
 const { ruleGridMap, setRule, getRule } = rules;
@@ -32,28 +33,8 @@ setRule(props.id, ruleGrid)
 </script>
 
 <template>
-    <div v-if="programaticallyCreated">
-        <svg :viewBox="viewBox" :width="props.screenWidth" :height="props.screenHeight"
-            xmlns="http://www.w3.org/2000/svg">
-            <svg :key="y" v-for="(row, y) in ruleGrid.grid" xmlns="http://www.w3.org/2000/svg">
-                <svg :key="x" v-for="(cellval, x) in row">
-                    <rect
-                        @click="ruleGrid.setLocation(x, y, conversionFn(onClickValue.value)); console.log(getRule(props.id)); console.log(vizFn(conversionFn(onClickValue.value))); $forceUpdate()"
-                        :x="x" :y="y" width="1" height="1" :fill="vizFn(cellval).fillRGB" />
-                </svg>
-            </svg>
-        </svg>
-    </div>
-    <div v-else>
-        <svg :viewBox="viewBox" :width="props.screenWidth" :height="props.screenHeight"
-            xmlns="http://www.w3.org/2000/svg">
-            <svg :key="y" v-for="(row, y) in ruleGrid.grid" xmlns="http://www.w3.org/2000/svg">
-                <svg :key="x" v-for="(cellval, x) in row">
-                    <rect
-                        @click="ruleGrid.setLocation(x, y, conversionFn(onClickValue)); console.log(getRule(props.id)); console.log(vizFn(conversionFn(onClickValue))); $forceUpdate()"
-                        :x="x" :y="y" width="1" height="1" :fill="vizFn(cellval).fillRGB" />
-                </svg>
-            </svg>
-        </svg>
-    </div>
+    <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight"
+      :width="parseInt(props.width)" :height="parseInt(props.height)" :vizFn="props.vizFn" :defaultValue="0"
+      :onClickValue="props.onClickValue" :programaticallyCreated="true" :conversionFn="props.conversionFn"
+       :id="props.id" :prGrid="ruleGrid"/>
 </template>

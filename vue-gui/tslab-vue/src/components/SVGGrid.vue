@@ -38,8 +38,8 @@ let viewBox = `0 0 ${props.width} ${props.height}`;
             <svg :key="y" v-for="(row, y) in props.prGrid.grid" xmlns="http://www.w3.org/2000/svg">
                 <svg :key="x" v-for="(cellval, x) in row">
                     <rect
-                        @click="props.prGrid.setLocation(x, y, conversionFn(onClickValue.value)); console.log(vizFn(conversionFn(onClickValue.value))); $forceUpdate()"
-                        :x="x" :y="y" width="1" height="1" :fill="vizFn(cellval).fillRGB" />
+                        @click="props.prGrid.setLocation(x, y, props.conversionFn(props.onClickValue.value)); console.log(props.vizFn(props.conversionFn(props.onClickValue.value))); $forceUpdate()"
+                        :x="x" :y="y" width="1" height="1" :fill="props.vizFn(cellval).fillRGB" />
                 </svg>
             </svg>
         </svg>
@@ -50,8 +50,8 @@ let viewBox = `0 0 ${props.width} ${props.height}`;
             <svg :key="y" v-for="(row, y) in props.prGrid.grid" xmlns="http://www.w3.org/2000/svg">
                 <svg :key="x" v-for="(cellval, x) in row">
                     <rect
-                        @click="props.prGrid.setLocation(x, y, conversionFn(onClickValue)); console.log(vizFn(conversionFn(onClickValue))); $forceUpdate()"
-                        :x="x" :y="y" width="1" height="1" :fill="vizFn(cellval).fillRGB" />
+                        @click="props.prGrid.setLocation(x, y, props.conversionFn(props.onClickValue)); console.log(props.vizFn(props.conversionFn(props.onClickValue))); $forceUpdate()"
+                        :x="x" :y="y" width="1" height="1" :fill="props.vizFn(cellval).fillRGB" />
                 </svg>
             </svg>
         </svg>
