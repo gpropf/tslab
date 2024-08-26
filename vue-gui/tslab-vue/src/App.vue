@@ -48,9 +48,11 @@ function testFindMatches(ruleName: string) {
 }
 
 function testFindAllMatches(ruleName: string) {
-  let mainGrid = getRule("MAIN")
-  let ruleGrid = getRule(ruleName)
-  mainGrid?.simpleMatchAllTransforms(ruleGrid);
+  let mainGrid = getRule("MAIN");
+  if (mainGrid === undefined) return;
+  let ruleGrid = getRule(ruleName);
+  if (ruleGrid === undefined) return;
+  mainGrid.simpleMatchAllTransforms(ruleGrid as RuleGrid<any>);
 }
 
 function createPGVC(inwidth: string, inheight: string) {
