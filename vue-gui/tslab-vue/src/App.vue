@@ -35,18 +35,6 @@ function conversionFn(v: string) {
   return parseInt(v);
 }
 
-function testFindMatches(ruleName: string) {
-  let mainGrid = getRule("MAIN")
-  let ruleGrid = getRule(ruleName)
-  let matches: boolean = false
-  if (mainGrid instanceof ParametricGrid && ruleGrid instanceof RuleGrid) {
-    let matches = mainGrid.findMatches(ruleGrid);
-    console.log("MATCHES: ", matches)
-    let matches90 = mainGrid.findMatches90(ruleGrid);
-    console.log("MATCHES 90: ", matches90)
-  }  
-}
-
 function testFindAllMatches(ruleName: string) {
   let mainGrid = getRule("MAIN");
   if (mainGrid === undefined) return;
@@ -56,7 +44,7 @@ function testFindAllMatches(ruleName: string) {
 }
 
 function createPGVC(inwidth: string, inheight: string) {
-  var ComponentClass = createApp(RuleGridVC, {
+  let ComponentClass = createApp(RuleGridVC, {
     width: parseInt(inwidth), height: parseInt(inheight),
     vizFn: vizFn, defaultValue: 1, onClickValue: onClickValue, programaticallyCreated: true, conversionFn: conversionFn,
     screenWidth: 150, screenHeight: 100, id: newRuleId.value

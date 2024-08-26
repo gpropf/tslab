@@ -34,8 +34,7 @@ setRule(props.id, parametricGrid as RuleGrid<any>)
 </script>
 
 <template>
-    <div v-if="programaticallyCreated">
-        <div>This PG was created dynamically!</div>
+    <div v-if="programaticallyCreated">        
         <svg :viewBox="viewBox" :width="props.screenWidth" :height="props.screenHeight"
             xmlns="http://www.w3.org/2000/svg">
             <svg :key="y" v-for="(row, y) in parametricGrid.grid" xmlns="http://www.w3.org/2000/svg">
@@ -47,8 +46,7 @@ setRule(props.id, parametricGrid as RuleGrid<any>)
             </svg>
         </svg>
     </div>
-    <div v-else>
-        <div>This PG was NOT created dynamically!</div>
+    <div v-else>        
         <svg :viewBox="viewBox" :width="props.screenWidth" :height="props.screenHeight"
             xmlns="http://www.w3.org/2000/svg">
             <svg :key="y" v-for="(row, y) in parametricGrid.grid" xmlns="http://www.w3.org/2000/svg">
