@@ -35,6 +35,7 @@ setRule(props.id, parametricGrid as RuleGrid<any>)
 </script>
 
 <template>
+    
     <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight"
       :width="props.width" :height="props.height" :vizFn="props.vizFn" :defaultValue="0"
       :onClickValue="props.onClickValue" :programaticallyCreated="false" :conversionFn="props.conversionFn"

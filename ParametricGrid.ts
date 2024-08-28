@@ -266,6 +266,12 @@ export class RuleGrid<T> extends ParametricGrid<T> {
     return this._rotatedGrids;
   }
 
+  public toJSON(): Object {
+    let json = super.toJSON();
+    json.type = "RuleGrid";
+    return json;    
+  }
+
   public setLocation(x: number, y: number, v: T) {
     //console.log("BEFORE setLocation 0")
     super.setLocation(x, y, v);

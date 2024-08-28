@@ -4,11 +4,11 @@
 import { ParametricGrid, RuleGrid } from "./../../../../ParametricGrid"
 import { type ColorInfo, type ObjectVisualizationFn, type ConversionFn } from "./ParametricGridVC.vue"
 
-// const rules = useRulesStore();
-// const { ruleGridMap, setRule, getRule } = rules;
+import { provide } from 'vue'
 
-// type ObjectVisualizationFn = (a: any) => ColorInfo
-// type ConversionFn = (a: any) => any
+//const mouseLocation = ref([0,0]);
+
+//provide('mouseLocation', mouseLocation)
 
 
 const props = defineProps<{

@@ -10,11 +10,25 @@ export const useRulesStore = defineStore('rules', () => {
     ruleGridMap.value.set(id, pgrid)
     console.log(ruleGridMap.value)
   }
+
   function getRule(id: string) {
     const rg = ruleGridMap.value.get(id)
     console.log(rg)
     return rg
   }  
 
-  return { ruleGridMap, setRule, getRule }
+  function serialize(): Map<string, string> {
+    let ruleStringMap = new Map<string, string>()
+    ruleGridMap.value.forEach((rule, id) => {
+      ruleStringMap.set(id, JSON.stringify(rule))
+      //console.log(id,":", JSON.stringify(rule))
+    });
+    return ruleStringMap;
+  }
+
+  function deserialize(jsonText: string) {
+    
+  }
+
+  return { ruleGridMap, setRule, getRule, serialize }
 })

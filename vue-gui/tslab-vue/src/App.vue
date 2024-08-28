@@ -15,7 +15,7 @@ import LabelledInput from './components/LabelledInput.vue';
 import ParametricGridVC from './components/ParametricGridVC.vue';
 
 const rules = useRulesStore();
-const { ruleGridMap, setRule, getRule } = rules;
+const { ruleGridMap, setRule, getRule, serialize } = rules;
 
 const numberToColorMap = new Map();
 numberToColorMap.set(0, "#000000");
@@ -95,6 +95,7 @@ const screenHeight = ref(400);
     <button @click="createPGVC(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
     <button @click="testFindAllMatches('newrule')">Test Match</button>
+    <button @click="let rgm = serialize(); console.log(rgm)">Test Serialization</button>
 
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
       placeholder="Enter Id string for new rule" componentName="New Rule Id" />
