@@ -3,6 +3,15 @@
 import { useRulesStore } from '@/stores/rules'
 import { ParametricGrid, RuleGrid } from "../../../../ParametricGrid"
 import SVGGrid from './SVGGrid.vue';
+import { inject } from 'vue'
+
+import { provide, ref } from 'vue'
+
+const mouseLocation = ref([0,0]);
+
+provide('mouseLocation', mouseLocation);
+
+//const mouseLocation = inject('mouseLocation');
 
 export interface ColorInfo {
     fillRGB: string;
@@ -35,7 +44,7 @@ setRule(props.id, parametricGrid as RuleGrid<any>)
 </script>
 
 <template>
-    
+    <div>{{ mouseLocation[0] }}: {{ mouseLocation[1] }}</div>
     <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight"
       :width="props.width" :height="props.height" :vizFn="props.vizFn" :defaultValue="0"
       :onClickValue="props.onClickValue" :programaticallyCreated="false" :conversionFn="props.conversionFn"

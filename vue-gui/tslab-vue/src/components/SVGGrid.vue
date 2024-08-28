@@ -3,13 +3,9 @@
 // import { useRulesStore } from '@/stores/rules'
 import { ParametricGrid, RuleGrid } from "./../../../../ParametricGrid"
 import { type ColorInfo, type ObjectVisualizationFn, type ConversionFn } from "./ParametricGridVC.vue"
+import { inject } from 'vue'
 
-import { provide } from 'vue'
-
-//const mouseLocation = ref([0,0]);
-
-//provide('mouseLocation', mouseLocation)
-
+const mouseLocation = inject('mouseLocation');
 
 const props = defineProps<{
     width: number,
@@ -39,7 +35,7 @@ let viewBox = `0 0 ${props.width} ${props.height}`;
                 <svg :key="x" v-for="(cellval, x) in row">
                     <rect
                         @click="props.prGrid.setLocation(x, y, props.conversionFn(props.onClickValue.value)); console.log(props.vizFn(props.conversionFn(props.onClickValue.value))); $forceUpdate()"
-                        :x="x" :y="y" width="1" height="1" :fill="props.vizFn(cellval).fillRGB" @mouseover="console.log(`MOUSE POS: ${x}, ${y}`)" />
+                        :x="x" :y="y" width="1" height="1" :fill="props.vizFn(cellval).fillRGB" @mouseover="console.log(`MOUSE POS: ${x}, ${y}`); mouseLocation = [x,y]" />
                 </svg>
             </svg>
         </svg>
@@ -51,7 +47,7 @@ let viewBox = `0 0 ${props.width} ${props.height}`;
                 <svg :key="x" v-for="(cellval, x) in row">
                     <rect
                         @click="props.prGrid.setLocation(x, y, props.conversionFn(props.onClickValue)); console.log(props.vizFn(props.conversionFn(props.onClickValue))); $forceUpdate()"
-                        :x="x" :y="y" width="1" height="1" :fill="props.vizFn(cellval).fillRGB" @mouseover="console.log(`MOUSE POS: ${x}, ${y}`)"/>
+                        :x="x" :y="y" width="1" height="1" :fill="props.vizFn(cellval).fillRGB" @mouseover="console.log(`MOUSE POS: ${x}, ${y}`); mouseLocation = [`${x},${y}`]"/>
                 </svg>
             </svg>
         </svg>
