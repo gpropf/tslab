@@ -35,7 +35,7 @@ let viewBox = `0 0 ${props.width} ${props.height}`;
                 <svg :key="x" v-for="(cellval, x) in row">
                     <rect
                         @click="props.prGrid.setLocation(x, y, props.conversionFn(props.onClickValue.value)); console.log(props.vizFn(props.conversionFn(props.onClickValue.value))); $forceUpdate()"
-                        :x="x" :y="y" width="1" height="1" :fill="props.vizFn(cellval).fillRGB" @mouseover="console.log(`MOUSE POS: ${x}, ${y}`); mouseLocation = [x,y]" />
+                        :x="x" :y="y" width="1" height="1" :fill="props.vizFn(cellval).fillRGB" @mouseover="console.log(`MOUSE POS: ${x}, ${y}`);  mouseLocation = [x,y]" />
                 </svg>
             </svg>
         </svg>
@@ -47,7 +47,7 @@ let viewBox = `0 0 ${props.width} ${props.height}`;
                 <svg :key="x" v-for="(cellval, x) in row">
                     <rect
                         @click="props.prGrid.setLocation(x, y, props.conversionFn(props.onClickValue)); console.log(props.vizFn(props.conversionFn(props.onClickValue))); $forceUpdate()"
-                        :x="x" :y="y" width="1" height="1" :fill="props.vizFn(cellval).fillRGB" @mouseover="console.log(`MOUSE POS: ${x}, ${y}`); mouseLocation = [`${x},${y}`]"/>
+                        :x="x" :y="y" width="1" height="1" :fill="props.vizFn(cellval).fillRGB" @mouseover="console.log(`MOUSE POS: ${x}, ${y}`); mouseLocation = [x, y]"/>
                 </svg>
             </svg>
         </svg>

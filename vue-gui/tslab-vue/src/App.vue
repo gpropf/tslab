@@ -10,9 +10,13 @@ import RuleGridVC from './components/RuleGridVC.vue';
 import { type ColorInfo } from './components/ParametricGridVC.vue';
 import { createApp } from 'vue';
 
-import { ref } from 'vue'
+import { provide, ref } from 'vue'
 import LabelledInput from './components/LabelledInput.vue';
 import ParametricGridVC from './components/ParametricGridVC.vue';
+
+const mouseLocation = ref([0,0]);
+
+provide('mouseLocation', mouseLocation);
 
 const rules = useRulesStore();
 const { ruleGridMap, setRule, getRule, serialize } = rules;
@@ -92,7 +96,7 @@ const screenHeight = ref(400);
     <!-- <div>
       <input type="text" v-model="pgheight" placeholder="Height of new PG">
     </div> -->
-
+    <div>{{ mouseLocation[0] }}: {{ mouseLocation[1] }}</div>
     <button @click="createPGVC(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
     <button @click="testFindAllMatches('newrule')">Test Match</button>
