@@ -2,7 +2,7 @@
 
 
 import { useRulesStore } from '@/stores/rules'
-import { ParametricGrid, RuleGrid,  } from "./../../../ParametricGrid"
+import { ParametricGrid, RuleGrid } from "./../../../ParametricGrid"
 
 /// <reference path="./../../../ParametricGrid.ts"/>
 
@@ -25,6 +25,7 @@ numberToColorMap.set(3, "#FF00FF");
 numberToColorMap.set(4, "#AA00AA");
 numberToColorMap.set(5, "#00AAFF");
 const numColors = numberToColorMap.size;
+let rgm = null;
 
 function vizFn(cellval: number) {
   let hexColor = numberToColorMap.get(cellval % numColors);
@@ -95,7 +96,7 @@ const screenHeight = ref(400);
     <button @click="createPGVC(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
     <button @click="testFindAllMatches('newrule')">Test Match</button>
-    <button @click="let rgm = serialize(); console.log(rgm)">Test Serialization</button>
+    <button @click="rgm = serialize(); rgm.forEach((value, id) => { console.log(`${id}:${value}`) })">Test Serialization</button>
 
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
       placeholder="Enter Id string for new rule" componentName="New Rule Id" />

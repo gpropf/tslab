@@ -18,7 +18,7 @@ export const useRulesStore = defineStore('rules', () => {
   }  
 
   function serialize(): Map<string, string> {
-    let ruleStringMap = new Map<string, string>()
+    let ruleStringMap = new Map<string, string>();
     ruleGridMap.value.forEach((rule, id) => {
       ruleStringMap.set(id, JSON.stringify(rule))
       //console.log(id,":", JSON.stringify(rule))
