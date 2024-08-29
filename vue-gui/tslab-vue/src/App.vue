@@ -37,7 +37,7 @@ numberToColorMap.set(3, "#FF00FF");
 numberToColorMap.set(4, "#AA00AA");
 numberToColorMap.set(5, "#00AAFF");
 const numColors = numberToColorMap.size;
-let rgm = null;
+let rgm: Map<string, string> = new Map<string, string>();
 
 function vizFn(cellval: number) {
   let hexColor = numberToColorMap.get(cellval % numColors);
@@ -109,7 +109,7 @@ let mouseLocation = getMouseLocation();
     <button @click="createPGVC(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
     <button @click="testFindAllMatches('newrule')">Test Match</button>
-    <button @click="rgm = serialize(); rgm.forEach((value, id: string) => { console.log(`${id}:${value}`) })">Test Serialization</button>
+    <button @click="rgm = serialize(); rgm.forEach((value: string, id: string) => { console.log(`${id}:${value}`) })">Test Serialization</button>
 
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
       placeholder="Enter Id string for new rule" componentName="New Rule Id" />

@@ -267,10 +267,15 @@ export class RuleGrid<T> extends ParametricGrid<T> {
   }
 
   public toJSON(): Object {
-    let json = super.toJSON();
-    json.type = "RuleGrid";
-    return json;    
-  }
+    return {
+      width: this.width,
+      height: this.height,
+      grid: this.grid,
+      type: "RuleGrid",
+      parameterType: "number"
+    }
+  }   
+  
 
   public setLocation(x: number, y: number, v: T) {
     //console.log("BEFORE setLocation 0")
