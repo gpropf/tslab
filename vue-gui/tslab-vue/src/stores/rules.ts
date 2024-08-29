@@ -18,14 +18,28 @@ export const useRulesStore = defineStore('rules', () => {
     return rg
   }  
 
-  function serialize(): Map<string, string> {
-    let ruleStringMap = new Map<string, string>();
-    ruleGridMap.value.forEach((rule, id) => {
-      ruleStringMap.set(id, JSON.stringify(rule))
-      //console.log(id,":", JSON.stringify(rule))
-    });
-    return ruleStringMap;
+  function serialize(): string {
+    // let ruleStringMap = new Map<string, string>();
+    // ruleGridMap.value.forEach((rule, id) => {
+    //   ruleStringMap.set(id, JSON.stringify(rule))
+    //   //console.log(id,":", JSON.stringify(rule))
+    // });
+    return serializeRules();
   }
+
+  function serializeRules() {
+    // let ruleStringMap = new Map<string, string>();
+    // ruleGridMap.value.forEach((rule, id) => {
+    //   ruleStringMap.set(id, JSON.stringify(rule))
+    // });
+    const obj = Object.fromEntries(ruleGridMap.value);
+    return JSON.stringify(obj);
+    //return ruleStringMap;
+  }
+
+  // function serialize(): string {
+  //   return JSON.stringify(ruleGridMap)
+  // }
 
   function deserialize(jsonText: string) {
     

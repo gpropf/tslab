@@ -231,7 +231,7 @@ public simpleMatchAllTransforms(otherGrid: RuleGrid<T>) {
       width: this._width,
       height: this._height,
       grid: this._grid,
-      type: "ParametricGrid",
+      class: "ParametricGrid",
       parameterType: "number"
     }
   }
@@ -244,7 +244,7 @@ public simpleMatchAllTransforms(otherGrid: RuleGrid<T>) {
 export function pgFactory(s: string) {
   let obj = JSON.parse(s);
   if (obj.type == "ParametricGrid") {
-    //console.log(`obj.type: ${obj.type}`)
+    //console.log(`obj.class: ${obj.type}`)
     let pgrid: ParametricGrid<number> = new ParametricGrid(obj.width, obj.height, 777, obj.grid);
     return pgrid;
   }
@@ -271,7 +271,7 @@ export class RuleGrid<T> extends ParametricGrid<T> {
       width: this.width,
       height: this.height,
       grid: this.grid,
-      type: "RuleGrid",
+      class: "RuleGrid",
       parameterType: "number"
     }
   }   
