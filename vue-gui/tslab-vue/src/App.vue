@@ -11,15 +11,23 @@ import { type ColorInfo } from './components/ParametricGridVC.vue';
 import { createApp } from 'vue';
 
 import { provide, ref } from 'vue'
+//import {  } from 'vue'
 import LabelledInput from './components/LabelledInput.vue';
 import ParametricGridVC from './components/ParametricGridVC.vue';
 
-const mouseLocation = ref([0,0]);
+// const mouseLocation = ref([0,0]);
 
-provide('mouseLocation', mouseLocation);
+// function updateMouseLocation(newLoc) {
+//   mouseLocation.value = newLoc;
+// }
+
+// provide('mouseLocation', {
+//   mouseLocation,
+//   updateMouseLocation
+// });
 
 const rules = useRulesStore();
-const { ruleGridMap, setRule, getRule, serialize } = rules;
+const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation  } = rules;
 
 const numberToColorMap = new Map();
 numberToColorMap.set(0, "#000000");
@@ -73,6 +81,7 @@ const mainGridHeight = ref("40");
 const screenWidth = ref(600);
 const screenHeight = ref(400);
 
+let mouseLocation = getMouseLocation();
 </script>
 
 
@@ -96,11 +105,11 @@ const screenHeight = ref(400);
     <!-- <div>
       <input type="text" v-model="pgheight" placeholder="Height of new PG">
     </div> -->
-    <div>{{ mouseLocation[0] }}: {{ mouseLocation[1] }}</div>
+    <div> {{ mouseLocation }}</div>
     <button @click="createPGVC(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
     <button @click="testFindAllMatches('newrule')">Test Match</button>
-    <button @click="rgm = serialize(); rgm.forEach((value, id) => { console.log(`${id}:${value}`) })">Test Serialization</button>
+    <button @click="rgm = serialize(); rgm.forEach((value, id: string) => { console.log(`${id}:${value}`) })">Test Serialization</button>
 
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
       placeholder="Enter Id string for new rule" componentName="New Rule Id" />

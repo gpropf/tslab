@@ -3,7 +3,7 @@
 import { useRulesStore } from '@/stores/rules'
 import { ParametricGrid, RuleGrid } from "../../../../ParametricGrid"
 import SVGGrid from './SVGGrid.vue';
-import { inject } from 'vue'
+//import { inject } from 'vue'
 
 import { ref } from 'vue'
 

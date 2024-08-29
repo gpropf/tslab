@@ -1,10 +1,11 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { RuleGrid } from "../../../../ParametricGrid"
+import { RuleGrid, type Vec2d } from "../../../../ParametricGrid"
 
 export const useRulesStore = defineStore('rules', () => {
   
   const ruleGridMap = ref(new Map<string, RuleGrid<any>>);
+  const mouseLocation = ref([-1,-1])
   
   function setRule(id: string, pgrid: RuleGrid<any>) {
     ruleGridMap.value.set(id, pgrid)
@@ -30,5 +31,14 @@ export const useRulesStore = defineStore('rules', () => {
     
   }
 
-  return { ruleGridMap, setRule, getRule, serialize }
+  function getMouseLocation() {
+    return mouseLocation;
+  }
+
+  function setMouseLocation(newLoc: Vec2d) {
+    mouseLocation.value = newLoc;
+    //console.log(newLoc)
+  }
+
+  return { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation }
 })
