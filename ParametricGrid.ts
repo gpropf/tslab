@@ -1,12 +1,3 @@
-// function logArray<T>(arr: T[]): void {
-//     arr.forEach(element => console.log(element));
-// }
-
-//import exp from "constants";
-
-//let numbers = [1, 2, 3];
-//logArray<number>(numbers); 
-
 export type Vec2d = [x: number, y: number]
 
 function logFuel(target: Function, context: any) {
@@ -91,55 +82,30 @@ export class ParametricGrid<T> {
     return true;
   }
 
-public simpleMatchAllTransforms(otherGrid: RuleGrid<T>) {
-  let otherGridTransformMap = otherGrid.rotatedGrids;
-  otherGridTransformMap.forEach((transformedGrid: ParametricGrid<T>, ruleKey: string) => {
-    let matches = []
-    let rawGrid: T[][] = transformedGrid.grid;
-    for (let y: number = 0; y < this._height; y++) {
-      for (let x: number = 0; x < this._width; x++) {
-        let match: boolean = this.simpleMatchRawGrid(rawGrid, x, y, transformedGrid.width, transformedGrid.height)
-        if (match) {
-          let matchLoc: Vec2d = [x, y]
-          matches.push(matchLoc);
-          console.log(`Transform: ${ruleKey}: ${matches}`)
+  public simpleMatchAllTransforms(otherGrid: RuleGrid<T>) {
+    let otherGridTransformMap = otherGrid.rotatedGrids;
+    otherGridTransformMap.forEach((transformedGrid: ParametricGrid<T>, ruleKey: string) => {
+      let matches = []
+      let rawGrid: T[][] = transformedGrid.grid;
+      for (let y: number = 0; y < this._height; y++) {
+        for (let x: number = 0; x < this._width; x++) {
+          let match: boolean = this.simpleMatchRawGrid(rawGrid, x, y, transformedGrid.width, transformedGrid.height)
+          if (match) {
+            let matchLoc: Vec2d = [x, y]
+            matches.push(matchLoc);
+            console.log(`Transform: ${ruleKey}: ${matches}`)
+          }
         }
       }
-    }
-  })
-}
-
+    })
+  }
 
   public simpleMatchTransformedRule(otherGrid: RuleGrid<T>, offsetX: number, offsetY: number, ruleKey: string): boolean {
     let transformedGrid = otherGrid.getTransformedGrid(ruleKey);
     if (transformedGrid === undefined) return false;
     let rawGrid: T[][] | undefined = transformedGrid.grid;
     if (rawGrid === undefined) return false;
-
-    return this.simpleMatchRawGrid(rawGrid, offsetX, offsetY, transformedGrid.width, transformedGrid.height)
-
-    // let y: number = 0;
-    // for (y = 0; y < transformedGrid.height; y++) {
-    //   let thisY = y + offsetY;
-    //   //alert(y, thisY)
-    //   let x: number = 0;
-    //   for (x = 0; x < transformedGrid.width; x++) {
-    //     let otherVal: T = rawGrid[y][x];
-    //     let thisX: any = x + offsetX;
-    //     let thisVec: Vec2d = [thisX, thisY];
-    //     thisVec = this.wrapCoordinates(thisVec);
-    //     let [wx, wy] = thisVec
-    //     if (wx == 2 && wy == 0) {
-    //       console.log(`TEST ${x}, ${y}`)
-    //     }
-    //     let thisVal = this.grid[wy][wx];
-    //     if (thisVal != otherVal) {
-    //       //console.log(`thisVal: ${thisVal}, otherVal: ${otherVal}. This loc: ${thisVec}, Other loc: ${[x, y]}`)
-    //       return false;
-    //     }
-    //   }
-    // }
-    // return true;
+    return this.simpleMatchRawGrid(rawGrid, offsetX, offsetY, transformedGrid.width, transformedGrid.height);
   }
 
   public get width() {
@@ -188,20 +154,19 @@ public simpleMatchAllTransforms(otherGrid: RuleGrid<T>) {
     return matches;
   }
 
-  public findMatches90(otherGrid: RuleGrid<T>): Vec2d[] {
-    let matches: Vec2d[] = [];
-    for (let y: number = 0; y < this._height; y++) {
-      for (let x: number = 0; x < this._width; x++) {
-        let match: boolean = this.simpleMatchTransformedRule(otherGrid, x, y, "r90")
-        if (match) {
-          let matchLoc: Vec2d = [x, y]
-          matches.push(matchLoc);
-        }
-      }
-    }
-    return matches;
-  }
-
+  // public findMatches90(otherGrid: RuleGrid<T>): Vec2d[] {
+  //   let matches: Vec2d[] = [];
+  //   for (let y: number = 0; y < this._height; y++) {
+  //     for (let x: number = 0; x < this._width; x++) {
+  //       let match: boolean = this.simpleMatchTransformedRule(otherGrid, x, y, "r90")
+  //       if (match) {
+  //         let matchLoc: Vec2d = [x, y]
+  //         matches.push(matchLoc);
+  //       }
+  //     }
+  //   }
+  //   return matches;
+  // }
 
   public simpleMatchAt(otherGrid: ParametricGrid<T>, offsetX: number, offsetY: number): boolean {
     let rawGrid: T[][] = otherGrid.grid;
@@ -274,8 +239,8 @@ export class RuleGrid<T> extends ParametricGrid<T> {
       class: "RuleGrid",
       parameterType: "number"
     }
-  }   
-  
+  }
+
 
   public setLocation(x: number, y: number, v: T) {
     //console.log("BEFORE setLocation 0")
@@ -309,11 +274,6 @@ export class RuleGrid<T> extends ParametricGrid<T> {
     }
 
   }
-
-
-
-
-
 
   public simpleMatch(otherGrid: RuleGrid<T>, offsetX: number, offsetY: number, ruleKey: string): boolean {
     let otherGridRawGrid = otherGrid.getTransformedGrid(ruleKey)
