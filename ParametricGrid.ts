@@ -197,7 +197,7 @@ export class ParametricGrid<T> {
       height: this._height,
       grid: this._grid,
       class: "ParametricGrid",
-      parameterType: typeof(this._grid[0][0])
+      parameterType: typeof (this._grid[0][0])
     }
   }
 
@@ -237,7 +237,7 @@ export class RuleGrid<T> extends ParametricGrid<T> {
       height: this.height,
       grid: this.grid,
       class: "RuleGrid",
-      parameterType: typeof(this.grid[0][0])
+      parameterType: typeof (this.grid[0][0])
     }
   }
 
@@ -304,5 +304,33 @@ export class RuleGrid<T> extends ParametricGrid<T> {
   public set priority(p: number) {
     //console.log(`Old Priority = ${this._priority}, New Priority = ${p}`)
     this._priority = p;
+  }
+}
+
+
+export class SuccessionRule<T> {
+  private _fromRule: RuleGrid<T>;
+  private _toRule: RuleGrid<T>;
+  private _offset: Vec2d;
+  private _rotatedOffsets: Map<string, Vec2d>;
+
+  constructor(fromRule: RuleGrid<T>, toRule: RuleGrid<T>, offset: Vec2d) {
+    this._fromRule = fromRule;
+    this._toRule = toRule;
+    this._offset = offset;
+    this._rotatedOffsets = new Map<string, Vec2d>();
+  }
+
+  public set offset(offset: Vec2d) {
+    this._offset = offset
+    let rm = rotationMap.get("r90");
+    if (rm) {
+      this._rotatedOffsets.set("r90", rm.multiplyByVec(offset))
+    }
+    rm = rotationMap.get("r180");
+  }
+
+  public get offset(): Vec2d {
+    return this._offset;
   }
 }
