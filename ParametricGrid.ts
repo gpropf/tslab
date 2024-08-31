@@ -328,6 +328,13 @@ export class SuccessionRule<T> {
       this._rotatedOffsets.set("r90", rm.multiplyByVec(offset))
     }
     rm = rotationMap.get("r180");
+    if (rm) {
+      this._rotatedOffsets.set("r180", rm.multiplyByVec(offset))
+    }
+    rm = rotationMap.get("270");
+    if (rm) {
+      this._rotatedOffsets.set("r270", rm.multiplyByVec(offset))
+    }
   }
 
   public get offset(): Vec2d {
