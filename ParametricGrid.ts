@@ -197,7 +197,7 @@ export class ParametricGrid<T> {
       height: this._height,
       grid: this._grid,
       class: "ParametricGrid",
-      parameterType: "number"
+      parameterType: typeof(this._grid[0][0])
     }
   }
 
@@ -237,7 +237,7 @@ export class RuleGrid<T> extends ParametricGrid<T> {
       height: this.height,
       grid: this.grid,
       class: "RuleGrid",
-      parameterType: "number"
+      parameterType: typeof(this.grid[0][0])
     }
   }
 
