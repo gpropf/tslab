@@ -82,6 +82,12 @@ const screenWidth = ref(600);
 const screenHeight = ref(400);
 
 let mouseLocation = getMouseLocation();
+
+function serializeWorkspace() {
+  let workspaceString = serialize();
+  console.log(workspaceString)
+}
+
 </script>
 
 
@@ -111,7 +117,7 @@ let mouseLocation = getMouseLocation();
     <button @click="testFindAllMatches('newrule')">Test Match</button>
     <!-- <button @click="rgm = serialize(); rgm.forEach((value: string, id: string) => { console.log(`${id}:${value}`) })">Test Serialization</button> -->
 
-    <button @click="rgm = serialize(); console.log(rgm)">Test Serialization</button>
+    <button @click="serializeWorkspace()">Test Serialization</button>
 
 <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
       placeholder="Enter Id string for new rule" componentName="New Rule Id" />
