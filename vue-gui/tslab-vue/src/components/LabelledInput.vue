@@ -12,10 +12,14 @@ const props = defineProps<{
     inputType: string,
     componentName: string,
     placeholder?: string,
-    id?: string
+    id?: string,
+    size?: string,
+    labelClass?: string,
+    maxlength?: string
 }>()
 
 const innerId = computed(() => { return props.id + "-inner" })
+//const labelId = computed(() => { return props.id + "-label" })
 
 </script>
 
@@ -23,12 +27,20 @@ const innerId = computed(() => { return props.id + "-inner" })
 
 <template>
     <div :id="id">
-        <label :for="innerId">{{ componentName }}</label>
-        <input :type="inputType" v-model="inputValue" :placeholder="placeholder" :id="innerId" />
+        <label :class="labelClass" :for="innerId">{{ componentName }}</label>
+        <input :type="inputType" v-model="inputValue" :placeholder="placeholder" :id="innerId" :size="size"/>
     </div>
 </template>
 
 <style scoped>
+label.medium {  
+  width: 100px;  
+}
+
+label.small {  
+  width: 70px;  
+}
+
 h1 {
     font-weight: 500;
     font-size: 2.6rem;

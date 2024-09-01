@@ -56,10 +56,12 @@ function testFindAllMatches(ruleName: string) {
   mainGrid.simpleMatchAllTransforms(ruleGrid as RuleGrid<any>);
 }
 
-function createPGVC(inwidth: string, inheight: string) {
-  let ComponentClass = createApp(RuleGridVC, {
+function createRuleGrid(inwidth: string, inheight: string) {
+  let existingRule = getRule(newRuleId.value);
+  if (existingRule != undefined) return
+  let ruleGridVC = createApp(RuleGridVC, {
     width: parseInt(inwidth), height: parseInt(inheight),
-    vizFn: vizFn, defaultValue: 1, onClickValue: onClickValue, programaticallyCreated: true, conversionFn: conversionFn,
+    vizFn: vizFn, defaultValue: 0, onClickValue: onClickValue, programaticallyCreated: true, conversionFn: conversionFn,
     screenWidth: 150, screenHeight: 100, id: newRuleId.value, priority: 50
   })
 
@@ -67,7 +69,7 @@ function createPGVC(inwidth: string, inheight: string) {
   if (wrapper) {
     const newDiv = document.createElement("div")
     newDiv.className = "rule"
-    ComponentClass.mount(newDiv)
+    ruleGridVC.mount(newDiv)
     wrapper.appendChild(newDiv)
   }
 }
@@ -85,6 +87,10 @@ const toRule = ref("");
 
 
 let mouseLocation = getMouseLocation();
+
+function formatVector(v: Vec2d) {
+  return `< ${v[0]},${v[1]} >`
+}
 
 function serializeWorkspace() {
   let workspaceString = serialize();
@@ -110,24 +116,24 @@ function linkRules() {
   <div>
     <h1>{{ title }}</h1>
     <LabelledInput v-model:inputValue="mainGridWidth" id="main-grid-width-id" inputType="text"
-      placeholder="Enter Main Grid Width" componentName="Main Grid Width" />
+      placeholder="Enter Main Grid Width" componentName="Main Grid Width" size="4"/>
     <LabelledInput v-model:inputValue="mainGridHeight" id="main-grid-height-id" inputType="text"
-      placeholder="Enter Main Grid Height" componentName="Main Grid Height" />
-    <h2>Grid Data Entry</h2>
+      placeholder="Enter Main Grid Height" componentName="Main Grid Height" size="4"/>
+    <!-- <h2>Grid Data Entry</h2> -->
     <LabelledInput v-model:inputValue="onClickValue" id="on-click-value-id" inputType="text"
-      placeholder="Enter Color index number for grids" componentName="Color index" />
+      placeholder="Enter Color index number for grids" componentName="Color index" size="2"/>
     <LabelledInput v-model:inputValue="pgwidth" id="rule-grid-width" inputType="text"
-      placeholder="Enter width for rulegrid" componentName="Rulegrid Width" />
+      placeholder="Enter width for rulegrid" componentName="Rulegrid Width" size="4"/>
     <LabelledInput v-model:inputValue="pgheight" id="rule-grid-height" inputType="text"
-      placeholder="Enter height for rulegrid" componentName="Rulegrid Height" />
+      placeholder="Enter height for rulegrid" componentName="Rulegrid Height" size="4"/>
     <!-- <div>
       <input type="text" v-model="pgwidth" placeholder="Width of new PG">
     </div> -->
     <!-- <div>
       <input type="text" v-model="pgheight" placeholder="Height of new PG">
     </div> -->
-    <div> {{ mouseLocation }}</div>
-    <button @click="createPGVC(pgwidth, pgheight)">New Grid</button>
+    <div> Mouse Location: {{ formatVector(mouseLocation) }}</div>
+    <button @click="createRuleGrid(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
     <button @click="testFindAllMatches('newrule')">Test Match</button>
     <!-- <button @click="rgm = serialize(); rgm.forEach((value: string, id: string) => { console.log(`${id}:${value}`) })">Test Serialization</button> -->
@@ -136,13 +142,13 @@ function linkRules() {
     <button @click="linkRules()">Link named rules</button>
 
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
-      placeholder="Enter Id string for new rule" componentName="New Rule Id" />
+      placeholder="Enter Id string for new rule" componentName="New Rule Id" size="20"/>
     <LabelledInput v-model:inputValue="fromRule" id="from-rule-id" inputType="text"
-      placeholder="Enter Id string for 'from' rule" componentName="'From' Rule Id" />
+      placeholder="Enter Id string for 'from' rule" componentName="'From' Rule Id" size="20"/>
     <LabelledInput v-model:inputValue="toRule" id="to-rule-id" inputType="text"
-      placeholder="Enter Id string for 'to' rule" componentName="'To' Rule Id" />
+      placeholder="Enter Id string for 'to' rule" componentName="'To' Rule Id" size="20"/>
     <LabelledInput v-model:inputValue="ruleOffset" id="rule-offset" inputType="text"
-      placeholder="Enter offset as a comma-delimited string" componentName="Offset String" />
+      placeholder="Enter offset as a comma-delimited string" componentName="Offset String" size="4"/>
 
 
     <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
@@ -154,8 +160,8 @@ function linkRules() {
 </template>
 
 <script lang="ts">
-const zeroVec: Vec2d = [0,0]
-let zeroMutableVec: Vec2d = [0,0]
+const zeroVec: Vec2d = [0, 0]
+let zeroMutableVec: Vec2d = [0, 0]
 const ruleOffsetVec = ref(zeroMutableVec)
 const currentSuccessionRule = ref(null)
 
@@ -189,6 +195,17 @@ export default {
 
 
 <style>
+div {
+  margin-bottom: 2px;
+}
+
+label {
+  display: inline-block;
+  width: 150px;
+  text-align: right;
+  margin-right: 10px;
+}
+
 .rules {
   height: 250px;
   display: flex;
@@ -199,7 +216,7 @@ export default {
 .rules>* {
   flex: 1 1 300px;
 }
-
+/* Below styles are boilerplate */
 
 header {
   line-height: 1.5;

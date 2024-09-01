@@ -36,7 +36,7 @@ setRule(props.id, ruleGrid)
 
 <template>
     <LabelledInput v-model:inputValue="ruleGrid.priority" id="rule-grid-priority" inputType="text"
-    placeholder="Enter priority for rule" componentName="Rule Priority" />
+    placeholder="Enter priority for rule" componentName="Rule Priority" size="3" labelClass="medium"/>
     <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight"
       :width="props.width" :height="props.height" :vizFn="props.vizFn" :defaultValue="0"
       :onClickValue="props.onClickValue" :programaticallyCreated="true" :conversionFn="props.conversionFn"

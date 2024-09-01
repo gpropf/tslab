@@ -5,7 +5,8 @@ import { RuleGrid, type Vec2d } from "../../../../ParametricGrid"
 export const useRulesStore = defineStore('rules', () => {
   
   const ruleGridMap = ref(new Map<string, RuleGrid<any>>);
-  const mouseLocation = ref([-1,-1])
+  let outOfBounds: Vec2d = [-1,-1];
+  const mouseLocation = ref(outOfBounds)
   
   function setRule(id: string, pgrid: RuleGrid<any>) {
     ruleGridMap.value.set(id, pgrid)
