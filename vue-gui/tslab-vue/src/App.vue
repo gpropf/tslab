@@ -2,7 +2,7 @@
 
 
 import { useRulesStore } from '@/stores/rules'
-import { ParametricGrid, RuleGrid } from "./../../../ParametricGrid"
+import { ParametricGrid, RuleGrid, type Vec2d } from "./../../../ParametricGrid"
 
 /// <reference path="./../../../ParametricGrid.ts"/>
 
@@ -80,6 +80,9 @@ const mainGridWidth = ref("60");
 const mainGridHeight = ref("40");
 const screenWidth = ref(600);
 const screenHeight = ref(400);
+const fromRule = ref("");
+const toRule = ref("");
+const ruleOffset = ref("")
 
 let mouseLocation = getMouseLocation();
 
@@ -88,6 +91,18 @@ function serializeWorkspace() {
   console.log(workspaceString)
 }
 
+function linkRules() {
+  let fromRuleLocal = getRule(fromRule.value)
+  let toRuleLocal = getRule(toRule.value)
+}
+
+
+function stringToVec(s: string): Vec2d | null {
+  const coordinates: string[] = s.split(',');
+  if (coordinates.length < 2) return null;
+  let v: Vec2d = [parseInt(coordinates[0]), parseInt(coordinates[1])];
+  return v;
+}
 </script>
 
 
@@ -118,9 +133,17 @@ function serializeWorkspace() {
     <!-- <button @click="rgm = serialize(); rgm.forEach((value: string, id: string) => { console.log(`${id}:${value}`) })">Test Serialization</button> -->
 
     <button @click="serializeWorkspace()">Test Serialization</button>
+    <button @click="linkRules()">Link named rules</button>
 
 <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
       placeholder="Enter Id string for new rule" componentName="New Rule Id" />
+      <LabelledInput v-model:inputValue="fromRule" id="from-rule-id" inputType="text"
+      placeholder="Enter Id string for 'from' rule" componentName="'From' Rule Id" />
+      <LabelledInput v-model:inputValue="toRule" id="to-rule-id" inputType="text"
+      placeholder="Enter Id string for 'to' rule" componentName="'To' Rule Id" />
+      <LabelledInput v-model:inputValue="ruleOffset" id="rule-offset" inputType="text"
+      placeholder="Enter offset as a comma-delimited string" componentName="Offset String" />
+
 
     <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
       :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
