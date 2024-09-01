@@ -2,7 +2,7 @@
 
 
 import { useRulesStore } from '@/stores/rules'
-import { ParametricGrid, RuleGrid, type Vec2d } from "./../../../ParametricGrid"
+import { ParametricGrid, RuleGrid, SuccessionRule, type Vec2d } from "./../../../ParametricGrid"
 
 /// <reference path="./../../../ParametricGrid.ts"/>
 
@@ -27,7 +27,7 @@ import ParametricGridVC from './components/ParametricGridVC.vue';
 // });
 
 const rules = useRulesStore();
-const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation  } = rules;
+const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation } = rules;
 
 const numberToColorMap = new Map();
 numberToColorMap.set(0, "#000000");
@@ -62,13 +62,13 @@ function createPGVC(inwidth: string, inheight: string) {
     vizFn: vizFn, defaultValue: 1, onClickValue: onClickValue, programaticallyCreated: true, conversionFn: conversionFn,
     screenWidth: 150, screenHeight: 100, id: newRuleId.value, priority: 50
   })
-  
+
   const wrapper = document.getElementById("dynamic_content")
   if (wrapper) {
     const newDiv = document.createElement("div")
     newDiv.className = "rule"
     ComponentClass.mount(newDiv)
-    wrapper.appendChild(newDiv)  
+    wrapper.appendChild(newDiv)
   }
 }
 
@@ -82,7 +82,7 @@ const screenWidth = ref(600);
 const screenHeight = ref(400);
 const fromRule = ref("");
 const toRule = ref("");
-const ruleOffset = ref("")
+
 
 let mouseLocation = getMouseLocation();
 
@@ -94,15 +94,15 @@ function serializeWorkspace() {
 function linkRules() {
   let fromRuleLocal = getRule(fromRule.value)
   let toRuleLocal = getRule(toRule.value)
+  if (fromRuleLocal instanceof RuleGrid && toRuleLocal instanceof RuleGrid && ruleOffsetVec.value.length > 1) {
+    console.log("Current Offset:", ruleOffsetVec.value)
+    let sr = new SuccessionRule(fromRuleLocal, toRuleLocal, ruleOffsetVec.value)
+    console.log("New SR created: ", sr)
+  }
 }
 
 
-function stringToVec(s: string): Vec2d | null {
-  const coordinates: string[] = s.split(',');
-  if (coordinates.length < 2) return null;
-  let v: Vec2d = [parseInt(coordinates[0]), parseInt(coordinates[1])];
-  return v;
-}
+
 </script>
 
 
@@ -113,12 +113,12 @@ function stringToVec(s: string): Vec2d | null {
       placeholder="Enter Main Grid Width" componentName="Main Grid Width" />
     <LabelledInput v-model:inputValue="mainGridHeight" id="main-grid-height-id" inputType="text"
       placeholder="Enter Main Grid Height" componentName="Main Grid Height" />
-    <h2>Grid Data Entry</h2>    
+    <h2>Grid Data Entry</h2>
     <LabelledInput v-model:inputValue="onClickValue" id="on-click-value-id" inputType="text"
       placeholder="Enter Color index number for grids" componentName="Color index" />
-      <LabelledInput v-model:inputValue="pgwidth" id="rule-grid-width" inputType="text"
+    <LabelledInput v-model:inputValue="pgwidth" id="rule-grid-width" inputType="text"
       placeholder="Enter width for rulegrid" componentName="Rulegrid Width" />
-      <LabelledInput v-model:inputValue="pgheight" id="rule-grid-height" inputType="text"
+    <LabelledInput v-model:inputValue="pgheight" id="rule-grid-height" inputType="text"
       placeholder="Enter height for rulegrid" componentName="Rulegrid Height" />
     <!-- <div>
       <input type="text" v-model="pgwidth" placeholder="Width of new PG">
@@ -135,13 +135,13 @@ function stringToVec(s: string): Vec2d | null {
     <button @click="serializeWorkspace()">Test Serialization</button>
     <button @click="linkRules()">Link named rules</button>
 
-<LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
+    <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
       placeholder="Enter Id string for new rule" componentName="New Rule Id" />
-      <LabelledInput v-model:inputValue="fromRule" id="from-rule-id" inputType="text"
+    <LabelledInput v-model:inputValue="fromRule" id="from-rule-id" inputType="text"
       placeholder="Enter Id string for 'from' rule" componentName="'From' Rule Id" />
-      <LabelledInput v-model:inputValue="toRule" id="to-rule-id" inputType="text"
+    <LabelledInput v-model:inputValue="toRule" id="to-rule-id" inputType="text"
       placeholder="Enter Id string for 'to' rule" componentName="'To' Rule Id" />
-      <LabelledInput v-model:inputValue="ruleOffset" id="rule-offset" inputType="text"
+    <LabelledInput v-model:inputValue="ruleOffset" id="rule-offset" inputType="text"
       placeholder="Enter offset as a comma-delimited string" componentName="Offset String" />
 
 
@@ -154,13 +154,32 @@ function stringToVec(s: string): Vec2d | null {
 </template>
 
 <script lang="ts">
+let zeroVec: Vec2d = [0,0]
+const ruleOffsetVec = ref(zeroVec)
+const currentSuccessionRule = ref(null)
+
+function stringToVec(s: string): Vec2d | null {
+  const coordinates: string[] = s.split(',');
+  if (coordinates.length < 2) return null;
+  let v: Vec2d = [parseInt(coordinates[0]), parseInt(coordinates[1])];
+  return v;
+}
 
 export default {
   data() {
     return {
       title: 'Pixel Reactor v3.0',
       pgwidth: '',
-      pgheight: ''
+      pgheight: '',
+      ruleOffset: ''
+    }
+  },
+  watch: {
+    ruleOffset(value) {
+      let v = stringToVec(value)
+      if (v == null) return null;
+      ruleOffsetVec.value = v;
+      console.log("New value for ruleOffset: ", v)
     }
   }
 }
