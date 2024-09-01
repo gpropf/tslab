@@ -154,14 +154,16 @@ function linkRules() {
 </template>
 
 <script lang="ts">
-let zeroVec: Vec2d = [0,0]
-const ruleOffsetVec = ref(zeroVec)
+const zeroVec: Vec2d = [0,0]
+let zeroMutableVec: Vec2d = [0,0]
+const ruleOffsetVec = ref(zeroMutableVec)
 const currentSuccessionRule = ref(null)
 
 function stringToVec(s: string): Vec2d | null {
   const coordinates: string[] = s.split(',');
-  if (coordinates.length < 2) return null;
+  if (coordinates.length < 2) return zeroVec;
   let v: Vec2d = [parseInt(coordinates[0]), parseInt(coordinates[1])];
+  if (Number.isNaN(v[0]) || Number.isNaN(v[1])) return zeroVec
   return v;
 }
 
