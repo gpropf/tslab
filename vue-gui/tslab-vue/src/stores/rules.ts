@@ -38,9 +38,7 @@ export const useRulesStore = defineStore('rules', () => {
     //return ruleStringMap;
   }
 
-  // function serialize(): string {
-  //   return JSON.stringify(ruleGridMap)
-  // }
+  
 
   function deserialize(jsonText: string) {
     
@@ -55,5 +53,20 @@ export const useRulesStore = defineStore('rules', () => {
     //console.log(newLoc)
   }
 
-  return { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation }
+  function getAllRuleIds() {
+    let ids: string[] = []
+    const obj = Object.fromEntries(ruleGridMap.value);
+
+    for (let entry in obj) {
+      //console.log("IDS:", entry)
+    }
+
+    // ruleGridMap.value.forEach((rule, id) => {
+    //   ids.append(rule);
+    // });
+    
+    return ids;
+  }
+
+  return { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds }
 })

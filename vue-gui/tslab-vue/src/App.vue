@@ -15,6 +15,8 @@ import { provide, ref } from 'vue'
 import LabelledInput from './components/LabelledInput.vue';
 import ParametricGridVC from './components/ParametricGridVC.vue';
 
+import RuleSelect from './components/RuleSelect.vue';
+
 // const mouseLocation = ref([0,0]);
 
 // function updateMouseLocation(newLoc) {
@@ -58,7 +60,10 @@ function testFindAllMatches(ruleName: string) {
 
 function createRuleGrid(inwidth: string, inheight: string) {
   let existingRule = getRule(newRuleId.value);
-  if (existingRule != undefined) return
+  if (existingRule != undefined) {
+    alert(`Rule id '${newRuleId.value}' is in use. Choose another id.`);
+    return;
+  }
   let ruleGridVC = createApp(RuleGridVC, {
     width: parseInt(inwidth), height: parseInt(inheight),
     vizFn: vizFn, defaultValue: 0, onClickValue: onClickValue, programaticallyCreated: true, conversionFn: conversionFn,
@@ -149,6 +154,8 @@ function linkRules() {
       placeholder="Enter Id string for 'to' rule" componentName="'To' Rule Id" size="20"/>
     <LabelledInput v-model:inputValue="ruleOffset" id="rule-offset" inputType="text"
       placeholder="Enter offset as a comma-delimited string" componentName="Offset String" size="4"/>
+<RuleSelect />
+    
 
 
     <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
