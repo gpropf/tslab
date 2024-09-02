@@ -6,7 +6,7 @@ import { useRulesStore } from '@/stores/rules';
 const rules = useRulesStore();
 const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds } = rules;
 
-const ruleIds: [] = getAllRuleIds();
+const ruleIds: string[] = getAllRuleIds();
 
 const ruleOptions = computed(() => {
     let optionString = "";
