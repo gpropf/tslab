@@ -55,15 +55,15 @@ export const useRulesStore = defineStore('rules', () => {
 
   function getAllRuleIds() {
     let ids: string[] = []
-    const obj = Object.fromEntries(ruleGridMap.value);
+    // const obj = Object.fromEntries(ruleGridMap.value);
 
-    for (let entry in obj) {
-      //console.log("IDS:", entry)
-    }
+    // for (let entry in obj) {
+    //   //console.log("IDS:", entry)
+    // }
 
-    // ruleGridMap.value.forEach((rule, id) => {
-    //   ids.append(rule);
-    // });
+    ruleGridMap.entries.forEach((rule, id) => {
+       ids.append(id);
+     });
     
     return ids;
   }

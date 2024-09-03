@@ -236,11 +236,7 @@ export class RuleGrid<T> extends ParametricGrid<T> {
 
   public set successorOffset(offset: Vec2d) {
     this._successorOffset = offset;
-  }
-
-  public get rotatedGrids() {
-    return this._rotatedGrids;
-  }
+  }  
 
   public toJSON(): Object {
     return {

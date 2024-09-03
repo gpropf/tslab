@@ -7,24 +7,17 @@ const rules = useRulesStore();
 const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds } = rules;
 
 const ruleIds: string[] = getAllRuleIds();
-const props = defineProps<{
-    fromRuleId: string
-}>()
-//ruleGridMap.keys().filter((id) => {return id != props.fromRuleId})
-const selectedRule = defineModel('selectedRule')
+console.log("ruleIds: ", ruleIds)
 
-const filteredKeys = computed(() => {
-  let keys = Array.from(ruleGridMap.keys());
-  keys.unshift("Select Successor");
-  return keys.filter(id => id != props.fromRuleId && id != "MAIN");
-}) 
-
-function changeSelectedRule(event) {
-  selectedRule.value = event.target.value;
-  let thisRule = getRule(props.fromRuleId)
-  console.log("New Selection: ", selectedRule.value, " @ offset: ",  thisRule.successorOffset);
-}
-
+const ruleOptions = computed(() => {
+    let optionString = "";
+    for (let id of ruleIds) {
+        optionString += `<option>${id}</option>`;
+    }
+    return optionString;
+    // let options: [] = ruleIds.forEach((id) => { `<option>${id}</option>` });
+    // return options;
+})
 </script>
 
 <template>

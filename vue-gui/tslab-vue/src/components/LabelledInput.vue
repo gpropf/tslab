@@ -15,7 +15,9 @@ const props = defineProps<{
     id?: string,
     size?: string,
     labelClass?: string,
-    maxlength?: string
+    maxlength?: string,
+    callbackFn?: (event) => any,
+    callbackEventName?: string
 }>()
 
 const innerId = computed(() => { return props.id + "-inner" })
