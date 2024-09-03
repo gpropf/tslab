@@ -227,6 +227,20 @@ export class RuleGrid<T> extends ParametricGrid<T> {
 
   private _rotatedGrids = new Map<string, ParametricGrid<T>>();
 
+  private _successorOffset: Vec2d = [0,0];
+
+  public get rotatedGrids() {
+    return this._rotatedGrids;
+  }
+
+  public get successorOffset() {
+    return this._successorOffset;
+  }
+
+  public set successorOffset(offset: Vec2d) {
+    this._successorOffset = offset;
+  }
+
   public get rotatedGrids() {
     return this._rotatedGrids;
   }
