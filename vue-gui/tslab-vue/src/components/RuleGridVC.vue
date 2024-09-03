@@ -31,25 +31,10 @@ const props = defineProps<{
 
 let ruleGrid = new RuleGrid<any>(props.width, props.height, props.defaultValue);
 let viewBox = `0 0 ${props.width} ${props.height}`;
+const ruleOffsetString = ref("")
 
 setRule(props.id, ruleGrid)
 
-</script>
-
-<template>
-    <LabelledInput v-model:inputValue="ruleGrid.priority" id="rule-grid-priority" inputType="text"
-    placeholder="Enter priority for rule" componentName="Rule Priority" size="3" labelClass="medium"/>
-    <span>id: {{ props.id }}</span>
-    <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight"
-      :width="props.width" :height="props.height" :vizFn="props.vizFn" :defaultValue="0"
-      :onClickValue="props.onClickValue" :programaticallyCreated="true" :conversionFn="props.conversionFn"
-       :id="props.id" :prGrid="ruleGrid"/>
-       <RuleSelect :fromRuleId="props.id "/>
-       <LabelledInput v-model:inputValue="ruleOffset" id="rule-offset" inputType="text"
-      placeholder="Enter offset as a comma-delimited string" componentName="Offset String" size="4"/>
-</template>
-
-<script lang="ts">
 
 const zeroVec: Vec2d = [0, 0]
 let zeroMutableVec: Vec2d = [0, 0]
@@ -63,20 +48,45 @@ function stringToVec(s: string): Vec2d | null {
   return v;
 }
 
-export default {
-  data() {
-    return {     
-      ruleOffset: ''
-    }
-  },
-  watch: {
-    ruleOffset(value) {
-      let v = stringToVec(value)
-      if (v == null) return null;
-      ruleOffsetVec.value = v;
-      console.log("New value for ruleOffset: ", v)
-    }
-  }
+function changeOffset() {
+    ruleGrid.successorOffset = stringToVec(ruleOffsetString.value)
+    console.log("New offset: ", ruleGrid.successorOffset)
 }
+
+</script>
+
+<template>
+    <LabelledInput v-model:inputValue="ruleGrid.priority" id="rule-grid-priority" inputType="text"
+    placeholder="Enter priority for rule" componentName="Rule Priority" size="3" labelClass="medium"/>
+    <span>id: {{ props.id }}</span>
+    <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight"
+      :width="props.width" :height="props.height" :vizFn="props.vizFn" :defaultValue="0"
+      :onClickValue="props.onClickValue" :programaticallyCreated="true" :conversionFn="props.conversionFn"
+       :id="props.id" :prGrid="ruleGrid"/>
+       <RuleSelect :fromRuleId="props.id "/>
+       <input type="text" v-model="ruleOffsetString" placeholder="Offset"
+        @input="changeOffset">
+    
+       <!-- <LabelledInput v-model:inputValue="ruleOffset" id="rule-offset" inputType="text"
+      placeholder="Enter offset as a comma-delimited string" componentName="Offset String" size="4"/> -->
+</template>
+
+<script lang="ts">
+
+// export default {
+//   data() {
+//     return {     
+//       ruleOffset: ''
+//     }
+//   },
+//   watch: {
+//     ruleOffset(value) {
+//       let v = stringToVec(value)
+//       if (v == null) return null;
+//       ruleOffsetVec.value = v;
+//       console.log("New value for ruleOffset: ", v)
+//     }
+//   }
+// }
 
 </script>
