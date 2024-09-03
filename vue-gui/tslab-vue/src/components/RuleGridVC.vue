@@ -33,7 +33,7 @@ let ruleGrid = new RuleGrid<any>(props.width, props.height, props.defaultValue);
 let viewBox = `0 0 ${props.width} ${props.height}`;
 
 setRule(props.id, ruleGrid)
-
+const toRule = ref("")
 </script>
 
 <template>
@@ -44,7 +44,7 @@ setRule(props.id, ruleGrid)
       :width="props.width" :height="props.height" :vizFn="props.vizFn" :defaultValue="0"
       :onClickValue="props.onClickValue" :programaticallyCreated="true" :conversionFn="props.conversionFn"
        :id="props.id" :prGrid="ruleGrid"/>
-       <RuleSelect :fromRuleId="props.id "/>
+       <RuleSelect v-model:selectedRule="toRule" :fromRuleId="props.id"/>
        <LabelledInput v-model:inputValue="ruleOffset" id="rule-offset" inputType="text"
       placeholder="Enter offset as a comma-delimited string" componentName="Offset String" size="4"/>
 </template>
@@ -63,6 +63,17 @@ function stringToVec(s: string): Vec2d | null {
   return v;
 }
 
+function linkRules() {
+  //ruleGrid = getRule(fromRule.value)
+  let toRuleLocal = getRule(toRule.value)
+  if (ruleGrid instanceof RuleGrid && toRuleLocal instanceof RuleGrid && ruleOffsetVec.value.length > 1) {
+    console.log("Current Offset:", ruleOffsetVec.value)
+    let sr = new SuccessionRule(ruleGrid, toRuleLocal, ruleOffsetVec.value)
+    console.log("New SR created: ", sr)
+  }
+}
+
+
 export default {
   data() {
     return {     
@@ -74,6 +85,9 @@ export default {
       let v = stringToVec(value)
       if (v == null) return null;
       ruleOffsetVec.value = v;
+      let fromRule = getRule(props.id);
+      if (fromRule) fromRule.successorOffset = v
+      //ruleGrid.successorOffset = v;
       console.log("New value for ruleOffset: ", v)
     }
   }

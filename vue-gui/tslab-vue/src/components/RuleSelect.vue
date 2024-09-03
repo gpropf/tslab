@@ -3,8 +3,11 @@ import { computed, ref } from 'vue';
 
 
 import { useRulesStore } from '@/stores/rules';
+import type { RuleGrid, Vec2d } from '../../../../ParametricGrid';
 const rules = useRulesStore();
 const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds } = rules;
+
+const selectedRule = defineModel('selectedRule')
 
 const ruleIds: string[] = getAllRuleIds();
 const props = defineProps<{
@@ -19,11 +22,16 @@ const filteredKeys = computed(() => {
   return keys.filter(id => id != props.fromRuleId && id != "MAIN");
 }) 
 
+function changeSelectedRule(event) {
+  selectedRule.value = event.target.value;
+  let thisRule = getRule(props.fromRuleId)
+  console.log("New Selection: ", selectedRule.value, " @ offset: ",  thisRule.successorOffset);
+}
 
 </script>
 
 <template>
-    <select>
+    <select @change="changeSelectedRule($event)">
     <option v-for="key in filteredKeys" :key="key">
       {{ key }}    
     </option>
