@@ -223,10 +223,7 @@ rotationMap.set("r270", new TransformMatrix(Math.PI * 3 / 2, [0, 0], [0, 1, -1, 
 
 export class RuleGrid<T> extends ParametricGrid<T> {
   private _priority?: number = 0;
-
-
   private _rotatedGrids = new Map<string, ParametricGrid<T>>();
-
   private _successorOffset: Vec2d = [0,0];
 
   public get rotatedGrids() {
@@ -297,6 +294,7 @@ export class RuleGrid<T> extends ParametricGrid<T> {
 
   constructor(width: number, height: number, initialValue: T, grid?: T[][]) {
     super(width, height, initialValue, grid);
+    this._successorOffset = [0,0]
     this._priority = 100;
     this._rotatedGrids.set("r0", this as ParametricGrid<T>);
     this._rotatedGrids.set("r90", new ParametricGrid<T>(this.height, this.width, initialValue));

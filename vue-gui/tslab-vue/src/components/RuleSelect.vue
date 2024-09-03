@@ -11,7 +11,7 @@ const props = defineProps<{
     fromRuleId: string
 }>()
 //ruleGridMap.keys().filter((id) => {return id != props.fromRuleId})
-
+const selectedRule = defineModel('selectedRule')
 
 const filteredKeys = computed(() => {
   let keys = Array.from(ruleGridMap.keys());
@@ -19,11 +19,16 @@ const filteredKeys = computed(() => {
   return keys.filter(id => id != props.fromRuleId && id != "MAIN");
 }) 
 
+function changeSelectedRule(event) {
+  selectedRule.value = event.target.value;
+  let thisRule = getRule(props.fromRuleId)
+  console.log("New Selection: ", selectedRule.value, " @ offset: ",  thisRule.successorOffset);
+}
 
 </script>
 
 <template>
-    <select>
+    <select @change="changeSelectedRule($event)">
     <option v-for="key in filteredKeys" :key="key">
       {{ key }}    
     </option>

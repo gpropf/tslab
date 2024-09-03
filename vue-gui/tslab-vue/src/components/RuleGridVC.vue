@@ -50,6 +50,8 @@ setRule(props.id, ruleGrid)
 </template>
 
 <script lang="ts">
+const rules = useRulesStore();
+const { ruleGridMap, setRule, getRule } = rules;
 
 const zeroVec: Vec2d = [0, 0]
 let zeroMutableVec: Vec2d = [0, 0]
@@ -74,7 +76,9 @@ export default {
       let v = stringToVec(value)
       if (v == null) return null;
       ruleOffsetVec.value = v;
-      console.log("New value for ruleOffset: ", v)
+      let thisRule = getRule(props.id)
+      thisRule.successorOffset = v;
+      console.log("New value for ruleOffset: ", thisRule.successorOffset)
     }
   }
 }
