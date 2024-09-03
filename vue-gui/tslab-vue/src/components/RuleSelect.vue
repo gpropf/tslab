@@ -12,8 +12,12 @@ const props = defineProps<{
 }>()
 //ruleGridMap.keys().filter((id) => {return id != props.fromRuleId})
 
-let keys = Array.from(ruleGridMap.keys());
-const filteredKeys = keys.filter(id => id != props.fromRuleId)
+
+const filteredKeys = computed(() => {
+  let keys = Array.from(ruleGridMap.keys());
+  keys.unshift("Select Successor");
+  return keys.filter(id => id != props.fromRuleId && id != "MAIN");
+}) 
 
 
 </script>
@@ -21,8 +25,7 @@ const filteredKeys = keys.filter(id => id != props.fromRuleId)
 <template>
     <select>
     <option v-for="key in filteredKeys" :key="key">
-      Key: {{ key }}
-    
+      {{ key }}    
     </option>
     </select>
 
