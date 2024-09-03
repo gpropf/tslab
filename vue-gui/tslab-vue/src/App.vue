@@ -152,8 +152,7 @@ function linkRules() {
       placeholder="Enter Id string for 'from' rule" componentName="'From' Rule Id" size="20"/>
     <LabelledInput v-model:inputValue="toRule" id="to-rule-id" inputType="text"
       placeholder="Enter Id string for 'to' rule" componentName="'To' Rule Id" size="20"/>
-    <LabelledInput v-model:inputValue="ruleOffset" id="rule-offset" inputType="text"
-      placeholder="Enter offset as a comma-delimited string" componentName="Offset String" size="4"/>
+    
 
     
 
@@ -167,9 +166,7 @@ function linkRules() {
 </template>
 
 <script lang="ts">
-const zeroVec: Vec2d = [0, 0]
-let zeroMutableVec: Vec2d = [0, 0]
-const ruleOffsetVec = ref(zeroMutableVec)
+
 const currentSuccessionRule = ref(null)
 
 function stringToVec(s: string): Vec2d | null {

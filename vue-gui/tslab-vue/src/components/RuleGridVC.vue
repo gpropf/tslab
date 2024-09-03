@@ -6,6 +6,7 @@ import { type ColorInfo } from "./ParametricGridVC.vue"
 import SVGGrid from './SVGGrid.vue';
 import LabelledInput from './LabelledInput.vue';
 import RuleSelect from './RuleSelect.vue';
+import { ref } from 'vue'
 
 const rules = useRulesStore();
 const { ruleGridMap, setRule, getRule } = rules;
@@ -44,4 +45,38 @@ setRule(props.id, ruleGrid)
       :onClickValue="props.onClickValue" :programaticallyCreated="true" :conversionFn="props.conversionFn"
        :id="props.id" :prGrid="ruleGrid"/>
        <RuleSelect :fromRuleId="props.id "/>
+       <LabelledInput v-model:inputValue="ruleOffset" id="rule-offset" inputType="text"
+      placeholder="Enter offset as a comma-delimited string" componentName="Offset String" size="4"/>
 </template>
+
+<script lang="ts">
+
+const zeroVec: Vec2d = [0, 0]
+let zeroMutableVec: Vec2d = [0, 0]
+const ruleOffsetVec = ref(zeroMutableVec)
+
+function stringToVec(s: string): Vec2d | null {
+  const coordinates: string[] = s.split(',');
+  if (coordinates.length < 2) return zeroVec;
+  let v: Vec2d = [parseInt(coordinates[0]), parseInt(coordinates[1])];
+  if (Number.isNaN(v[0]) || Number.isNaN(v[1])) return zeroVec
+  return v;
+}
+
+export default {
+  data() {
+    return {     
+      ruleOffset: ''
+    }
+  },
+  watch: {
+    ruleOffset(value) {
+      let v = stringToVec(value)
+      if (v == null) return null;
+      ruleOffsetVec.value = v;
+      console.log("New value for ruleOffset: ", v)
+    }
+  }
+}
+
+</script>
