@@ -8,20 +8,17 @@ const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLoca
 
 const ruleIds: string[] = getAllRuleIds();
 
-const ruleOptions = computed(() => {
-    let optionString = "";
-    for (let id of ruleIds) {
-        optionString += `<option>${id}</option>`;
-    }
-    return optionString;
-    // let options: [] = ruleIds.forEach((id) => { `<option>${id}</option>` });
-    // return options;
-})
+const props = defineProps<{
+    fromRuleId: string
+}>()
 </script>
 
 <template>
     <select>
-    {{ ruleOptions }}   
+    <option v-for="[key, value] in ruleGridMap" :key="key">
+      Key: {{ key }}
+    
+    </option>
     </select>
 
 </template>

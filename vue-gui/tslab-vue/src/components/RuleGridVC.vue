@@ -5,6 +5,7 @@ import { RuleGrid } from "./../../../../ParametricGrid"
 import { type ColorInfo } from "./ParametricGridVC.vue"
 import SVGGrid from './SVGGrid.vue';
 import LabelledInput from './LabelledInput.vue';
+import RuleSelect from './RuleSelect.vue';
 
 const rules = useRulesStore();
 const { ruleGridMap, setRule, getRule } = rules;
@@ -42,4 +43,5 @@ setRule(props.id, ruleGrid)
       :width="props.width" :height="props.height" :vizFn="props.vizFn" :defaultValue="0"
       :onClickValue="props.onClickValue" :programaticallyCreated="true" :conversionFn="props.conversionFn"
        :id="props.id" :prGrid="ruleGrid"/>
+       <RuleSelect :fromRuleId="props.id "/>
 </template>

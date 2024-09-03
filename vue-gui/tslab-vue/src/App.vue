@@ -15,7 +15,7 @@ import { provide, ref } from 'vue'
 import LabelledInput from './components/LabelledInput.vue';
 import ParametricGridVC from './components/ParametricGridVC.vue';
 
-import RuleSelect from './components/RuleSelect.vue';
+
 
 // const mouseLocation = ref([0,0]);
 
@@ -154,7 +154,7 @@ function linkRules() {
       placeholder="Enter Id string for 'to' rule" componentName="'To' Rule Id" size="20"/>
     <LabelledInput v-model:inputValue="ruleOffset" id="rule-offset" inputType="text"
       placeholder="Enter offset as a comma-delimited string" componentName="Offset String" size="4"/>
-<RuleSelect />
+
     
 
 
