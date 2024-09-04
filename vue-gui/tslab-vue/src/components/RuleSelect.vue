@@ -22,7 +22,7 @@ const filteredKeys = computed(() => {
 function changeSelectedRule(event) {
   selectedRule.value = event.target.value;
   let thisRule = getRule(props.fromRuleId)
-  console.log("New Selection: ", selectedRule.value, " @ offset: ",  thisRule.successorOffset);
+  console.log("For rule ", props.fromRuleId, ", Successor: ", selectedRule.value, " @ offset: ",  thisRule.successorOffset);
 }
 
 </script>
