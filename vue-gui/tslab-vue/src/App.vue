@@ -102,15 +102,15 @@ function serializeWorkspace() {
   console.log(workspaceString)
 }
 
-function linkRules() {
-  let fromRuleLocal = getRule(fromRule.value)
-  let toRuleLocal = getRule(toRule.value)
-  if (fromRuleLocal instanceof RuleGrid && toRuleLocal instanceof RuleGrid && ruleOffsetVec.value.length > 1) {
-    console.log("Current Offset:", ruleOffsetVec.value)
-    let sr = new SuccessionRule(fromRuleLocal, toRuleLocal, ruleOffsetVec.value)
-    console.log("New SR created: ", sr)
-  }
-}
+// function linkRules() {
+//   let fromRuleLocal = getRule(fromRule.value)
+//   let toRuleLocal = getRule(toRule.value)
+//   if (fromRuleLocal instanceof RuleGrid && toRuleLocal instanceof RuleGrid && ruleOffsetVec.value.length > 1) {
+//     console.log("Current Offset:", ruleOffsetVec.value)
+//     let sr = new SuccessionRule(fromRuleLocal, toRuleLocal, ruleOffsetVec.value)
+//     console.log("New SR created: ", sr)
+//   }
+// }
 
 
 
@@ -144,7 +144,7 @@ function linkRules() {
     <!-- <button @click="rgm = serialize(); rgm.forEach((value: string, id: string) => { console.log(`${id}:${value}`) })">Test Serialization</button> -->
 
     <button @click="serializeWorkspace()">Test Serialization</button>
-    <button @click="linkRules()">Link named rules</button>
+    <!-- <button @click="linkRules()">Link named rules</button> -->
 
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
       placeholder="Enter Id string for new rule" componentName="New Rule Id" size="20"/>
@@ -169,13 +169,13 @@ function linkRules() {
 
 const currentSuccessionRule = ref(null)
 
-function stringToVec(s: string): Vec2d | null {
-  const coordinates: string[] = s.split(',');
-  if (coordinates.length < 2) return zeroVec;
-  let v: Vec2d = [parseInt(coordinates[0]), parseInt(coordinates[1])];
-  if (Number.isNaN(v[0]) || Number.isNaN(v[1])) return zeroVec
-  return v;
-}
+// function stringToVec(s: string): Vec2d | null {
+//   const coordinates: string[] = s.split(',');
+//   if (coordinates.length < 2) return zeroVec;
+//   let v: Vec2d = [parseInt(coordinates[0]), parseInt(coordinates[1])];
+//   if (Number.isNaN(v[0]) || Number.isNaN(v[1])) return zeroVec
+//   return v;
+// }
 
 export default {
   data() {
@@ -185,15 +185,15 @@ export default {
       pgheight: '',
       ruleOffset: ''
     }
-  },
-  watch: {
-    ruleOffset(value) {
-      let v = stringToVec(value)
-      if (v == null) return null;
-      ruleOffsetVec.value = v;
-      console.log("New value for ruleOffset: ", v)
-    }
   }
+  // watch: {
+  //   ruleOffset(value) {
+  //     let v = stringToVec(value)
+  //     if (v == null) return null;
+  //     //ruleOffsetVec.value = v;
+  //     console.log("New value for ruleOffset: ", v)
+  //   }
+  // }
 }
 </script>
 

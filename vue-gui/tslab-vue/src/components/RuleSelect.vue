@@ -8,7 +8,7 @@ const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLoca
 
 const ruleIds: string[] = getAllRuleIds();
 const props = defineProps<{
-    fromRuleId: string
+  fromRuleId: string
 }>()
 //ruleGridMap.keys().filter((id) => {return id != props.fromRuleId})
 const selectedRule = ref("")
@@ -17,21 +17,24 @@ const filteredKeys = computed(() => {
   let keys = Array.from(ruleGridMap.keys());
   keys.unshift("Select Successor");
   return keys.filter(id => id != props.fromRuleId && id != "MAIN");
-}) 
+})
 
-function changeSelectedRule(event) {
+function changeSelectedRule(event: any) {
+  if (event.target === null) return
   selectedRule.value = event.target.value;
   let thisRule = getRule(props.fromRuleId)
-  console.log("For rule ", props.fromRuleId, ", Successor: ", selectedRule.value, " @ offset: ",  thisRule.successorOffset);
+  if (thisRule) {
+    console.log("For rule ", props.fromRuleId, ", Successor: ", selectedRule.value, " @ offset: ", thisRule.successorOffset);
+  }
 }
 
 </script>
 
 <template>
-    <select @change="changeSelectedRule($event)">
+  <select @change="changeSelectedRule($event)">
     <option v-for="key in filteredKeys" :key="key">
-      {{ key }}    
+      {{ key }}
     </option>
-    </select>
+  </select>
 
 </template>

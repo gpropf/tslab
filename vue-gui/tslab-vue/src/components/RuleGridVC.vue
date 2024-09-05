@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import { useRulesStore } from '@/stores/rules'
-import { RuleGrid } from "./../../../../ParametricGrid"
+import { RuleGrid, type Vec2d, zeroVec } from "./../../../../ParametricGrid"
 import { type ColorInfo } from "./ParametricGridVC.vue"
 import SVGGrid from './SVGGrid.vue';
 import LabelledInput from './LabelledInput.vue';
@@ -36,11 +36,11 @@ const ruleOffsetString = ref("")
 setRule(props.id, ruleGrid)
 
 
-const zeroVec: Vec2d = [0, 0]
+
 let zeroMutableVec: Vec2d = [0, 0]
 const ruleOffsetVec = ref(zeroMutableVec)
 
-function stringToVec(s: string): Vec2d | null {
+function stringToVec(s: string): Vec2d {
   const coordinates: string[] = s.split(',');
   if (coordinates.length < 2) return zeroVec;
   let v: Vec2d = [parseInt(coordinates[0]), parseInt(coordinates[1])];

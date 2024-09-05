@@ -9,6 +9,8 @@ function logFuel(target: Function, context: any) {
   };
 }
 
+export const zeroVec: Vec2d = [0, 0];
+
 export class TransformMatrix {
   private r1c1: number = 0;
   private r1c2: number = 0;
@@ -240,11 +242,7 @@ export class RuleGrid<T> extends ParametricGrid<T> {
   public set successorOffset(offset: Vec2d) {
     this._successorOffset = offset;
   }
-
-  public get rotatedGrids() {
-    return this._rotatedGrids;
-  }
-
+  
   public toJSON(): Object {
     return {
       width: this.width,
