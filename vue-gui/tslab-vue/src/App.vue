@@ -55,7 +55,8 @@ function testFindAllMatches(ruleName: string) {
   if (mainGrid === undefined) return;
   let ruleGrid = getRule(ruleName);
   if (ruleGrid === undefined) return;
-  mainGrid.simpleMatchAllTransforms(ruleGrid as RuleGrid<any>);
+  let matches = mainGrid.simpleMatchAllTransforms(ruleGrid as RuleGrid<any>);
+  console.log("MATCHES: ", matches)
 }
 
 function createRuleGrid(inwidth: string, inheight: string) {
@@ -121,16 +122,16 @@ function serializeWorkspace() {
   <div>
     <h1>{{ title }}</h1>
     <LabelledInput v-model:inputValue="mainGridWidth" id="main-grid-width-id" inputType="text"
-      placeholder="Enter Main Grid Width" componentName="Main Grid Width" size="4"/>
+      placeholder="Enter Main Grid Width" componentName="Main Grid Width" size="4" />
     <LabelledInput v-model:inputValue="mainGridHeight" id="main-grid-height-id" inputType="text"
-      placeholder="Enter Main Grid Height" componentName="Main Grid Height" size="4"/>
+      placeholder="Enter Main Grid Height" componentName="Main Grid Height" size="4" />
     <!-- <h2>Grid Data Entry</h2> -->
     <LabelledInput v-model:inputValue="onClickValue" id="on-click-value-id" inputType="text"
-      placeholder="Enter Color index number for grids" componentName="Color index" size="2"/>
+      placeholder="Enter Color index number for grids" componentName="Color index" size="2" />
     <LabelledInput v-model:inputValue="pgwidth" id="rule-grid-width" inputType="text"
-      placeholder="Enter width for rulegrid" componentName="Rulegrid Width" size="4"/>
+      placeholder="Enter width for rulegrid" componentName="Rulegrid Width" size="4" />
     <LabelledInput v-model:inputValue="pgheight" id="rule-grid-height" inputType="text"
-      placeholder="Enter height for rulegrid" componentName="Rulegrid Height" size="4"/>
+      placeholder="Enter height for rulegrid" componentName="Rulegrid Height" size="4" />
     <!-- <div>
       <input type="text" v-model="pgwidth" placeholder="Width of new PG">
     </div> -->
@@ -147,14 +148,14 @@ function serializeWorkspace() {
     <!-- <button @click="linkRules()">Link named rules</button> -->
 
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
-      placeholder="Enter Id string for new rule" componentName="New Rule Id" size="20"/>
+      placeholder="Enter Id string for new rule" componentName="New Rule Id" size="20" />
     <LabelledInput v-model:inputValue="fromRule" id="from-rule-id" inputType="text"
-      placeholder="Enter Id string for 'from' rule" componentName="'From' Rule Id" size="20"/>
+      placeholder="Enter Id string for 'from' rule" componentName="'From' Rule Id" size="20" />
     <LabelledInput v-model:inputValue="toRule" id="to-rule-id" inputType="text"
-      placeholder="Enter Id string for 'to' rule" componentName="'To' Rule Id" size="20"/>
-    
+      placeholder="Enter Id string for 'to' rule" componentName="'To' Rule Id" size="20" />
 
-    
+
+
 
 
     <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
@@ -220,6 +221,7 @@ label {
 .rules>* {
   flex: 1 1 300px;
 }
+
 /* Below styles are boilerplate */
 
 header {

@@ -77,6 +77,7 @@ export class ParametricGrid<T> {
 
   public simpleMatchAllTransforms(otherGrid: RuleGrid<T>) {
     let otherGridTransformMap = otherGrid.rotatedGrids;
+    let matchesByTransform = new Map<string, T[]>();
     otherGridTransformMap.forEach((transformedGrid: ParametricGrid<T>, transformKey: string) => {
       let matches = []
       let rawGrid: T[][] = transformedGrid.grid;
@@ -86,11 +87,14 @@ export class ParametricGrid<T> {
           if (match) {
             let matchLoc: Vec2d = [x, y]
             matches.push(matchLoc);
-            console.log(`Transform: ${transformKey}: ${matches}`)
+            // console.log(`Transform: ${transformKey}: ${matches}`)
           }
         }
       }
+      // console.log(`Transform: ${transformKey}: ${matches}`);
+      matchesByTransform.set(transformKey, matches);
     })
+    return matchesByTransform;
   }
 
   public simpleMatchTransformedRule(otherGrid: RuleGrid<T>, offsetX: number, offsetY: number, ruleKey: string): boolean {
