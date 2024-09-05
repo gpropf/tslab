@@ -1,14 +1,5 @@
 export type Vec2d = [x: number, y: number]
 
-function logFuel(target: Function, context: any) {
-  const original = target.prototype.addFuel;
-  target.prototype.addFuel = function (message: string) {
-    console.log(`Before adding fuel, total fuel: ${this.fuel}`);
-    original.apply(this, arguments);
-    console.log(`After adding fuel, total fuel: ${this.fuel}`);
-  };
-}
-
 export const zeroVec: Vec2d = [0, 0];
 
 export class TransformMatrix {
@@ -86,7 +77,7 @@ export class ParametricGrid<T> {
 
   public simpleMatchAllTransforms(otherGrid: RuleGrid<T>) {
     let otherGridTransformMap = otherGrid.rotatedGrids;
-    otherGridTransformMap.forEach((transformedGrid: ParametricGrid<T>, ruleKey: string) => {
+    otherGridTransformMap.forEach((transformedGrid: ParametricGrid<T>, transformKey: string) => {
       let matches = []
       let rawGrid: T[][] = transformedGrid.grid;
       for (let y: number = 0; y < this._height; y++) {
@@ -95,7 +86,7 @@ export class ParametricGrid<T> {
           if (match) {
             let matchLoc: Vec2d = [x, y]
             matches.push(matchLoc);
-            console.log(`Transform: ${ruleKey}: ${matches}`)
+            console.log(`Transform: ${transformKey}: ${matches}`)
           }
         }
       }
@@ -303,11 +294,11 @@ export class RuleGrid<T> extends ParametricGrid<T> {
 
   }
 
-  public simpleMatch(otherGrid: RuleGrid<T>, offsetX: number, offsetY: number, ruleKey: string): boolean {
-    let otherGridRawGrid = otherGrid.getTransformedGrid(ruleKey)
+  // public simpleMatch(otherGrid: RuleGrid<T>, offsetX: number, offsetY: number, ruleKey: string): boolean {
+  //   let otherGridRawGrid = otherGrid.getTransformedGrid(ruleKey)
 
-    return false;
-  }
+  //   return false;
+  // }
 
   constructor(width: number, height: number, initialValue: T, grid?: T[][]) {
     super(width, height, initialValue, grid);
