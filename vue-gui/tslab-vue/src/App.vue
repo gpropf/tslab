@@ -2,7 +2,7 @@
 
 
 import { useRulesStore } from '@/stores/rules'
-import { ParametricGrid, RuleGrid, SuccessionRule, type Vec2d } from "./../../../ParametricGrid"
+import { ParametricGrid, RuleGrid, type Vec2d } from "./../../../ParametricGrid"
 
 /// <reference path="./../../../ParametricGrid.ts"/>
 
@@ -167,7 +167,7 @@ function serializeWorkspace() {
 
 <script lang="ts">
 
-const currentSuccessionRule = ref(null)
+//const currentSuccessionRule = ref(null)
 
 // function stringToVec(s: string): Vec2d | null {
 //   const coordinates: string[] = s.split(',');

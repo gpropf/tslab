@@ -49,8 +49,7 @@ function stringToVec(s: string): Vec2d {
 }
 
 function changeOffset() {
-    ruleGrid.successorOffset = stringToVec(ruleOffsetString.value)
-    console.log("New offset: ", ruleGrid.successorOffset)
+    ruleGrid.successorOffset = stringToVec(ruleOffsetString.value)    
 }
 
 </script>

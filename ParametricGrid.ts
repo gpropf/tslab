@@ -208,14 +208,14 @@ export class ParametricGrid<T> {
   }
 }
 
-export function pgFactory(s: string) {
-  let obj = JSON.parse(s);
-  if (obj.type == "ParametricGrid") {
-    //console.log(`obj.class: ${obj.type}`)
-    let pgrid: ParametricGrid<number> = new ParametricGrid(obj.width, obj.height, 777, obj.grid);
-    return pgrid;
-  }
-}
+// export function pgFactory(s: string) {
+//   let obj = JSON.parse(s);
+//   if (obj.type == "ParametricGrid") {
+//     //console.log(`obj.class: ${obj.type}`)
+//     let pgrid: ParametricGrid<number> = new ParametricGrid(obj.width, obj.height, 777, obj.grid);
+//     return pgrid;
+//   }
+// }
 
 export const rotationMap = new Map<string, TransformMatrix>();
 //rotationMap.set("r0", new TransformMatrix(0, [0, 0], [1, 0, 0, 1]));
@@ -225,7 +225,7 @@ rotationMap.set("r270", new TransformMatrix(Math.PI * 3 / 2, [0, 0], [0, 1, -1, 
 
 export class RuleGrid<T> extends ParametricGrid<T> {
   private _priority?: number = 0;
-
+  private _rotatedOffsets: Map<string, Vec2d>;
 
   private _rotatedGrids = new Map<string, ParametricGrid<T>>();
 
@@ -241,7 +241,23 @@ export class RuleGrid<T> extends ParametricGrid<T> {
 
   public set successorOffset(offset: Vec2d) {
     this._successorOffset = offset;
-  }
+    console.log("r0: ", this._successorOffset)
+    let rm = rotationMap.get("r90");
+    if (rm) {
+      this._rotatedOffsets.set("r90", rm.multiplyByVec(offset))
+      console.log("r90: ", this._rotatedOffsets.get("r90"))
+    }
+    rm = rotationMap.get("r180");
+    if (rm) {
+      this._rotatedOffsets.set("r180", rm.multiplyByVec(offset))
+      console.log("r180: ", this._rotatedOffsets.get("r180"))
+    }
+    rm = rotationMap.get("r270");
+    if (rm) {
+      this._rotatedOffsets.set("r270", rm.multiplyByVec(offset))
+      console.log("r270: ", this._rotatedOffsets.get("r270"))
+    }
+  }  
   
   public toJSON(): Object {
     return {
@@ -296,6 +312,7 @@ export class RuleGrid<T> extends ParametricGrid<T> {
   constructor(width: number, height: number, initialValue: T, grid?: T[][]) {
     super(width, height, initialValue, grid);
     this._priority = 100;
+    this._rotatedOffsets = new Map<string, Vec2d>();
     this._rotatedGrids.set("r0", this as ParametricGrid<T>);
     this._rotatedGrids.set("r90", new ParametricGrid<T>(this.height, this.width, initialValue));
     this._rotatedGrids.set("r180", new ParametricGrid<T>(this.width, this.height, initialValue));
