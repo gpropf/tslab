@@ -67,10 +67,12 @@ export const useRulesStore = defineStore('rules', () => {
     let mainGrid = ruleGridMap.value.get("MAIN");
     let matchMap = new Map<string, Map<string, any[]>>();
     ruleKeys.forEach(key => {
-      if (key != "MAIN") {
+      if (key != "MAIN" && mainGrid) {
         let rule = ruleGridMap.value.get(key)
-        let matchesForRule = mainGrid.simpleMatchAllTransforms(rule)
-        matchMap.set(key, matchesForRule);
+        if (rule as RuleGrid<any>) {
+          let matchesForRule = mainGrid.simpleMatchAllTransforms(rule as RuleGrid<any>)          
+          matchMap.set(key, matchesForRule);
+        }
       }
     });
     return matchMap;

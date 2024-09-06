@@ -1,6 +1,7 @@
 // import { useRulesStore } from '@/stores/rules'
 // const rules = useRulesStore();
 // const { ruleGridMap, setRule, getRule } = rules;
+import { JsonSerializer, throwError } from 'typescript-json-serializer';
 
 export type Vec2d = [x: number, y: number]
 
@@ -81,7 +82,7 @@ export class ParametricGrid<T> {
 
   public simpleMatchAllTransforms(otherGrid: RuleGrid<T>) {
     let otherGridTransformMap = otherGrid.rotatedGrids;
-    let matchesByTransform = new Map<string, T[]>();
+    let matchesByTransform = new Map<string, Vec2d[]>();
     otherGridTransformMap.forEach((transformedGrid: ParametricGrid<T>, transformKey: string) => {
       let matches = []
       let rawGrid: T[][] = transformedGrid.grid;
