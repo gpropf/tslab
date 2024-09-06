@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { ParametricGrid } from "../../../../ParametricGrid"
+import { ParametricGrid } from "../../../../PixelReactor"
 
 export const useCounterStore = defineStore('counter', () => {
   const count = ref(0)

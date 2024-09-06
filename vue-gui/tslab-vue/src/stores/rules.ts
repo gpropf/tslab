@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { RuleGrid, type Vec2d } from "../../../../ParametricGrid"
+import { RuleGrid, type Vec2d } from "../../../../PixelReactor"
 
 export const useRulesStore = defineStore('rules', () => {
 

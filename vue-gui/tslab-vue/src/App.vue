@@ -2,7 +2,7 @@
 
 
 import { useRulesStore } from '@/stores/rules'
-import { ParametricGrid, RuleGrid, type Vec2d } from "./../../../ParametricGrid"
+import { ParametricGrid, RuleGrid, type Vec2d } from "../../../PixelReactor"
 
 /// <reference path="./../../../ParametricGrid.ts"/>
 

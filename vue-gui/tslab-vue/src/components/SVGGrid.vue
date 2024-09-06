@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // import { useRulesStore } from '@/stores/rules'
-import { ParametricGrid, RuleGrid } from "./../../../../ParametricGrid"
+import { ParametricGrid, RuleGrid } from "../../../../PixelReactor"
 import { type ColorInfo, type ObjectVisualizationFn, type ConversionFn } from "./ParametricGridVC.vue"
 import { inject } from 'vue'
 import { useRulesStore } from '@/stores/rules'
