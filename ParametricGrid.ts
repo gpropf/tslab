@@ -2,6 +2,7 @@
 // const rules = useRulesStore();
 // const { ruleGridMap, setRule, getRule } = rules;
 import { JsonSerializer, throwError } from 'typescript-json-serializer';
+import { JsonObject, JsonProperty } from 'typescript-json-serializer';
 
 export type Vec2d = [x: number, y: number]
 
@@ -40,10 +41,11 @@ export class TransformMatrix {
   // for the rotation part.
 }
 
+@JsonObject()
 export class ParametricGrid<T> {
-  private _width: number;
-  private _height: number;
-  private _grid: T[][] = [];
+  @JsonProperty() private _width: number;
+  @JsonProperty() private _height: number;
+  @JsonProperty() private _grid: T[][] = [];
 
   constructor(width: number, height: number, initialValue: T, grid?: T[][]) {
     this._width = width;
@@ -223,13 +225,14 @@ rotationMap.set("r90", new TransformMatrix(Math.PI / 2, [0, 0], [0, -1, 1, 0]))
 rotationMap.set("r180", new TransformMatrix(Math.PI, [0, 0], [-1, 0, 0, -1]))
 rotationMap.set("r270", new TransformMatrix(Math.PI * 3 / 2, [0, 0], [0, 1, -1, 0]))
 
+@JsonObject()
 export class RuleGrid<T> extends ParametricGrid<T> {
-  private _priority?: number = 0;
-  private _rotatedOffsets: Map<string, Vec2d>;
+  @JsonProperty() private _priority?: number = 0;
+  @JsonProperty() private _rotatedOffsets: Map<string, Vec2d>;
 
-  private _rotatedGrids = new Map<string, ParametricGrid<T>>();
+  @JsonProperty() private _rotatedGrids = new Map<string, ParametricGrid<T>>();
 
-  private _successorOffset: Vec2d = [0,0];
+  @JsonProperty() private _successorOffset: Vec2d = [0,0];
 
   public get rotatedGrids() {
     return this._rotatedGrids;

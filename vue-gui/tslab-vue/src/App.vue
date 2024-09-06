@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+import { JsonSerializer, throwError } from 'typescript-json-serializer';
 
 import { useRulesStore } from '@/stores/rules'
 import { ParametricGrid, RuleGrid, type Vec2d } from "./../../../ParametricGrid"
@@ -28,6 +28,8 @@ import ParametricGridVC from './components/ParametricGridVC.vue';
 //   updateMouseLocation
 // });
 
+const defaultSerializer = new JsonSerializer();
+
 const rules = useRulesStore();
 const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds, getAllMatches } = rules;
 
@@ -40,6 +42,8 @@ numberToColorMap.set(4, "#AA00AA");
 numberToColorMap.set(5, "#00AAFF");
 const numColors = numberToColorMap.size;
 let rgm: Map<string, string> = new Map<string, string>();
+
+
 
 function vizFn(cellval: number) {
   let hexColor = numberToColorMap.get(cellval % numColors);
@@ -104,8 +108,13 @@ function formatVector(v: Vec2d) {
 }
 
 function serializeWorkspace() {
-  let workspaceString = serialize();
-  console.log(workspaceString)
+  // let workspaceString = serialize();
+  // console.log(workspaceString)
+  let mainGrid = getRule("newrule")
+  if (mainGrid) {
+    const data = defaultSerializer.serialize(mainGrid);
+    console.log(data)
+  }
 }
 
 // function linkRules() {
