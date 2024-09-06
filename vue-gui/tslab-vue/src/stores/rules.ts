@@ -3,11 +3,11 @@ import { defineStore } from 'pinia'
 import { RuleGrid, type Vec2d } from "../../../../ParametricGrid"
 
 export const useRulesStore = defineStore('rules', () => {
-  
+
   const ruleGridMap = ref(new Map<string, RuleGrid<any>>);
-  let outOfBounds: Vec2d = [-1,-1];
+  let outOfBounds: Vec2d = [-1, -1];
   const mouseLocation = ref(outOfBounds)
-  
+
   function setRule(id: string, pgrid: RuleGrid<any>) {
     ruleGridMap.value.set(id, pgrid)
     console.log(ruleGridMap.value)
@@ -17,7 +17,7 @@ export const useRulesStore = defineStore('rules', () => {
     const rg = ruleGridMap.value.get(id)
     console.log(rg)
     return rg
-  }  
+  }
 
   function serialize(): string {
     // let ruleStringMap = new Map<string, string>();
@@ -38,10 +38,10 @@ export const useRulesStore = defineStore('rules', () => {
     //return ruleStringMap;
   }
 
-  
+
 
   function deserialize(jsonText: string) {
-    
+
   }
 
   function getMouseLocation() {
@@ -56,17 +56,25 @@ export const useRulesStore = defineStore('rules', () => {
   function getAllRuleIds() {
     let ids: string[] = []
     const obj = Object.fromEntries(ruleGridMap.value);
+    let ruleKeys = Array.from(ruleGridMap.value.keys());
 
-    for (let entry in obj) {
-      //console.log("IDS:", entry)
-    }
 
-    // ruleGridMap.value.forEach((rule, id) => {
-    //   ids.append(rule);
-    // });
-    
-    return ids;
+    return ruleKeys;
   }
 
-  return { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds }
+  function getAllMatches() {
+    let ruleKeys = getAllRuleIds();
+    let mainGrid = ruleGridMap.value.get("MAIN");
+    let matchMap = new Map<string, Map<string, any[]>>();
+    ruleKeys.forEach(key => {
+      if (key != "MAIN") {
+        let rule = ruleGridMap.value.get(key)
+        let matchesForRule = mainGrid.simpleMatchAllTransforms(rule)
+        matchMap.set(key, matchesForRule);
+      }
+    });
+    return matchMap;
+  }
+
+  return { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds, getAllMatches }
 })

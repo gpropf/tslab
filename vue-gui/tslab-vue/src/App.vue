@@ -29,7 +29,7 @@ import ParametricGridVC from './components/ParametricGridVC.vue';
 // });
 
 const rules = useRulesStore();
-const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation } = rules;
+const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds, getAllMatches } = rules;
 
 const numberToColorMap = new Map();
 numberToColorMap.set(0, "#000000");
@@ -57,6 +57,11 @@ function testFindAllMatches(ruleName: string) {
   if (ruleGrid === undefined) return;
   let matches = mainGrid.simpleMatchAllTransforms(ruleGrid as RuleGrid<any>);
   console.log("MATCHES: ", matches)
+}
+
+function testMatchingAllRules() {
+  let matchMap = getAllMatches();
+  console.log("ALL THE MATCHES! ", matchMap);
 }
 
 function createRuleGrid(inwidth: string, inheight: string) {
@@ -141,7 +146,7 @@ function serializeWorkspace() {
     <div> Mouse Location: {{ formatVector(mouseLocation) }}</div>
     <button @click="createRuleGrid(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
-    <button @click="testFindAllMatches('newrule')">Test Match</button>
+    <button @click="testMatchingAllRules()">Test Match</button>
     <!-- <button @click="rgm = serialize(); rgm.forEach((value: string, id: string) => { console.log(`${id}:${value}`) })">Test Serialization</button> -->
 
     <button @click="serializeWorkspace()">Test Serialization</button>

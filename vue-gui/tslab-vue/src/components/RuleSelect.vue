@@ -7,6 +7,8 @@ const rules = useRulesStore();
 const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds } = rules;
 
 const ruleIds: string[] = getAllRuleIds();
+
+console.log("ruleIds: ", ruleIds)
 const props = defineProps<{
   fromRuleId: string
 }>()
