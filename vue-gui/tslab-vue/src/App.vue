@@ -43,7 +43,7 @@ let rgm: Map<string, string> = new Map<string, string>();
 
 function vizFn(cellval: number) {
   let hexColor = numberToColorMap.get(cellval % numColors);
-  let colorInfo: ColorInfo = { fillRGB: `${hexColor}` }; return colorInfo;
+  let colorInfo: ColorInfo = { fillRGB: `${hexColor}`, strokeRGB: "#BBAABB" }; return colorInfo;
 }
 
 function conversionFn(v: string) {

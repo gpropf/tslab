@@ -15,7 +15,7 @@ import { ref } from 'vue'
 
 export interface ColorInfo {
     fillRGB: string
-    //strokeRGB: string;
+    strokeRGB: string;
 }
 
 const rules = useRulesStore();
