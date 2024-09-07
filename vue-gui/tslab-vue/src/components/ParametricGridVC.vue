@@ -14,7 +14,8 @@ import { ref } from 'vue'
 //const mouseLocation = inject('mouseLocation');
 
 export interface ColorInfo {
-    fillRGB: string;
+    fillRGB: string
+    //strokeRGB: string;
 }
 
 const rules = useRulesStore();
