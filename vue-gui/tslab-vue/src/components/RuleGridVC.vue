@@ -2,7 +2,8 @@
 
 import { useRulesStore } from '@/stores/rules'
 import { RuleGrid, type Vec2d, zeroVec } from "../../../../PixelReactor"
-import { type ColorInfo } from "./ParametricGridVC.vue"
+//import { type ColorInfo } from "./ParametricGridVC.vue"
+import { type ColorInfo, type ObjectVisualizationFn, type ConversionFn } from "./ParametricGridVC.vue"
 import SVGGrid from './SVGGrid.vue';
 import LabelledInput from './LabelledInput.vue';
 import RuleSelect from './RuleSelect.vue';
@@ -11,8 +12,8 @@ import { ref } from 'vue'
 const rules = useRulesStore();
 const { ruleGridMap, setRule, getRule } = rules;
 
-type ObjectVisualizationFn = (a: any) => ColorInfo
-type ConversionFn = (a: any) => any
+//type ObjectVisualizationFn = (a: any) => ColorInfo
+//type ConversionFn = (a: any) => any
 
 
 const props = defineProps<{
