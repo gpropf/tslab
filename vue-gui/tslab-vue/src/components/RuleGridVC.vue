@@ -35,7 +35,7 @@ let viewBox = `0 0 ${props.width} ${props.height}`;
 const ruleOffsetString = ref("")
 
 
-setRule(props.id, ruleGrid)
+//setRule(props.id, ruleGrid)
 
 let prRef = getPixelReactor();
 prRef.value.setRule(props.id, ruleGrid)

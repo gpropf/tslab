@@ -4,9 +4,12 @@ import { computed, ref } from 'vue';
 
 import { useRulesStore } from '@/stores/rules';
 const rules = useRulesStore();
-const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds } = rules;
+const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds, getAllMatches, setPixelReactor, getPixelReactor } = rules;
 
-const ruleIds: string[] = getAllRuleIds();
+let prRef = getPixelReactor();
+//prRef.value.setRule(props.id, ruleGrid)
+
+const ruleIds: string[] = prRef.value.getAllRuleIds();
 
 console.log("ruleIds: ", ruleIds)
 const props = defineProps<{
@@ -16,7 +19,7 @@ const props = defineProps<{
 const selectedRule = ref("")
 
 const filteredKeys = computed(() => {
-  let keys = Array.from(ruleGridMap.keys());
+  let keys = Array.from(prRef.value.getAllRuleIds());
   keys.unshift("Select Successor");
   return keys.filter(id => id != props.fromRuleId && id != "MAIN");
 })
@@ -24,7 +27,7 @@ const filteredKeys = computed(() => {
 function changeSelectedRule(event: any) {
   if (event.target === null) return
   selectedRule.value = event.target.value;
-  let thisRule = getRule(props.fromRuleId)
+  let thisRule = prRef.value.getRule(props.fromRuleId)
   if (thisRule) {
     console.log("For rule ", props.fromRuleId, ", Successor: ", selectedRule.value, " @ offset: ", thisRule.successorOffset);
   }

@@ -50,14 +50,14 @@ function conversionFn(v: string) {
   return parseInt(v);
 }
 
-function testFindAllMatches(ruleName: string) {
-  let mainGrid = getRule("MAIN");
-  if (mainGrid === undefined) return;
-  let ruleGrid = getRule(ruleName);
-  if (ruleGrid === undefined) return;
-  let matches = mainGrid.simpleMatchAllTransforms(ruleGrid as RuleGrid<any>);
-  console.log("MATCHES: ", matches)
-}
+// function testFindAllMatches(ruleName: string) {
+//   let mainGrid = getRule("MAIN");
+//   if (mainGrid === undefined) return;
+//   let ruleGrid = getRule(ruleName);
+//   if (ruleGrid === undefined) return;
+//   let matches = mainGrid.simpleMatchAllTransforms(ruleGrid as RuleGrid<any>);
+//   console.log("MATCHES: ", matches)
+// }
 
 function testMatchingAllRules() {
   let matchMap = pixelReactor.getAllMatches();
@@ -107,7 +107,7 @@ function formatVector(v: Vec2d) {
 }
 
 function serializeWorkspace() {
-  let workspaceString = serialize();
+  let workspaceString = pixelReactor.serialize();
   console.log(workspaceString)
 }
 
