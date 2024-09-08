@@ -85,5 +85,5 @@ export const useRulesStore = defineStore('rules', () => {
     return _pixelReactor;
   }
 
-  return { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds, getAllMatches, setPixelReactor, getPixelReactor }
+  return { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor }
 })

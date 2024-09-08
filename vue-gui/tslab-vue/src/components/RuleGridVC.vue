@@ -10,7 +10,7 @@ import RuleSelect from './RuleSelect.vue';
 import { ref } from 'vue'
 
 const rules = useRulesStore();
-const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds, getAllMatches, setPixelReactor, getPixelReactor } = rules;
+const { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor } = rules;
 
 //type ObjectVisualizationFn = (a: any) => ColorInfo
 //type ConversionFn = (a: any) => any

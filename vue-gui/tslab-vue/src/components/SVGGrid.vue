@@ -7,7 +7,7 @@ import { inject } from 'vue'
 import { useRulesStore } from '@/stores/rules'
 
 const rules = useRulesStore();
-const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation  } = rules;
+const { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor } = rules;
 
 //const { mouseLocation, updateMouseLocation } = inject('mouseLocation');
 

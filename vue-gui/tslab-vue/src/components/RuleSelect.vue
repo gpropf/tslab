@@ -4,7 +4,7 @@ import { computed, ref } from 'vue';
 
 import { useRulesStore } from '@/stores/rules';
 const rules = useRulesStore();
-const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds, getAllMatches, setPixelReactor, getPixelReactor } = rules;
+const { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor } = rules;
 
 let prRef = getPixelReactor();
 //prRef.value.setRule(props.id, ruleGrid)

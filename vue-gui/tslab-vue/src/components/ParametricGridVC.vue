@@ -19,7 +19,7 @@ export interface ColorInfo {
 }
 
 const rules = useRulesStore();
-const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds, getAllMatches, setPixelReactor, getPixelReactor } = rules;
+const { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor } = rules;
 
 export type ObjectVisualizationFn = (a: any) => ColorInfo
 export type ConversionFn = (a: any) => any
