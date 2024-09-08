@@ -9,9 +9,9 @@ const { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor } =
 let prRef = getPixelReactor();
 //prRef.value.setRule(props.id, ruleGrid)
 
-const ruleIds: string[] = prRef.value.getAllRuleIds();
+//const ruleIds: string[] = prRef.value.getAllRuleIds();
 
-console.log("ruleIds: ", ruleIds)
+//console.log("ruleIds: ", ruleIds)
 const props = defineProps<{
   fromRuleId: string
 }>()
