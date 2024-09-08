@@ -19,7 +19,7 @@ const props = defineProps<{
 const selectedRule = ref("")
 
 const filteredKeys = computed(() => {
-  let keys = Array.from(prRef.value.getAllRuleIds());
+  let keys: string[] = Array.from(prRef.value.getAllRuleIds());
   keys.unshift("Select Successor");
   return keys.filter(id => id != props.fromRuleId && id != "MAIN");
 })
