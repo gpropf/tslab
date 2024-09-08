@@ -4,6 +4,12 @@ export type Vec2d = [x: number, y: number]
 
 export const zeroVec: Vec2d = [0, 0];
 
+export class PixelReactor {
+  
+}
+
+
+
 export class TransformMatrix {
   private r1c1: number = 0;
   private r1c2: number = 0;
