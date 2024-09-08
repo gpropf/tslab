@@ -2,7 +2,7 @@
 
 
 import { useRulesStore } from '@/stores/rules'
-import { ParametricGrid, RuleGrid, type Vec2d } from "../../../PixelReactor"
+import { ParametricGrid, PixelReactor, RuleGrid, type Vec2d } from "../../../PixelReactor"
 
 /// <reference path="./../../../ParametricGrid.ts"/>
 
@@ -29,7 +29,7 @@ import ParametricGridVC from './components/ParametricGridVC.vue';
 // });
 
 const rules = useRulesStore();
-const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds, getAllMatches } = rules;
+const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds, getAllMatches, setPixelReactor, getPixelReactor } = rules;
 
 const numberToColorMap = new Map();
 numberToColorMap.set(0, "#000000");
@@ -60,12 +60,12 @@ function testFindAllMatches(ruleName: string) {
 }
 
 function testMatchingAllRules() {
-  let matchMap = getAllMatches();
-  console.log("ALL THE MATCHES! ", matchMap);
+  let matchMap = pixelReactor.getAllMatches();
+  console.log("PR: ALL THE MATCHES! ", matchMap);
 }
 
 function createRuleGrid(inwidth: string, inheight: string) {
-  let existingRule = getRule(newRuleId.value);
+  let existingRule = pixelReactor.getRule(newRuleId.value);
   if (existingRule != undefined) {
     alert(`Rule id '${newRuleId.value}' is in use. Choose another id.`);
     return;
@@ -96,6 +96,9 @@ const screenHeight = ref(400);
 const fromRule = ref("");
 const toRule = ref("");
 
+let pixelReactor = new PixelReactor<number>();
+
+setPixelReactor(pixelReactor);
 
 let mouseLocation = getMouseLocation();
 
@@ -150,6 +153,7 @@ function serializeWorkspace() {
     <!-- <button @click="rgm = serialize(); rgm.forEach((value: string, id: string) => { console.log(`${id}:${value}`) })">Test Serialization</button> -->
 
     <button @click="serializeWorkspace()">Test Serialization</button>
+    <button @click="console.log('PR Ids: ', pixelReactor.getAllRuleIds())">Print PR rule IDs</button>
     <!-- <button @click="linkRules()">Link named rules</button> -->
 
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"

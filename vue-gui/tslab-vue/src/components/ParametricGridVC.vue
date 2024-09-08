@@ -19,7 +19,7 @@ export interface ColorInfo {
 }
 
 const rules = useRulesStore();
-const { ruleGridMap, setRule, getRule } = rules;
+const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds, getAllMatches, setPixelReactor, getPixelReactor } = rules;
 
 export type ObjectVisualizationFn = (a: any) => ColorInfo
 export type ConversionFn = (a: any) => any
@@ -41,6 +41,9 @@ let parametricGrid = new ParametricGrid<any>(props.width, props.height, props.de
 let viewBox = `0 0 ${props.width} ${props.height}`;
 
 setRule(props.id, parametricGrid as RuleGrid<any>)
+
+let prRef = getPixelReactor();
+prRef.value.setRule(props.id, parametricGrid as RuleGrid<any>);
 
 </script>
 

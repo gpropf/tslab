@@ -10,7 +10,7 @@ import RuleSelect from './RuleSelect.vue';
 import { ref } from 'vue'
 
 const rules = useRulesStore();
-const { ruleGridMap, setRule, getRule } = rules;
+const { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds, getAllMatches, setPixelReactor, getPixelReactor } = rules;
 
 //type ObjectVisualizationFn = (a: any) => ColorInfo
 //type ConversionFn = (a: any) => any
@@ -34,7 +34,11 @@ let ruleGrid = new RuleGrid<any>(props.width, props.height, props.defaultValue);
 let viewBox = `0 0 ${props.width} ${props.height}`;
 const ruleOffsetString = ref("")
 
+
 setRule(props.id, ruleGrid)
+
+let prRef = getPixelReactor();
+prRef.value.setRule(props.id, ruleGrid)
 
 
 

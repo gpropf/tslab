@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { RuleGrid, type Vec2d } from "../../../../PixelReactor"
+import { PixelReactor, RuleGrid, type Vec2d } from "../../../../PixelReactor"
 
 export const useRulesStore = defineStore('rules', () => {
 
@@ -76,5 +76,14 @@ export const useRulesStore = defineStore('rules', () => {
     return matchMap;
   }
 
-  return { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds, getAllMatches }
+  const _pixelReactor = ref()
+  function setPixelReactor(pixelReactor: PixelReactor<any>) {
+    _pixelReactor.value = pixelReactor;
+  }
+
+  function getPixelReactor() {
+    return _pixelReactor;
+  }
+
+  return { ruleGridMap, setRule, getRule, serialize, getMouseLocation, setMouseLocation, getAllRuleIds, getAllMatches, setPixelReactor, getPixelReactor }
 })
