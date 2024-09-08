@@ -4,8 +4,59 @@ export type Vec2d = [x: number, y: number]
 
 export const zeroVec: Vec2d = [0, 0];
 
-export class PixelReactor {
-  
+export class PixelReactor<T> {
+  private _ruleGridMap: Map<string, RuleGrid<T>>;
+
+
+
+  constructor() {
+    this._ruleGridMap = new Map<string, RuleGrid<T>>;
+  }
+
+  public setRule(id: string, pgrid: RuleGrid<T>) {
+    this._ruleGridMap.set(id, pgrid)
+    console.log(this._ruleGridMap)
+  }
+
+  public getRule(id: string) {
+    let rg = this._ruleGridMap.get(id)
+    console.log(rg)
+    return rg
+  }
+
+  public serialize(): string {
+    return this.serializeRules();
+  }
+
+  public serializeRules() {
+    const obj = Object.fromEntries(this._ruleGridMap);
+    return JSON.stringify(obj);
+  }
+
+  public deserialize(jsonText: string) {
+
+  }
+
+  public getAllRuleIds() {
+    let ruleKeys = Array.from(this._ruleGridMap.keys());
+    return ruleKeys;
+  }
+
+  public getAllMatches() {
+    let ruleKeys = this.getAllRuleIds();
+    let mainGrid = this._ruleGridMap.get("MAIN");
+    let matchMap = new Map<string, Map<string, Vec2d[]>>();
+    ruleKeys.forEach(key => {
+      if (key != "MAIN" && mainGrid) {
+        let rule = this._ruleGridMap.get(key)
+        if (rule as RuleGrid<T>) {
+          let matchesForRule = mainGrid.simpleMatchAllTransforms(rule as RuleGrid<T>)
+          matchMap.set(key, matchesForRule);
+        }
+      }
+    });
+    return matchMap;
+  }
 }
 
 
