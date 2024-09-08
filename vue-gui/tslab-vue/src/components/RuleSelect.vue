@@ -28,7 +28,9 @@ function changeSelectedRule(event: any) {
   if (event.target === null) return
   selectedRule.value = event.target.value;
   let thisRule = prRef.value.getRule(props.fromRuleId)
-  if (thisRule) {
+  let successor = prRef.value.getRule(selectedRule.value)
+  if (thisRule && successor) {
+    thisRule.successor = successor
     console.log("For rule ", props.fromRuleId, ", Successor: ", selectedRule.value, " @ offset: ", thisRule.successorOffset);
   }
 }

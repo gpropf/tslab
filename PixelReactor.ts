@@ -281,6 +281,7 @@ export class RuleGrid<T> extends ParametricGrid<T> {
   private _priority?: number = 0;
   private _rotatedOffsets: Map<string, Vec2d>;
 
+  private _successor: RuleGrid<T>;
   private _rotatedGrids = new Map<string, ParametricGrid<T>>();
 
   private _successorOffset: Vec2d = [0, 0];
@@ -291,6 +292,15 @@ export class RuleGrid<T> extends ParametricGrid<T> {
 
   public get successorOffset() {
     return this._successorOffset;
+  }
+
+  public set successor(s) {
+    this._successor = s;
+    console.log("New successor: ", this._successor)
+  }
+
+  public get successor() {
+    return this._successor;
   }
 
   public set successorOffset(offset: Vec2d) {
