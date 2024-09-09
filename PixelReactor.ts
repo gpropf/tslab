@@ -7,7 +7,19 @@ export const zeroVec: Vec2d = [0, 0];
 export class PixelReactor<T> {
   private _ruleGridMap: Map<string, RuleGrid<T>>;
 
+  private _currentRuleIndex: number = 1;
 
+  public getNewRuleIndex(): number {
+    this._currentRuleIndex += 1;
+    return this._currentRuleIndex;
+  }
+  public get currentRuleIndex() {
+    return this._currentRuleIndex;
+  }
+
+  public set currentRuleIndex(newIdx: number) {
+    this._currentRuleIndex = newIdx;
+  }
 
   constructor() {
     this._ruleGridMap = new Map<string, RuleGrid<T>>;

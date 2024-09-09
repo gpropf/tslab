@@ -76,6 +76,9 @@ function createRuleGrid(inwidth: string, inheight: string) {
     screenWidth: 150, screenHeight: 100, id: newRuleId.value, priority: 50
   })
 
+  let newRuleIndex = pixelReactor.getNewRuleIndex();
+  newRuleId.value = `rule-${newRuleIndex}`
+
   const wrapper = document.getElementById("dynamic_content")
   if (wrapper) {
     const newDiv = document.createElement("div")
@@ -85,7 +88,7 @@ function createRuleGrid(inwidth: string, inheight: string) {
   }
 }
 
-const newRuleId = ref("newrule")
+const newRuleId = ref("rule-1")
 const onClickValue = ref("1")
 const mainGridName = ref("MAIN")
 const mainGridKey = ref(0);
