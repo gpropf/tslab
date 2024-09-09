@@ -278,7 +278,7 @@ rotationMap.set("r180", new TransformMatrix(Math.PI, [0, 0], [-1, 0, 0, -1]))
 rotationMap.set("r270", new TransformMatrix(Math.PI * 3 / 2, [0, 0], [0, 1, -1, 0]))
 
 export class RuleGrid<T> extends ParametricGrid<T> {
-  private _priority?: number = 0;
+  private _priority: number = 0;
   private _rotatedOffsets: Map<string, Vec2d>;
 
   private _successor: RuleGrid<T> | null = null;
