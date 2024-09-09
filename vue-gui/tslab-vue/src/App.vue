@@ -93,8 +93,8 @@ const mainGridWidth = ref("60");
 const mainGridHeight = ref("40");
 const screenWidth = ref(600);
 const screenHeight = ref(400);
-const fromRule = ref("");
-const toRule = ref("");
+//const fromRule = ref("");
+//const toRule = ref("");
 
 let pixelReactor = new PixelReactor<number>();
 
@@ -158,10 +158,10 @@ function serializeWorkspace() {
 
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
       placeholder="Enter Id string for new rule" componentName="New Rule Id" size="20" />
-    <LabelledInput v-model:inputValue="fromRule" id="from-rule-id" inputType="text"
+    <!-- <LabelledInput v-model:inputValue="fromRule" id="from-rule-id" inputType="text"
       placeholder="Enter Id string for 'from' rule" componentName="'From' Rule Id" size="20" />
     <LabelledInput v-model:inputValue="toRule" id="to-rule-id" inputType="text"
-      placeholder="Enter Id string for 'to' rule" componentName="'To' Rule Id" size="20" />
+      placeholder="Enter Id string for 'to' rule" componentName="'To' Rule Id" size="20" /> -->
 
 
 
