@@ -37,7 +37,7 @@ const props = defineProps<{
     id: string    
 }>()
 
-let parametricGrid = new ParametricGrid<any>(props.width, props.height, props.defaultValue);
+let parametricGrid = new ParametricGrid<any>(props.width, props.height, props.defaultValue, props.id);
 let viewBox = `0 0 ${props.width} ${props.height}`;
 
 //setRule(props.id, parametricGrid as RuleGrid<any>)

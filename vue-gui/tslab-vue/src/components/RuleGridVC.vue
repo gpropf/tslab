@@ -30,7 +30,7 @@ const props = defineProps<{
     priority: number
 }>()
 
-let ruleGrid = new RuleGrid<any>(props.width, props.height, props.defaultValue);
+let ruleGrid = new RuleGrid<any>(props.width, props.height, props.defaultValue, props.id);
 let viewBox = `0 0 ${props.width} ${props.height}`;
 const ruleOffsetString = ref("")
 
