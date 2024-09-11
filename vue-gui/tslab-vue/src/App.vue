@@ -14,6 +14,7 @@ import { provide, ref } from 'vue'
 //import {  } from 'vue'
 import LabelledInput from './components/LabelledInput.vue';
 import ParametricGridVC from './components/ParametricGridVC.vue';
+import { Serializer, Rocket } from "../../../Gson";
 
 
 
@@ -104,6 +105,17 @@ let pixelReactor = new PixelReactor<number>();
 setPixelReactor(pixelReactor);
 
 let mouseLocation = getMouseLocation();
+
+const rocket = new Rocket()
+console.log((rocket as any).fuel)
+console.log((rocket as any).class)
+rocket.addFuel(10);
+
+// Test of my JSON serializer stuff
+let serializer = new Serializer();
+let prAttrs = serializer.describeClass(pixelReactor)
+console.log(prAttrs)
+
 
 function formatVector(v: Vec2d) {
   return `< ${v[0]},${v[1]} >`

@@ -1,14 +1,10 @@
+export class Serializer {
+    public describeClass(instance: any): Array<string> {
+        return Object.getOwnPropertyNames(instance);
+    }
+}
 
-// function WithFuel(target: typeof Rocket, context): typeof Rocket {
-//   if (context.kind === "class") {
-//     target.prototype.fuel = 50
-//     target.prototype.isEmpty = (): boolean => {
-//       return this.fuel == 0
-//     }
-//   }
-// }
-
-function logFuel(target: Function, context) {
+function logFuel(target: Function, context: any) {
     const original = target.prototype.addFuel;
     target.prototype.addFuel = function (message: string) {
       console.log(`Before adding fuel, total fuel: ${this.fuel}`);
@@ -17,20 +13,20 @@ function logFuel(target: Function, context) {
     };
   }
   
-  function JsonClass(target: Function, context) {
+  export function JsonClass(target: Function, context: any) {
     //const original = target.prototype.addFuel;
     target.prototype.class = target.name
     target.prototype.toJSON = function () {
         return {
         
-        class: this.class,
+        jsonClass: this.class,
         //parameterType: typeof (this._grid[0][0])
       }
     }
   }
   
   @JsonClass
-  class Rocket {
+  export class Rocket {
     fuel: number = 11;
     addFuel(amount: number) {
       this.fuel += amount;
@@ -38,10 +34,10 @@ function logFuel(target: Function, context) {
   
   }
   
-  const rocket = new Rocket()
-  console.log((rocket as any).fuel)
-  console.log((rocket as any).class)
-  rocket.addFuel(10);
+//   const rocket = new Rocket()
+//   console.log((rocket as any).fuel)
+//   console.log((rocket as any).class)
+//   rocket.addFuel(10);
   //console.log(`Is the rocket empty? ${(rocket as any).isEmpty()}`)
   
   

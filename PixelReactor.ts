@@ -1,9 +1,10 @@
-
+import { JsonClass } from "./Gson"
 
 export type Vec2d = [x: number, y: number]
 
 export const zeroVec: Vec2d = [0, 0];
 
+@JsonClass
 export class PixelReactor<T> {
   private _ruleGridMap: Map<string, RuleGrid<T>>;
 
