@@ -20,6 +20,8 @@ function logFuel(target: Function, context) {
   function JsonClass(target: Function, context) {
     //const original = target.prototype.addFuel;
     target.prototype.class = target.name
+    
+    
     target.prototype.toJSON = function () {
         return {
         
@@ -34,14 +36,18 @@ function logFuel(target: Function, context) {
     fuel: number = 11;
     addFuel(amount: number) {
       this.fuel += amount;
+      console.log(`Rocket now has ${this.fuel} fuel`)
+      let json = JSON.stringify(this)
+      console.log("JSON:", json)
+    }
+
+    constructor(name: string) {
+        this.name = name
     }
   
   }
   
-  const rocket = new Rocket()
-  console.log((rocket as any).fuel)
-  console.log((rocket as any).class)
-  rocket.addFuel(10);
+  export { Rocket, JsonClass }
   //console.log(`Is the rocket empty? ${(rocket as any).isEmpty()}`)
   
   

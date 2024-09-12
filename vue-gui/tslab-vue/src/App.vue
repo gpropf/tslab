@@ -14,19 +14,33 @@ import { provide, ref } from 'vue'
 //import {  } from 'vue'
 import LabelledInput from './components/LabelledInput.vue';
 import ParametricGridVC from './components/ParametricGridVC.vue';
+import { Rocket } from "../../../Gson"
 
 
 
-// const mouseLocation = ref([0,0]);
+const rocket = new Rocket()
+console.log((rocket as any).fuel)
+console.log((rocket as any).class)
+rocket.addFuel(10);
+//type R = ConstructorParameters<typeof Rocket>;
+//const r: Rocket = new Rocket("FOOO")
+//console.log("Constructor params for Rocket: ",typeof(r));
 
-// function updateMouseLocation(newLoc) {
-//   mouseLocation.value = newLoc;
-// }
+let rocketFromObj = Object.create(Rocket.prototype)
+console.log("RKT:", rocketFromObj)
 
-// provide('mouseLocation', {
-//   mouseLocation,
-//   updateMouseLocation
-// });
+let jsonText = '{ "fuel": "23" }'
+let rawObjFromJson = JSON.parse(jsonText)
+console.log(Object.keys(rawObjFromJson).forEach(key => {
+  console.log("KEY:", key);
+  rocketFromObj[key] = rawObjFromJson[key]
+}))
+
+console.log("New Rocket! ", rocketFromObj)
+
+
+
+
 
 const rules = useRulesStore();
 const { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor } = rules;
