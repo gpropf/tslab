@@ -52,7 +52,20 @@ function logFuel(target: Function, context) {
 
   class Gson {
     public serialize(obj: any): string {
-        return JSON.stringify(obj.toJSON())
+        let jsonObj = {}
+        Object.keys(obj).forEach(key => {
+            if (obj[key] instanceof Map) {
+                console.log("Map found at key = ", key);
+                let mapObj = Object.fromEntries(obj[key]);
+                jsonObj[key] = mapObj;
+            }
+            else {
+                jsonObj[key] = obj[key];
+            }
+        });
+       
+        // const obj = Object.fromEntries(this._ruleGridMap);
+        return jsonObj;
     }
 
     public deserialize(jsonText: string) {

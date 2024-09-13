@@ -135,8 +135,8 @@ function serializeWorkspace() {
 }
 
 let gson = new Gson()
-let prGson = gson.serialize(pixelReactor)
-console.log("GSON: ", prGson)
+//let prGson = gson.serialize(pixelReactor)
+//console.log("GSON: ", prGson)
 
 </script>
 
@@ -169,7 +169,7 @@ console.log("GSON: ", prGson)
 
     <button @click="serializeWorkspace()">Test Serialization</button>
     <button @click="console.log('PR Ids: ', pixelReactor.getAllRuleIds())">Print PR rule IDs</button>
-    <button @click="console.log('Gson(PR): ', JSON.stringify(pixelReactor.toJSON()))">Gson Serialize</button>
+    <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(pixelReactor)))">Gson Serialize</button>
     <!-- <button @click="linkRules()">Link named rules</button> -->
 
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
