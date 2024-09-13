@@ -14,7 +14,7 @@ import { provide, ref } from 'vue'
 //import {  } from 'vue'
 import LabelledInput from './components/LabelledInput.vue';
 import ParametricGridVC from './components/ParametricGridVC.vue';
-import { Rocket } from "../../../Gson"
+import { Gson, Rocket } from "../../../Gson"
 import { type } from 'os';
 
 
@@ -44,7 +44,6 @@ console.log(Object.keys(rawObjFromJson).forEach(key => {
 }))
 
 console.log("New Rocket! ", rocketFromObj)
-
 
 
 
@@ -135,8 +134,9 @@ function serializeWorkspace() {
   console.log(workspaceString)
 }
 
-
-
+let gson = new Gson()
+let prGson = gson.serialize(pixelReactor)
+console.log("GSON: ", prGson)
 
 </script>
 

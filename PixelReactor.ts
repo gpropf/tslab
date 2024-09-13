@@ -48,7 +48,10 @@ export class PixelReactor<T> {
   public toJSON(): Object {
     console.log("PR.toJSON called")
     return {
-      pixelReactorString: "PR Text"
+      foo: "bar",
+      pixelReactorString: "PR Text",
+      ruleGridMap: Object.fromEntries(this._ruleGridMap),
+      mainGrid: this._ruleGridMap.get("MAIN")
     }
   }
 

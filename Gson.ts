@@ -8,6 +8,8 @@
 //   }
 // }
 
+//import { stringify } from "querystring";
+
 function logFuel(target: Function, context) {
     const original = target.prototype.addFuel;
     target.prototype.addFuel = function (message: string) {
@@ -49,8 +51,8 @@ function logFuel(target: Function, context) {
 
 
   class Gson {
-    public serialize(obj: any) {
-
+    public serialize(obj: any): string {
+        return JSON.stringify(obj.toJSON())
     }
 
     public deserialize(jsonText: string) {
