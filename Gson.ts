@@ -46,8 +46,20 @@ function logFuel(target: Function, context) {
     }
   
   }
+
+
+  class Gson {
+    public serialize(obj: any) {
+
+    }
+
+    public deserialize(jsonText: string) {
+
+    }
+  }
+
   
-  export { Rocket, JsonClass }
+  export { Rocket, JsonClass, Gson }
   //console.log(`Is the rocket empty? ${(rocket as any).isEmpty()}`)
   
   

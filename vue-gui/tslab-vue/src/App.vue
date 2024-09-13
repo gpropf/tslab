@@ -15,6 +15,7 @@ import { provide, ref } from 'vue'
 import LabelledInput from './components/LabelledInput.vue';
 import ParametricGridVC from './components/ParametricGridVC.vue';
 import { Rocket } from "../../../Gson"
+import { type } from 'os';
 
 
 
@@ -29,10 +30,16 @@ rocket.addFuel(10);
 let rocketFromObj = Object.create(Rocket.prototype)
 console.log("RKT:", rocketFromObj)
 
-let jsonText = '{ "fuel": "23" }'
+let jsonText = '{ "fuel": "23", "class": "Rocket", "testObj": {"foo": "F1", "bar": "B1" } }'
 let rawObjFromJson = JSON.parse(jsonText)
+let rawObjFromJsonKeys = Object.keys(rawObjFromJson);
+
+if ("class" in rawObjFromJson) {
+  console.log("Object data has class member")
+}
+
 console.log(Object.keys(rawObjFromJson).forEach(key => {
-  console.log("KEY:", key);
+  console.log("KEY:", key, typeof(rawObjFromJson[key]));
   rocketFromObj[key] = rawObjFromJson[key]
 }))
 
@@ -128,15 +135,6 @@ function serializeWorkspace() {
   console.log(workspaceString)
 }
 
-// function linkRules() {
-//   let fromRuleLocal = getRule(fromRule.value)
-//   let toRuleLocal = getRule(toRule.value)
-//   if (fromRuleLocal instanceof RuleGrid && toRuleLocal instanceof RuleGrid && ruleOffsetVec.value.length > 1) {
-//     console.log("Current Offset:", ruleOffsetVec.value)
-//     let sr = new SuccessionRule(fromRuleLocal, toRuleLocal, ruleOffsetVec.value)
-//     console.log("New SR created: ", sr)
-//   }
-// }
 
 
 
@@ -171,6 +169,7 @@ function serializeWorkspace() {
 
     <button @click="serializeWorkspace()">Test Serialization</button>
     <button @click="console.log('PR Ids: ', pixelReactor.getAllRuleIds())">Print PR rule IDs</button>
+    <button @click="console.log('Gson(PR): ', JSON.stringify(pixelReactor.toJSON()))">Gson Serialize</button>
     <!-- <button @click="linkRules()">Link named rules</button> -->
 
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"

@@ -45,6 +45,13 @@ export class PixelReactor<T> {
     return JSON.stringify(obj);
   }
 
+  public toJSON(): Object {
+    console.log("PR.toJSON called")
+    return {
+      pixelReactorString: "PR Text"
+    }
+  }
+
   public deserialize(jsonText: string) {
 
   }
