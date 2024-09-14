@@ -15,11 +15,11 @@ import { provide, ref } from 'vue'
 import LabelledInput from './components/LabelledInput.vue';
 import ParametricGridVC from './components/ParametricGridVC.vue';
 import { Gson, Rocket } from "../../../Gson"
-import { type } from 'os';
+//import { type } from 'os';
 
 
 
-const rocket = new Rocket()
+const rocket = new Rocket("foo")
 console.log((rocket as any).fuel)
 console.log((rocket as any).class)
 rocket.addFuel(10);

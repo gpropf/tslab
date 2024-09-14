@@ -10,7 +10,7 @@
 
 //import { stringify } from "querystring";
 
-function logFuel(target: Function, context) {
+function logFuel(target: Function, context: any) {
     const original = target.prototype.addFuel;
     target.prototype.addFuel = function (message: string) {
       console.log(`Before adding fuel, total fuel: ${this.fuel}`);
@@ -19,7 +19,7 @@ function logFuel(target: Function, context) {
     };
   }
   
-  function JsonClass(target: Function, context) {
+  function JsonClass(target: Function, context: any) {
     //const original = target.prototype.addFuel;
     target.prototype.class = target.name
     
@@ -36,6 +36,7 @@ function logFuel(target: Function, context) {
   @JsonClass
   class Rocket {
     fuel: number = 11;
+    name: string;
     addFuel(amount: number) {
       this.fuel += amount;
       console.log(`Rocket now has ${this.fuel} fuel`)
@@ -51,8 +52,8 @@ function logFuel(target: Function, context) {
 
 
   class Gson {
-    public serialize(obj: any): string {
-        let jsonObj = {}
+    public serialize(obj: any): Object {
+        let jsonObj = Object()
         Object.keys(obj).forEach(key => {
             if (obj[key] instanceof Map) {
                 console.log("Map found at key = ", key);

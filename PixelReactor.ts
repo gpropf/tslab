@@ -19,7 +19,7 @@ export class PixelReactor<T> {
           console.log(`${[rule.id, transformId]}`);
           let matchingPatterns = matchMap.get(rotatedGrid.grid);
           if (matchingPatterns) {
-            matchingPatterns.append([rule.id, transformId]);
+            matchingPatterns.push([rule.id, transformId]);
             matchMap.set(rotatedGrid.grid, matchingPatterns);
           }
           else {
