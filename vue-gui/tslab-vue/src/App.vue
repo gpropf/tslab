@@ -168,6 +168,7 @@ let gson = new Gson()
     <!-- <button @click="rgm = serialize(); rgm.forEach((value: string, id: string) => { console.log(`${id}:${value}`) })">Test Serialization</button> -->
 
     <button @click="serializeWorkspace()">Test Serialization</button>
+    <button @click="pixelReactor.buildMatchMap()">Build Match Map</button>
     <button @click="console.log('PR Ids: ', pixelReactor.getAllRuleIds())">Print PR rule IDs</button>
     <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(pixelReactor)))">Gson Serialize</button>
     <!-- <button @click="linkRules()">Link named rules</button> -->

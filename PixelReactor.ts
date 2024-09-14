@@ -7,9 +7,32 @@ export const zeroVec: Vec2d = [0, 0];
 export class PixelReactor<T> {
   private _ruleGridMap: Map<string, RuleGrid<T>>;
 
-  private testArr = [1,2,4,5]
+  private testArr = [1, 2, 4, 5]
 
   private _currentRuleIndex: number = 1;
+
+  public buildMatchMap() {
+    let matchMap: Map<T[][], [string, string][]> = new Map<T[][], [string, string][]>();
+    this._ruleGridMap.forEach((rule, id) => {
+      if (rule.successor) {
+        rule.rotatedGrids.forEach((rotatedGrid, transformId) => {
+          console.log(`${[rule.id, transformId]}`);
+          let matchingPatterns = matchMap.get(rotatedGrid.grid);
+          if (matchingPatterns) {
+            matchingPatterns.append([rule.id, transformId]);
+            matchMap.set(rotatedGrid.grid, matchingPatterns);
+          }
+          else {
+            matchMap.set(rotatedGrid.grid, [[rule.id, transformId]]);
+          }
+        })
+        
+        console.log(`Rule ${id} has a successor ${rule.successor.id}`);
+      }
+    })
+    console.log("Match Map: ", matchMap);
+    return matchMap;
+  }
 
   public getNewRuleIndex(): number {
     this._currentRuleIndex += 1;
@@ -364,7 +387,7 @@ export class RuleGrid<T> extends ParametricGrid<T> {
       class: "RuleGrid",
       id: this.id,
       priority: this._priority,
-      successor: (this._successor)? this._successor.id : "",
+      successor: (this._successor) ? this._successor.id : "",
       successorOffset: this._successorOffset,
       parameterType: typeof (this.grid[0][0])
     }
