@@ -20,16 +20,16 @@ export class PixelReactor<T> {
       if (rule.successor) {
         rule.rotatedGrids.forEach((rotatedGrid, transformId) => {
           console.log(`${[rule.id, transformId]}`);
-          let matchingPatterns = matchMap.get(JSON.stringify(rotatedGrid.grid));
+          let stringifiedGrid = JSON.stringify(rotatedGrid.grid);
+          let matchingPatterns = matchMap.get(stringifiedGrid);
           if (matchingPatterns) {
             matchingPatterns.push([rule.id, transformId]);
-            matchMap.set(JSON.stringify(rotatedGrid.grid), matchingPatterns);
+            matchMap.set(stringifiedGrid, matchingPatterns);
           }
           else {
-            matchMap.set(JSON.stringify(rotatedGrid.grid), [[rule.id, transformId]]);
+            matchMap.set(stringifiedGrid, [[rule.id, transformId]]);
           }
-        })
-        
+        })        
         console.log(`Rule ${id} has a successor ${rule.successor.id}`);
       }
     })
@@ -171,6 +171,7 @@ export class TransformMatrix {
 
 export class ParametricGrid<T> {
 
+  private _newPixels: Pixel<T>[] = [];
   private readonly _id: string;
   private _width: number;
   private _height: number;
@@ -265,6 +266,7 @@ export class ParametricGrid<T> {
 
   public setLocation(x: number, y: number, v: T) {
     this._grid[y][x] = v;
+    this._newPixels.push([x,y,v]);
     console.log("Location: ", x, ":", y)
   }
 
