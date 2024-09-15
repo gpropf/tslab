@@ -19,31 +19,31 @@ import { Gson, Rocket } from "../../../Gson"
 
 
 
-const rocket = new Rocket("foo")
-console.log((rocket as any).fuel)
-console.log((rocket as any).class)
-rocket.addFuel(10);
-//type R = ConstructorParameters<typeof Rocket>;
-//const r: Rocket = new Rocket("FOOO")
-//console.log("Constructor params for Rocket: ",typeof(r));
+// const rocket = new Rocket("foo")
+// console.log((rocket as any).fuel)
+// console.log((rocket as any).class)
+// rocket.addFuel(10);
+// //type R = ConstructorParameters<typeof Rocket>;
+// //const r: Rocket = new Rocket("FOOO")
+// //console.log("Constructor params for Rocket: ",typeof(r));
 
-let rocketFromObj = Object.create(Rocket.prototype)
-console.log("RKT:", rocketFromObj)
+// let rocketFromObj = Object.create(Rocket.prototype)
+// console.log("RKT:", rocketFromObj)
 
-let jsonText = '{ "fuel": "23", "class": "Rocket", "testObj": {"foo": "F1", "bar": "B1" } }'
-let rawObjFromJson = JSON.parse(jsonText)
-let rawObjFromJsonKeys = Object.keys(rawObjFromJson);
+// let jsonText = '{ "fuel": "23", "class": "Rocket", "testObj": {"foo": "F1", "bar": "B1" } }'
+// let rawObjFromJson = JSON.parse(jsonText)
+// let rawObjFromJsonKeys = Object.keys(rawObjFromJson);
 
-if ("class" in rawObjFromJson) {
-  console.log("Object data has class member")
-}
+// if ("class" in rawObjFromJson) {
+//   console.log("Object data has class member")
+// }
 
-console.log(Object.keys(rawObjFromJson).forEach(key => {
-  console.log("KEY:", key, typeof (rawObjFromJson[key]));
-  rocketFromObj[key] = rawObjFromJson[key]
-}))
+// console.log(Object.keys(rawObjFromJson).forEach(key => {
+//   console.log("KEY:", key, typeof (rawObjFromJson[key]));
+//   rocketFromObj[key] = rawObjFromJson[key]
+// }))
 
-console.log("New Rocket! ", rocketFromObj)
+// console.log("New Rocket! ", rocketFromObj)
 
 
 
@@ -79,10 +79,10 @@ function conversionFn(v: string) {
 //   console.log("MATCHES: ", matches)
 // }
 
-function testMatchingAllRules() {
-  let matchMap = pixelReactor.getAllMatches();
-  console.log("PR: ALL THE MATCHES! ", matchMap);
-}
+// function testMatchingAllRules() {
+//   let matchMap = pixelReactor.getAllMatches();
+//   console.log("PR: ALL THE MATCHES! ", matchMap);
+// }
 
 function createRuleGrid(inwidth: string, inheight: string) {
   let existingRule = pixelReactor.getRule(newRuleId.value);
@@ -169,7 +169,7 @@ let prMatches: Map<string, [string, string][]> = new Map<string, [string, string
     <div> Mouse Location: {{ formatVector(mouseLocation) }}</div>
     <button @click="createRuleGrid(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
-    <button @click="testMatchingAllRules()">Test Match</button>
+    <!-- <button @click="testMatchingAllRules()">Test Match</button> -->
     <!-- <button @click="rgm = serialize(); rgm.forEach((value: string, id: string) => { console.log(`${id}:${value}`) })">Test Serialization</button> -->
 
     <button @click="serializeWorkspace()">Test Serialization</button>
