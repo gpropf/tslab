@@ -141,7 +141,7 @@ let gson = new Gson()
 //let prGson = gson.serialize(pixelReactor)
 //console.log("GSON: ", prGson)
 let prMatches: Map<string, [string, string][]> = new Map<string, [string, string][]>()
-
+let pattternHistograms = new Map<string, Map<number, Vec2d[]>>()
 
 </script>
 
@@ -174,7 +174,7 @@ let prMatches: Map<string, [string, string][]> = new Map<string, [string, string
 
     <button @click="serializeWorkspace()">Test Serialization</button>
     <button
-      @click="prMatches = pixelReactor.buildMatchMap(); pixelReactor.testAllPixelsInMainGrid(prMatches)">Build
+      @click="prMatches = pixelReactor.buildMatchMap(); pixelReactor.testAllPixelsInMainGrid(prMatches); pattternHistograms = pixelReactor.buildPatternHistograms(prMatches); console.log('PH: ', pattternHistograms)">Build
       Match Map</button>
     <button @click="console.log('PR Ids: ', pixelReactor.getAllRuleIds())">Print PR rule IDs</button>
     <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(pixelReactor)))">Gson Serialize</button>

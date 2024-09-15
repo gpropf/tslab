@@ -7,6 +7,19 @@ export type Pixel<T> = [x: number, y: number, value: T]
 
 export const zeroVec: Vec2d = [0, 0];
 
+export class AnnotatedRawGrid<T> {
+
+  public width: number;
+  public height: number;
+
+  public grid: T[][]
+  constructor(rawGrid: T[][]) {
+    this.height = rawGrid.length;
+    this.width = rawGrid[0].length;
+    this.grid = rawGrid;
+  }
+}
+
 export class PixelReactor<T> {
   private _ruleGridMap: Map<string, RuleGrid<T>>;
 
@@ -35,6 +48,36 @@ export class PixelReactor<T> {
     })
     //console.log("Match Map: ", matchMap);
     return matchMap;
+  }
+
+  public createHistogramForAnnotatedRawGrid(annotatedRawGrid: AnnotatedRawGrid<T>): Map<T, Vec2d[]> {
+    let valueHistogram = new Map<T, Vec2d[]>()
+    for (let y: number = 0; y < annotatedRawGrid.height; y++) {
+      for (let x: number = 0; x < annotatedRawGrid.width; x++) {
+        let v = annotatedRawGrid.grid[y][x];
+        let pixelList = valueHistogram.get(v);
+        if (pixelList) {
+          pixelList.push([x,y]) ;
+          valueHistogram.set(v, pixelList);
+        }
+        else {
+          valueHistogram.set(v, [[x,y]]);
+        }
+      }
+    }
+    return valueHistogram;
+  }
+
+  public buildPatternHistograms(uniquePatterns: Map<string, [string, string][]>): Map<string, Map<T, Vec2d[]>> {
+    let uniquePatternKeys = Array.from(uniquePatterns.keys());
+    let patternHistograms = new Map<string, Map<T, Vec2d[]>>();
+    uniquePatternKeys.forEach(pattern => {
+      let rawGrid = JSON.parse(pattern);
+      let annotatedRawGrid = new AnnotatedRawGrid<T>(rawGrid);
+      let valueHistogram = this.createHistogramForAnnotatedRawGrid(annotatedRawGrid);
+      patternHistograms.set(pattern, valueHistogram);
+    })
+    return patternHistograms;
   }
 
   public matchUniquePatterns(uniquePatterns: Map<string, [string, string][]>, pixelList: Vec2d[]) {
