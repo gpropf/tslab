@@ -49,7 +49,7 @@ export class PixelReactor<T> {
       let rawGrid = JSON.parse(jsonString);
       let rawGridWidth: number = rawGrid[0].length;
       let rawGridHeight: number = rawGrid.length;
-      for (pixel in pixelList) {
+      for (let pixel of pixelList) {
         let [x,y] = pixel;
         let match: boolean = mainGrid.simpleMatchRawGrid(rawGrid, x, y, rawGridWidth, rawGridHeight);
         if (match) {
@@ -59,8 +59,8 @@ export class PixelReactor<T> {
     })
   }
 
-  public testAllPixelsInMainGrid(uniquePatterns, mainGrid) {
-    
+  public testAllPixelsInMainGrid(uniquePatterns) {
+    let mainGrid = this._ruleGridMap.get("MAIN");
     if (mainGrid == null || mainGrid == undefined) return
     let pixelList: Vec2d[] = []
     for (let y: number = 0; y < mainGrid.height; y++) {

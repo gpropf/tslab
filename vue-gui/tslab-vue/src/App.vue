@@ -39,7 +39,7 @@ if ("class" in rawObjFromJson) {
 }
 
 console.log(Object.keys(rawObjFromJson).forEach(key => {
-  console.log("KEY:", key, typeof(rawObjFromJson[key]));
+  console.log("KEY:", key, typeof (rawObjFromJson[key]));
   rocketFromObj[key] = rawObjFromJson[key]
 }))
 
@@ -106,6 +106,8 @@ function createRuleGrid(inwidth: string, inheight: string) {
     ruleGridVC.mount(newDiv)
     wrapper.appendChild(newDiv)
   }
+
+
 }
 
 const newRuleId = ref("rule-1")
@@ -120,6 +122,7 @@ const screenHeight = ref(400);
 //const toRule = ref("");
 
 let pixelReactor = new PixelReactor<number>();
+let mainGrid = pixelReactor.getRule("MAIN");
 
 setPixelReactor(pixelReactor);
 
@@ -170,7 +173,9 @@ let prMatches: Map<string, [string, string][]> = new Map<string, [string, string
     <!-- <button @click="rgm = serialize(); rgm.forEach((value: string, id: string) => { console.log(`${id}:${value}`) })">Test Serialization</button> -->
 
     <button @click="serializeWorkspace()">Test Serialization</button>
-    <button @click="prMatches = pixelReactor.buildMatchMap(); console.log('prMatches: ', prMatches)">Build Match Map</button>
+    <button
+      @click="prMatches = pixelReactor.buildMatchMap(); pixelReactor.testAllPixelsInMainGrid(prMatches)">Build
+      Match Map</button>
     <button @click="console.log('PR Ids: ', pixelReactor.getAllRuleIds())">Print PR rule IDs</button>
     <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(pixelReactor)))">Gson Serialize</button>
     <!-- <button @click="linkRules()">Link named rules</button> -->
