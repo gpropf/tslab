@@ -1,6 +1,9 @@
+import { main } from "ts-node/dist/bin";
 
 
 export type Vec2d = [x: number, y: number]
+
+export type Pixel<T> = [x: number, y: number, value: T]
 
 export const zeroVec: Vec2d = [0, 0];
 
@@ -10,6 +13,11 @@ export class PixelReactor<T> {
   private testArr = [1, 2, 4, 5]
 
   private _currentRuleIndex: number = 1;
+
+  public getMainGrid() {
+    let mainGrid = this._ruleGridMap.get("MAIN");
+    return mainGrid;
+  }
 
   public buildMatchMap(): Map<string, [string, string][]> {
     let matchMap: Map<string, [string, string][]> = new Map<string, [string, string][]>();
@@ -32,6 +40,35 @@ export class PixelReactor<T> {
     })
     //console.log("Match Map: ", matchMap);
     return matchMap;
+  }
+
+  public matchUniquePatterns(uniquePatterns: Map<string, [string, string][]>, pixelList: Vec2d[]) {
+    let mainGrid = this._ruleGridMap.get("MAIN");
+    if (mainGrid == null || mainGrid == undefined) return
+    uniquePatterns.forEach((transformId, jsonString: string) => {
+      let rawGrid = JSON.parse(jsonString);
+      let rawGridWidth: number = rawGrid[0].length;
+      let rawGridHeight: number = rawGrid.length;
+      for (pixel in pixelList) {
+        let [x,y] = pixel;
+        let match: boolean = mainGrid.simpleMatchRawGrid(rawGrid, x, y, rawGridWidth, rawGridHeight);
+        if (match) {
+          console.log(`For ${jsonString} match at: ${x},${y}, transform keys: ${transformId}`)
+        }
+      }
+    })
+  }
+
+  public testAllPixelsInMainGrid(uniquePatterns, mainGrid) {
+    
+    if (mainGrid == null || mainGrid == undefined) return
+    let pixelList: Vec2d[] = []
+    for (let y: number = 0; y < mainGrid.height; y++) {
+      for (let x: number = 0; x < mainGrid.width; x++) {
+        pixelList.push([x,y])
+      }
+    }
+    this.matchUniquePatterns(uniquePatterns, pixelList);
   }
 
   public getNewRuleIndex(): number {
