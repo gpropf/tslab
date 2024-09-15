@@ -10,14 +10,9 @@ export const zeroVec: Vec2d = [0, 0];
 export class PixelReactor<T> {
   private _ruleGridMap: Map<string, RuleGrid<T>>;
 
-  private testArr = [1, 2, 4, 5]
+  //private testArr = [1, 2, 4, 5]
 
   private _currentRuleIndex: number = 1;
-
-  public getMainGrid() {
-    let mainGrid = this._ruleGridMap.get("MAIN");
-    return mainGrid;
-  }
 
   public buildMatchMap(): Map<string, [string, string][]> {
     let matchMap: Map<string, [string, string][]> = new Map<string, [string, string][]>();
@@ -115,10 +110,6 @@ export class PixelReactor<T> {
       ruleGridMap: Object.fromEntries(this._ruleGridMap),
       mainGrid: this._ruleGridMap.get("MAIN")
     }
-  }
-
-  public deserialize(jsonText: string) {
-
   }
 
   public getAllRuleIds() {
@@ -243,13 +234,13 @@ export class ParametricGrid<T> {
     return matchesByTransform;
   }
 
-  public simpleMatchTransformedRule(otherGrid: RuleGrid<T>, offsetX: number, offsetY: number, ruleKey: string): boolean {
-    let transformedGrid = otherGrid.getTransformedGrid(ruleKey);
-    if (transformedGrid === undefined) return false;
-    let rawGrid: T[][] | undefined = transformedGrid.grid;
-    if (rawGrid === undefined) return false;
-    return this.simpleMatchRawGrid(rawGrid, offsetX, offsetY, transformedGrid.width, transformedGrid.height);
-  }
+  // public simpleMatchTransformedRule(otherGrid: RuleGrid<T>, offsetX: number, offsetY: number, ruleKey: string): boolean {
+  //   let transformedGrid = otherGrid.getTransformedGrid(ruleKey);
+  //   if (transformedGrid === undefined) return false;
+  //   let rawGrid: T[][] | undefined = transformedGrid.grid;
+  //   if (rawGrid === undefined) return false;
+  //   return this.simpleMatchRawGrid(rawGrid, offsetX, offsetY, transformedGrid.width, transformedGrid.height);
+  // }
 
 
   public get id() {
@@ -288,43 +279,43 @@ export class ParametricGrid<T> {
     return [x % this._width, y % this._height]
   }
 
-  public findMatches(otherGrid: ParametricGrid<T>): Vec2d[] {
-    let matches: Vec2d[] = [];
-    for (let y: number = 0; y < this._height; y++) {
-      for (let x: number = 0; x < this._width; x++) {
-        let match: boolean = this.simpleMatchAt(otherGrid, x, y);
-        if (match) {
-          let matchLoc: Vec2d = [x, y]
-          matches.push(matchLoc);
-        }
-      }
-    }
-    return matches;
-  }
+  // public findMatches(otherGrid: ParametricGrid<T>): Vec2d[] {
+  //   let matches: Vec2d[] = [];
+  //   for (let y: number = 0; y < this._height; y++) {
+  //     for (let x: number = 0; x < this._width; x++) {
+  //       let match: boolean = this.simpleMatchAt(otherGrid, x, y);
+  //       if (match) {
+  //         let matchLoc: Vec2d = [x, y]
+  //         matches.push(matchLoc);
+  //       }
+  //     }
+  //   }
+  //   return matches;
+  // }
  
 
-  public simpleMatchAt(otherGrid: ParametricGrid<T>, offsetX: number, offsetY: number): boolean {
-    let rawGrid: T[][] = otherGrid.grid;
-    let y: number = 0;
-    for (y = 0; y < otherGrid.height; y++) {
-      let thisY = y + offsetY;
-      //alert(y, thisY)
-      let x: number = 0;
-      for (x = 0; x < otherGrid.width; x++) {
-        let otherVal: T = rawGrid[y][x];
-        let thisX: any = x + offsetX;
-        let thisVec: Vec2d = [thisX, thisY];
-        thisVec = this.wrapCoordinates(thisVec);
-        let [wx, wy] = thisVec
-        let thisVal = this._grid[wy][wx];
-        if (thisVal != otherVal) {
-          //console.log(`thisVal: ${thisVal}, otherVal: ${otherVal}. This loc: ${thisVec}, Other loc: ${[x, y]}`)
-          return false;
-        }
-      }
-    }
-    return true;
-  }
+  // public simpleMatchAt(otherGrid: ParametricGrid<T>, offsetX: number, offsetY: number): boolean {
+  //   let rawGrid: T[][] = otherGrid.grid;
+  //   let y: number = 0;
+  //   for (y = 0; y < otherGrid.height; y++) {
+  //     let thisY = y + offsetY;
+  //     //alert(y, thisY)
+  //     let x: number = 0;
+  //     for (x = 0; x < otherGrid.width; x++) {
+  //       let otherVal: T = rawGrid[y][x];
+  //       let thisX: any = x + offsetX;
+  //       let thisVec: Vec2d = [thisX, thisY];
+  //       thisVec = this.wrapCoordinates(thisVec);
+  //       let [wx, wy] = thisVec
+  //       let thisVal = this._grid[wy][wx];
+  //       if (thisVal != otherVal) {
+  //         //console.log(`thisVal: ${thisVal}, otherVal: ${otherVal}. This loc: ${thisVec}, Other loc: ${[x, y]}`)
+  //         return false;
+  //       }
+  //     }
+  //   }
+  //   return true;
+  // }
 
   public toJSON(): Object {
     return {
@@ -337,19 +328,10 @@ export class ParametricGrid<T> {
     }
   }
 
-  public reviver(s: string) {
+  // public reviver(s: string) {
 
-  }
+  // }
 }
-
-// export function pgFactory(s: string) {
-//   let obj = JSON.parse(s);
-//   if (obj.type == "ParametricGrid") {
-//     //console.log(`obj.class: ${obj.type}`)
-//     let pgrid: ParametricGrid<number> = new ParametricGrid(obj.width, obj.height, 777, obj.grid);
-//     return pgrid;
-//   }
-// }
 
 export const rotationMap = new Map<string, TransformMatrix>();
 //rotationMap.set("r0", new TransformMatrix(0, [0, 0], [1, 0, 0, 1]));
