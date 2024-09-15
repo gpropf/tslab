@@ -59,7 +59,7 @@ export class PixelReactor<T> {
     })
   }
 
-  public testAllPixelsInMainGrid(uniquePatterns) {
+  public testAllPixelsInMainGrid(uniquePatterns: Map<string, [string, string][]>) {
     let mainGrid = this._ruleGridMap.get("MAIN");
     if (mainGrid == null || mainGrid == undefined) return
     let pixelList: Vec2d[] = []
@@ -301,20 +301,7 @@ export class ParametricGrid<T> {
     }
     return matches;
   }
-
-  // public findMatches90(otherGrid: RuleGrid<T>): Vec2d[] {
-  //   let matches: Vec2d[] = [];
-  //   for (let y: number = 0; y < this._height; y++) {
-  //     for (let x: number = 0; x < this._width; x++) {
-  //       let match: boolean = this.simpleMatchTransformedRule(otherGrid, x, y, "r90")
-  //       if (match) {
-  //         let matchLoc: Vec2d = [x, y]
-  //         matches.push(matchLoc);
-  //       }
-  //     }
-  //   }
-  //   return matches;
-  // }
+ 
 
   public simpleMatchAt(otherGrid: ParametricGrid<T>, offsetX: number, offsetY: number): boolean {
     let rawGrid: T[][] = otherGrid.grid;
