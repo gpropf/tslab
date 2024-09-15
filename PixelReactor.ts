@@ -11,26 +11,26 @@ export class PixelReactor<T> {
 
   private _currentRuleIndex: number = 1;
 
-  public buildMatchMap() {
-    let matchMap: Map<T[][], [string, string][]> = new Map<T[][], [string, string][]>();
+  public buildMatchMap(): Map<string, [string, string][]> {
+    let matchMap: Map<string, [string, string][]> = new Map<string, [string, string][]>();
     this._ruleGridMap.forEach((rule, id) => {
       if (rule.successor) {
         rule.rotatedGrids.forEach((rotatedGrid, transformId) => {
           console.log(`${[rule.id, transformId]}`);
-          let matchingPatterns = matchMap.get(rotatedGrid.grid);
+          let matchingPatterns = matchMap.get(JSON.stringify(rotatedGrid.grid));
           if (matchingPatterns) {
             matchingPatterns.push([rule.id, transformId]);
-            matchMap.set(rotatedGrid.grid, matchingPatterns);
+            matchMap.set(JSON.stringify(rotatedGrid.grid), matchingPatterns);
           }
           else {
-            matchMap.set(rotatedGrid.grid, [[rule.id, transformId]]);
+            matchMap.set(JSON.stringify(rotatedGrid.grid), [[rule.id, transformId]]);
           }
         })
         
         console.log(`Rule ${id} has a successor ${rule.successor.id}`);
       }
     })
-    console.log("Match Map: ", matchMap);
+    //console.log("Match Map: ", matchMap);
     return matchMap;
   }
 

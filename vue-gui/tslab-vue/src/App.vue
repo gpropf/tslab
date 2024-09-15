@@ -137,7 +137,7 @@ function serializeWorkspace() {
 let gson = new Gson()
 //let prGson = gson.serialize(pixelReactor)
 //console.log("GSON: ", prGson)
-
+let prMatches: Map<string, [string, string][]> = new Map<string, [string, string][]>()
 </script>
 
 
@@ -168,7 +168,7 @@ let gson = new Gson()
     <!-- <button @click="rgm = serialize(); rgm.forEach((value: string, id: string) => { console.log(`${id}:${value}`) })">Test Serialization</button> -->
 
     <button @click="serializeWorkspace()">Test Serialization</button>
-    <button @click="pixelReactor.buildMatchMap()">Build Match Map</button>
+    <button @click="prMatches = pixelReactor.buildMatchMap(); console.log('prMatches: ', prMatches)">Build Match Map</button>
     <button @click="console.log('PR Ids: ', pixelReactor.getAllRuleIds())">Print PR rule IDs</button>
     <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(pixelReactor)))">Gson Serialize</button>
     <!-- <button @click="linkRules()">Link named rules</button> -->
