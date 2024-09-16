@@ -154,6 +154,8 @@ function checkPixels() {
   if (mainGrid) {
     let pixelsToCheck = pixelReactor.buildListOfPixelsToCheckForEachNewPixel(pattternHistograms, mainGrid);
     console.log('Pixels2Check: ', pixelsToCheck)
+
+    pixelReactor.matchUniquePatternsForNewPixels(pixelsToCheck, prMatches)
   }
 }
 

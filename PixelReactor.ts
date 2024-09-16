@@ -122,6 +122,27 @@ export class PixelReactor<T> {
     })
   }
 
+  public matchUniquePatternsForNewPixels(pixelsToCheckByPattern: Map<string, Vec2d[]>, uniquePatterns: Map<string, [string, string][]>) {
+    let mainGrid = this._ruleGridMap.get("MAIN");
+    if (mainGrid == null || mainGrid == undefined) return
+    pixelsToCheckByPattern.forEach((locationList, jsonString: string) => {
+      let rawGrid = JSON.parse(jsonString);
+      let rawGridWidth: number = rawGrid[0].length;
+      let rawGridHeight: number = rawGrid.length;
+      for (let pixel of locationList) {
+        let [x, y] = pixel;
+        let match: boolean = mainGrid.simpleMatchRawGrid(rawGrid, x, y, rawGridWidth, rawGridHeight);
+        if (match) {
+          let transformId = uniquePatterns.get(jsonString)
+          if (transformId)
+            console.log(`For ${jsonString} match at: ${x},${y} for transforms: ${transformId}`)
+          else
+            console.log(`For ${jsonString} match at: ${x},${y} for transforms: ERROR!`)
+        }
+      }
+    })
+  }
+
   public testAllPixelsInMainGrid(uniquePatterns: Map<string, [string, string][]>) {
     let mainGrid = this._ruleGridMap.get("MAIN");
     if (mainGrid == null || mainGrid == undefined) return
