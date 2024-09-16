@@ -42,7 +42,7 @@ export class PixelReactor<T> {
           else {
             matchMap.set(stringifiedGrid, [[rule.id, transformId]]);
           }
-        })        
+        })
         console.log(`Rule ${id} has a successor ${rule.successor.id}`);
       }
     })
@@ -57,15 +57,40 @@ export class PixelReactor<T> {
         let v = annotatedRawGrid.grid[y][x];
         let pixelList = valueHistogram.get(v);
         if (pixelList) {
-          pixelList.push([x,y]) ;
+          pixelList.push([x, y]);
           valueHistogram.set(v, pixelList);
         }
         else {
-          valueHistogram.set(v, [[x,y]]);
+          valueHistogram.set(v, [[x, y]]);
         }
       }
     }
     return valueHistogram;
+  }
+
+  public buildListOfPixelsToCheckForEachNewPixel(patternHistograms: Map<string, Map<T, Vec2d[]>>,
+    mainGrid: ParametricGrid<T>) {
+    let pixelsToCheckByPattern = new Map<string, Vec2d[]>()
+    patternHistograms.forEach((histogram: Map<T, Vec2d[]>, patternString: string) => {
+      let pixelsToCheck: Vec2d[] = [];
+      let rawGrid = JSON.parse(patternString)
+      let annotatedRawGrid = new AnnotatedRawGrid(rawGrid);
+      mainGrid.newPixels.forEach(pixel => {
+        let [x, y, v] = pixel;
+        let locationsOfPixelsByValue = histogram.get(v);
+        if (locationsOfPixelsByValue) {
+          for (let patternPixel of locationsOfPixelsByValue) {
+            let [px, py] = patternPixel;
+            let pixelToCheckX = x - px;
+            let pixelToCheckY = y - py;
+            let pixelToCheck = mainGrid.wrapCoordinates([pixelToCheckX, pixelToCheckY])
+            pixelsToCheck.push(pixelToCheck)
+          }
+        }
+      })
+      pixelsToCheckByPattern.set(patternString, pixelsToCheck)
+    })
+    return pixelsToCheckByPattern;
   }
 
   public buildPatternHistograms(uniquePatterns: Map<string, [string, string][]>): Map<string, Map<T, Vec2d[]>> {
@@ -88,7 +113,7 @@ export class PixelReactor<T> {
       let rawGridWidth: number = rawGrid[0].length;
       let rawGridHeight: number = rawGrid.length;
       for (let pixel of pixelList) {
-        let [x,y] = pixel;
+        let [x, y] = pixel;
         let match: boolean = mainGrid.simpleMatchRawGrid(rawGrid, x, y, rawGridWidth, rawGridHeight);
         if (match) {
           console.log(`For ${jsonString} match at: ${x},${y}, transform keys: ${transformId}`)
@@ -103,7 +128,7 @@ export class PixelReactor<T> {
     let pixelList: Vec2d[] = []
     for (let y: number = 0; y < mainGrid.height; y++) {
       for (let x: number = 0; x < mainGrid.width; x++) {
-        pixelList.push([x,y])
+        pixelList.push([x, y])
       }
     }
     this.matchUniquePatterns(uniquePatterns, pixelList);
@@ -286,7 +311,9 @@ export class ParametricGrid<T> {
   //   return this.simpleMatchRawGrid(rawGrid, offsetX, offsetY, transformedGrid.width, transformedGrid.height);
   // }
 
-
+  public get newPixels() {
+    return this._newPixels;
+  }
   public get id() {
     return this._id;
   }
@@ -309,7 +336,7 @@ export class ParametricGrid<T> {
 
   public setLocation(x: number, y: number, v: T) {
     this._grid[y][x] = v;
-    this._newPixels.push([x,y,v]);
+    this._newPixels.push([x, y, v]);
     console.log("Location: ", x, ":", y)
   }
 
@@ -337,7 +364,7 @@ export class ParametricGrid<T> {
   //   }
   //   return matches;
   // }
- 
+
 
   // public simpleMatchAt(otherGrid: ParametricGrid<T>, offsetX: number, offsetY: number): boolean {
   //   let rawGrid: T[][] = otherGrid.grid;
