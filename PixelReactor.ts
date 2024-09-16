@@ -1,5 +1,6 @@
 import { main } from "ts-node/dist/bin";
 
+import {Serialize, SerializeProperty, Serializable} from 'ts-serializer';
 
 export type Vec2d = [x: number, y: number]
 
@@ -20,11 +21,16 @@ export class AnnotatedRawGrid<T> {
   }
 }
 
-export class PixelReactor<T> {
+
+
+@Serialize({})
+class PixelReactor<T> extends Serializable {
+  @SerializeProperty({})
   private _ruleGridMap: Map<string, RuleGrid<T>>;
 
   //private testArr = [1, 2, 4, 5]
 
+  @SerializeProperty({})
   private _currentRuleIndex: number = 1;
 
   public buildMatchMap(): Map<string, [string, string][]> {
@@ -170,6 +176,7 @@ export class PixelReactor<T> {
   }
 
   constructor() {
+    super();
     this._ruleGridMap = new Map<string, RuleGrid<T>>;
   }
 
@@ -560,3 +567,5 @@ export class RuleGrid<T> extends ParametricGrid<T> {
     this._priority = p;
   }
 }
+
+export { PixelReactor }
