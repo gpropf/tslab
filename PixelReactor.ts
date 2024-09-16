@@ -20,17 +20,79 @@ export class AnnotatedRawGrid<T> {
     this.grid = rawGrid;
   }
 }
+// -------------------------------
+@Serialize({})
+ class User extends Serializable {
 
+    constructor(name: string, lastname: string) {
+      super();
+      this.firstName = name
+      this.lastName = lastname
+    }
+
+
+     @SerializeProperty({
+        map: 'first_name'
+     })
+     firstName:string;
+     @SerializeProperty({
+        map: 'last_name'
+     })
+     lastName:string;
+ }
+ 
+@Serialize({})
+ class Profile extends Serializable {
+     @SerializeProperty({
+        type: User
+     })
+     user: User;
+ }
+ 
+ let data = {
+    user: {
+        first_name: 'John',
+        last_name: 'Doe'
+    }
+ };
+ 
+let greg = new User("Greg", "Propf")
+
+ let instance:Profile = new Profile();
+ instance.deserialize(data);
+ 
+ console.log(instance.user.firstName); // Prints 'John'
+ console.log(instance.user.lastName); // Prints 'Doe'
+ 
+ console.log(instance.serialize()); // Prints {&quot;user&quot;:{&quot;first_name&quot;:&quot;John&quot;, &quot;last_name&quot;:&quot;Doe&quot;}}
+ 
+ console.log(instance.user.serialize()); // Prints {&quot;first_name&quot;:&quot;John&quot;, &quot;last_name&quot;:&quot;Doe&quot;}
+
+console.log(greg.serialize())
+
+
+
+
+//---------------------------------
 
 
 @Serialize({})
-class PixelReactor<T> extends Serializable {
-  @SerializeProperty({})
+export class PixelReactor<T> extends Serializable {
+  @SerializeProperty({
+    map: 'ruleGridMap_data'
+ })
   private _ruleGridMap: Map<string, RuleGrid<T>>;
 
   //private testArr = [1, 2, 4, 5]
 
-  @SerializeProperty({})
+  @SerializeProperty({
+    map: 'foo_data'
+ })
+  public foo: string;
+
+  @SerializeProperty({
+    map: 'ruleIndex_data'
+ })
   private _currentRuleIndex: number = 1;
 
   public buildMatchMap(): Map<string, [string, string][]> {
@@ -175,9 +237,10 @@ class PixelReactor<T> extends Serializable {
     this._currentRuleIndex = newIdx;
   }
 
-  constructor() {
-    super();
+  constructor() {   
+    super() 
     this._ruleGridMap = new Map<string, RuleGrid<T>>;
+    this.foo = "FOO"
   }
 
   public setRule(id: string, pgrid: RuleGrid<T>) {
@@ -567,5 +630,3 @@ export class RuleGrid<T> extends ParametricGrid<T> {
     this._priority = p;
   }
 }
-
-export { PixelReactor }

@@ -189,7 +189,7 @@ function checkPixels() {
     <!-- <button @click="rgm = serialize(); rgm.forEach((value: string, id: string) => { console.log(`${id}:${value}`) })">Test Serialization</button> -->
 
     <button @click="serializeWorkspace()">Test Serialization</button>
-    <button @click="pixelReactor.serialize()">Test ts-serializer Serialization</button>
+    <button @click="console.log(pixelReactor.serialize()); console.log(typeof(pixelReactor.serialize()))">Test ts-serializer Serialization</button>
     <button @click="checkPixels()">Build
       Match Map</button>
     <button @click="console.log('PR Ids: ', pixelReactor.getAllRuleIds())">Print PR rule IDs</button>
