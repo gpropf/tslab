@@ -126,10 +126,12 @@ export class PixelReactor<T> {
     let mainGrid = this._ruleGridMap.get("MAIN");
     if (mainGrid == null || mainGrid == undefined) return
     pixelsToCheckByPattern.forEach((locationList, jsonString: string) => {
+      let locationSet = new Set(locationList)
+      console.log("LocationSet: ", locationSet)
       let rawGrid = JSON.parse(jsonString);
       let rawGridWidth: number = rawGrid[0].length;
       let rawGridHeight: number = rawGrid.length;
-      for (let pixel of locationList) {
+      for (let pixel of locationSet) {
         let [x, y] = pixel;
         let match: boolean = mainGrid.simpleMatchRawGrid(rawGrid, x, y, rawGridWidth, rawGridHeight);
         if (match) {
