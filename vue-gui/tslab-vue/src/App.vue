@@ -122,7 +122,7 @@ const screenHeight = ref(400);
 //const toRule = ref("");
 
 let pixelReactor = new PixelReactor<number>();
-let mainGrid = pixelReactor.getRule("MAIN");
+
 
 setPixelReactor(pixelReactor);
 
@@ -143,7 +143,20 @@ let gson = new Gson()
 let prMatches: Map<string, [string, string][]> = new Map<string, [string, string][]>()
 let pattternHistograms = new Map<string, Map<number, Vec2d[]>>()
 
-console.log("MAIN: ", mainGrid)
+//console.log("MAIN: ", mainGrid)
+
+function checkPixels() {
+  prMatches = pixelReactor.buildMatchMap();
+  pixelReactor.testAllPixelsInMainGrid(prMatches);
+  pattternHistograms = pixelReactor.buildPatternHistograms(prMatches);
+  console.log('PH: ', pattternHistograms);
+  let mainGrid = pixelReactor.getRule("MAIN");
+  if (mainGrid) {
+    let pixelsToCheck = pixelReactor.buildListOfPixelsToCheckForEachNewPixel(pattternHistograms, mainGrid);
+    console.log('Pixels2Check: ', pixelsToCheck)
+  }
+}
+
 </script>
 
 
@@ -174,8 +187,7 @@ console.log("MAIN: ", mainGrid)
     <!-- <button @click="rgm = serialize(); rgm.forEach((value: string, id: string) => { console.log(`${id}:${value}`) })">Test Serialization</button> -->
 
     <button @click="serializeWorkspace()">Test Serialization</button>
-    <button
-      @click="prMatches = pixelReactor.buildMatchMap(); pixelReactor.testAllPixelsInMainGrid(prMatches); pattternHistograms = pixelReactor.buildPatternHistograms(prMatches); console.log('PH: ', pattternHistograms); if (mainGrid) {let pixelsToCheck = pixelReactor.buildListOfPixelsToCheckForEachNewPixel(pattternHistograms, mainGrid); console.log('Pixels2Check: ', pixelsToCheck)}">Build
+    <button @click="checkPixels()">Build
       Match Map</button>
     <button @click="console.log('PR Ids: ', pixelReactor.getAllRuleIds())">Print PR rule IDs</button>
     <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(pixelReactor)))">Gson Serialize</button>
