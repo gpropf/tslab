@@ -143,7 +143,17 @@ let gson = new Gson()
 let prMatches: Map<string, [string, string][]> = new Map<string, [string, string][]>()
 let pattternHistograms = new Map<string, Map<number, Vec2d[]>>()
 
-//console.log("MAIN: ", mainGrid)
+let a = [1,2]
+let b = [1,2]
+let c = [4,5]
+
+let s = new Set<string>()
+s.add("AA")
+s.add("AA")
+s.add("BB")
+console.log(s)
+
+
 
 function checkPixels() {
   prMatches = pixelReactor.buildMatchMap();
@@ -193,6 +203,7 @@ function checkPixels() {
       Match Map</button>
     <button @click="console.log('PR Ids: ', pixelReactor.getAllRuleIds())">Print PR rule IDs</button>
     <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(pixelReactor)))">Gson Serialize</button>
+    <button @click="console.log('stringify PR: ', JSON.stringify(pixelReactor))">stringify PR</button>
     <!-- <button @click="linkRules()">Link named rules</button> -->
 
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
