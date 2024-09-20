@@ -157,7 +157,7 @@ console.log(s)
 
 function checkPixels() {
   prMatches = pixelReactor.buildMatchMap();
-  pixelReactor.testAllPixelsInMainGrid(prMatches);
+  //pixelReactor.testAllPixelsInMainGrid(prMatches);
   pattternHistograms = pixelReactor.buildPatternHistograms(prMatches);
   console.log('PH: ', pattternHistograms);
   let mainGrid = pixelReactor.getRule("MAIN");
