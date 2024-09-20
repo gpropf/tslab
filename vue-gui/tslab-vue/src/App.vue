@@ -171,7 +171,26 @@ function checkPixels() {
   }
 }
 
-
+function createTestRules() {
+  createRuleGrid("3","3");
+  createRuleGrid("3","3");
+  let rule1 = pixelReactor.getRule("rule-1");
+  let rule2 = pixelReactor.getRule("rule-2");
+  let mainGrid = pixelReactor.getRule("MAIN");
+  if (rule1 && rule2 && mainGrid) {
+    rule1.setLocation(0,1,1);
+    rule1.setLocation(1,1,1);
+    rule1.setLocation(2,1,1);
+    rule1.successor = rule2;
+    mainGrid.setLocation(10,12,1);
+    mainGrid.setLocation(11,12,1);
+    mainGrid.setLocation(12,12,1);
+    mainGrid.setLocation(30,15,1);
+    mainGrid.setLocation(30,16,1);
+    mainGrid.setLocation(30,17,1);
+    //mainGridKey.value++;
+  }
+}
 
 </script>
 
@@ -203,6 +222,7 @@ function checkPixels() {
     <!-- <button @click="rgm = serialize(); rgm.forEach((value: string, id: string) => { console.log(`${id}:${value}`) })">Test Serialization</button> -->
 
     <button @click="serializeWorkspace()">Test Serialization</button>
+    <button @click="createTestRules()">Create Test Rules</button>
     <button @click="checkPixels()">Build Match Map</button>
     <button @click="console.log('PR Ids: ', pixelReactor.getAllRuleIds())">Print PR rule IDs</button>
     <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(pixelReactor)))">Gson Serialize</button>
