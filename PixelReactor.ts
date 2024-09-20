@@ -20,6 +20,25 @@ export class AnnotatedRawGrid<T> {
   }
 }
 
+export class LocationSet extends Set {
+  has(loc: Vec2d) {
+    let [locX, locY] = loc;
+    let locations = Array.from(this);
+    for (let setLoc of locations) {
+      let [x,y] = setLoc;
+      if (locX == x && locY == y) return true;
+    }
+    return false
+  }
+  add(loc: Vec2d) {
+    if (!this.has(loc)) {
+      super.add(loc);
+    }
+    return this;
+  }
+}
+
+
 export class PixelReactor<T> {
   private _ruleGridMap: Map<string, RuleGrid<T>>;
 
@@ -127,7 +146,7 @@ export class PixelReactor<T> {
     let mainGrid = this._ruleGridMap.get("MAIN");
     if (mainGrid == null || mainGrid == undefined) return
     pixelsToCheckByPattern.forEach((locationList, jsonString: string) => {
-      let locationSet = new Set(locationList)
+      let locationSet = new LocationSet(locationList)
       console.log(`LocationSet for ${jsonString}: `, locationSet)
       let rawGrid = JSON.parse(jsonString);
       let rawGridWidth: number = rawGrid[0].length;
