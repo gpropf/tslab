@@ -116,6 +116,8 @@ const mainGridName = ref("MAIN")
 const mainGridKey = ref(0);
 const mainGridWidth = ref("60");
 const mainGridHeight = ref("40");
+const pgwidth = ref("3");
+const pgheight = ref("3")
 const screenWidth = ref(600);
 const screenHeight = ref(400);
 //const fromRule = ref("");
@@ -168,6 +170,8 @@ function checkPixels() {
     pixelReactor.matchUniquePatternsForNewPixels(pixelsToCheck, prMatches)
   }
 }
+
+
 
 </script>
 
