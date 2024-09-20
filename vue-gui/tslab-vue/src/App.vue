@@ -199,8 +199,7 @@ function checkPixels() {
     <!-- <button @click="rgm = serialize(); rgm.forEach((value: string, id: string) => { console.log(`${id}:${value}`) })">Test Serialization</button> -->
 
     <button @click="serializeWorkspace()">Test Serialization</button>
-    <button @click="checkPixels()">Build
-      Match Map</button>
+    <button @click="checkPixels()">Build Match Map</button>
     <button @click="console.log('PR Ids: ', pixelReactor.getAllRuleIds())">Print PR rule IDs</button>
     <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(pixelReactor)))">Gson Serialize</button>
     <button @click="console.log('stringify PR: ', JSON.stringify(pixelReactor))">stringify PR</button>

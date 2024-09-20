@@ -122,12 +122,13 @@ export class PixelReactor<T> {
     })
   }
 
-  public matchUniquePatternsForNewPixels(pixelsToCheckByPattern: Map<string, Vec2d[]>, uniquePatterns: Map<string, [string, string][]>) {
+  public matchUniquePatternsForNewPixels(pixelsToCheckByPattern: Map<string, Vec2d[]>,
+    uniquePatterns: Map<string, [string, string][]>) {
     let mainGrid = this._ruleGridMap.get("MAIN");
     if (mainGrid == null || mainGrid == undefined) return
     pixelsToCheckByPattern.forEach((locationList, jsonString: string) => {
       let locationSet = new Set(locationList)
-      console.log("LocationSet: ", locationSet)
+      console.log(`LocationSet for ${jsonString}: `, locationSet)
       let rawGrid = JSON.parse(jsonString);
       let rawGridWidth: number = rawGrid[0].length;
       let rawGridHeight: number = rawGrid.length;
@@ -175,12 +176,12 @@ export class PixelReactor<T> {
 
   public setRule(id: string, pgrid: RuleGrid<T>) {
     this._ruleGridMap.set(id, pgrid)
-    console.log(this._ruleGridMap)
+    //console.log(this._ruleGridMap)
   }
 
   public getRule(id: string) {
     let rg = this._ruleGridMap.get(id)
-    console.log(rg)
+    //console.log(rg)
     return rg
   }
 
