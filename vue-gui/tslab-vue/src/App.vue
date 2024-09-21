@@ -119,20 +119,10 @@ function serializeWorkspace() {
 }
 
 let gson = new Gson()
-//let prGson = gson.serialize(pixelReactor)
-//console.log("GSON: ", prGson)
+
 let prMatches: Map<string, [string, string][]> = new Map<string, [string, string][]>()
 let pattternHistograms = new Map<string, Map<number, Vec2d[]>>()
 
-let a = [1, 2]
-let b = [1, 2]
-let c = [4, 5]
-
-let s = new Set<string>()
-s.add("AA")
-s.add("AA")
-s.add("BB")
-console.log(s)
 
 function createRuleGrid(inwidth: string, inheight: string) {
   let existingRule = prRef.value.getRule(newRuleId.value);
@@ -144,7 +134,6 @@ function createRuleGrid(inwidth: string, inheight: string) {
   let newRule = new RuleGrid(parseInt(inwidth), parseInt(inheight), 0, newRuleId.value);
   prRef.value.setRule(newRuleId.value, newRule)
  
-
   let newRuleIndex = prRef.value.getNewRuleIndex();
   newRuleId.value = `rule-${newRuleIndex}`
 
@@ -152,14 +141,12 @@ function createRuleGrid(inwidth: string, inheight: string) {
 
 function checkPixels() {
   prMatches = pixelReactor.buildMatchMap();
-  //pixelReactor.testAllPixelsInMainGrid(prMatches);
   pattternHistograms = pixelReactor.buildPatternHistograms(prMatches);
   console.log('PH: ', pattternHistograms);
   let mainGrid = pixelReactor.getRule("MAIN");
   if (mainGrid) {
     let pixelsToCheck = pixelReactor.buildListOfPixelsToCheckForEachNewPixel(pattternHistograms, mainGrid);
     console.log('Pixels2Check: ', pixelsToCheck)
-
     pixelReactor.matchUniquePatternsForNewPixels(pixelsToCheck, prMatches)
   }
 }
@@ -167,7 +154,7 @@ function checkPixels() {
 function createTestRules() {
   createRuleGrid("3", "3");
   createRuleGrid("3", "3");
-  let rule1 = pixelReactor.getRule("rule-1");
+  let rule1 = prRef.value.getRule("rule-1");
   let rule2 = pixelReactor.getRule("rule-2");
   let mainGrid = pixelReactor.getRule("MAIN");
   if (rule1 && rule2 && mainGrid) {
@@ -180,13 +167,11 @@ function createTestRules() {
     mainGrid.setLocation(12, 12, 1);
     mainGrid.setLocation(30, 15, 1);
     mainGrid.setLocation(30, 16, 1);
-    mainGrid.setLocation(30, 17, 1);
-    //mainGridKey.value++;
+    mainGrid.setLocation(30, 17, 1);    
   }
 }
 
 </script>
-
 
 <template>
   <div>
@@ -194,45 +179,27 @@ function createTestRules() {
     <LabelledInput v-model:inputValue="mainGridWidth" id="main-grid-width-id" inputType="text"
       placeholder="Enter Main Grid Width" componentName="Main Grid Width" size="4" />
     <LabelledInput v-model:inputValue="mainGridHeight" id="main-grid-height-id" inputType="text"
-      placeholder="Enter Main Grid Height" componentName="Main Grid Height" size="4" />
-    <!-- <h2>Grid Data Entry</h2> -->
+      placeholder="Enter Main Grid Height" componentName="Main Grid Height" size="4" />    
     <LabelledInput v-model:inputValue="onClickValue" id="on-click-value-id" inputType="text"
       placeholder="Enter Color index number for grids" componentName="Color index" size="2" />
     <LabelledInput v-model:inputValue="pgwidth" id="rule-grid-width" inputType="text"
       placeholder="Enter width for rulegrid" componentName="Rulegrid Width" size="4" />
     <LabelledInput v-model:inputValue="pgheight" id="rule-grid-height" inputType="text"
       placeholder="Enter height for rulegrid" componentName="Rulegrid Height" size="4" />
-    <!-- <div>
-      <input type="text" v-model="pgwidth" placeholder="Width of new PG">
-    </div> -->
-    <!-- <div>
-      <input type="text" v-model="pgheight" placeholder="Height of new PG">
-    </div> -->
+    
     <div> Mouse Location: {{ formatVector(mouseLocation) }}</div>
     <button @click="createRuleGrid(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
-    <!-- <button @click="testMatchingAllRules()">Test Match</button> -->
-    <!-- <button @click="rgm = serialize(); rgm.forEach((value: string, id: string) => { console.log(`${id}:${value}`) })">Test Serialization</button> -->
-
     <button @click="serializeWorkspace()">Test Serialization</button>
     <button @click="createTestRules()">Create Test Rules</button>
     <button @click="checkPixels()">Build Match Map</button>
     <button @click="console.log('PR Ids: ', pixelReactor.getAllRuleIds())">Print PR rule IDs</button>
     <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(pixelReactor)))">Gson Serialize</button>
-    <button @click="console.log('stringify PR: ', JSON.stringify(pixelReactor))">stringify PR</button>
-    <!-- <button @click="linkRules()">Link named rules</button> -->
+    <button @click="console.log('stringify PR: ', JSON.stringify(pixelReactor))">stringify PR</button>    
 
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
       placeholder="Enter Id string for new rule" componentName="New Rule Id" size="20" />
-    <!-- <LabelledInput v-model:inputValue="fromRule" id="from-rule-id" inputType="text"
-      placeholder="Enter Id string for 'from' rule" componentName="'From' Rule Id" size="20" />
-    <LabelledInput v-model:inputValue="toRule" id="to-rule-id" inputType="text"
-      placeholder="Enter Id string for 'to' rule" componentName="'To' Rule Id" size="20" /> -->
-
-
-
-
-
+    
     <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
       :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
       :onClickValue="onClickValue" :conversionFn="conversionFn" :id="mainGridName" />
