@@ -75,7 +75,7 @@ const root = ref<HTMLElement | null>(null);
       :onClickValue="props.onClickValue" :programaticallyCreated="true" :conversionFn="props.conversionFn"
        :id="props.id" :prGrid="ruleGrid"/>
        <RuleSelect :fromRuleId="props.id "/>
-       <input type="text" v-model="ruleOffsetString" placeholder="Offset"
+       <input type="text" v-model="ruleOffsetString" placeholder="Offset" size="3"
         @input="changeOffset">
     
        <!-- <LabelledInput v-model:inputValue="ruleOffset" id="rule-offset" inputType="text"
