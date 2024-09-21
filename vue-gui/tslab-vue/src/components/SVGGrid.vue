@@ -31,20 +31,8 @@ console.log(`props.onClickValue: ${props.onClickValue}`)
 
 </script>
 
-<template>
-    <div v-if="programaticallyCreated">
-        <svg :viewBox="viewBox" :width="props.screenWidth" :height="props.screenHeight"
-            xmlns="http://www.w3.org/2000/svg">
-            <svg :key="y" v-for="(row, y) in props.prGrid.grid" xmlns="http://www.w3.org/2000/svg">
-                <svg :key="x" v-for="(cellval, x) in row">
-                    <rect
-                        @click="console.log(`props.onClickValue: ${props.onClickValue}`); props.prGrid.setLocation(x, y, props.conversionFn(props.onClickValue)); console.log(props.vizFn(props.conversionFn(props.onClickValue))); $forceUpdate()"
-                        :x="x" :y="y" width="1" height="1" stroke-width="0.05" :stroke="props.vizFn(cellval).strokeRGB" :fill="props.vizFn(cellval).fillRGB" @mouseover="setMouseLocation([x,y])" />
-                </svg>
-            </svg>
-        </svg>
-    </div>
-    <div v-else>
+<template>    
+    <div>
         <svg :viewBox="viewBox" :width="props.screenWidth" :height="props.screenHeight"
             xmlns="http://www.w3.org/2000/svg">
             <svg :key="y" v-for="(row, y) in props.prGrid.grid" xmlns="http://www.w3.org/2000/svg">
