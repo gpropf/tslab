@@ -18,8 +18,7 @@ const props = defineProps<{
     screenHeight: number,
     vizFn: ObjectVisualizationFn,
     defaultValue: any,
-    onClickValue: any,
-    programaticallyCreated: boolean
+    onClickValue: any,    
     conversionFn: ConversionFn,
     id: string,
     prGrid: ParametricGrid<any> | RuleGrid<any>
@@ -27,7 +26,7 @@ const props = defineProps<{
 
 let viewBox = `0 0 ${props.width} ${props.height}`;
 
-console.log(`props.onClickValue: ${props.onClickValue}`)
+
 
 </script>
 

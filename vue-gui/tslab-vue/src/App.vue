@@ -143,23 +143,7 @@ function createRuleGrid(inwidth: string, inheight: string) {
 
   let newRule = new RuleGrid(parseInt(inwidth), parseInt(inheight), 0, newRuleId.value);
   prRef.value.setRule(newRuleId.value, newRule)
-
-  // let ruleGridVC = createApp(RuleGridVC, {
-  //   width: parseInt(inwidth), height: parseInt(inheight),
-  //   vizFn: vizFn, defaultValue: 0, onClickValue: onClickValue, programaticallyCreated: true, conversionFn: conversionFn,
-  //   screenWidth: 150, screenHeight: 100, id: newRuleId.value, priority: 50
-  // })
-
-
-
-  // const wrapper = document.getElementById("dynamic_content")
-  // if (wrapper) {
-  //   const newDiv = document.createElement("div")
-  //   newDiv.className = "rule"
-  //   newDiv.id = newRuleId.value;
-  //   ruleGridVC.mount(newDiv)
-  //   wrapper.appendChild(newDiv)
-  // }
+ 
 
   let newRuleIndex = prRef.value.getNewRuleIndex();
   newRuleId.value = `rule-${newRuleIndex}`
@@ -251,7 +235,7 @@ function createTestRules() {
 
     <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
       :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
-      :onClickValue="onClickValue" :programaticallyCreated="false" :conversionFn="conversionFn" :id="mainGridName" />
+      :onClickValue="onClickValue" :conversionFn="conversionFn" :id="mainGridName" />
 
     <RuleList :pixelReactor="prRef" :screenWidth="150" :screenHeight="100"
      :vizFn="vizFn" :defaultValue="0" :onClickValue="onClickValue" :conversionFn="conversionFn"></RuleList>

@@ -34,7 +34,7 @@ const ruleroot = ref<HTMLElement | null>(null);
     <div v-for="id in props.pixelReactor.getAllRuleIds()">      
       <RuleGridVC  v-if="id !='MAIN'" :screenWidth="props.screenWidth" :screenHeight="props.screenHeight"
         :width="props.pixelReactor.getRule(id).width" :height="props.pixelReactor.getRule(id).height"
-        :vizFn="props.vizFn" :defaultValue="0" :onClickValue="props.onClickValue" :programaticallyCreated="true"
+        :vizFn="props.vizFn" :defaultValue="0" :onClickValue="props.onClickValue"
         :conversionFn="props.conversionFn" :id="id" :priority="props.pixelReactor.getRule(id).priority"/>
       <button @click="$forceUpdate()">placeholder Button</button>
     </div>

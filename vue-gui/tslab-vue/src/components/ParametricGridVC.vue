@@ -31,8 +31,7 @@ const props = defineProps<{
     screenHeight: number,
     vizFn: ObjectVisualizationFn,
     defaultValue: any,
-    onClickValue: any,
-    programaticallyCreated: boolean
+    onClickValue: any,    
     conversionFn: ConversionFn,
     id: string    
 }>()
@@ -51,6 +50,6 @@ prRef.value.setRule(props.id, parametricGrid as RuleGrid<any>);
     
     <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight"
       :width="props.width" :height="props.height" :vizFn="props.vizFn" :defaultValue="0"
-      :onClickValue="props.onClickValue" :programaticallyCreated="false" :conversionFn="props.conversionFn"
+      :onClickValue="props.onClickValue" :conversionFn="props.conversionFn"
        :id="props.id" :prGrid="parametricGrid"/>
 </template>

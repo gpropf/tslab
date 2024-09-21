@@ -23,8 +23,7 @@ const props = defineProps<{
     screenHeight: number,
     vizFn: ObjectVisualizationFn,
     defaultValue: any,
-    onClickValue: any,
-    programaticallyCreated: boolean
+    onClickValue: any,    
     conversionFn: ConversionFn,
     id: string,
     priority: number
@@ -72,7 +71,7 @@ const root = ref<HTMLElement | null>(null);
     <span>id: {{ props.id }}</span><button @click="prRef.deleteRule(props.id)">Delete Rule</button>
     <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight"
       :width="props.width" :height="props.height" :vizFn="props.vizFn" :defaultValue="0"
-      :onClickValue="props.onClickValue" :programaticallyCreated="true" :conversionFn="props.conversionFn"
+      :onClickValue="props.onClickValue" :conversionFn="props.conversionFn"
        :id="props.id" :prGrid="ruleGrid"/>
        <RuleSelect :fromRuleId="props.id "/>
        <input type="text" v-model="ruleOffsetString" placeholder="Offset" size="3"
