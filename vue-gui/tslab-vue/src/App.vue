@@ -85,33 +85,7 @@ function conversionFn(v: string) {
 //   console.log("PR: ALL THE MATCHES! ", matchMap);
 // }
 
-function createRuleGrid(inwidth: string, inheight: string) {
-  let existingRule = pixelReactor.getRule(newRuleId.value);
-  if (existingRule != undefined) {
-    alert(`Rule id '${newRuleId.value}' is in use. Choose another id.`);
-    return;
-  }
-  let ruleGridVC = createApp(RuleGridVC, {
-    width: parseInt(inwidth), height: parseInt(inheight),
-    vizFn: vizFn, defaultValue: 0, onClickValue: onClickValue, programaticallyCreated: true, conversionFn: conversionFn,
-    screenWidth: 150, screenHeight: 100, id: newRuleId.value, priority: 50
-  })
 
-
-
-  const wrapper = document.getElementById("dynamic_content")
-  if (wrapper) {
-    const newDiv = document.createElement("div")
-    newDiv.className = "rule"
-    newDiv.id = newRuleId.value;
-    ruleGridVC.mount(newDiv)
-    wrapper.appendChild(newDiv)
-  }
-
-  let newRuleIndex = pixelReactor.getNewRuleIndex();
-  newRuleId.value = `rule-${newRuleIndex}`
-
-}
 
 const newRuleId = ref("rule-1")
 const onClickValue = ref("1")
@@ -160,7 +134,37 @@ s.add("AA")
 s.add("BB")
 console.log(s)
 
+function createRuleGrid(inwidth: string, inheight: string) {
+  let existingRule = prRef.value.getRule(newRuleId.value);
+  if (existingRule != undefined) {
+    alert(`Rule id '${newRuleId.value}' is in use. Choose another id.`);
+    return;
+  }
 
+  let newRule = new RuleGrid(parseInt(inwidth), parseInt(inheight), 0, newRuleId.value);
+  prRef.value.setRule(newRuleId.value, newRule)
+
+  // let ruleGridVC = createApp(RuleGridVC, {
+  //   width: parseInt(inwidth), height: parseInt(inheight),
+  //   vizFn: vizFn, defaultValue: 0, onClickValue: onClickValue, programaticallyCreated: true, conversionFn: conversionFn,
+  //   screenWidth: 150, screenHeight: 100, id: newRuleId.value, priority: 50
+  // })
+
+
+
+  // const wrapper = document.getElementById("dynamic_content")
+  // if (wrapper) {
+  //   const newDiv = document.createElement("div")
+  //   newDiv.className = "rule"
+  //   newDiv.id = newRuleId.value;
+  //   ruleGridVC.mount(newDiv)
+  //   wrapper.appendChild(newDiv)
+  // }
+
+  let newRuleIndex = prRef.value.getNewRuleIndex();
+  newRuleId.value = `rule-${newRuleIndex}`
+
+}
 
 function checkPixels() {
   prMatches = pixelReactor.buildMatchMap();

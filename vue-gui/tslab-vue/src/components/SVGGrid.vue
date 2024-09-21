@@ -27,7 +27,7 @@ const props = defineProps<{
 
 let viewBox = `0 0 ${props.width} ${props.height}`;
 
-
+console.log(`props.onClickValue: ${props.onClickValue}`)
 
 </script>
 
@@ -38,7 +38,7 @@ let viewBox = `0 0 ${props.width} ${props.height}`;
             <svg :key="y" v-for="(row, y) in props.prGrid.grid" xmlns="http://www.w3.org/2000/svg">
                 <svg :key="x" v-for="(cellval, x) in row">
                     <rect
-                        @click="props.prGrid.setLocation(x, y, props.conversionFn(props.onClickValue.value)); console.log(props.vizFn(props.conversionFn(props.onClickValue.value))); $forceUpdate()"
+                        @click="console.log(`props.onClickValue: ${props.onClickValue}`); props.prGrid.setLocation(x, y, props.conversionFn(props.onClickValue)); console.log(props.vizFn(props.conversionFn(props.onClickValue))); $forceUpdate()"
                         :x="x" :y="y" width="1" height="1" stroke-width="0.05" :stroke="props.vizFn(cellval).strokeRGB" :fill="props.vizFn(cellval).fillRGB" @mouseover="setMouseLocation([x,y])" />
                 </svg>
             </svg>

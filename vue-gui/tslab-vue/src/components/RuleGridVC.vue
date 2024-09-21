@@ -69,7 +69,7 @@ const root = ref<HTMLElement | null>(null);
   <div ref="root">
     <LabelledInput v-model:inputValue="ruleGrid.priority" id="rule-grid-priority" inputType="text"
     placeholder="Enter priority for rule" componentName="Rule Priority" size="3" labelClass="medium"/>
-    <span>id: {{ props.id }}</span><button @click="prRef.deleteRule(props.id); root?.parentElement?.remove();">Delete Rule</button>
+    <span>id: {{ props.id }}</span><button @click="prRef.deleteRule(props.id)">Delete Rule</button>
     <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight"
       :width="props.width" :height="props.height" :vizFn="props.vizFn" :defaultValue="0"
       :onClickValue="props.onClickValue" :programaticallyCreated="true" :conversionFn="props.conversionFn"
