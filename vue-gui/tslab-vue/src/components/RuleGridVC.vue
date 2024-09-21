@@ -7,7 +7,7 @@ import { type ColorInfo, type ObjectVisualizationFn, type ConversionFn } from ".
 import SVGGrid from './SVGGrid.vue';
 import LabelledInput from './LabelledInput.vue';
 import RuleSelect from './RuleSelect.vue';
-import { ref } from 'vue'
+import { ref,onMounted } from 'vue'
 
 const rules = useRulesStore();
 const { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor } = rules;
@@ -57,12 +57,19 @@ function changeOffset() {
     ruleGrid.successorOffset = stringToVec(ruleOffsetString.value)    
 }
 
+const root = ref<HTMLElement | null>(null);
+//onMounted(() => console.log(root.value));
+
+//let ruleDiv = document.getElementById(props.id)
+//console.log("ruleDiv: ", ruleDiv)
+
 </script>
 
 <template>
+  <div ref="root">
     <LabelledInput v-model:inputValue="ruleGrid.priority" id="rule-grid-priority" inputType="text"
     placeholder="Enter priority for rule" componentName="Rule Priority" size="3" labelClass="medium"/>
-    <span>id: {{ props.id }}</span><button @click="prRef.deleteRule(props.id)">Delete Rule</button>
+    <span>id: {{ props.id }}</span><button @click="prRef.deleteRule(props.id); root?.parentElement?.remove();">Delete Rule</button>
     <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight"
       :width="props.width" :height="props.height" :vizFn="props.vizFn" :defaultValue="0"
       :onClickValue="props.onClickValue" :programaticallyCreated="true" :conversionFn="props.conversionFn"
@@ -73,6 +80,7 @@ function changeOffset() {
     
        <!-- <LabelledInput v-model:inputValue="ruleOffset" id="rule-offset" inputType="text"
       placeholder="Enter offset as a comma-delimited string" componentName="Offset String" size="4"/> -->
+      </div>
 </template>
 
 <script lang="ts">
