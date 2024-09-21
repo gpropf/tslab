@@ -167,7 +167,10 @@ function createTestRules() {
     mainGrid.setLocation(12, 12, 1);
     mainGrid.setLocation(30, 15, 1);
     mainGrid.setLocation(30, 16, 1);
-    mainGrid.setLocation(30, 17, 1);    
+    mainGrid.setLocation(30, 17, 1);
+    mainGrid.setLocation(55, 35, 1);
+    rule2.setLocation(1, 1, 1);  
+    rule2.successor = rule1;
   }
 }
 
