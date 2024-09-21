@@ -249,7 +249,7 @@ function createTestRules() {
       :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
       :onClickValue="onClickValue" :programaticallyCreated="false" :conversionFn="conversionFn" :id="mainGridName" />
 
-    <RuleList :pixelReactor="prRef" :screenWidth="screenWidth" :screenHeight="screenHeight"
+    <RuleList :pixelReactor="prRef" :screenWidth="150" :screenHeight="100"
      :vizFn="vizFn" :defaultValue="0" :onClickValue="onClickValue" :conversionFn="conversionFn"></RuleList>
 
     
