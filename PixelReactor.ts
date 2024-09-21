@@ -204,6 +204,10 @@ export class PixelReactor<T> {
     return rg
   }
 
+  public deleteRule(id: string) {
+    this._ruleGridMap.delete(id)
+  }
+
   public serialize(): string {
     return this.serializeRules();
   }
