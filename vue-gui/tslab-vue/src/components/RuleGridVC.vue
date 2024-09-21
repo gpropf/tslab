@@ -29,15 +29,18 @@ const props = defineProps<{
     priority: number
 }>()
 
-let ruleGrid = new RuleGrid<any>(props.width, props.height, props.defaultValue, props.id);
+let prRef = getPixelReactor();
+
+//let ruleGrid = new RuleGrid<any>(props.width, props.height, props.defaultValue, props.id);
+  let ruleGrid = prRef.value.getRule(props.id)
 let viewBox = `0 0 ${props.width} ${props.height}`;
 const ruleOffsetString = ref("")
 
 
 //setRule(props.id, ruleGrid)
 
-let prRef = getPixelReactor();
-prRef.value.setRule(props.id, ruleGrid)
+
+//prRef.value.setRule(props.id, ruleGrid)
 
 
 
