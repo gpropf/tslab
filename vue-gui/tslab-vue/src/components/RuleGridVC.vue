@@ -65,7 +65,7 @@ const root = ref<HTMLElement | null>(null);
 </script>
 
 <template>
-  <div ref="root">
+  <!-- <div ref="root"> -->
     <LabelledInput v-model:inputValue="ruleGrid.priority" id="rule-grid-priority" inputType="text"
     placeholder="Enter priority for rule" componentName="Rule Priority" size="3" labelClass="medium"/>
     <span>id: {{ props.id }}</span><button @click="prRef.deleteRule(props.id)">Delete Rule</button>
@@ -79,7 +79,7 @@ const root = ref<HTMLElement | null>(null);
     
        <!-- <LabelledInput v-model:inputValue="ruleOffset" id="rule-offset" inputType="text"
       placeholder="Enter offset as a comma-delimited string" componentName="Offset String" size="4"/> -->
-      </div>
+      <!-- </div> -->
 </template>
 
 <script lang="ts">

@@ -228,8 +228,9 @@ export class PixelReactor<T> {
   }
 
   public getAllRuleIds() {
-    let ruleKeys = Array.from(this._ruleGridMap.keys());
-    return ruleKeys;
+    let ruleKeys: string[] = Array.from(this._ruleGridMap.keys());
+    //ruleKeys = ruleKeys.fil
+    return ruleKeys.filter(key => key != "MAIN");
   }
 
   public getAllMatches() {
