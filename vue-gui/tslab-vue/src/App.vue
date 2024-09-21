@@ -7,6 +7,7 @@ import { ParametricGrid, PixelReactor, RuleGrid, type Vec2d } from "../../../Pix
 /// <reference path="./../../../ParametricGrid.ts"/>
 
 import RuleGridVC from './components/RuleGridVC.vue';
+import RuleList from './components/RuleList.vue';
 import { type ColorInfo } from './components/ParametricGridVC.vue';
 import { createApp } from 'vue';
 
@@ -96,7 +97,7 @@ function createRuleGrid(inwidth: string, inheight: string) {
     screenWidth: 150, screenHeight: 100, id: newRuleId.value, priority: 50
   })
 
-  
+
 
   const wrapper = document.getElementById("dynamic_content")
   if (wrapper) {
@@ -130,6 +131,8 @@ let pixelReactor = new PixelReactor<number>();
 
 setPixelReactor(pixelReactor);
 
+let prRef = getPixelReactor();
+
 let mouseLocation = getMouseLocation();
 
 function formatVector(v: Vec2d) {
@@ -147,9 +150,9 @@ let gson = new Gson()
 let prMatches: Map<string, [string, string][]> = new Map<string, [string, string][]>()
 let pattternHistograms = new Map<string, Map<number, Vec2d[]>>()
 
-let a = [1,2]
-let b = [1,2]
-let c = [4,5]
+let a = [1, 2]
+let b = [1, 2]
+let c = [4, 5]
 
 let s = new Set<string>()
 s.add("AA")
@@ -174,22 +177,22 @@ function checkPixels() {
 }
 
 function createTestRules() {
-  createRuleGrid("3","3");
-  createRuleGrid("3","3");
+  createRuleGrid("3", "3");
+  createRuleGrid("3", "3");
   let rule1 = pixelReactor.getRule("rule-1");
   let rule2 = pixelReactor.getRule("rule-2");
   let mainGrid = pixelReactor.getRule("MAIN");
   if (rule1 && rule2 && mainGrid) {
-    rule1.setLocation(0,1,1);
-    rule1.setLocation(1,1,1);
-    rule1.setLocation(2,1,1);
+    rule1.setLocation(0, 1, 1);
+    rule1.setLocation(1, 1, 1);
+    rule1.setLocation(2, 1, 1);
     rule1.successor = rule2;
-    mainGrid.setLocation(10,12,1);
-    mainGrid.setLocation(11,12,1);
-    mainGrid.setLocation(12,12,1);
-    mainGrid.setLocation(30,15,1);
-    mainGrid.setLocation(30,16,1);
-    mainGrid.setLocation(30,17,1);
+    mainGrid.setLocation(10, 12, 1);
+    mainGrid.setLocation(11, 12, 1);
+    mainGrid.setLocation(12, 12, 1);
+    mainGrid.setLocation(30, 15, 1);
+    mainGrid.setLocation(30, 16, 1);
+    mainGrid.setLocation(30, 17, 1);
     //mainGridKey.value++;
   }
 }
@@ -245,6 +248,11 @@ function createTestRules() {
     <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
       :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
       :onClickValue="onClickValue" :programaticallyCreated="false" :conversionFn="conversionFn" :id="mainGridName" />
+
+    <RuleList :pixelReactor="prRef" :screenWidth="screenWidth" :screenHeight="screenHeight"
+     :vizFn="vizFn" :defaultValue="0" :onClickValue="onClickValue" :conversionFn="conversionFn"></RuleList>
+
+    
 
     <div id="dynamic_content" class="rules"></div>
   </div>

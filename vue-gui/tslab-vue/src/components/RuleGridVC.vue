@@ -7,7 +7,7 @@ import { type ColorInfo, type ObjectVisualizationFn, type ConversionFn } from ".
 import SVGGrid from './SVGGrid.vue';
 import LabelledInput from './LabelledInput.vue';
 import RuleSelect from './RuleSelect.vue';
-import { ref,onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const rules = useRulesStore();
 const { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor } = rules;
