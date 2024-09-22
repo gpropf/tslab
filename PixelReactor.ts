@@ -124,22 +124,22 @@ export class PixelReactor<T> {
     return patternHistograms;
   }
 
-  public matchUniquePatterns(uniquePatterns: Map<string, [string, string, number][]>, pixelList: Vec2d[]) {
-    let mainGrid = this._ruleGridMap.get("MAIN");
-    if (mainGrid == null || mainGrid == undefined) return
-    uniquePatterns.forEach((uniquePatternMetadata, jsonString: string) => {
-      let rawGrid = JSON.parse(jsonString);
-      let rawGridWidth: number = rawGrid[0].length;
-      let rawGridHeight: number = rawGrid.length;
-      for (let pixel of pixelList) {
-        let [x, y] = pixel;
-        let match: boolean = mainGrid.simpleMatchRawGrid(rawGrid, x, y, rawGridWidth, rawGridHeight);
-        if (match) {
-          console.log(`For ${jsonString} match at: ${x},${y}, transform keys: ${uniquePatternMetadata}`)
-        }
-      }
-    })
-  }
+  // public matchUniquePatterns(uniquePatterns: Map<string, [string, string, number][]>, pixelList: Vec2d[]) {
+  //   let mainGrid = this._ruleGridMap.get("MAIN");
+  //   if (mainGrid == null || mainGrid == undefined) return
+  //   uniquePatterns.forEach((uniquePatternMetadata, jsonString: string) => {
+  //     let rawGrid = JSON.parse(jsonString);
+  //     let rawGridWidth: number = rawGrid[0].length;
+  //     let rawGridHeight: number = rawGrid.length;
+  //     for (let pixel of pixelList) {
+  //       let [x, y] = pixel;
+  //       let match: boolean = mainGrid.simpleMatchRawGrid(rawGrid, x, y, rawGridWidth, rawGridHeight);
+  //       if (match) {
+  //         console.log(`For ${jsonString} match at: ${x},${y}, transform keys: ${uniquePatternMetadata}`)
+  //       }
+  //     }
+  //   })
+  // }
 
   public matchUniquePatternsForNewPixels(pixelsToCheckByPattern: Map<string, Vec2d[]>,
     uniquePatternMetadata: Map<string, [string, string, number][]>) {
