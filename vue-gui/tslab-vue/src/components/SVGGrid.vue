@@ -12,8 +12,8 @@ const { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor } =
 //const { mouseLocation, updateMouseLocation } = inject('mouseLocation');
 
 const props = defineProps<{
-    width: number,
-    height: number,
+    width: number | undefined,
+    height: number | undefined,
     screenWidth: number,
     screenHeight: number,
     vizFn: ObjectVisualizationFn,

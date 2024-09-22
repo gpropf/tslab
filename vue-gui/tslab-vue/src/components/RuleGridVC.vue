@@ -17,8 +17,8 @@ const { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor } =
 
 
 const props = defineProps<{
-    width: number,
-    height: number,
+    width: number  | undefined,
+    height: number  | undefined,
     screenWidth: number,
     screenHeight: number,
     vizFn: ObjectVisualizationFn,
@@ -26,7 +26,7 @@ const props = defineProps<{
     onClickValue: any,    
     conversionFn: ConversionFn,
     id: string,
-    priority: number
+    priority: number | undefined
 }>()
 
 let prRef = getPixelReactor();

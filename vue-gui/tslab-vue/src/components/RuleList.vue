@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import { useRulesStore } from '@/stores/rules'
-import { RuleGrid, type Vec2d, zeroVec } from "../../../../PixelReactor"
+import { PixelReactor, RuleGrid, type Vec2d, zeroVec } from "../../../../PixelReactor"
 import { type ColorInfo, type ObjectVisualizationFn, type ConversionFn } from "./ParametricGridVC.vue"
 import SVGGrid from './SVGGrid.vue';
 import RuleGridVC from './RuleGridVC.vue';
@@ -33,9 +33,9 @@ const ruleroot = ref<HTMLElement | null>(null);
   <div class="rules">
     <div v-for="id in props.pixelReactor.getAllRuleIds()">      
       <RuleGridVC v-if="id !='MAIN'" :screenWidth="props.screenWidth" :screenHeight="props.screenHeight"
-        :width="props.pixelReactor.getRule(id).width" :height="props.pixelReactor.getRule(id).height"
+        :width="props.pixelReactor.getRule(id)?.width" :height="props.pixelReactor.getRule(id)?.height"
         :vizFn="props.vizFn" :defaultValue="0" :onClickValue="props.onClickValue"
-        :conversionFn="props.conversionFn" :id="id" :priority="props.pixelReactor.getRule(id).priority"/>
+        :conversionFn="props.conversionFn" :id="id" :priority="props.pixelReactor.getRule(id)?.priority"/>
       <!-- <button @click="$forceUpdate()">placeholder Button</button> -->
     </div>
 
