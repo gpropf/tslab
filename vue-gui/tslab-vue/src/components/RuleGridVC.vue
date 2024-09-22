@@ -17,8 +17,8 @@ const { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor } =
 
 
 const props = defineProps<{
-    width: number  | undefined,
-    height: number  | undefined,
+    width: number | undefined,
+    height: number | undefined,
     screenWidth: number,
     screenHeight: number,
     vizFn: ObjectVisualizationFn,
