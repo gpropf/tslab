@@ -25,7 +25,7 @@ export class LocationSet extends Set {
     let [locX, locY] = loc;
     let locations = Array.from(this);
     for (let setLoc of locations) {
-      let [x,y] = setLoc;
+      let [x, y] = setLoc;
       if (locX == x && locY == y) return true;
     }
     return false
@@ -42,7 +42,7 @@ export class LocationSet extends Set {
 export class PixelReactor<T> {
   private _ruleGridMap: Map<string, RuleGrid<T>>;
 
-  //private testArr = [1, 2, 4, 5]
+  public static readonly transformToPriorityOffsetMap = new Map<string, number>([["r0", 0], ["r90", 2], ["r180", 4], ["r270", 6]]);
 
   private _currentRuleIndex: number = 1;
 
@@ -50,16 +50,19 @@ export class PixelReactor<T> {
     let matchMap: Map<string, [string, string, number][]> = new Map<string, [string, string, number][]>();
     this._ruleGridMap.forEach((rule, id) => {
       if (rule.successor) {
-        rule.rotatedGrids.forEach((rotatedGrid, rotatedGridMetadata) => {
-          console.log(`${[rule.id, rotatedGridMetadata]}`);
+        rule.rotatedGrids.forEach((rotatedGrid, transform) => {
+          console.log(`${[rule.id, transform]}`);
           let stringifiedGrid = JSON.stringify(rotatedGrid.grid);
           let matchingPatterns = matchMap.get(stringifiedGrid);
+          let priorityOffset = PixelReactor.transformToPriorityOffsetMap.get(transform);
+          if (priorityOffset === undefined) priorityOffset = 0;
+          priorityOffset += rule.priority;
           if (matchingPatterns) {
-            matchingPatterns.push([rule.id, rotatedGridMetadata, rule.priority]);
+            matchingPatterns.push([rule.id, transform, priorityOffset]);
             matchMap.set(stringifiedGrid, matchingPatterns);
           }
           else {
-            matchMap.set(stringifiedGrid, [[rule.id, rotatedGridMetadata, rule.priority]]);
+            matchMap.set(stringifiedGrid, [[rule.id, transform, priorityOffset]]);
           }
         })
         console.log(`Rule ${id} has a successor ${rule.successor.id}`);
@@ -155,9 +158,9 @@ export class PixelReactor<T> {
         let [x, y] = pixel;
         let match: boolean = mainGrid.simpleMatchRawGrid(rawGrid, x, y, rawGridWidth, rawGridHeight);
         if (match) {
-          let transformId = uniquePatternMetadata.get(jsonString)
-          if (transformId)
-            console.log(`For ${jsonString} match at: ${x},${y} for transforms: ${transformId}`)
+          let matchMetadata = uniquePatternMetadata.get(jsonString)
+          if (matchMetadata)
+            console.log(`For ${jsonString} match at: ${x},${y} for transforms: ${matchMetadata}`)
           else
             console.log(`For ${jsonString} match at: ${x},${y} for transforms: ERROR!`)
         }
@@ -249,6 +252,10 @@ export class PixelReactor<T> {
     return matchMap;
   }
 }
+
+//PixelReactor.transformToPriorityOffsetMap.set("r0", 2);
+
+
 
 
 

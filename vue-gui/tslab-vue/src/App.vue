@@ -174,6 +174,9 @@ function createTestRules() {
   }
 }
 
+//PixelReactor.initClass();
+console.log("transformToPriorityOffsetMap: ", PixelReactor.transformToPriorityOffsetMap)
+
 </script>
 
 <template>
