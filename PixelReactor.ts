@@ -64,23 +64,23 @@ export class PixelReactor<T> {
 
   private _currentRuleIndex: number = 1;
 
-  public buildMatchMap(): Map<RawGridString, [string, string, number][]> {
-    let matchMap: Map<RawGridString, [string, string, number][]> = new Map<RawGridString, [string, string, number][]>();
+  public buildMatchMap(): Map<RawGridString, [string, string][]> {
+    let matchMap: Map<RawGridString, [string, string][]> = new Map<RawGridString, [string, string][]>();
     this._ruleGridMap.forEach((rule, id) => {
       if (rule.successor) {
         rule.rotatedGrids.forEach((rotatedGrid, transform) => {
           console.log(`${[rule.id, transform]}`);
           let stringifiedGrid: RawGridString = JSON.stringify(rotatedGrid.grid);
           let matchingPatterns = matchMap.get(stringifiedGrid);
-          let priorityOffset = PixelReactor.transformToPriorityOffsetMap.get(transform);
-          if (priorityOffset === undefined) priorityOffset = 0;
-          priorityOffset += rule.priority;
+          //let priorityOffset = PixelReactor.transformToPriorityOffsetMap.get(transform);
+          //if (priorityOffset === undefined) priorityOffset = 0;
+          //priorityOffset += rule.priority;
           if (matchingPatterns) {
-            matchingPatterns.push([rule.id, transform, priorityOffset]);
+            matchingPatterns.push([rule.id, transform]);
             matchMap.set(stringifiedGrid, matchingPatterns);
           }
           else {
-            matchMap.set(stringifiedGrid, [[rule.id, transform, priorityOffset]]);
+            matchMap.set(stringifiedGrid, [[rule.id, transform]]);
           }
         })
         console.log(`Rule ${id} has a successor ${rule.successor.id}`);
@@ -133,7 +133,7 @@ export class PixelReactor<T> {
     return pixelsToCheckByPattern;
   }
 
-  public buildPatternHistograms(uniquePatterns: Map<RawGridString, [string, string, number][]>): Map<RawGridString, Map<T, Vec2d[]>> {
+  public buildPatternHistograms(uniquePatterns: Map<RawGridString, [string, string][]>): Map<RawGridString, Map<T, Vec2d[]>> {
     let uniquePatternKeys = Array.from(uniquePatterns.keys());
     let patternHistograms = new Map<RawGridString, Map<T, Vec2d[]>>();
     uniquePatternKeys.forEach(pattern => {
@@ -145,7 +145,7 @@ export class PixelReactor<T> {
     return patternHistograms;
   }
 
-  // public matchUniquePatterns(uniquePatterns: Map<string, [string, string, number][]>, pixelList: Vec2d[]) {
+  // public matchUniquePatterns(uniquePatterns: Map<string, [string, string][]>, pixelList: Vec2d[]) {
   //   let mainGrid = this._ruleGridMap.get("MAIN");
   //   if (mainGrid == null || mainGrid == undefined) return
   //   uniquePatterns.forEach((uniquePatternMetadata, jsonString: string) => {
@@ -163,7 +163,7 @@ export class PixelReactor<T> {
   // }
 
   public matchUniquePatternsForNewPixels(pixelsToCheckByPattern: Map<RawGridString, Vec2d[]>,
-    uniquePatternMetadata: Map<RawGridString, [string, string, number][]>) {
+    uniquePatternMetadata: Map<RawGridString, [string, string][]>) {
     let matchMap: Map<RawGridString, Pixel<T>[]> = new Map<RawGridString, Pixel<T>[]>();
     let mainGrid = this._ruleGridMap.get("MAIN");
     if (mainGrid == null || mainGrid == undefined) return
@@ -191,7 +191,7 @@ export class PixelReactor<T> {
     return matchMap;
   }
 
-  // public testAllPixelsInMainGrid(uniquePatterns: Map<string, [string, string, number][]>) {
+  // public testAllPixelsInMainGrid(uniquePatterns: Map<string, [string, string][]>) {
   //   let mainGrid = this._ruleGridMap.get("MAIN");
   //   if (mainGrid == null || mainGrid == undefined) return
   //   let pixelList: Vec2d[] = []
