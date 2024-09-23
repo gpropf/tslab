@@ -109,7 +109,7 @@ export class PixelReactor<T> {
   }
 
   public buildListOfPixelsToCheckForEachNewPixel(patternHistograms: Map<RawGridString, Map<T, Vec2d[]>>,
-    mainGrid: ParametricGrid<T>) : Map<RawGridString, Vec2d[]> {
+    mainGrid: ParametricGrid<T>): Map<RawGridString, Vec2d[]> {
     let pixelsToCheckByPattern = new Map<RawGridString, Vec2d[]>()
     patternHistograms.forEach((histogram: Map<T, Vec2d[]>, patternString: RawGridString) => {
       let pixelsToCheck: Vec2d[] = [];
@@ -145,22 +145,35 @@ export class PixelReactor<T> {
     return patternHistograms;
   }
 
-  // public matchUniquePatterns(uniquePatterns: Map<string, [string, string][]>, pixelList: Vec2d[]) {
-  //   let mainGrid = this._ruleGridMap.get("MAIN");
-  //   if (mainGrid == null || mainGrid == undefined) return
-  //   uniquePatterns.forEach((uniquePatternMetadata, jsonString: string) => {
-  //     let rawGrid = JSON.parse(jsonString);
-  //     let rawGridWidth: number = rawGrid[0].length;
-  //     let rawGridHeight: number = rawGrid.length;
-  //     for (let pixel of pixelList) {
-  //       let [x, y] = pixel;
-  //       let match: boolean = mainGrid.simpleMatchRawGrid(rawGrid, x, y, rawGridWidth, rawGridHeight);
-  //       if (match) {
-  //         console.log(`For ${jsonString} match at: ${x},${y}, transform keys: ${uniquePatternMetadata}`)
-  //       }
-  //     }
-  //   })
-  // }
+  public buildRawGridStringToSuccessorMap(uniquePatternMetadata: Map<RawGridString, [string, string][]>):
+    Map<RawGridString, [ParametricGrid<T>, Vec2d, number][]> {
+    let successionMap = new Map<RawGridString, [ParametricGrid<T>, Vec2d, number][]>();
+    uniquePatternMetadata.forEach((matchIds: [string, string][], rawGridString: RawGridString) => {
+      let successionStack: [ParametricGrid<T>, Vec2d, number][] = []
+      for (let matchId of matchIds) {
+        let [ruleId, transformId] = matchId;
+        console.log(`${rawGridString}: IDS: ${[ruleId, transformId]}`);
+        let rule = this.getRule(ruleId);
+        if (rule) {
+          let successor = rule.successor;
+          let successorOffset = rule.rotatedOffsets.get(transformId)
+          let transformedSuccessor = successor?.rotatedGrids.get(transformId)
+          let priorityOffset: number | undefined = PixelReactor.transformToPriorityOffsetMap.get(transformId);
+          if (priorityOffset === undefined) {
+            priorityOffset = 0;
+          }
+          priorityOffset += rule.priority;
+          if (transformedSuccessor && successorOffset)
+            successionStack.push([transformedSuccessor, successorOffset, priorityOffset])
+
+        }      
+
+      }
+      successionMap.set(rawGridString, successionStack)
+    });
+
+    return successionMap;
+  }
 
   public matchUniquePatternsForNewPixels(pixelsToCheckByPattern: Map<RawGridString, Vec2d[]>,
     uniquePatternMetadata: Map<RawGridString, [string, string][]>) {
@@ -178,7 +191,7 @@ export class PixelReactor<T> {
         let match: boolean = mainGrid.simpleMatchRawGrid(rawGrid, x, y, rawGridWidth, rawGridHeight);
         if (match) {
           let matchMetadata = uniquePatternMetadata.get(rawGridString)
-          if (matchMetadata) {            
+          if (matchMetadata) {
             console.log(`For ${rawGridString} match at: ${x},${y} for transforms: ${matchMetadata}`);
             pushVal(matchMap, rawGridString, pixel);
           }
@@ -502,6 +515,10 @@ export class RuleGrid<T> extends ParametricGrid<T> {
     return this._rotatedGrids;
   }
 
+  public get rotatedOffsets() {
+    return this._rotatedOffsets;
+  }
+
   public get successorOffset() {
     return this._successorOffset;
   }
@@ -519,6 +536,9 @@ export class RuleGrid<T> extends ParametricGrid<T> {
     this._successorOffset = offset;
     console.log("r0: ", this._successorOffset)
     let rm = rotationMap.get("r90");
+
+    this._rotatedOffsets.set("r0", this._successorOffset);
+
     if (rm) {
       this._rotatedOffsets.set("r90", rm.multiplyByVec(offset))
       console.log("r90: ", this._rotatedOffsets.get("r90"))
