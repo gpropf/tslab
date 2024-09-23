@@ -1,5 +1,6 @@
 import { main } from "ts-node/dist/bin";
 
+export type RawGridString = string;
 
 export type Vec2d = [x: number, y: number]
 
@@ -38,6 +39,23 @@ export class LocationSet extends Set {
   }
 }
 
+export interface MatchLocations<T> {
+  matches: Vec2d[],
+  priority: number,
+  successor: ParametricGrid<T>
+}
+
+function pushVal<K, V>(map: Map<K, V[]>, key: K, newval: V): Map<K, V[]> {
+  let stack: V[] | undefined = map.get(key);
+  if (stack === undefined) {
+    map.set(key, [newval]);
+  }
+  else {
+    stack.push(newval);
+    map.set(key, stack);
+  }
+  return map;
+}
 
 export class PixelReactor<T> {
   private _ruleGridMap: Map<string, RuleGrid<T>>;
@@ -46,13 +64,13 @@ export class PixelReactor<T> {
 
   private _currentRuleIndex: number = 1;
 
-  public buildMatchMap(): Map<string, [string, string, number][]> {
-    let matchMap: Map<string, [string, string, number][]> = new Map<string, [string, string, number][]>();
+  public buildMatchMap(): Map<RawGridString, [string, string, number][]> {
+    let matchMap: Map<RawGridString, [string, string, number][]> = new Map<RawGridString, [string, string, number][]>();
     this._ruleGridMap.forEach((rule, id) => {
       if (rule.successor) {
         rule.rotatedGrids.forEach((rotatedGrid, transform) => {
           console.log(`${[rule.id, transform]}`);
-          let stringifiedGrid = JSON.stringify(rotatedGrid.grid);
+          let stringifiedGrid: RawGridString = JSON.stringify(rotatedGrid.grid);
           let matchingPatterns = matchMap.get(stringifiedGrid);
           let priorityOffset = PixelReactor.transformToPriorityOffsetMap.get(transform);
           if (priorityOffset === undefined) priorityOffset = 0;
@@ -90,10 +108,10 @@ export class PixelReactor<T> {
     return valueHistogram;
   }
 
-  public buildListOfPixelsToCheckForEachNewPixel(patternHistograms: Map<string, Map<T, Vec2d[]>>,
-    mainGrid: ParametricGrid<T>) {
-    let pixelsToCheckByPattern = new Map<string, Vec2d[]>()
-    patternHistograms.forEach((histogram: Map<T, Vec2d[]>, patternString: string) => {
+  public buildListOfPixelsToCheckForEachNewPixel(patternHistograms: Map<RawGridString, Map<T, Vec2d[]>>,
+    mainGrid: ParametricGrid<T>) : Map<RawGridString, Vec2d[]> {
+    let pixelsToCheckByPattern = new Map<RawGridString, Vec2d[]>()
+    patternHistograms.forEach((histogram: Map<T, Vec2d[]>, patternString: RawGridString) => {
       let pixelsToCheck: Vec2d[] = [];
       let rawGrid = JSON.parse(patternString)
       let annotatedRawGrid = new AnnotatedRawGrid(rawGrid);
@@ -115,9 +133,9 @@ export class PixelReactor<T> {
     return pixelsToCheckByPattern;
   }
 
-  public buildPatternHistograms(uniquePatterns: Map<string, [string, string, number][]>): Map<string, Map<T, Vec2d[]>> {
+  public buildPatternHistograms(uniquePatterns: Map<RawGridString, [string, string, number][]>): Map<RawGridString, Map<T, Vec2d[]>> {
     let uniquePatternKeys = Array.from(uniquePatterns.keys());
-    let patternHistograms = new Map<string, Map<T, Vec2d[]>>();
+    let patternHistograms = new Map<RawGridString, Map<T, Vec2d[]>>();
     uniquePatternKeys.forEach(pattern => {
       let rawGrid = JSON.parse(pattern);
       let annotatedRawGrid = new AnnotatedRawGrid<T>(rawGrid);
@@ -144,11 +162,12 @@ export class PixelReactor<T> {
   //   })
   // }
 
-  public matchUniquePatternsForNewPixels(pixelsToCheckByPattern: Map<string, Vec2d[]>,
-    uniquePatternMetadata: Map<string, [string, string, number][]>) {
+  public matchUniquePatternsForNewPixels(pixelsToCheckByPattern: Map<RawGridString, Vec2d[]>,
+    uniquePatternMetadata: Map<RawGridString, [string, string, number][]>) {
+    let matchMap: Map<string, MatchLocations<T>> = new Map<string, MatchLocations<T>>();
     let mainGrid = this._ruleGridMap.get("MAIN");
     if (mainGrid == null || mainGrid == undefined) return
-    pixelsToCheckByPattern.forEach((locationList, jsonString: string) => {
+    pixelsToCheckByPattern.forEach((locationList, jsonString: RawGridString) => {
       let locationSet = new LocationSet(locationList)
       console.log(`LocationSet for ${jsonString}: `, locationSet)
       let rawGrid = JSON.parse(jsonString);
@@ -159,13 +178,33 @@ export class PixelReactor<T> {
         let match: boolean = mainGrid.simpleMatchRawGrid(rawGrid, x, y, rawGridWidth, rawGridHeight);
         if (match) {
           let matchMetadata = uniquePatternMetadata.get(jsonString)
-          if (matchMetadata)
-            console.log(`For ${jsonString} match at: ${x},${y} for transforms: ${matchMetadata}`)
-          else
+          if (matchMetadata) {
+            //let {ruleId, transformId, priority} = matchMetadata;
+            //let ruleAndTransformIds = JSON.stringify([ruleId, transformId]);
+            //let existingMatches = matchMap.get(ruleAndTransformIds);
+            // if (existingMatches === undefined) {
+            //   let successor = this.getRule(ruleId)?.successor?.rotatedGrids.get(transformId);
+            //   if (successor) {
+            //     let matchData: MatchLocations<T> = {
+            //       matches: [pixel],
+            //       priority: priority,
+            //       successor: successor as ParametricGrid<T>
+            //     }
+            //   }
+            // }
+            // else {
+
+            // }
+            console.log(`For ${jsonString} match at: ${x},${y} for transforms: ${matchMetadata}`);
+
+          }
+          else {
             console.log(`For ${jsonString} match at: ${x},${y} for transforms: ERROR!`)
+          }
         }
       }
     })
+    return matchMap;
   }
 
   // public testAllPixelsInMainGrid(uniquePatterns: Map<string, [string, string, number][]>) {

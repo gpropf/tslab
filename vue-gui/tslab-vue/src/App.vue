@@ -147,7 +147,8 @@ function checkPixels() {
   if (mainGrid) {
     let pixelsToCheck = prRef.value.buildListOfPixelsToCheckForEachNewPixel(pattternHistograms, mainGrid);
     console.log('Pixels2Check: ', pixelsToCheck)
-    prRef.value.matchUniquePatternsForNewPixels(pixelsToCheck, prMatches)
+    let matchesByRuleAndTransformID = prRef.value.matchUniquePatternsForNewPixels(pixelsToCheck, prMatches)
+    console.log("matchesByRuleAndTransformID: ", matchesByRuleAndTransformID)
   }
 }
 
