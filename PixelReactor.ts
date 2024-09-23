@@ -178,28 +178,12 @@ export class PixelReactor<T> {
         let match: boolean = mainGrid.simpleMatchRawGrid(rawGrid, x, y, rawGridWidth, rawGridHeight);
         if (match) {
           let matchMetadata = uniquePatternMetadata.get(rawGridString)
-          if (matchMetadata) {
-            //let {ruleId, transformId, priority} = matchMetadata;
-            //let ruleAndTransformIds = JSON.stringify([ruleId, transformId]);
-            //let existingMatches = matchMap.get(ruleAndTransformIds);
-            // if (existingMatches === undefined) {
-            //   let successor = this.getRule(ruleId)?.successor?.rotatedGrids.get(transformId);
-            //   if (successor) {
-            //     let matchData: MatchLocations<T> = {
-            //       matches: [pixel],
-            //       priority: priority,
-            //       successor: successor as ParametricGrid<T>
-            //     }
-            //   }
-            // }
-            // else {
-
-            // }
+          if (matchMetadata) {            
             console.log(`For ${rawGridString} match at: ${x},${y} for transforms: ${matchMetadata}`);
             pushVal(matchMap, rawGridString, pixel);
           }
           else {
-            console.log(`For ${rawGridString} match at: ${x},${y} for transforms: ERROR!`)
+            console.log(`For ${rawGridString} match at: ${x},${y} for transforms: ERROR! This should not happen!!!`)
           }
         }
       }
