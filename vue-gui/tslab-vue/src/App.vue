@@ -141,6 +141,7 @@ function createRuleGrid(inwidth: string, inheight: string) {
 
 function checkPixels() {
   prMatches = prRef.value.buildMatchMap();
+  console.log("prMatches: ", prMatches)
   pattternHistograms = prRef.value.buildPatternHistograms(prMatches);
   console.log('PH: ', pattternHistograms);
   let mainGrid = prRef.value.getRule("MAIN");

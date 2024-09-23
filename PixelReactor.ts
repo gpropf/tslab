@@ -39,11 +39,11 @@ export class LocationSet extends Set {
   }
 }
 
-export interface MatchLocations<T> {
-  matches: Vec2d[],
-  priority: number,
-  successor: ParametricGrid<T>
-}
+// export interface MatchLocations<T> {
+//   matches: Vec2d[],
+//   priority: number,
+//   successor: ParametricGrid<T>
+// }
 
 function pushVal<K, V>(map: Map<K, V[]>, key: K, newval: V): Map<K, V[]> {
   let stack: V[] | undefined = map.get(key);
@@ -164,20 +164,20 @@ export class PixelReactor<T> {
 
   public matchUniquePatternsForNewPixels(pixelsToCheckByPattern: Map<RawGridString, Vec2d[]>,
     uniquePatternMetadata: Map<RawGridString, [string, string, number][]>) {
-    let matchMap: Map<string, MatchLocations<T>> = new Map<string, MatchLocations<T>>();
+    let matchMap: Map<RawGridString, Pixel<T>[]> = new Map<RawGridString, Pixel<T>[]>();
     let mainGrid = this._ruleGridMap.get("MAIN");
     if (mainGrid == null || mainGrid == undefined) return
-    pixelsToCheckByPattern.forEach((locationList, jsonString: RawGridString) => {
+    pixelsToCheckByPattern.forEach((locationList, rawGridString: RawGridString) => {
       let locationSet = new LocationSet(locationList)
-      console.log(`LocationSet for ${jsonString}: `, locationSet)
-      let rawGrid = JSON.parse(jsonString);
+      console.log(`LocationSet for ${rawGridString}: `, locationSet)
+      let rawGrid = JSON.parse(rawGridString);
       let rawGridWidth: number = rawGrid[0].length;
       let rawGridHeight: number = rawGrid.length;
       for (let pixel of locationSet) {
         let [x, y] = pixel;
         let match: boolean = mainGrid.simpleMatchRawGrid(rawGrid, x, y, rawGridWidth, rawGridHeight);
         if (match) {
-          let matchMetadata = uniquePatternMetadata.get(jsonString)
+          let matchMetadata = uniquePatternMetadata.get(rawGridString)
           if (matchMetadata) {
             //let {ruleId, transformId, priority} = matchMetadata;
             //let ruleAndTransformIds = JSON.stringify([ruleId, transformId]);
@@ -195,11 +195,11 @@ export class PixelReactor<T> {
             // else {
 
             // }
-            console.log(`For ${jsonString} match at: ${x},${y} for transforms: ${matchMetadata}`);
-
+            console.log(`For ${rawGridString} match at: ${x},${y} for transforms: ${matchMetadata}`);
+            pushVal(matchMap, rawGridString, pixel);
           }
           else {
-            console.log(`For ${jsonString} match at: ${x},${y} for transforms: ERROR!`)
+            console.log(`For ${rawGridString} match at: ${x},${y} for transforms: ERROR!`)
           }
         }
       }
