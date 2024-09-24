@@ -150,7 +150,12 @@ function checkPixels() {
     console.log('Pixels2Check: ', pixelsToCheck)
     let matchesByRuleAndTransformID = prRef.value.matchUniquePatternsForNewPixels(pixelsToCheck, prMatches)
     console.log("matchesByRuleAndTransformID: ", matchesByRuleAndTransformID)
-    console.log("buildRawGridStringToSuccessorMap:", prRef.value.buildRawGridStringToSuccessorMap(prMatches));
+    let rawGridStringToSuccessorMap = prRef.value.buildRawGridStringToSuccessorMap(prMatches)
+    console.log("buildRawGridStringToSuccessorMap:", rawGridStringToSuccessorMap);
+
+    let updateStacks = prRef.value.updateStacksWithMatchSuccessors(rawGridStringToSuccessorMap,
+    matchesByRuleAndTransformID);
+    console.log("updateStacks: ", updateStacks)
   }
 }
 

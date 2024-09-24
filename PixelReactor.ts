@@ -166,14 +166,34 @@ export class PixelReactor<T> {
     //let adjustedUpperLeftCornerString: LocationString = JSON.stringify(adjustedUpperLeftCorner);
     for (let y: number = 0; y < successor.height; y++) {
       for (let x: number = 0; x < successor.width; x++) {
-        let successorLocation: Vec2d = [x,y];
-        let pixelVal = successor.getLocation(x,y)
+        let successorLocation: Vec2d = [x, y];
+        let pixelVal = successor.getLocation(x, y)
         let mainGridLocation = addVec(successorLocation, adjustedUpperLeftCorner);
         mainGridLocation = mainGrid.wrapCoordinates(mainGridLocation);
         let mainGridLocationString: LocationString = JSON.stringify(mainGridLocation);
         pushVal(this._updateStacks, mainGridLocationString, [pixelVal, priority])
       }
     }
+
+  }
+
+  public updateStacksWithMatchSuccessors(rawGridStringToSuccessorMap: Map<RawGridString, [ParametricGrid<T>, Vec2d, number][]>,
+    matchesByRuleAndTransformId: Map<RawGridString, Vec2d[]>) {
+    matchesByRuleAndTransformId.forEach((matchLocations: Vec2d[], rawGridString: RawGridString) => {
+      let successorMetadataList: [ParametricGrid<T>, Vec2d, number][] | undefined = rawGridStringToSuccessorMap.get(rawGridString);
+      if (successorMetadataList) {
+        let mainGrid = this.getRule("MAIN")
+        if (mainGrid) {
+          for (let successorMetadata of successorMetadataList) {
+            let [successor, successorOffset, priority] = successorMetadata;
+            for (let matchLocation of matchLocations) {
+              this.putSuccessorOnUpdateStacks(mainGrid, matchLocation, successorOffset, successor, priority);
+            }
+          }
+        }
+      }
+    })
+    return this._updateStacks;
 
   }
 
@@ -209,7 +229,7 @@ export class PixelReactor<T> {
 
   public matchUniquePatternsForNewPixels(pixelsToCheckByPattern: Map<RawGridString, Vec2d[]>,
     uniquePatternMetadata: Map<RawGridString, [string, string][]>) {
-    let matchMap: Map<RawGridString, Pixel<T>[]> = new Map<RawGridString, Pixel<T>[]>();
+    let matchMap: Map<RawGridString, Vec2d[]> = new Map<RawGridString, Vec2d[]>();
     let mainGrid = this._ruleGridMap.get("MAIN");
     if (mainGrid == null || mainGrid == undefined) return
     pixelsToCheckByPattern.forEach((locationList, rawGridString: RawGridString) => {
@@ -262,7 +282,7 @@ export class PixelReactor<T> {
 
   constructor() {
     this._ruleGridMap = new Map<string, RuleGrid<T>>;
-    this._updateStacks = new Map<LocationString, [T, number]>();
+    this._updateStacks = new Map<LocationString, [T, number][]>();
   }
 
   public setRule(id: string, pgrid: RuleGrid<T>) {
