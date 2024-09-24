@@ -613,6 +613,7 @@ export class RuleGrid<T> extends ParametricGrid<T> {
     super(width, height, initialValue, id, grid);
     this._priority = 100;
     this._rotatedOffsets = new Map<string, Vec2d>();
+    this.successorOffset =[0, 0];
     this._rotatedGrids.set("r0", this as ParametricGrid<T>);
     this._rotatedGrids.set("r90", new ParametricGrid<T>(this.height, this.width, initialValue, ""));
     this._rotatedGrids.set("r180", new ParametricGrid<T>(this.width, this.height, initialValue, ""));
