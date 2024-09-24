@@ -2,9 +2,17 @@ import { main } from "ts-node/dist/bin";
 
 export type RawGridString = string;
 
+export type LocationString = string;
+
 export type Vec2d = [x: number, y: number]
 
+export function addVec(v1: Vec2d, v2: Vec2d): Vec2d {
+  return [v1[0] + v2[0], v1[1] + v2[1]];
+}
+
 export type Pixel<T> = [x: number, y: number, value: T]
+
+
 
 export const zeroVec: Vec2d = [0, 0];
 
@@ -63,6 +71,8 @@ export class PixelReactor<T> {
   public static readonly transformToPriorityOffsetMap = new Map<string, number>([["r0", 0], ["r90", 2], ["r180", 4], ["r270", 6]]);
 
   private _currentRuleIndex: number = 1;
+
+  private _updateStacks: Map<LocationString, [T, number][]>;
 
   public buildMatchMap(): Map<RawGridString, [string, string][]> {
     let matchMap: Map<RawGridString, [string, string][]> = new Map<RawGridString, [string, string][]>();
@@ -145,6 +155,28 @@ export class PixelReactor<T> {
     return patternHistograms;
   }
 
+  public putSuccessorOnUpdateStacks(mainGrid: ParametricGrid<T>, upperLeftCorner: Vec2d,
+    successorOffset: Vec2d, successor: ParametricGrid<T>, priority: number) {
+    // let adjustedUpperLeftCorner: Vec2d = [
+    //   upperLeftCorner[0] + successorOffset[0],
+    //   upperLeftCorner[1] + successorOffset[1]
+    // ]
+    let adjustedUpperLeftCorner: Vec2d = addVec(upperLeftCorner, successorOffset);
+    //adjustedUpperLeftCorner = mainGrid.wrapCoordinates(adjustedUpperLeftCorner);
+    //let adjustedUpperLeftCornerString: LocationString = JSON.stringify(adjustedUpperLeftCorner);
+    for (let y: number = 0; y < successor.height; y++) {
+      for (let x: number = 0; x < successor.width; x++) {
+        let successorLocation: Vec2d = [x,y];
+        let pixelVal = successor.getLocation(x,y)
+        let mainGridLocation = addVec(successorLocation, adjustedUpperLeftCorner);
+        mainGridLocation = mainGrid.wrapCoordinates(mainGridLocation);
+        let mainGridLocationString: LocationString = JSON.stringify(mainGridLocation);
+        pushVal(this._updateStacks, mainGridLocationString, [pixelVal, priority])
+      }
+    }
+
+  }
+
   public buildRawGridStringToSuccessorMap(uniquePatternMetadata: Map<RawGridString, [string, string][]>):
     Map<RawGridString, [ParametricGrid<T>, Vec2d, number][]> {
     let successionMap = new Map<RawGridString, [ParametricGrid<T>, Vec2d, number][]>();
@@ -166,7 +198,7 @@ export class PixelReactor<T> {
           if (transformedSuccessor && successorOffset)
             successionStack.push([transformedSuccessor, successorOffset, priorityOffset])
 
-        }      
+        }
 
       }
       successionMap.set(rawGridString, successionStack)
@@ -230,6 +262,7 @@ export class PixelReactor<T> {
 
   constructor() {
     this._ruleGridMap = new Map<string, RuleGrid<T>>;
+    this._updateStacks = new Map<LocationString, [T, number]>();
   }
 
   public setRule(id: string, pgrid: RuleGrid<T>) {
@@ -613,7 +646,7 @@ export class RuleGrid<T> extends ParametricGrid<T> {
     super(width, height, initialValue, id, grid);
     this._priority = 100;
     this._rotatedOffsets = new Map<string, Vec2d>();
-    this.successorOffset =[0, 0];
+    this.successorOffset = [0, 0];
     this._rotatedGrids.set("r0", this as ParametricGrid<T>);
     this._rotatedGrids.set("r90", new ParametricGrid<T>(this.height, this.width, initialValue, ""));
     this._rotatedGrids.set("r180", new ParametricGrid<T>(this.width, this.height, initialValue, ""));
