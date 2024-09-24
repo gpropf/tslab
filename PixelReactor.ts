@@ -74,6 +74,10 @@ export class PixelReactor<T> {
 
   private _updateStacks: Map<LocationString, [T, number][]>;
 
+  public get updateStacks() {
+    return this._updateStacks;
+  }
+
   public buildMatchMap(): Map<RawGridString, [string, string][]> {
     let matchMap: Map<RawGridString, [string, string][]> = new Map<RawGridString, [string, string][]>();
     this._ruleGridMap.forEach((rule, id) => {

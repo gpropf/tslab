@@ -140,6 +140,7 @@ function createRuleGrid(inwidth: string, inheight: string) {
 }
 
 function checkPixels() {
+  prRef.value.updateStacks.clear();
   prMatches = prRef.value.buildMatchMap();
   console.log("prMatches: ", prMatches)
   pattternHistograms = prRef.value.buildPatternHistograms(prMatches);
@@ -156,6 +157,7 @@ function checkPixels() {
     let updateStacks = prRef.value.updateStacksWithMatchSuccessors(rawGridStringToSuccessorMap,
     matchesByRuleAndTransformID);
     console.log("updateStacks: ", updateStacks)
+    //prRef.value.updateStacks.clear();
   }
 }
 
