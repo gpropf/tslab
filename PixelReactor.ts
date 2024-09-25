@@ -68,6 +68,7 @@ function pushVal<K, V>(map: Map<K, V[]>, key: K, newval: V): Map<K, V[]> {
 export class PixelReactor<T> {
   private _ruleGridMap: Map<string, RuleGrid<T>>;
 
+  //public static readonly transformToPriorityOffsetMap = new Map<string, number>([["r0", 0], ["r90", 2], ["r180", 4], ["r270", 6]]);
   public static readonly transformToPriorityOffsetMap = new Map<string, number>([["r0", 0], ["r90", 2], ["r180", 4], ["r270", 6]]);
 
   private _currentRuleIndex: number = 1;
@@ -160,11 +161,10 @@ export class PixelReactor<T> {
   }
 
   public putSuccessorOnUpdateStacks(mainGrid: ParametricGrid<T>, upperLeftCorner: Vec2d,
-    successorOffset: Vec2d, successor: ParametricGrid<T>, priority: number) {
-    // let adjustedUpperLeftCorner: Vec2d = [
-    //   upperLeftCorner[0] + successorOffset[0],
-    //   upperLeftCorner[1] + successorOffset[1]
-    // ]
+    successorOffset: Vec2d, successor: ParametricGrid<T>, priority: number) {    
+    // if (successorOffset[0] != 0 && successorOffset[1] != 0) {
+    //   successorOffset = [-1, -1]
+    // }
     let adjustedUpperLeftCorner: Vec2d = addVec(upperLeftCorner, successorOffset);
     //adjustedUpperLeftCorner = mainGrid.wrapCoordinates(adjustedUpperLeftCorner);
     //let adjustedUpperLeftCornerString: LocationString = JSON.stringify(adjustedUpperLeftCorner);
@@ -215,7 +215,7 @@ export class PixelReactor<T> {
     mainGrid.newPixels = [];
 
     this._updateStacks.forEach((updatePixels: [T, number][], locationString: LocationString) => {
-      let topPixel = updatePixels.pop();
+      let topPixel = updatePixels[updatePixels.length - 1];
       if (topPixel === undefined) return;
       let [pixelVal, _] = topPixel;
       let location = JSON.parse(locationString)

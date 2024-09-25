@@ -199,7 +199,7 @@ function createTestRules() {
     // mainGrid.setLocation(30, 15, 1);
     // mainGrid.setLocation(30, 16, 1);
     // mainGrid.setLocation(30, 17, 1);
-    mainGrid.setLocation(30, 35, 1); 
+    mainGrid.setLocation(30, 20, 1); 
     
   }
 }
