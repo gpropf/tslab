@@ -212,7 +212,7 @@ export class PixelReactor<T> {
   public writeUpdatePixels() {
     let mainGrid = this.getRule("MAIN")
     if (mainGrid === undefined) return
-    mainGrid.newPixels.length = 0;
+    mainGrid.newPixels = [];
 
     this._updateStacks.forEach((updatePixels: [T, number][], locationString: LocationString) => {
       let topPixel = updatePixels.pop();
@@ -454,10 +454,15 @@ export class ParametricGrid<T> {
         let thisVec: Vec2d = [thisX, thisY];
         thisVec = this.wrapCoordinates(thisVec);
         let [wx, wy] = thisVec;
+        // if (this.grid === undefined) {
+        //   console.log("ERROR!!!: grid is undefined for ", [wx, wy])
+        // }
+        //else {
         let thisVal = this.grid[wy][wx];
         if (thisVal != otherVal) {
           //console.log(`thisVal: ${thisVal}, otherVal: ${otherVal}. This loc: ${thisVec}, Other loc: ${[x, y]}`)
           return false;
+          //}
         }
       }
     }
@@ -497,6 +502,11 @@ export class ParametricGrid<T> {
   public get newPixels() {
     return this._newPixels;
   }
+
+  public set newPixels(np) {
+    this._newPixels = np;
+  }
+
   public get id() {
     return this._id;
   }
@@ -521,19 +531,19 @@ export class ParametricGrid<T> {
     this._grid[y][x] = v;
     this._newPixels.push([x, y, v]);
     if (this._vueComponent) this._vueComponent.$forceUpdate();
-    console.log("Location: ", x, ":", y)
-    console.log("VC: ", this._vueComponent);
+    //console.log("Location: ", x, ":", y)
+    //console.log("VC: ", this._vueComponent);
   }
 
   public getLocation(x: number, y: number): T {
     let v = this._grid[y][x];
-    console.log(`Location (${x},${y}) = ${v}`);
+    //console.log(`Location (${x},${y}) = ${v}`);
     return v;
   }
 
   public wrapCoordinates(inVec: Vec2d): Vec2d {
     let [x, y] = inVec;
-    return [x % this._width, y % this._height]
+    return [(x + this._width) % this._width, (y + this._height) % this._height]
   }
 
   // public findMatches(otherGrid: ParametricGrid<T>): Vec2d[] {

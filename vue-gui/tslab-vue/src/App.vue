@@ -166,23 +166,39 @@ function checkPixels() {
 function createTestRules() {
   createRuleGrid("3", "3");
   createRuleGrid("3", "3");
+  createRuleGrid("5", "5");
   let rule1 = prRef.value.getRule("rule-1");
   let rule2 = prRef.value.getRule("rule-2");
+  let rule3 = prRef.value.getRule("rule-3");
   let mainGrid = prRef.value.getRule("MAIN");
-  if (rule1 && rule2 && mainGrid) {
-    rule1.setLocation(0, 1, 1);
+  if (rule1 && rule2 && rule3 && mainGrid) {
+    //rule1.setLocation(0, 1, 1);
     rule1.setLocation(1, 1, 1);
-    rule1.setLocation(2, 1, 1);
+    rule2.setLocation(0, 1, 1); 
+    rule2.setLocation(2, 1, 1); 
+    rule2.setLocation(1, 0, 1); 
+    rule2.setLocation(1, 2, 1); 
+
+    rule3.setLocation(1, 2, 1); 
+    rule3.setLocation(3, 2, 1); 
+    rule3.setLocation(2, 1, 1); 
+    rule3.setLocation(2, 3, 1); 
+    rule3.setLocation(0, 0, 1); 
+    rule3.setLocation(4, 0, 1); 
+    rule3.setLocation(0, 4, 1); 
+    rule3.setLocation(4, 4, 1); 
+    rule2.successorOffset = [-1,-1];
+    //rule1.setLocation(2, 1, 1);
     rule1.successor = rule2;
-    mainGrid.setLocation(10, 12, 1);
-    mainGrid.setLocation(11, 12, 1);
-    mainGrid.setLocation(12, 12, 1);
-    mainGrid.setLocation(30, 15, 1);
-    mainGrid.setLocation(30, 16, 1);
-    mainGrid.setLocation(30, 17, 1);
-    mainGrid.setLocation(55, 35, 1);
-    rule2.setLocation(1, 1, 1);  
-    rule2.successor = rule1;
+    rule2.successor = rule3;
+    // mainGrid.setLocation(10, 12, 1);
+    // mainGrid.setLocation(11, 12, 1);
+    // mainGrid.setLocation(12, 12, 1);
+    // mainGrid.setLocation(30, 15, 1);
+    // mainGrid.setLocation(30, 16, 1);
+    // mainGrid.setLocation(30, 17, 1);
+    mainGrid.setLocation(30, 35, 1); 
+    
   }
 }
 
