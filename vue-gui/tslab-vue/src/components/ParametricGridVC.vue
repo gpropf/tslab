@@ -5,7 +5,7 @@ import { ParametricGrid, RuleGrid } from "../../../../PixelReactor"
 import SVGGrid from './SVGGrid.vue';
 //import { inject } from 'vue'
 
-import { ref } from 'vue'
+import { ref, onUpdated } from 'vue'
 
 // const mouseLocation = ref([0,0]);
 
@@ -31,9 +31,9 @@ const props = defineProps<{
     screenHeight: number,
     vizFn: ObjectVisualizationFn,
     defaultValue: any,
-    onClickValue: any,    
+    onClickValue: any,
     conversionFn: ConversionFn,
-    id: string    
+    id: string
 }>()
 
 let parametricGrid = new ParametricGrid<any>(props.width, props.height, props.defaultValue, props.id);
@@ -44,12 +44,16 @@ let viewBox = `0 0 ${props.width} ${props.height}`;
 let prRef = getPixelReactor();
 prRef.value.setRule(props.id, parametricGrid as RuleGrid<any>);
 
+onUpdated(() => {
+    // text content should be the same as current `count.value`
+    console.log("PG updated!")
+})
+
 </script>
 
 <template>
-    
-    <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight"
-      :width="props.width" :height="props.height" :vizFn="props.vizFn" :defaultValue="0"
-      :onClickValue="props.onClickValue" :conversionFn="props.conversionFn"
-       :id="props.id" :prGrid="parametricGrid"/>
+
+    <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight" :width="props.width"
+        :height="props.height" :vizFn="props.vizFn" :defaultValue="0" :onClickValue="props.onClickValue"
+        :conversionFn="props.conversionFn" :id="props.id" :prGrid="parametricGrid" />
 </template>

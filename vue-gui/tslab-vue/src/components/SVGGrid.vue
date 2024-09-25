@@ -3,7 +3,7 @@
 // import { useRulesStore } from '@/stores/rules'
 import { ParametricGrid, RuleGrid } from "../../../../PixelReactor"
 import { type ColorInfo, type ObjectVisualizationFn, type ConversionFn } from "./ParametricGridVC.vue"
-import { inject } from 'vue'
+import { inject, ref, onUpdated, onMounted, getCurrentInstance } from 'vue'
 import { useRulesStore } from '@/stores/rules'
 
 const rules = useRulesStore();
@@ -26,12 +26,26 @@ const props = defineProps<{
 
 let viewBox = `0 0 ${props.width} ${props.height}`;
 
+const svgGrid = ref()
 
+onMounted(() => {
+    // text content should be the same as current `count.value`
+    console.log("SVGGrid mounted!")
+    const instance = getCurrentInstance();
+    props.prGrid.vueComponent = instance?.proxy;
+    console.log("VC (SVGGrid): ", props.prGrid.vueComponent);
+
+})
+
+onUpdated(() => {
+    // text content should be the same as current `count.value`
+    console.log("SVGGrid updated!")
+})
 
 </script>
 
 <template>    
-    <div>
+    <div ref="svgGrid">
         <svg :viewBox="viewBox" :width="props.screenWidth" :height="props.screenHeight"
             xmlns="http://www.w3.org/2000/svg">
             <svg :key="y" v-for="(row, y) in props.prGrid.grid" xmlns="http://www.w3.org/2000/svg">

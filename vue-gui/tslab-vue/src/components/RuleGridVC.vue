@@ -7,7 +7,7 @@ import { type ColorInfo, type ObjectVisualizationFn, type ConversionFn } from ".
 import SVGGrid from './SVGGrid.vue';
 import LabelledInput from './LabelledInput.vue';
 import RuleSelect from './RuleSelect.vue';
-import { ref, onMounted } from 'vue'
+import { ref, onUpdated } from 'vue'
 
 const rules = useRulesStore();
 const { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor } = rules;
@@ -62,8 +62,10 @@ function changeOffset() {
 const root = ref<HTMLElement | null>(null);
 //onMounted(() => console.log(root.value));
 
-//let ruleDiv = document.getElementById(props.id)
-//console.log("ruleDiv: ", ruleDiv)
+onUpdated(() => {
+    // text content should be the same as current `count.value`
+    console.log("RG updated!")
+})
 
 </script>
 

@@ -418,6 +418,16 @@ export class ParametricGrid<T> {
   private _height: number;
   private _grid: T[][] = [];
 
+  private _vueComponent;
+
+  public set vueComponent(vc) {
+    this._vueComponent = vc;
+  }
+
+  public get vueComponent() {
+    return this._vueComponent;
+  }
+
   constructor(width: number, height: number, initialValue: T, id: string, grid?: T[][]) {
     this._id = id;
     this._width = width;
@@ -510,7 +520,9 @@ export class ParametricGrid<T> {
   public setLocation(x: number, y: number, v: T) {
     this._grid[y][x] = v;
     this._newPixels.push([x, y, v]);
+    if (this._vueComponent) this._vueComponent.$forceUpdate();
     console.log("Location: ", x, ":", y)
+    console.log("VC: ", this._vueComponent);
   }
 
   public getLocation(x: number, y: number): T {
