@@ -51,7 +51,7 @@ onUpdated(() => {
             <svg :key="y" v-for="(row, y) in props.prGrid.grid" xmlns="http://www.w3.org/2000/svg">
                 <svg :key="x" v-for="(cellval, x) in row">
                     <rect
-                        @click="props.prGrid.setLocation(x, y, props.conversionFn(props.onClickValue)); console.log(props.vizFn(props.conversionFn(props.onClickValue))); $forceUpdate()"
+                        @click="props.prGrid.setLocation(x, y, props.conversionFn(props.onClickValue)); console.log(props.vizFn(props.conversionFn(props.onClickValue)));"
                         :x="x" :y="y" width="1" height="1" stroke-width="0.05" :stroke="props.vizFn(cellval).strokeRGB" :fill="props.vizFn(cellval).fillRGB" @mouseover="setMouseLocation([x,y])"/>
                 </svg>
             </svg>
