@@ -285,17 +285,15 @@ export class PixelReactor<T> {
     return matchMap;
   }
 
-  // public testAllPixelsInMainGrid(uniquePatterns: Map<string, [string, string][]>) {
-  //   let mainGrid = this._ruleGridMap.get("MAIN");
-  //   if (mainGrid == null || mainGrid == undefined) return
-  //   let pixelList: Vec2d[] = []
-  //   for (let y: number = 0; y < mainGrid.height; y++) {
-  //     for (let x: number = 0; x < mainGrid.width; x++) {
-  //       pixelList.push([x, y])
-  //     }
-  //   }
-  //   this.matchUniquePatterns(uniquePatterns, pixelList);
-  // }
+  public clearMainGrid() {
+    let mainGrid = this._ruleGridMap.get("MAIN");
+    if (mainGrid == null || mainGrid == undefined) return
+    for (let y: number = 0; y < mainGrid.height; y++) {
+      for (let x: number = 0; x < mainGrid.width; x++) {
+        mainGrid.setLocation(x,y,0);
+      }
+    }
+  }
 
   public getNewRuleIndex(): number {
     this._currentRuleIndex += 1;

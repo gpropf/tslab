@@ -231,9 +231,10 @@ const mainGridRef = ref<InstanceType<typeof ParametricGridVC>>()
     <button @click="serializeWorkspace()">Test Serialization</button>
     <button @click="createTestRules()">Create Test Rules</button>
     <button @click="checkPixels(); mainGridRef?.$forceUpdate()">Build Match Map</button>
-    <button @click="console.log('PR Ids: ', prRef.value.getAllRuleIds())">Print PR rule IDs</button>
-    <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(prRef.value)))">Gson Serialize</button>
-    <button @click="console.log('stringify PR: ', JSON.stringify(prRef.value))">stringify PR</button>    
+    <button @click="console.log('PR Ids: ', prRef.getAllRuleIds())">Print PR rule IDs</button>
+    <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(prRef)))">Gson Serialize</button>
+    <button @click="console.log('stringify PR: ', JSON.stringify(prRef))">stringify PR</button> 
+    <button @click="console.log('Clearing Main Grid'); prRef.clearMainGrid()">Clear Main Grid</button>    
 
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
       placeholder="Enter Id string for new rule" componentName="New Rule Id" size="20" />
