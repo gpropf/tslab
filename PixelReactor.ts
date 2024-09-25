@@ -201,6 +201,31 @@ export class PixelReactor<T> {
 
   }
 
+  public sortUpdateStacks() {
+    this._updateStacks.forEach((updatePixels: [T, number][], locationString: LocationString) => {
+      updatePixels.sort((a: [T, number], b: [T, number]) => {
+        return (a[1] - b[1])
+      })
+    })
+  }
+
+  public writeUpdatePixels() {
+    let mainGrid = this.getRule("MAIN")
+    if (mainGrid === undefined) return
+    mainGrid.newPixels.length = 0;
+
+    this._updateStacks.forEach((updatePixels: [T, number][], locationString: LocationString) => {
+      let topPixel = updatePixels.pop();
+      if (topPixel === undefined) return;
+      let [pixelVal, _] = topPixel;
+      let location = JSON.parse(locationString)
+      let [x, y] = location;
+
+      mainGrid.setLocation(x, y, pixelVal)
+
+    })
+  }
+
   public buildRawGridStringToSuccessorMap(uniquePatternMetadata: Map<RawGridString, [string, string][]>):
     Map<RawGridString, [ParametricGrid<T>, Vec2d, number][]> {
     let successionMap = new Map<RawGridString, [ParametricGrid<T>, Vec2d, number][]>();

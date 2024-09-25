@@ -157,7 +157,9 @@ function checkPixels() {
     let updateStacks = prRef.value.updateStacksWithMatchSuccessors(rawGridStringToSuccessorMap,
     matchesByRuleAndTransformID);
     console.log("updateStacks: ", updateStacks)
-    //prRef.value.updateStacks.clear();
+    prRef.value.sortUpdateStacks();
+    console.log("updateStacks (after sort): ", updateStacks)
+    prRef.value.writeUpdatePixels()
   }
 }
 
@@ -187,6 +189,8 @@ function createTestRules() {
 //PixelReactor.initClass();
 console.log("transformToPriorityOffsetMap: ", PixelReactor.transformToPriorityOffsetMap)
 
+const mainGridRef = ref<InstanceType<typeof ParametricGridVC>>()
+
 </script>
 
 <template>
@@ -208,7 +212,7 @@ console.log("transformToPriorityOffsetMap: ", PixelReactor.transformToPriorityOf
     <button @click="mainGridKey++">Resize Main Grid</button>
     <button @click="serializeWorkspace()">Test Serialization</button>
     <button @click="createTestRules()">Create Test Rules</button>
-    <button @click="checkPixels()">Build Match Map</button>
+    <button @click="checkPixels(); mainGridRef?.$forceUpdate()">Build Match Map</button>
     <button @click="console.log('PR Ids: ', prRef.value.getAllRuleIds())">Print PR rule IDs</button>
     <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(prRef.value)))">Gson Serialize</button>
     <button @click="console.log('stringify PR: ', JSON.stringify(prRef.value))">stringify PR</button>    
@@ -218,7 +222,7 @@ console.log("transformToPriorityOffsetMap: ", PixelReactor.transformToPriorityOf
     
     <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
       :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
-      :onClickValue="onClickValue" :conversionFn="conversionFn" :id="mainGridName" />
+      :onClickValue="onClickValue" :conversionFn="conversionFn" :id="mainGridName" ref="mainGridRef"/>
 
     <RuleList :pixelReactor="prRef" :screenWidth="150" :screenHeight="100"
      :vizFn="vizFn" :defaultValue="0" :onClickValue="onClickValue" :conversionFn="conversionFn"></RuleList>
