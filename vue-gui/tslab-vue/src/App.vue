@@ -173,8 +173,8 @@ function createTestRules() {
   let mainGrid = prRef.value.getRule("MAIN");
   if (rule1 && rule2 && rule3 && mainGrid) {
     //rule1.setLocation(0, 1, 1);
-    rule1.priority = 200;
-    rule2.priority = 50;
+    rule1.priority = 10;
+    rule2.priority = 10;
     rule1.setLocation(1, 1, 1);
     rule2.setLocation(0, 1, 1); 
     rule2.setLocation(2, 1, 1); 

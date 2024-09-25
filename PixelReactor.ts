@@ -84,18 +84,20 @@ export class PixelReactor<T> {
     this._ruleGridMap.forEach((rule, id) => {
       if (rule.successor) {
         rule.rotatedGrids.forEach((rotatedGrid, transform) => {
-          console.log(`${[rule.id, transform]}`);
-          let stringifiedGrid: RawGridString = JSON.stringify(rotatedGrid.grid);
-          let matchingPatterns = matchMap.get(stringifiedGrid);
-          //let priorityOffset = PixelReactor.transformToPriorityOffsetMap.get(transform);
-          //if (priorityOffset === undefined) priorityOffset = 0;
-          //priorityOffset += rule.priority;
-          if (matchingPatterns) {
-            matchingPatterns.push([rule.id, transform]);
-            matchMap.set(stringifiedGrid, matchingPatterns);
-          }
-          else {
-            matchMap.set(stringifiedGrid, [[rule.id, transform]]);
+          if (true || transform == "r0") {
+            console.log(`${[rule.id, transform]}`);
+            let stringifiedGrid: RawGridString = JSON.stringify(rotatedGrid.grid);
+            let matchingPatterns = matchMap.get(stringifiedGrid);
+            //let priorityOffset = PixelReactor.transformToPriorityOffsetMap.get(transform);
+            //if (priorityOffset === undefined) priorityOffset = 0;
+            //priorityOffset += rule.priority;
+            if (matchingPatterns) {
+              matchingPatterns.push([rule.id, transform]);
+              matchMap.set(stringifiedGrid, matchingPatterns);
+            }
+            else {
+              matchMap.set(stringifiedGrid, [[rule.id, transform]]);
+            }
           }
         })
         console.log(`Rule ${id} has a successor ${rule.successor.id}`);
@@ -161,7 +163,7 @@ export class PixelReactor<T> {
   }
 
   public putSuccessorOnUpdateStacks(mainGrid: ParametricGrid<T>, upperLeftCorner: Vec2d,
-    successorOffset: Vec2d, successor: ParametricGrid<T>, priority: number) {    
+    successorOffset: Vec2d, successor: ParametricGrid<T>, priority: number) {
     if (successorOffset[0] != 0 && successorOffset[1] != 0) {
       successorOffset = [-1, -1]
     }
@@ -204,6 +206,9 @@ export class PixelReactor<T> {
   public sortUpdateStacks() {
     this._updateStacks.forEach((updatePixels: [T, number][], locationString: LocationString) => {
       updatePixels.sort((a: [T, number], b: [T, number]) => {
+        if (a[1] == b[1]) {
+          return (b[0] as number - a[0] as number ); 
+        }
         return (a[1] - b[1])
       })
     })
@@ -290,7 +295,7 @@ export class PixelReactor<T> {
     if (mainGrid == null || mainGrid == undefined) return
     for (let y: number = 0; y < mainGrid.height; y++) {
       for (let x: number = 0; x < mainGrid.width; x++) {
-        mainGrid.setLocation(x,y,0);
+        mainGrid.setLocation(x, y, 0);
       }
     }
   }
