@@ -184,7 +184,8 @@ function createTestRules() {
     rule3.setLocation(1, 2, 1); 
     rule3.setLocation(3, 2, 1); 
     rule3.setLocation(2, 1, 1); 
-    rule3.setLocation(2, 3, 1); 
+    rule3.setLocation(2, 3, 1);
+    rule3.setLocation(2, 2, 1); 
     rule3.setLocation(0, 0, 1); 
     rule3.setLocation(4, 0, 1); 
     rule3.setLocation(0, 4, 1); 
