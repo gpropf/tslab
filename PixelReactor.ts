@@ -2,11 +2,11 @@ import { main } from "ts-node/dist/bin";
 
 export const DEBUG_LEVEL = 0;
 
-export function dbg(message: string,  debugLevel:number = 0, ...args: any) {
+export function dbg(message: string, debugLevel: number = 0, ...args: any) {
   if (debugLevel < DEBUG_LEVEL) {
     console.log(message, args);
   }
-} 
+}
 
 export type RawGridString = string;
 
@@ -97,21 +97,28 @@ export class PixelReactor<T> {
 
   private _runMethodId: any = 0;
 
-  
+  public set running(b: boolean) {
+    this._running = b;
+    if (!this._running) clearInterval(this._runMethodId);
+  }
+
+  public get running() {
+    return this._running;
+  }
 
   public toggleRun() {
-    this._running = !this._running;
+    this.running = !this.running;
     if (this._running) {
       this._runMethodId = setInterval(() => this.iterate(), 10);
       //this.iterate();
     }
-    else {
-      clearInterval(this._runMethodId);
-    }
+    // else {
+    //   clearInterval(this._runMethodId);
+    // }
   }
 
   public iterate() {
-    console.log("ITER: ", this._iterationCount++);
+    console.log("ITER: ", this._iterationCount);
     this._updateStacks.clear();
     let prMatches = this.buildMatchMap();
     dbg("prMatches: ", 0, prMatches)
@@ -119,6 +126,11 @@ export class PixelReactor<T> {
     dbg('PH: ', 2, pattternHistograms);
     let mainGrid = this.getRule("MAIN");
     if (mainGrid) {
+      if (mainGrid.newPixels.length == 0) {
+        this.running = false;
+        return
+      }
+      this._iterationCount++;
       let pixelsToCheck = this.buildListOfPixelsToCheckForEachNewPixel(pattternHistograms, mainGrid);
       dbg('Pixels2Check: ', 2, pixelsToCheck)
       let matchesByRuleAndTransformID = this.matchUniquePatternsForNewPixels(pixelsToCheck, prMatches)
@@ -141,25 +153,25 @@ export class PixelReactor<T> {
       if (rule.successor) {
         rule.rotatedGrids.forEach((rotatedGrid, transform) => {
           //if (true || transform == "r0") {
-            dbg(`${[rule.id, transform]}`, 3);
-            let stringifiedGrid: RawGridString = JSON.stringify(rotatedGrid.grid);
-            let matchingPatterns = matchMap.get(stringifiedGrid);
-            //let priorityOffset = PixelReactor.transformToPriorityOffsetMap.get(transform);
-            //if (priorityOffset === undefined) priorityOffset = 0;
-            //priorityOffset += rule.priority;
-            if (matchingPatterns) {
-              matchingPatterns.push([rule.id, transform]);
-              matchMap.set(stringifiedGrid, matchingPatterns);
-            }
-            else {
-              matchMap.set(stringifiedGrid, [[rule.id, transform]]);
-            }
+          dbg(`${[rule.id, transform]}`, 3);
+          let stringifiedGrid: RawGridString = JSON.stringify(rotatedGrid.grid);
+          let matchingPatterns = matchMap.get(stringifiedGrid);
+          //let priorityOffset = PixelReactor.transformToPriorityOffsetMap.get(transform);
+          //if (priorityOffset === undefined) priorityOffset = 0;
+          //priorityOffset += rule.priority;
+          if (matchingPatterns) {
+            matchingPatterns.push([rule.id, transform]);
+            matchMap.set(stringifiedGrid, matchingPatterns);
+          }
+          else {
+            matchMap.set(stringifiedGrid, [[rule.id, transform]]);
+          }
           //}
         })
         dbg(`Rule ${id} has a successor ${rule.successor.id}`, 3);
       }
     })
-   
+
     return matchMap;
   }
 
