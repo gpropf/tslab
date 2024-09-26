@@ -93,7 +93,7 @@ export class PixelReactor<T> {
 
   private _running: boolean = false;
 
-  private _runMethodId: number = 0;
+  private _runMethodId: any = 0;
 
   
 
@@ -260,7 +260,9 @@ export class PixelReactor<T> {
     this._updateStacks.forEach((updatePixels: [T, number][], locationString: LocationString) => {
       updatePixels.sort((a: [T, number], b: [T, number]) => {
         if (a[1] == b[1]) {
-          return (b[0] as number - a[0] as number);
+          let anum: any = a[0]
+          let bnum: any = b[0]
+          return (bnum - anum);
         }
         return (a[1] - b[1])
       })
@@ -349,7 +351,7 @@ export class PixelReactor<T> {
     if (mainGrid == null || mainGrid == undefined) return
     for (let y: number = 0; y < mainGrid.height; y++) {
       for (let x: number = 0; x < mainGrid.width; x++) {
-        mainGrid.setLocation(x, y, 0);
+        mainGrid.setLocation(x, y, 0 as T);
       }
     }
   }
@@ -475,7 +477,7 @@ export class ParametricGrid<T> {
   private _height: number;
   private _grid: T[][] = [];
 
-  private _vueComponent;
+  private _vueComponent: any;
 
   public set vueComponent(vc) {
     this._vueComponent = vc;
