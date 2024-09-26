@@ -91,12 +91,12 @@ const newRuleId = ref("rule-1")
 const onClickValue = ref("1")
 const mainGridName = ref("MAIN")
 const mainGridKey = ref(0);
-const mainGridWidth = ref("60");
-const mainGridHeight = ref("40");
+const mainGridWidth = ref("90");
+const mainGridHeight = ref("60");
 const pgwidth = ref("3");
 const pgheight = ref("3")
-const screenWidth = ref(600);
-const screenHeight = ref(400);
+const screenWidth = ref(900);
+const screenHeight = ref(600);
 //const fromRule = ref("");
 //const toRule = ref("");
 
