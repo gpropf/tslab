@@ -1,5 +1,13 @@
 import { main } from "ts-node/dist/bin";
 
+export const DEBUG_LEVEL = 0;
+
+export function dbg(message: string,  debugLevel:number = 0, ...args: any) {
+  if (debugLevel < DEBUG_LEVEL) {
+    console.log(message, args);
+  }
+} 
+
 export type RawGridString = string;
 
 export type LocationString = string;
@@ -103,23 +111,23 @@ export class PixelReactor<T> {
   public iterate() {
     this._updateStacks.clear();
     let prMatches = this.buildMatchMap();
-    console.log("prMatches: ", prMatches)
+    dbg("prMatches: ", 0, prMatches)
     let pattternHistograms = this.buildPatternHistograms(prMatches);
-    console.log('PH: ', pattternHistograms);
+    dbg('PH: ', 2, pattternHistograms);
     let mainGrid = this.getRule("MAIN");
     if (mainGrid) {
       let pixelsToCheck = this.buildListOfPixelsToCheckForEachNewPixel(pattternHistograms, mainGrid);
-      console.log('Pixels2Check: ', pixelsToCheck)
+      dbg('Pixels2Check: ', 2, pixelsToCheck)
       let matchesByRuleAndTransformID = this.matchUniquePatternsForNewPixels(pixelsToCheck, prMatches)
-      console.log("matchesByRuleAndTransformID: ", matchesByRuleAndTransformID)
+      dbg("matchesByRuleAndTransformID: ", 2, matchesByRuleAndTransformID)
       let rawGridStringToSuccessorMap = this.buildRawGridStringToSuccessorMap(prMatches)
-      console.log("buildRawGridStringToSuccessorMap:", rawGridStringToSuccessorMap);
+      dbg("buildRawGridStringToSuccessorMap:", 2, rawGridStringToSuccessorMap);
 
       let updateStacks = this.updateStacksWithMatchSuccessors(rawGridStringToSuccessorMap,
         matchesByRuleAndTransformID);
-      console.log("updateStacks: ", updateStacks)
+      dbg("updateStacks: ", 2, updateStacks)
       this.sortUpdateStacks();
-      console.log("updateStacks (after sort): ", updateStacks)
+      dbg("updateStacks (after sort): ", 2, updateStacks)
       this.writeUpdatePixels()
     }
   }
@@ -129,8 +137,8 @@ export class PixelReactor<T> {
     this._ruleGridMap.forEach((rule, id) => {
       if (rule.successor) {
         rule.rotatedGrids.forEach((rotatedGrid, transform) => {
-          if (true || transform == "r0") {
-            console.log(`${[rule.id, transform]}`);
+          //if (true || transform == "r0") {
+            dbg(`${[rule.id, transform]}`, 3);
             let stringifiedGrid: RawGridString = JSON.stringify(rotatedGrid.grid);
             let matchingPatterns = matchMap.get(stringifiedGrid);
             //let priorityOffset = PixelReactor.transformToPriorityOffsetMap.get(transform);
@@ -143,12 +151,12 @@ export class PixelReactor<T> {
             else {
               matchMap.set(stringifiedGrid, [[rule.id, transform]]);
             }
-          }
+          //}
         })
-        console.log(`Rule ${id} has a successor ${rule.successor.id}`);
+        dbg(`Rule ${id} has a successor ${rule.successor.id}`, 3);
       }
     })
-    //console.log("Match Map: ", matchMap);
+   
     return matchMap;
   }
 
@@ -283,7 +291,7 @@ export class PixelReactor<T> {
       let successionStack: [ParametricGrid<T>, Vec2d, number][] = []
       for (let matchId of matchIds) {
         let [ruleId, transformId] = matchId;
-        console.log(`${rawGridString}: IDS: ${[ruleId, transformId]}`);
+        dbg(`${rawGridString}: IDS: ${[ruleId, transformId]}`, 2);
         let rule = this.getRule(ruleId);
         if (rule) {
           let successor = rule.successor;
@@ -313,7 +321,7 @@ export class PixelReactor<T> {
     if (mainGrid == null || mainGrid == undefined) return matchMap;
     pixelsToCheckByPattern.forEach((locationList, rawGridString: RawGridString) => {
       let locationSet = new LocationSet(locationList)
-      console.log(`LocationSet for ${rawGridString}: `, locationSet)
+      dbg(`LocationSet for ${rawGridString}: `, 3, locationSet)
       let rawGrid = JSON.parse(rawGridString);
       let rawGridWidth: number = rawGrid[0].length;
       let rawGridHeight: number = rawGrid.length;
@@ -323,11 +331,11 @@ export class PixelReactor<T> {
         if (match) {
           let matchMetadata = uniquePatternMetadata.get(rawGridString)
           if (matchMetadata) {
-            console.log(`For ${rawGridString} match at: ${x},${y} for transforms: ${matchMetadata}`);
+            dbg(`For ${rawGridString} match at: ${x},${y} for transforms: ${matchMetadata}`, 0);
             pushVal(matchMap, rawGridString, pixel);
           }
           else {
-            console.log(`For ${rawGridString} match at: ${x},${y} for transforms: ERROR! This should not happen!!!`)
+            dbg(`For ${rawGridString} match at: ${x},${y} for transforms: ERROR! This should not happen!!!`, 0)
             return matchMap;
           }
         }
@@ -388,7 +396,7 @@ export class PixelReactor<T> {
   }
 
   public toJSON(): Object {
-    console.log("PR.toJSON called")
+    //console.log("PR.toJSON called")
     return {
       foo: "bar",
       pixelReactorString: "PR Text",
@@ -678,7 +686,7 @@ export class RuleGrid<T> extends ParametricGrid<T> {
 
   public set successor(s) {
     this._successor = s;
-    console.log("New successor: ", this._successor)
+    dbg("New successor: ", 3, this._successor)
   }
 
   public get successor() {
@@ -687,24 +695,24 @@ export class RuleGrid<T> extends ParametricGrid<T> {
 
   public set successorOffset(offset: Vec2d) {
     this._successorOffset = offset;
-    console.log("r0: ", this._successorOffset)
+    dbg("r0: ", 3, this._successorOffset)
     let rm = rotationMap.get("r90");
 
     this._rotatedOffsets.set("r0", this._successorOffset);
 
     if (rm) {
       this._rotatedOffsets.set("r90", rm.multiplyByVec(offset))
-      console.log("r90: ", this._rotatedOffsets.get("r90"))
+      dbg("r90: ", 3, this._rotatedOffsets.get("r90"))
     }
     rm = rotationMap.get("r180");
     if (rm) {
       this._rotatedOffsets.set("r180", rm.multiplyByVec(offset))
-      console.log("r180: ", this._rotatedOffsets.get("r180"))
+      dbg("r180: ", 3, this._rotatedOffsets.get("r180"))
     }
     rm = rotationMap.get("r270");
     if (rm) {
       this._rotatedOffsets.set("r270", rm.multiplyByVec(offset))
-      console.log("r270: ", this._rotatedOffsets.get("r270"))
+      dbg("r270: ", 3, this._rotatedOffsets.get("r270"))
     }
   }
 
@@ -731,27 +739,27 @@ export class RuleGrid<T> extends ParametricGrid<T> {
     if (r90) {
       let v90 = r90.multiplyByVec([x, y])
       let [x90, y90] = v90;
-      console.log("BEFORE setLocation 90")
+      //console.log("BEFORE setLocation 90")
       this._rotatedGrids.get("r90")?.setLocation(x90 + this.height - 1, y90, v)
-      console.log("R90:", x90, y90);
+      //console.log("R90:", x90, y90);
     }
 
     let r180 = rotationMap.get("r180")
     if (r180) {
       let v180 = r180.multiplyByVec([x, y]);
       let [x180, y180] = v180;
-      console.log("BEFORE setLocation 180")
+      //console.log("BEFORE setLocation 180")
       this._rotatedGrids.get("r180")?.setLocation(x180 + this.width - 1, y180 + this.height - 1, v);
-      console.log("R180:", x180, y180)
+      //console.log("R180:", x180, y180)
     }
 
     let r270 = rotationMap.get("r270");
     if (r270) {
       let v270 = r270.multiplyByVec([x, y]);
       let [x270, y270] = v270;
-      console.log("BEFORE setLocation 270")
+      //console.log("BEFORE setLocation 270")
       this._rotatedGrids.get("r270")?.setLocation(x270, y270 + this.width - 1, v)
-      console.log("R270:", x270, y270)
+      //console.log("R270:", x270, y270)
     }
 
   }
