@@ -80,8 +80,8 @@ function pushVal<K, V>(map: Map<K, V[]>, key: K, newval: V): Map<K, V[]> {
 export class PixelReactor<T> {
   private _ruleGridMap: Map<string, RuleGrid<T>>;
 
-  public static readonly transformToPriorityOffsetMap = new Map<string, number>([["r0", 0], ["r90", 0], ["r180", 0], ["r270", 0]]);
-  //public static readonly transformToPriorityOffsetMap = new Map<string, number>([["r0", 0], ["r90", 2], ["r180", 4], ["r270", 6]]);
+  //public static readonly transformToPriorityOffsetMap = new Map<string, number>([["r0", 0], ["r90", 0], ["r180", 0], ["r270", 0]]);
+  public static readonly transformToPriorityOffsetMap = new Map<string, number>([["r0", 0], ["r90", 2], ["r180", 4], ["r270", 6]]);
 
   private _currentRuleIndex: number = 1;
 
@@ -357,6 +357,7 @@ export class PixelReactor<T> {
         mainGrid.setLocation(x, y, 0 as T);
       }
     }
+    mainGrid.newPixels = []
   }
 
   public getNewRuleIndex(): number {
