@@ -140,6 +140,8 @@ function createRuleGrid(inwidth: string, inheight: string) {
 }
 
 function checkPixels() {
+  prRef.value.iterate();
+  return;
   prRef.value.updateStacks.clear();
   prMatches = prRef.value.buildMatchMap();
   console.log("prMatches: ", prMatches)
@@ -231,7 +233,9 @@ const mainGridRef = ref<InstanceType<typeof ParametricGridVC>>()
     <button @click="mainGridKey++">Resize Main Grid</button>
     <button @click="serializeWorkspace()">Test Serialization</button>
     <button @click="createTestRules()">Create Test Rules</button>
-    <button @click="checkPixels(); mainGridRef?.$forceUpdate()">Build Match Map</button>
+    <!-- <button @click="checkPixels(); mainGridRef?.$forceUpdate()">Build Match Map</button> -->
+    <button @click="prRef.iterate()">Build Match Map</button>
+    <button @click="prRef.toggleRun()">Toggle Run</button>
     <button @click="console.log('PR Ids: ', prRef.getAllRuleIds())">Print PR rule IDs</button>
     <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(prRef)))">Gson Serialize</button>
     <button @click="console.log('stringify PR: ', JSON.stringify(prRef))">stringify PR</button> 

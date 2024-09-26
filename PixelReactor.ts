@@ -65,6 +65,10 @@ function pushVal<K, V>(map: Map<K, V[]>, key: K, newval: V): Map<K, V[]> {
   return map;
 }
 
+// function foo() {
+//   console.log("TICK!") 
+// }
+
 export class PixelReactor<T> {
   private _ruleGridMap: Map<string, RuleGrid<T>>;
 
@@ -77,6 +81,47 @@ export class PixelReactor<T> {
 
   public get updateStacks() {
     return this._updateStacks;
+  }
+
+  private _running: boolean = false;
+
+  private _runMethodId: number = 0;
+
+  
+
+  public toggleRun() {
+    this._running = !this._running;
+    if (this._running) {
+      this._runMethodId = setInterval(() => this.iterate(), 10);
+      //this.iterate();
+    }
+    else {
+      clearInterval(this._runMethodId);
+    }
+  }
+
+  public iterate() {
+    this._updateStacks.clear();
+    let prMatches = this.buildMatchMap();
+    console.log("prMatches: ", prMatches)
+    let pattternHistograms = this.buildPatternHistograms(prMatches);
+    console.log('PH: ', pattternHistograms);
+    let mainGrid = this.getRule("MAIN");
+    if (mainGrid) {
+      let pixelsToCheck = this.buildListOfPixelsToCheckForEachNewPixel(pattternHistograms, mainGrid);
+      console.log('Pixels2Check: ', pixelsToCheck)
+      let matchesByRuleAndTransformID = this.matchUniquePatternsForNewPixels(pixelsToCheck, prMatches)
+      console.log("matchesByRuleAndTransformID: ", matchesByRuleAndTransformID)
+      let rawGridStringToSuccessorMap = this.buildRawGridStringToSuccessorMap(prMatches)
+      console.log("buildRawGridStringToSuccessorMap:", rawGridStringToSuccessorMap);
+
+      let updateStacks = this.updateStacksWithMatchSuccessors(rawGridStringToSuccessorMap,
+        matchesByRuleAndTransformID);
+      console.log("updateStacks: ", updateStacks)
+      this.sortUpdateStacks();
+      console.log("updateStacks (after sort): ", updateStacks)
+      this.writeUpdatePixels()
+    }
   }
 
   public buildMatchMap(): Map<RawGridString, [string, string][]> {
@@ -207,7 +252,7 @@ export class PixelReactor<T> {
     this._updateStacks.forEach((updatePixels: [T, number][], locationString: LocationString) => {
       updatePixels.sort((a: [T, number], b: [T, number]) => {
         if (a[1] == b[1]) {
-          return (b[0] as number - a[0] as number ); 
+          return (b[0] as number - a[0] as number);
         }
         return (a[1] - b[1])
       })
@@ -265,7 +310,7 @@ export class PixelReactor<T> {
     uniquePatternMetadata: Map<RawGridString, [string, string][]>) {
     let matchMap: Map<RawGridString, Vec2d[]> = new Map<RawGridString, Vec2d[]>();
     let mainGrid = this._ruleGridMap.get("MAIN");
-    if (mainGrid == null || mainGrid == undefined) return
+    if (mainGrid == null || mainGrid == undefined) return matchMap;
     pixelsToCheckByPattern.forEach((locationList, rawGridString: RawGridString) => {
       let locationSet = new LocationSet(locationList)
       console.log(`LocationSet for ${rawGridString}: `, locationSet)
@@ -283,6 +328,7 @@ export class PixelReactor<T> {
           }
           else {
             console.log(`For ${rawGridString} match at: ${x},${y} for transforms: ERROR! This should not happen!!!`)
+            return matchMap;
           }
         }
       }
