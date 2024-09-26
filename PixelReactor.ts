@@ -87,6 +87,8 @@ export class PixelReactor<T> {
 
   private _updateStacks: Map<LocationString, [T, number][]>;
 
+  private _iterationCount: number = 0;
+
   public get updateStacks() {
     return this._updateStacks;
   }
@@ -109,6 +111,7 @@ export class PixelReactor<T> {
   }
 
   public iterate() {
+    console.log("ITER: ", this._iterationCount++);
     this._updateStacks.clear();
     let prMatches = this.buildMatchMap();
     dbg("prMatches: ", 0, prMatches)
@@ -478,6 +481,7 @@ export class ParametricGrid<T> {
   private _grid: T[][] = [];
 
   private _vueComponent: any;
+
 
   public set vueComponent(vc) {
     this._vueComponent = vc;
