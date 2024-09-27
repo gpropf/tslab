@@ -133,7 +133,7 @@ function createRuleGrid(inwidth: string, inheight: string) {
 
   let newRule = new RuleGrid(parseInt(inwidth), parseInt(inheight), 0, newRuleId.value);
   prRef.value.setRule(newRuleId.value, newRule)
- 
+
   let newRuleIndex = prRef.value.getNewRuleIndex();
   newRuleId.value = `rule-${newRuleIndex}`
 
@@ -157,7 +157,7 @@ function checkPixels() {
     console.log("buildRawGridStringToSuccessorMap:", rawGridStringToSuccessorMap);
 
     let updateStacks = prRef.value.updateStacksWithMatchSuccessors(rawGridStringToSuccessorMap,
-    matchesByRuleAndTransformID);
+      matchesByRuleAndTransformID);
     console.log("updateStacks: ", updateStacks)
     prRef.value.sortUpdateStacks();
     console.log("updateStacks (after sort): ", updateStacks)
@@ -178,21 +178,21 @@ function createTestRules() {
     rule1.priority = 10;
     rule2.priority = 10;
     rule1.setLocation(1, 1, 1);
-    rule2.setLocation(0, 1, 1); 
-    rule2.setLocation(2, 1, 1); 
-    rule2.setLocation(1, 0, 1); 
-    rule2.setLocation(1, 2, 1); 
+    rule2.setLocation(0, 1, 1);
+    rule2.setLocation(2, 1, 1);
+    rule2.setLocation(1, 0, 1);
+    rule2.setLocation(1, 2, 1);
 
-    rule3.setLocation(1, 2, 1); 
-    rule3.setLocation(3, 2, 1); 
-    rule3.setLocation(2, 1, 1); 
+    rule3.setLocation(1, 2, 1);
+    rule3.setLocation(3, 2, 1);
+    rule3.setLocation(2, 1, 1);
     rule3.setLocation(2, 3, 1);
-    rule3.setLocation(2, 2, 1); 
-    rule3.setLocation(0, 0, 1); 
-    rule3.setLocation(4, 0, 1); 
-    rule3.setLocation(0, 4, 1); 
-    rule3.setLocation(4, 4, 1); 
-    rule2.successorOffset = [-1,-1];
+    rule3.setLocation(2, 2, 1);
+    rule3.setLocation(0, 0, 1);
+    rule3.setLocation(4, 0, 1);
+    rule3.setLocation(0, 4, 1);
+    rule3.setLocation(4, 4, 1);
+    rule2.successorOffset = [-1, -1];
     //rule1.setLocation(2, 1, 1);
     rule1.successor = rule2;
     rule2.successor = rule3;
@@ -202,10 +202,80 @@ function createTestRules() {
     // mainGrid.setLocation(30, 15, 1);
     // mainGrid.setLocation(30, 16, 1);
     // mainGrid.setLocation(30, 17, 1);
-    mainGrid.setLocation(30, 20, 1); 
-    
+    mainGrid.setLocation(30, 20, 1);
+
   }
 }
+
+function createTestRules2() {
+  createRuleGrid("3", "3");
+  createRuleGrid("3", "3");
+  createRuleGrid("5", "5");
+  createRuleGrid("3", "1");
+  createRuleGrid("3", "1");
+  createRuleGrid("3", "3");
+  createRuleGrid("3", "3");
+  let rule1 = prRef.value.getRule("rule-1");
+  let rule2 = prRef.value.getRule("rule-2");
+  let rule3 = prRef.value.getRule("rule-3");
+  let rule4 = prRef.value.getRule("rule-4");
+  let rule5 = prRef.value.getRule("rule-5");
+  let rule6 = prRef.value.getRule("rule-6");
+  let rule7 = prRef.value.getRule("rule-7");
+  let mainGrid = prRef.value.getRule("MAIN");
+  if (rule1 && rule2 && rule3 && rule4 && rule5 && rule6 && rule7 && mainGrid) {
+
+    rule1.priority = 10;
+    rule2.priority = 20;
+    rule1.setLocation(1, 1, 1);
+    rule2.setLocation(0, 1, 1);
+    rule2.setLocation(2, 1, 1);
+    rule2.setLocation(1, 1, 1);
+    rule2.setLocation(1, 0, 1);
+    rule2.setLocation(1, 2, 1);
+
+    rule3.setLocation(1, 2, 1);
+    rule3.setLocation(3, 2, 1);
+    rule3.setLocation(2, 1, 1);
+    rule3.setLocation(2, 3, 1);
+    rule3.setLocation(2, 2, 1);
+    //rule3.setLocation(0, 0, 1);
+    rule3.setLocation(2, 0, 2);
+    rule3.setLocation(4, 2, 2);
+    rule3.setLocation(0, 2, 2);
+    rule3.setLocation(2, 4, 2);
+
+    rule4.setLocation(0, 0, 1);
+    rule4.setLocation(1, 0, 2);
+
+    rule5.setLocation(1, 0, 1);
+    rule5.setLocation(2, 0, 2);
+
+    rule2.successorOffset = [-1, -1];
+
+    rule1.successor = rule2;
+    rule2.successor = rule3;
+    rule4.successor = rule5;
+    rule4.priority = 8000;
+
+    rule6.setLocation(2, 0, 1);
+    rule6.setLocation(2, 2, 1);
+    rule6.setLocation(0, 2, 1);
+
+    rule6.successor = rule7;
+
+    rule7.setLocation(0, 0, 1);
+    rule7.setLocation(2, 0, 1);
+    rule7.setLocation(2, 2, 1);
+    rule7.setLocation(0, 2, 1);
+
+    rule6.priority = 60;
+    //rule6.setLocation(2, 4, 2);
+
+    mainGrid.setLocation(45, 30, 1);
+  }
+}
+
 
 //PixelReactor.initClass();
 console.log("transformToPriorityOffsetMap: ", PixelReactor.transformToPriorityOffsetMap)
@@ -220,38 +290,39 @@ const mainGridRef = ref<InstanceType<typeof ParametricGridVC>>()
     <LabelledInput v-model:inputValue="mainGridWidth" id="main-grid-width-id" inputType="text"
       placeholder="Enter Main Grid Width" componentName="Main Grid Width" size="4" />
     <LabelledInput v-model:inputValue="mainGridHeight" id="main-grid-height-id" inputType="text"
-      placeholder="Enter Main Grid Height" componentName="Main Grid Height" size="4" />    
+      placeholder="Enter Main Grid Height" componentName="Main Grid Height" size="4" />
     <LabelledInput v-model:inputValue="onClickValue" id="on-click-value-id" inputType="text"
       placeholder="Enter Color index number for grids" componentName="Color index" size="2" />
     <LabelledInput v-model:inputValue="pgwidth" id="rule-grid-width" inputType="text"
       placeholder="Enter width for rulegrid" componentName="Rulegrid Width" size="4" />
     <LabelledInput v-model:inputValue="pgheight" id="rule-grid-height" inputType="text"
       placeholder="Enter height for rulegrid" componentName="Rulegrid Height" size="4" />
-    
+
     <div> Mouse Location: {{ formatVector(mouseLocation) }}</div>
     <button @click="createRuleGrid(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
     <button @click="serializeWorkspace()">Test Serialization</button>
     <button @click="createTestRules()">Create Test Rules</button>
+    <button @click="createTestRules2()">Create Test Rules 2</button>
     <!-- <button @click="checkPixels(); mainGridRef?.$forceUpdate()">Build Match Map</button> -->
     <button @click="prRef.iterate()">Build Match Map</button>
     <button @click="prRef.toggleRun()">Toggle Run</button>
     <button @click="console.log('PR Ids: ', prRef.getAllRuleIds())">Print PR rule IDs</button>
     <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(prRef)))">Gson Serialize</button>
-    <button @click="console.log('stringify PR: ', JSON.stringify(prRef))">stringify PR</button> 
-    <button @click="console.log('Clearing Main Grid'); prRef.clearMainGrid()">Clear Main Grid</button>    
+    <button @click="console.log('stringify PR: ', JSON.stringify(prRef))">stringify PR</button>
+    <button @click="console.log('Clearing Main Grid'); prRef.clearMainGrid()">Clear Main Grid</button>
 
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
       placeholder="Enter Id string for new rule" componentName="New Rule Id" size="20" />
-    
+
     <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
       :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
-      :onClickValue="onClickValue" :conversionFn="conversionFn" :id="mainGridName" ref="mainGridRef"/>
+      :onClickValue="onClickValue" :conversionFn="conversionFn" :id="mainGridName" ref="mainGridRef" />
 
-    <RuleList :pixelReactor="prRef" :screenWidth="150" :screenHeight="100"
-     :vizFn="vizFn" :defaultValue="0" :onClickValue="onClickValue" :conversionFn="conversionFn"></RuleList>
+    <RuleList :pixelReactor="prRef" :screenWidth="150" :screenHeight="100" :vizFn="vizFn" :defaultValue="0"
+      :onClickValue="onClickValue" :conversionFn="conversionFn"></RuleList>
 
-    
+
 
     <div id="dynamic_content" class="rules"></div>
   </div>
