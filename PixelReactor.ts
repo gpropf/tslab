@@ -604,6 +604,7 @@ export class ParametricGrid<T> {
   }
 
   public setLocation(x: number, y: number, v: T) {
+    if (this._grid[y][x] == v) return;
     this._grid[y][x] = v;
     this._newPixels.push([x, y, v]);
     if (this._vueComponent) this._vueComponent.$forceUpdate();
