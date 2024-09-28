@@ -256,7 +256,7 @@ function createTestRules2() {
     rule1.successor = rule2;
     rule2.successor = rule3;
     rule4.successor = rule5;
-    rule4.priority = 8000;
+    rule4.priority = 67;
 
     rule6.setLocation(2, 0, 1);
     rule6.setLocation(2, 2, 1);
