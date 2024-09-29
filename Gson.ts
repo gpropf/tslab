@@ -1,23 +1,5 @@
 
-// function WithFuel(target: typeof Rocket, context): typeof Rocket {
-//   if (context.kind === "class") {
-//     target.prototype.fuel = 50
-//     target.prototype.isEmpty = (): boolean => {
-//       return this.fuel == 0
-//     }
-//   }
-// }
 
-//import { stringify } from "querystring";
-
-function logFuel(target: Function, context: any) {
-  const original = target.prototype.addFuel;
-  target.prototype.addFuel = function (message: string) {
-    console.log(`Before adding fuel, total fuel: ${this.fuel}`);
-    original.apply(this, arguments);
-    console.log(`After adding fuel, total fuel: ${this.fuel}`);
-  };
-}
 
 function JsonClass(target: Function, context: any) {
   //const original = target.prototype.addFuel;
@@ -85,7 +67,12 @@ class GsonClass {
   public toJSON() {
     return {
       __gsonClassName: this.__gsonClassName
-    }
+    }  
+  }
+
+  public static traverseObject(obj: any) {
+    
+    let objKeys = Object.keys(obj)
   }
 
   public static makeTypedObjectFromGenericObject(genObj: any) {
@@ -99,13 +86,16 @@ class GsonClass {
 
       let objKeys = Object.keys(genObj)
       objKeys.forEach(key => {
+        
         let keyObj = genObj[key];
+        console.log(`${genObj.__gsonClassName} key: ${key} -- val: ${keyObj}`)
         if (typeof (keyObj) == "object") {
           if (keyObj.constructor === Map) {
             console.log("Key object is Map!!!!!!!!!!!!!!!!!!!!!!!!")
           }
 
           if (Array.isArray(keyObj)) {
+            console.log(`${key} is Array!!!`)
             let arr = keyObj as Array<any>
             let newArr: any = []
             arr.forEach(item => {
@@ -118,11 +108,7 @@ class GsonClass {
           }
         }
         specificObject[key] = keyObj;
-      })
-
-      objKeys.forEach(key => {
-        // specificObject[key] = genObj[key];
-      })
+      })      
       return specificObject;
     }
     return genObj;
@@ -130,31 +116,7 @@ class GsonClass {
 
   public static fromJSON(jsonString: string) {
     let parsedObj = JSON.parse(jsonString)
-    let restoredObj = this.makeTypedObjectFromGenericObject(parsedObj);
-    // let objKeys = Object.keys(parsedObj)
-    // let restoredObj = null
-    // if (objKeys.find(keyName => keyName == "__gsonClassName")) {
-    //   console.log("Object is GsonClass!!!!!!!!!!!!!!!!!!!!!!!!")
-    //   let ObjClass = parsedObj["__gsonClassName"]
-    //   restoredObj = eval(`new ${ObjClass}()`);
-    // }
-
-    // if (restoredObj) {
-    //   objKeys.forEach(key => {
-    //     console.log(`parsed object key: ${key}, type: ${typeof (parsedObj[key])}`)
-    //     if (typeof (parsedObj[key]) == "object") {
-    //       let specificObj = this.makeTypedObjectFromGenericObject(parsedObj[key])
-    //       restoredObj[key] = specificObj
-    //       console.log("KEY IS OBJECT!!!!!!!")
-    //     }
-    //     else {
-    //       restoredObj[key] = parsedObj[key];
-    //     }
-
-
-    //  });
-
-    //console.log("restoredObj: ", restoredObj)
+    let restoredObj = this.makeTypedObjectFromGenericObject(parsedObj);    
     return restoredObj;
   }
 }
@@ -179,6 +141,7 @@ class GSTestClass extends GsonClass {
 
   public singleGSTestObj: GsonFoo;
   public _id: string;
+  public myMap: Map<string, number>;
 
   public get id() {
     return this._id;
@@ -194,6 +157,8 @@ class GSTestClass extends GsonClass {
     this._innerObjects = []
     this.__gsonClassName = "GSTestClass"
     this.singleGSTestObj = new GsonFoo()
+    this.myMap = new Map();
+    this.myMap.set("Foo", 1);
     if (level < 1) {
       for (let i = 0; i < 5; i++) {
         let obj = new GSTestClass(`${id}-${i}`, ++level);
@@ -208,6 +173,7 @@ class GSTestClass extends GsonClass {
     let jsonObj: any = super.toJSON();
     jsonObj['_innerObjects'] = this._innerObjects;
     jsonObj.id = this._id;
+    jsonObj.myMap = this.myMap;
     return jsonObj;
   }
 
