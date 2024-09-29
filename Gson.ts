@@ -101,6 +101,10 @@ class GsonClass {
       objKeys.forEach(key => {
         let keyObj = genObj[key];
         if (typeof (keyObj) == "object") {
+          if (keyObj.constructor === Map) {
+            console.log("Key object is Map!!!!!!!!!!!!!!!!!!!!!!!!")
+          }
+
           if (Array.isArray(keyObj)) {
             let arr = keyObj as Array<any>
             let newArr: any = []
@@ -155,9 +159,25 @@ class GsonClass {
   }
 }
 
+
+class GsonFoo extends GsonClass {
+  public s: string;
+  public myMap: Map<string, number>;
+
+  constructor() {
+    super();
+    this.s = "I'm a FOO!"
+    this.myMap = new Map();
+    this.myMap.set("Foo", 7);
+  }
+}
+
+
 class GSTestClass extends GsonClass {
 
   private _innerObjects: GSTestClass[];
+
+  public singleGSTestObj: GsonFoo;
   public _id: string;
 
   public get id() {
@@ -173,6 +193,7 @@ class GSTestClass extends GsonClass {
     this._id = id;
     this._innerObjects = []
     this.__gsonClassName = "GSTestClass"
+    this.singleGSTestObj = new GsonFoo()
     if (level < 1) {
       for (let i = 0; i < 5; i++) {
         let obj = new GSTestClass(`${id}-${i}`, ++level);
