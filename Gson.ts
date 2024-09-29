@@ -99,7 +99,25 @@ class GsonClass {
 
       let objKeys = Object.keys(genObj)
       objKeys.forEach(key => {
-        specificObject[key] = genObj[key];
+        let keyObj = genObj[key];
+        if (typeof (keyObj) == "object") {
+          if (Array.isArray(keyObj)) {
+            let arr = keyObj as Array<any>
+            let newArr: any = []
+            arr.forEach(item => {
+              newArr.push(this.makeTypedObjectFromGenericObject(item))
+            })
+            keyObj = arr;
+          }
+          else {
+            keyObj = this.makeTypedObjectFromGenericObject(keyObj);
+          }
+        }
+        specificObject[key] = keyObj;
+      })
+
+      objKeys.forEach(key => {
+        // specificObject[key] = genObj[key];
       })
       return specificObject;
     }
@@ -108,30 +126,30 @@ class GsonClass {
 
   public static fromJSON(jsonString: string) {
     let parsedObj = JSON.parse(jsonString)
+    let restoredObj = this.makeTypedObjectFromGenericObject(parsedObj);
+    // let objKeys = Object.keys(parsedObj)
+    // let restoredObj = null
+    // if (objKeys.find(keyName => keyName == "__gsonClassName")) {
+    //   console.log("Object is GsonClass!!!!!!!!!!!!!!!!!!!!!!!!")
+    //   let ObjClass = parsedObj["__gsonClassName"]
+    //   restoredObj = eval(`new ${ObjClass}()`);
+    // }
 
-    let objKeys = Object.keys(parsedObj)
-    let restoredObj = null
-    if (objKeys.find(keyName => keyName == "__gsonClassName")) {
-      console.log("Object is GsonClass!!!!!!!!!!!!!!!!!!!!!!!!")
-      let ObjClass = parsedObj["__gsonClassName"]
-      restoredObj = eval(`new ${ObjClass}()`);
-    }
-
-    if (restoredObj) {
-      objKeys.forEach(key => {
-        console.log(`parsed object key: ${key}, type: ${typeof (parsedObj[key])}`)
-        if (typeof (parsedObj[key]) == "object") {
-          let specificObj = this.makeTypedObjectFromGenericObject(parsedObj[key])
-          restoredObj[key] = specificObj
-          console.log("KEY IS OBJECT!!!!!!!")
-        }
-        else {
-          restoredObj[key] = parsedObj[key];
-        }
+    // if (restoredObj) {
+    //   objKeys.forEach(key => {
+    //     console.log(`parsed object key: ${key}, type: ${typeof (parsedObj[key])}`)
+    //     if (typeof (parsedObj[key]) == "object") {
+    //       let specificObj = this.makeTypedObjectFromGenericObject(parsedObj[key])
+    //       restoredObj[key] = specificObj
+    //       console.log("KEY IS OBJECT!!!!!!!")
+    //     }
+    //     else {
+    //       restoredObj[key] = parsedObj[key];
+    //     }
 
 
-      });
-    }
+    //  });
+
     //console.log("restoredObj: ", restoredObj)
     return restoredObj;
   }
