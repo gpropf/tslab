@@ -15,37 +15,7 @@ import { provide, ref } from 'vue'
 //import {  } from 'vue'
 import LabelledInput from './components/LabelledInput.vue';
 import ParametricGridVC from './components/ParametricGridVC.vue';
-import { Gson, Rocket } from "../../../Gson"
-//import { type } from 'os';
-
-
-
-// const rocket = new Rocket("foo")
-// console.log((rocket as any).fuel)
-// console.log((rocket as any).class)
-// rocket.addFuel(10);
-// //type R = ConstructorParameters<typeof Rocket>;
-// //const r: Rocket = new Rocket("FOOO")
-// //console.log("Constructor params for Rocket: ",typeof(r));
-
-// let rocketFromObj = Object.create(Rocket.prototype)
-// console.log("RKT:", rocketFromObj)
-
-// let jsonText = '{ "fuel": "23", "class": "Rocket", "testObj": {"foo": "F1", "bar": "B1" } }'
-// let rawObjFromJson = JSON.parse(jsonText)
-// let rawObjFromJsonKeys = Object.keys(rawObjFromJson);
-
-// if ("class" in rawObjFromJson) {
-//   console.log("Object data has class member")
-// }
-
-// console.log(Object.keys(rawObjFromJson).forEach(key => {
-//   console.log("KEY:", key, typeof (rawObjFromJson[key]));
-//   rocketFromObj[key] = rawObjFromJson[key]
-// }))
-
-// console.log("New Rocket! ", rocketFromObj)
-
+import { Gson, Rocket, GsonClass, GSTestClass } from "../../../Gson"
 
 
 
@@ -71,19 +41,40 @@ function conversionFn(v: string) {
   return parseInt(v);
 }
 
-// function testFindAllMatches(ruleName: string) {
-//   let mainGrid = getRule("MAIN");
-//   if (mainGrid === undefined) return;
-//   let ruleGrid = getRule(ruleName);
-//   if (ruleGrid === undefined) return;
-//   let matches = mainGrid.simpleMatchAllTransforms(ruleGrid as RuleGrid<any>);
-//   console.log("MATCHES: ", matches)
-// }
+class Foo {
+  public a: number;
 
-// function testMatchingAllRules() {
-//   let matchMap = pixelReactor.getAllMatches();
-//   console.log("PR: ALL THE MATCHES! ", matchMap);
-// }
+  constructor() {
+    this.a = 5;
+  }
+}
+
+class Bar extends Foo {
+  constructor() {
+    super();
+    this.a = 3;
+  }
+}
+
+class Baz extends Bar {
+  constructor() {
+    super();
+    this.a = 2;
+  }
+}
+
+
+
+let gstest = new GSTestClass("FOO");
+console.log("Original gstest: ", gstest)
+let gstestString = JSON.stringify(gstest);
+console.log("GSTEST: ", gstestString)
+let gstestFromJSON = GSTestClass.fromJSON(gstestString)
+console.log("Reconstituted GSTEST: ", gstestFromJSON)
+
+let b = new Baz();
+console.log("BAR: ", b);
+
 
 
 
@@ -349,14 +340,7 @@ export default {
       ruleOffset: ''
     }
   }
-  // watch: {
-  //   ruleOffset(value) {
-  //     let v = stringToVec(value)
-  //     if (v == null) return null;
-  //     //ruleOffsetVec.value = v;
-  //     console.log("New value for ruleOffset: ", v)
-  //   }
-  // }
+
 }
 </script>
 
