@@ -41,39 +41,15 @@ function conversionFn(v: string) {
   return parseInt(v);
 }
 
-class Foo {
-  public a: number;
-
-  constructor() {
-    this.a = 5;
-  }
-}
-
-class Bar extends Foo {
-  constructor() {
-    super();
-    this.a = 3;
-  }
-}
-
-class Baz extends Bar {
-  constructor() {
-    super();
-    this.a = 2;
-  }
-}
-
 
 
 let gstest = new GSTestClass("FOO");
 console.log("Original gstest: ", gstest)
 let gstestString = JSON.stringify(gstest);
 console.log("GSTEST: ", gstestString)
-let gstestFromJSON = GSTestClass.fromJSON(gstestString)
-console.log("Reconstituted GSTEST: ", gstestFromJSON)
+//let gstestFromJSON = GSTestClass.fromJSON(gstestString)
+//console.log("Reconstituted GSTEST: ", gstestFromJSON)
 
-let b = new Baz();
-console.log("BAR: ", b);
 
 
 

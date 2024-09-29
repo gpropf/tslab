@@ -71,7 +71,7 @@ class GsonClass {
   }
 
   public static traverseObject(obj: any) {
-    
+
     let objKeys = Object.keys(obj)
   }
 
@@ -179,6 +179,10 @@ class GSTestClass extends GsonClass {
 
 
 
+}
+
+class TSSerializerTest {
+  public id: string;
 }
 
 
