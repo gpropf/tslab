@@ -1,5 +1,7 @@
 import { main } from "ts-node/dist/bin";
 
+import { GsonClass } from "./Gson"
+
 export const DEBUG_LEVEL = 0;
 
 export function dbg(message: string, debugLevel: number = 0, ...args: any) {
@@ -486,7 +488,7 @@ export class TransformMatrix {
   // for the rotation part.
 }
 
-export class ParametricGrid<T> {
+export class ParametricGrid<T> extends GsonClass{
 
   private _newPixels: Pixel<T>[] = [];
   private readonly _id: string;
@@ -506,6 +508,8 @@ export class ParametricGrid<T> {
   }
 
   constructor(width: number, height: number, initialValue: T, id: string, grid?: T[][]) {
+    super();
+    this.__useJSONForKeys.add("_grid")
     this._id = id;
     this._width = width;
     this._height = height;

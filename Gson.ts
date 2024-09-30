@@ -75,8 +75,7 @@ class GsonClass {
     return this.__useJSONForKeys;
   }
 
-  public static traverseObject(obj: any, depth: number = 0, useJSON: boolean = false) {
-    let objectIsPrimitive = true;
+  public static traverseObject(obj: any, depth: number = 0, maxDepth: number = 1, useJSON: boolean = false) {    
     let tabs: string = ""
     let tab: string = "\t"
     for (let i = 0; i < depth; i++) {
@@ -100,8 +99,7 @@ class GsonClass {
         })
         break;
       case Set:
-        console.log(`${tabs}Object is Set of size ${obj.size}.`)
-        objectIsPrimitive = false;
+        console.log(`${tabs}Object is Set of size ${obj.size}.`)        
         break;
       case Array:
         console.log(`${tabs}Object is Array of length ${obj.length}.`)
@@ -111,8 +109,7 @@ class GsonClass {
         }
         break;
       default:
-        console.log(`${tabs}Object is Object.`);
-        objectIsPrimitive = false;
+        console.log(`${tabs}Object is Object.`);       
         for (const [key, value] of Object.entries(obj)) {
           try { console.log(`${tabs}KEY ${key}: VAL ${value}`); }
           catch (e: unknown) { // <-- note `e` has explicit `unknown` type
@@ -124,18 +121,19 @@ class GsonClass {
             }
             // ... handle other error types 
           }
-          if (obj.__useJSONForKeys && obj.__useJSONForKeys.has(key)) {
-            console.log(`USING JSON FOR KEY ${key}`,JSON.stringify(value))
+          if (obj.__useJSONForKeys) {
+            console.log("Key __useJSONForKeys EXISTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            if (obj.__useJSONForKeys.has(key)) {
+              console.log(`USING JSON FOR KEY ${key}`, JSON.stringify(value))
+            }
           }
           else {
-            this.traverseObject(value, depth + 1);
+            if (depth <= maxDepth)
+              this.traverseObject(value, maxDepth, depth + 1);
           }
         }
     }
-    // if (!objectIsPrimitive) {
-    //   let objKeys = Object.keys(obj)
-
-    // }
+    
 
   }
 

@@ -30,10 +30,10 @@ const svgGrid = ref()
 
 onMounted(() => {
     // text content should be the same as current `count.value`
-    console.log("SVGGrid mounted!")
+    //console.log("SVGGrid mounted!")
     const instance = getCurrentInstance();
     props.prGrid.vueComponent = instance?.proxy;
-    console.log("VC (SVGGrid): ", props.prGrid.vueComponent);
+    //console.log("VC (SVGGrid): ", props.prGrid.vueComponent);
 
 })
 
