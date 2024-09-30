@@ -65,6 +65,7 @@ class Gson {
 class GsonClass {
   protected __gsonClassName = "GsonClass"
   protected __useJSONForKeys = new Set()
+  protected __excludeKeys = new Set()
   public toJSON() {
     return {
       __gsonClassName: this.__gsonClassName
@@ -75,7 +76,11 @@ class GsonClass {
     return this.__useJSONForKeys;
   }
 
-  public static traverseObject(obj: any, depth: number = 0, maxDepth: number = 2, useJSON: boolean = false) {    
+  public get excludeKeys() {
+    return this.__excludeKeys;
+  }
+
+  public static traverseObject(obj: any, depth: number = 0, maxDepth: number = 2, useJSON: boolean = false) {
     let tabs: string = ""
     let tab: string = "\t"
     for (let i = 0; i < depth; i++) {
@@ -84,72 +89,77 @@ class GsonClass {
     // if (obj.__useJSONForKeys) {
     //   console.log(`obj.__useJSONForKeys EXISTS!!!!: ${obj.__useJSONForKeys}`)
     // }
-    switch (obj.constructor) {
-      case Boolean:
-        console.log(`${tabs}"${obj}"`)
-        break;
-      case String:
-        console.log(`${tabs}"${obj}"`)
-        break;
-      case Number:
-        console.log(`${tabs}"${obj}"`);
-        break;
-      case Map:
-        console.log(`${tabs}{`);
-        obj.forEach((value: any, key: any) => {
-          console.log(`${tabs}"${key}" : `)
-          GsonClass.traverseObject(value, depth + 1, maxDepth);
-        })
-        console.log(`${tabs}}`);
-        break;
-      case Set:
-        console.log(`${tabs}{`)
-        obj.forEach(function(value: any) {
-          GsonClass.traverseObject(value, depth + 1, maxDepth);        
-        });
-        console.log(`${tabs}}`);      
-        break;
-      case Array:
-        console.log(`${tabs}[`);
-        for (let key of obj) {
-          //console.log(`${tabs}ITEM: ${key}`);
-          this.traverseObject(key, depth + 1,maxDepth );
-        }
-        console.log(`${tabs}]`)
-        break;
-      default:
-        console.log(`${tabs}{{`);       
-        for (const [key, value] of Object.entries(obj)) {
-          try { console.log(`${tabs}"${key}" :`); }
-          catch (e: unknown) { // <-- note `e` has explicit `unknown` type
-            (e as Error).message // errors
-            if (typeof e === "string") {
-              e.toUpperCase() // works, `e` narrowed to string
-            } else if (e instanceof Error) {
-              e.message // works, `e` narrowed to Error
-            }
-            // ... handle other error types 
+    if (obj !== null && obj.constructor !== undefined) {
+      switch (obj.constructor) {
+        case Boolean:
+          console.log(`${tabs}"${obj}"`)
+          break;
+        case String:
+          console.log(`${tabs}"${obj}"`)
+          break;
+        case Number:
+          console.log(`${tabs}"${obj}"`);
+          break;
+        case Map:
+          console.log(`${tabs}{`);
+          obj.forEach((value: any, key: any) => {
+            console.log(`${tabs}"${key}" : `)
+            GsonClass.traverseObject(value, depth + 1, maxDepth);
+          })
+          console.log(`${tabs}}`);
+          break;
+        case Set:
+          console.log(`${tabs}{`)
+          obj.forEach(function (value: any) {
+            GsonClass.traverseObject(value, depth + 1, maxDepth);
+          });
+          console.log(`${tabs}}`);
+          break;
+        case Array:
+          console.log(`${tabs}[`);
+          for (let key of obj) {
+            //console.log(`${tabs}ITEM: ${key}`);
+            this.traverseObject(key, depth + 1, maxDepth);
           }
-          if (obj.__useJSONForKeys) {
-            //console.log("Key __useJSONForKeys EXISTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            if (obj.__useJSONForKeys.has(key)) {
-              console.log(JSON.stringify(value))
+          console.log(`${tabs}]`)
+          break;
+        default:
+          console.log(`${tabs}{{`);
+          for (const [key, value] of Object.entries(obj)) {
+            try { console.log(`${tabs}"${key}" :`); }
+            catch (e: unknown) { // <-- note `e` has explicit `unknown` type
+              (e as Error).message // errors
+              if (typeof e === "string") {
+                e.toUpperCase() // works, `e` narrowed to string
+              } else if (e instanceof Error) {
+                e.message // works, `e` narrowed to Error
+              }
+              // ... handle other error types 
+            }
+            if (obj.__useJSONForKeys) {
+              //console.log("Key __useJSONForKeys EXISTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+              if (obj.__useJSONForKeys.has(key)) {
+                console.log(`${tabs}${JSON.stringify(value)}`);
+              }
+              else {
+                if (depth <= maxDepth)
+                  this.traverseObject(value, depth + 1, maxDepth);
+              }
             }
             else {
               if (depth <= maxDepth)
                 this.traverseObject(value, depth + 1, maxDepth);
             }
+
           }
-          else {
-            if (depth <= maxDepth)
-              this.traverseObject(value, depth + 1, maxDepth);
-          }
-          
-        }
-        console.log(`${tabs}}}`); 
-        
+          console.log(`${tabs}}}`);
+
+      }
     }
-    
+    else {
+      console.log(`${tabs}${JSON.stringify(obj)}`)
+    }
+
 
   }
 

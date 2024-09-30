@@ -488,7 +488,7 @@ export class TransformMatrix {
   // for the rotation part.
 }
 
-export class ParametricGrid<T> extends GsonClass{
+export class ParametricGrid<T> extends GsonClass {
 
   private _newPixels: Pixel<T>[] = [];
   private readonly _id: string;
@@ -513,6 +513,7 @@ export class ParametricGrid<T> extends GsonClass{
     this._id = id;
     this._width = width;
     this._height = height;
+    this.__gsonClassName = "ParametricGrid";
     if (grid) {
       this._grid = grid
     }
@@ -800,6 +801,7 @@ export class RuleGrid<T> extends ParametricGrid<T> {
     this._priority = 100;
     this._rotatedOffsets = new Map<string, Vec2d>();
     this.successorOffset = [0, 0];
+    this.__gsonClassName = "RuleGrid";
     this._rotatedGrids.set("r0", this as ParametricGrid<T>);
     this._rotatedGrids.set("r90", new ParametricGrid<T>(this.height, this.width, initialValue, ""));
     this._rotatedGrids.set("r180", new ParametricGrid<T>(this.width, this.height, initialValue, ""));
