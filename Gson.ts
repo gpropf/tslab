@@ -99,7 +99,10 @@ class GsonClass {
         })
         break;
       case Set:
-        console.log(`${tabs}Object is Set of size ${obj.size}.`)        
+        console.log(`${tabs}Object is Set of size ${obj.size}.`)
+        obj.forEach(function(value: any) {
+          console.log(value);            
+        });        
         break;
       case Array:
         console.log(`${tabs}Object is Array of length ${obj.length}.`)
