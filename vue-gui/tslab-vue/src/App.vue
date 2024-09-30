@@ -47,6 +47,7 @@ let gstest = new GSTestClass("FOO");
 console.log("Original gstest: ", gstest)
 let gstestString = JSON.stringify(gstest);
 console.log("GSTEST: ", gstestString)
+GsonClass.traverseObject(gstest);
 //let gstestFromJSON = GSTestClass.fromJSON(gstestString)
 //console.log("Reconstituted GSTEST: ", gstestFromJSON)
 
@@ -58,8 +59,8 @@ const newRuleId = ref("rule-1")
 const onClickValue = ref("1")
 const mainGridName = ref("MAIN")
 const mainGridKey = ref(0);
-const mainGridWidth = ref("90");
-const mainGridHeight = ref("60");
+const mainGridWidth = ref("9");
+const mainGridHeight = ref("6");
 const pgwidth = ref("3");
 const pgheight = ref("3")
 const screenWidth = ref(900);
@@ -107,29 +108,7 @@ function createRuleGrid(inwidth: string, inheight: string) {
 }
 
 function checkPixels() {
-  prRef.value.iterate();
-  return;
-  prRef.value.updateStacks.clear();
-  prMatches = prRef.value.buildMatchMap();
-  console.log("prMatches: ", prMatches)
-  pattternHistograms = prRef.value.buildPatternHistograms(prMatches);
-  console.log('PH: ', pattternHistograms);
-  let mainGrid = prRef.value.getRule("MAIN");
-  if (mainGrid) {
-    let pixelsToCheck = prRef.value.buildListOfPixelsToCheckForEachNewPixel(pattternHistograms, mainGrid);
-    console.log('Pixels2Check: ', pixelsToCheck)
-    let matchesByRuleAndTransformID = prRef.value.matchUniquePatternsForNewPixels(pixelsToCheck, prMatches)
-    console.log("matchesByRuleAndTransformID: ", matchesByRuleAndTransformID)
-    let rawGridStringToSuccessorMap = prRef.value.buildRawGridStringToSuccessorMap(prMatches)
-    console.log("buildRawGridStringToSuccessorMap:", rawGridStringToSuccessorMap);
-
-    let updateStacks = prRef.value.updateStacksWithMatchSuccessors(rawGridStringToSuccessorMap,
-      matchesByRuleAndTransformID);
-    console.log("updateStacks: ", updateStacks)
-    prRef.value.sortUpdateStacks();
-    console.log("updateStacks (after sort): ", updateStacks)
-    prRef.value.writeUpdatePixels()
-  }
+  prRef.value.iterate();  
 }
 
 function createTestRules() {
@@ -277,6 +256,7 @@ const mainGridRef = ref<InstanceType<typeof ParametricGridVC>>()
     <button @click="console.log('PR Ids: ', prRef.getAllRuleIds())">Print PR rule IDs</button>
     <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(prRef)))">Gson Serialize</button>
     <button @click="console.log('stringify PR: ', JSON.stringify(prRef))">stringify PR</button>
+    <button @click="console.log('traverseObject(PR): ', GsonClass.traverseObject(prRef))">traverseObject(PR)"</button>
     <button @click="console.log('Clearing Main Grid'); prRef.clearMainGrid()">Clear Main Grid</button>
 
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"

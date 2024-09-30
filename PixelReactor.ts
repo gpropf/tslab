@@ -418,8 +418,9 @@ export class PixelReactor<T> {
     return {
       foo: "bar",
       pixelReactorString: "PR Text",
-      ruleGridMap: Object.fromEntries(this._ruleGridMap),
-      mainGrid: this._ruleGridMap.get("MAIN")
+      //ruleGridMap: Object.fromEntries(this._ruleGridMap),
+      ruleGridMap: this._ruleGridMap
+      //mainGrid: this._ruleGridMap.get("MAIN")
     }
   }
 

@@ -67,12 +67,67 @@ class GsonClass {
   public toJSON() {
     return {
       __gsonClassName: this.__gsonClassName
-    }  
+    }
   }
 
-  public static traverseObject(obj: any) {
+  public static traverseObject(obj: any, depth: number = 0) {
+    let objectIsPrimitive = true;
+    let tabs: string = ""
+    let tab: string = "\t"
+    for (let i = 0; i < depth; i++) {
+      tabs += tab;
+    }
+    switch (obj.constructor) {
+      case String:
+        console.log(`${tabs}Object is string.`)
+        break;
+      case Number:
+        console.log(`${tabs}Object is Number.`);
+        break;
+      case Map:
+        console.log(`${tabs}Object is Map of size ${obj.size}.`);
+        obj.forEach((value: any, key: any) => {
+          console.log(`${tabs}Key: ${key} ==> Val: ${value}`)
+          this.traverseObject(value, depth + 1);
+        })
+        break;
+      case Set:
+        console.log(`${tabs}Object is Set of size ${obj.size}.`)
+        objectIsPrimitive = false;
+        break;
+      case Array:
+        console.log(`${tabs}Object is Array of length ${obj.length}.`)
+        for (let key of obj) {
+          console.log(`${tabs}ITEM: ${key}`);
+          this.traverseObject(key, depth + 1);
+        }
+        break;
+      default:
+        console.log(`${tabs}Object is Object.`);
+        objectIsPrimitive = false;
+        for (const [key, value] of Object.entries(obj)) {
+          try { console.log(`${tabs}KEY ${key}: VAL ${value}`); }
+          catch (e: unknown) { // <-- note `e` has explicit `unknown` type
+            e.message // errors
+            if (typeof e === "string") {
+              e.toUpperCase() // works, `e` narrowed to string
+            } else if (e instanceof Error) {
+              e.message // works, `e` narrowed to Error
+            }
+            // ... handle other error types 
+          }
 
-    let objKeys = Object.keys(obj)
+
+
+
+          this.traverseObject(value, depth + 1);
+        }
+    }
+    // if (!objectIsPrimitive) {
+    //   let objKeys = Object.keys(obj)
+
+    // }
+
   }
 
   public static makeTypedObjectFromGenericObject(genObj: any) {
@@ -86,7 +141,7 @@ class GsonClass {
 
       let objKeys = Object.keys(genObj)
       objKeys.forEach(key => {
-        
+
         let keyObj = genObj[key];
         console.log(`${genObj.__gsonClassName} key: ${key} -- val: ${keyObj}`)
         if (typeof (keyObj) == "object") {
@@ -108,7 +163,7 @@ class GsonClass {
           }
         }
         specificObject[key] = keyObj;
-      })      
+      })
       return specificObject;
     }
     return genObj;
@@ -116,7 +171,7 @@ class GsonClass {
 
   public static fromJSON(jsonString: string) {
     let parsedObj = JSON.parse(jsonString)
-    let restoredObj = this.makeTypedObjectFromGenericObject(parsedObj);    
+    let restoredObj = this.makeTypedObjectFromGenericObject(parsedObj);
     return restoredObj;
   }
 }
