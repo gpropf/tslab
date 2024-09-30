@@ -510,6 +510,7 @@ export class ParametricGrid<T> extends GsonClass {
   constructor(width: number, height: number, initialValue: T, id: string, grid?: T[][]) {
     super();
     this.__useJSONForKeys.add("_grid")
+    this.__excludeKeys.add("_vueComponent")
     this._id = id;
     this._width = width;
     this._height = height;

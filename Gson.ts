@@ -125,9 +125,12 @@ class GsonClass {
           }
           console.log(`${tabs}]`)
           break;
-        default:
+        default: // Object of some type
           console.log(`${tabs}{{`);
           for (const [key, value] of Object.entries(obj)) {
+            if (obj.__excludeKeys && obj.__excludeKeys.has(key)) {
+              continue;
+            }
             try { console.log(`${tabs}"${key}" :`); }
             catch (e: unknown) { // <-- note `e` has explicit `unknown` type
               (e as Error).message // errors
