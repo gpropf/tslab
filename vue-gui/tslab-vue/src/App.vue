@@ -43,12 +43,12 @@ function conversionFn(v: string) {
 
 
 
-// let gstest = new GSTestClass("FOO");
-// //gstest.useJSONForKeys.set()
-// console.log("Original gstest: ", gstest)
-// let gstestString = JSON.stringify(gstest);
-// console.log("GSTEST: ", gstestString)
-// GsonClass.traverseObject(gstest);
+let gstest = new GSTestClass("FOO");
+//gstest.useJSONForKeys.set()
+console.log("Original gstest: ", gstest)
+//let gstestString = JSON.stringify(gstest);
+//console.log("GSTEST: ", gstestString)
+GsonClass.traverseObject(gstest);
 //let gstestFromJSON = GSTestClass.fromJSON(gstestString)
 //console.log("Reconstituted GSTEST: ", gstestFromJSON)
 

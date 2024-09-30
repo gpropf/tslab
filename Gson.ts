@@ -1,5 +1,5 @@
 
-
+//import process from "process";
 
 function JsonClass(target: Function, context: any) {
   //const original = target.prototype.addFuel;
@@ -75,46 +75,52 @@ class GsonClass {
     return this.__useJSONForKeys;
   }
 
-  public static traverseObject(obj: any, depth: number = 0, maxDepth: number = 1, useJSON: boolean = false) {    
+  public static traverseObject(obj: any, depth: number = 0, maxDepth: number = 2, useJSON: boolean = false) {    
     let tabs: string = ""
     let tab: string = "\t"
     for (let i = 0; i < depth; i++) {
       tabs += tab;
     }
-    if (obj.__useJSONForKeys) {
-      console.log(`obj.__useJSONForKeys EXISTS!!!!: ${obj.__useJSONForKeys}`)
-    }
+    // if (obj.__useJSONForKeys) {
+    //   console.log(`obj.__useJSONForKeys EXISTS!!!!: ${obj.__useJSONForKeys}`)
+    // }
     switch (obj.constructor) {
+      case Boolean:
+        console.log(`${tabs}"${obj}"`)
+        break;
       case String:
-        console.log(`${tabs}Object is string.`)
+        console.log(`${tabs}"${obj}"`)
         break;
       case Number:
-        console.log(`${tabs}Object is Number.`);
+        console.log(`${tabs}"${obj}"`);
         break;
       case Map:
-        console.log(`${tabs}Object is Map of size ${obj.size}.`);
+        console.log(`${tabs}{`);
         obj.forEach((value: any, key: any) => {
-          console.log(`${tabs}Key: ${key} ==> Val: ${value}`)
-          this.traverseObject(value, depth + 1);
+          console.log(`${tabs}"${key}" : `)
+          GsonClass.traverseObject(value, depth + 1, maxDepth);
         })
+        console.log(`${tabs}}`);
         break;
       case Set:
-        console.log(`${tabs}Object is Set of size ${obj.size}.`)
+        console.log(`${tabs}{`)
         obj.forEach(function(value: any) {
-          console.log(value);            
-        });        
+          GsonClass.traverseObject(value, depth + 1, maxDepth);        
+        });
+        console.log(`${tabs}}`);      
         break;
       case Array:
-        console.log(`${tabs}Object is Array of length ${obj.length}.`)
+        console.log(`${tabs}[`);
         for (let key of obj) {
-          console.log(`${tabs}ITEM: ${key}`);
-          this.traverseObject(key, depth + 1);
+          //console.log(`${tabs}ITEM: ${key}`);
+          this.traverseObject(key, depth + 1,maxDepth );
         }
+        console.log(`${tabs}]`)
         break;
       default:
-        console.log(`${tabs}Object is Object.`);       
+        console.log(`${tabs}{{`);       
         for (const [key, value] of Object.entries(obj)) {
-          try { console.log(`${tabs}KEY ${key}: VAL ${value}`); }
+          try { console.log(`${tabs}"${key}" :`); }
           catch (e: unknown) { // <-- note `e` has explicit `unknown` type
             e.message // errors
             if (typeof e === "string") {
@@ -125,16 +131,23 @@ class GsonClass {
             // ... handle other error types 
           }
           if (obj.__useJSONForKeys) {
-            console.log("Key __useJSONForKeys EXISTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            //console.log("Key __useJSONForKeys EXISTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             if (obj.__useJSONForKeys.has(key)) {
-              console.log(`USING JSON FOR KEY ${key}`, JSON.stringify(value))
+              console.log(JSON.stringify(value))
+            }
+            else {
+              if (depth <= maxDepth)
+                this.traverseObject(value, depth + 1, maxDepth);
             }
           }
           else {
             if (depth <= maxDepth)
-              this.traverseObject(value, maxDepth, depth + 1);
+              this.traverseObject(value, depth + 1, maxDepth);
           }
+          
         }
+        console.log(`${tabs}}}`); 
+        
     }
     
 
