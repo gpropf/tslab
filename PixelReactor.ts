@@ -666,7 +666,7 @@ export class ParametricGrid<T> extends GsonClass{
   //   return true;
   // }
 
-  public toJSON(): Object {
+  public toJSON(): any {
     return {
       width: this._width,
       height: this._height,

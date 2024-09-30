@@ -122,7 +122,7 @@ class GsonClass {
         for (const [key, value] of Object.entries(obj)) {
           try { console.log(`${tabs}"${key}" :`); }
           catch (e: unknown) { // <-- note `e` has explicit `unknown` type
-            e.message // errors
+            (e as Error).message // errors
             if (typeof e === "string") {
               e.toUpperCase() // works, `e` narrowed to string
             } else if (e instanceof Error) {
@@ -259,11 +259,6 @@ class GSTestClass extends GsonClass {
 
 
 }
-
-class TSSerializerTest {
-  public id: string;
-}
-
 
 export { Rocket, JsonClass, Gson, GsonClass, GSTestClass }
 //console.log(`Is the rocket empty? ${(rocket as any).isEmpty()}`)
