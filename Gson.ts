@@ -64,18 +64,26 @@ class Gson {
 
 class GsonClass {
   protected __gsonClassName = "GsonClass"
+  protected __useJSONForKeys = new Set()
   public toJSON() {
     return {
       __gsonClassName: this.__gsonClassName
     }
   }
 
-  public static traverseObject(obj: any, depth: number = 0) {
+  public get useJSONForKeys() {
+    return this.__useJSONForKeys;
+  }
+
+  public static traverseObject(obj: any, depth: number = 0, useJSON: boolean = false) {
     let objectIsPrimitive = true;
     let tabs: string = ""
     let tab: string = "\t"
     for (let i = 0; i < depth; i++) {
       tabs += tab;
+    }
+    if (obj.__useJSONForKeys) {
+      console.log(`obj.__useJSONForKeys EXISTS!!!!: ${obj.__useJSONForKeys}`)
     }
     switch (obj.constructor) {
       case String:
@@ -116,11 +124,12 @@ class GsonClass {
             }
             // ... handle other error types 
           }
-
-
-
-
-          this.traverseObject(value, depth + 1);
+          if (obj.__useJSONForKeys && obj.__useJSONForKeys.has(key)) {
+            console.log(`USING JSON FOR KEY ${key}`,JSON.stringify(value))
+          }
+          else {
+            this.traverseObject(value, depth + 1);
+          }
         }
     }
     // if (!objectIsPrimitive) {
@@ -214,6 +223,7 @@ class GSTestClass extends GsonClass {
     this.singleGSTestObj = new GsonFoo()
     this.myMap = new Map();
     this.myMap.set("Foo", 1);
+    this.__useJSONForKeys.add("_innerObjects")
     if (level < 1) {
       for (let i = 0; i < 5; i++) {
         let obj = new GSTestClass(`${id}-${i}`, ++level);

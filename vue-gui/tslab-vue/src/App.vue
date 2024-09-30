@@ -44,6 +44,7 @@ function conversionFn(v: string) {
 
 
 let gstest = new GSTestClass("FOO");
+//gstest.useJSONForKeys.set()
 console.log("Original gstest: ", gstest)
 let gstestString = JSON.stringify(gstest);
 console.log("GSTEST: ", gstestString)
