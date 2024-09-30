@@ -80,7 +80,7 @@ class GsonClass {
     return this.__excludeKeys;
   }
 
-  public static traverseObject(obj: any, depth: number = 0, maxDepth: number = 2, useJSON: boolean = false) {
+  public static traverseObject(obj: any, depth: number = 0, maxDepth: number = 6, useJSON: boolean = false) {
     let tabs: string = ""
     let tab: string = "\t"
     for (let i = 0; i < depth; i++) {
@@ -89,7 +89,9 @@ class GsonClass {
     // if (obj.__useJSONForKeys) {
     //   console.log(`obj.__useJSONForKeys EXISTS!!!!: ${obj.__useJSONForKeys}`)
     // }
-    if (obj !== null && obj.constructor !== undefined) {
+    if (useJSON) {
+      console.log(`${tabs}${JSON.stringify(obj)}`)
+    } else if (obj !== null && obj.constructor !== undefined) {
       switch (obj.constructor) {
         case Boolean:
           console.log(`${tabs}"${obj}"`)
@@ -138,13 +140,8 @@ class GsonClass {
             }
             if (obj.__useJSONForKeys) {
               //console.log("Key __useJSONForKeys EXISTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-              if (obj.__useJSONForKeys.has(key)) {
-                console.log(`${tabs}${JSON.stringify(value)}`);
-              }
-              else {
-                if (depth <= maxDepth)
-                  this.traverseObject(value, depth + 1, maxDepth);
-              }
+              if (depth <= maxDepth)
+                this.traverseObject(value, depth + 1, maxDepth, obj.__useJSONForKeys.has(key));
             }
             else {
               if (depth <= maxDepth)
