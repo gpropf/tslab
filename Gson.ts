@@ -72,6 +72,24 @@ class GsonClass {
     }
   }
 
+  private static __logBuffer: string = ""
+
+  public static log(text: string) {
+    this.__logBuffer += text;
+  }
+
+  public static lognl(text: string = "") {
+    this.__logBuffer += text + "\n";
+  }
+
+  public static clear() {
+    this.__logBuffer = "";
+  }
+
+  public static print() {
+    console.log(this.__logBuffer);
+  }
+
   public get useJSONForKeys() {
     return this.__useJSONForKeys;
   }
@@ -80,58 +98,84 @@ class GsonClass {
     return this.__excludeKeys;
   }
 
-  public static traverseObject(obj: any, depth: number = 0, maxDepth: number = 6, useJSON: boolean = false) {
+  public static traverseObject(obj: any, depth: number = 0, maxDepth: number = 6,
+    useJSON: boolean = false, suppressInitialTabs: boolean = false) {
     let tabs: string = ""
-    let tab: string = "\t"
-    for (let i = 0; i < depth; i++) {
-      tabs += tab;
-    }
+    //if (!suppressTabs) {
+      let tab: string = "\t"
+      for (let i = 0; i < depth; i++) {
+        tabs += tab;
+      }
+    //}
     // if (obj.__useJSONForKeys) {
-    //   console.log(`obj.__useJSONForKeys EXISTS!!!!: ${obj.__useJSONForKeys}`)
+    //   GsonClass.log(`obj.__useJSONForKeys EXISTS!!!!: ${obj.__useJSONForKeys}`)
     // }
     if (useJSON) {
-      console.log(`${tabs}${JSON.stringify(obj)}`)
+      GsonClass.lognl(`${tabs}${JSON.stringify(obj)}`)
     } else if (obj !== null && obj.constructor !== undefined) {
       switch (obj.constructor) {
         case Boolean:
-          console.log(`${tabs}"${obj}"`)
+          GsonClass.lognl(`${tabs}"${obj}"`)
           break;
         case String:
-          console.log(`${tabs}"${obj}"`)
+          GsonClass.lognl(`${tabs}"${obj}"`)
           break;
         case Number:
-          console.log(`${tabs}"${obj}"`);
+          GsonClass.lognl(`${tabs}"${obj}"`);
           break;
         case Map:
-          console.log(`${tabs}{`);
+          // if (suppressInitialTabs) {
+          //   GsonClass.lognl(`{`);
+          // }
+          // else {
+            GsonClass.lognl(`${tabs}{`);
+          //}          
           obj.forEach((value: any, key: any) => {
-            console.log(`${tabs}"${key}" : `)
-            GsonClass.traverseObject(value, depth + 1, maxDepth);
+            GsonClass.log(`${tabs}"${key}" : `)
+            GsonClass.traverseObject(value, depth + 1, maxDepth, false, false);
+            //GsonClass.lognl()
           })
-          console.log(`${tabs}}`);
+          GsonClass.lognl(`${tabs}}`);
           break;
         case Set:
-          console.log(`${tabs}{`)
+          if (suppressInitialTabs) {
+            GsonClass.lognl(`{`)
+          }
+          else {
+            GsonClass.lognl(`${tabs}{`)
+          }
+          
           obj.forEach(function (value: any) {
             GsonClass.traverseObject(value, depth + 1, maxDepth);
           });
-          console.log(`${tabs}}`);
+          GsonClass.lognl(`${tabs}}`);
           break;
-        case Array:
-          console.log(`${tabs}[`);
+        case Array:          
+          if (suppressInitialTabs) {
+            GsonClass.lognl(`[`);
+          }
+          else {
+            GsonClass.lognl(`${tabs}[`);
+          }
           for (let key of obj) {
-            //console.log(`${tabs}ITEM: ${key}`);
+            //GsonClass.log(`${tabs}ITEM: ${key}`);
             this.traverseObject(key, depth + 1, maxDepth);
           }
-          console.log(`${tabs}]`)
+          GsonClass.lognl(`${tabs}]`)
           break;
         default: // Object of some type
-          console.log(`${tabs}{{`);
+          //GsonClass.lognl(`${tabs}{{`);
+          //if (suppressInitialTabs) {
+          //  GsonClass.lognl(`{{`);
+          //}
+          //else {
+            GsonClass.lognl(`${tabs}{{`);
+          //}
           for (const [key, value] of Object.entries(obj)) {
             if (obj.__excludeKeys && obj.__excludeKeys.has(key)) {
               continue;
             }
-            try { console.log(`${tabs}"${key}" :`); }
+            try { GsonClass.log(`${tabs}"${key}" :`); }
             catch (e: unknown) { // <-- note `e` has explicit `unknown` type
               (e as Error).message // errors
               if (typeof e === "string") {
@@ -142,22 +186,23 @@ class GsonClass {
               // ... handle other error types 
             }
             if (obj.__useJSONForKeys) {
-              //console.log("Key __useJSONForKeys EXISTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+              //GsonClass.log("Key __useJSONForKeys EXISTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
               if (depth <= maxDepth)
-                this.traverseObject(value, depth + 1, maxDepth, obj.__useJSONForKeys.has(key));
+                this.traverseObject(value, depth + 1, maxDepth, obj.__useJSONForKeys.has(key), true);
             }
             else {
               if (depth <= maxDepth)
-                this.traverseObject(value, depth + 1, maxDepth);
+                this.traverseObject(value, depth + 1, maxDepth, false, true);
             }
 
           }
-          console.log(`${tabs}}}`);
+          GsonClass.lognl(`${tabs}}}`);
 
       }
     }
     else {
-      console.log(`${tabs}${JSON.stringify(obj)}`)
+      // obj has no constructor so we just stringify it.
+      GsonClass.lognl(`${tabs}${JSON.stringify(obj)}`)
     }
 
 
