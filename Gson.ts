@@ -98,20 +98,25 @@ class GsonClass {
     return this.__excludeKeys;
   }
 
-  public static traverseObject(obj: any, depth: number = 0, maxDepth: number = 6,
+  public static traverseObject(obj: any, depth: number = 0, maxDepth: number = 8,
     useJSON: boolean = false, suppressInitialTabs: boolean = false) {
     let tabs: string = ""
     //if (!suppressTabs) {
-      let tab: string = "\t"
-      for (let i = 0; i < depth; i++) {
-        tabs += tab;
-      }
+    let tab: string = "\t"
+    for (let i = 0; i < depth; i++) {
+      tabs += tab;
+    }
     //}
     // if (obj.__useJSONForKeys) {
     //   GsonClass.log(`obj.__useJSONForKeys EXISTS!!!!: ${obj.__useJSONForKeys}`)
     // }
     if (useJSON) {
-      GsonClass.lognl(`${tabs}${JSON.stringify(obj)}`)
+      if (suppressInitialTabs) {
+        GsonClass.lognl(`${JSON.stringify(obj)}`)
+      }
+      else {
+        GsonClass.lognl(`${tabs}${JSON.stringify(obj)}`)
+      }
     } else if (obj !== null && obj.constructor !== undefined) {
       switch (obj.constructor) {
         case Boolean:
@@ -124,10 +129,10 @@ class GsonClass {
           else {
             GsonClass.lognl(`${tabs}|STR|"${obj}"`)
           }
-          
+
           break;
         case Number:
-          
+
           if (suppressInitialTabs) {
             GsonClass.lognl(`|NUM|"${obj}"`);
           }
@@ -141,10 +146,29 @@ class GsonClass {
           }
           else {
             GsonClass.lognl(`${tabs}{`);
-          }          
+          }
           obj.forEach((value: any, key: any) => {
             GsonClass.log(`${tabs}"${key}" : `)
-            GsonClass.traverseObject(value, depth + 1, maxDepth, false, true);
+
+
+            if (obj.__useJSONForKeys) {
+              //GsonClass.log("Key __useJSONForKeys EXISTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+              if (depth <= maxDepth)
+                this.traverseObject(value, depth + 1, maxDepth, obj.__useJSONForKeys.has(key), true);
+              else
+                GsonClass.lognl(`MAXDEPTH ${maxDepth} EXCEEDED`);
+            }
+            else {
+              if (depth <= maxDepth)
+                this.traverseObject(value, depth + 1, maxDepth, false, true);
+              else
+                GsonClass.lognl(`MAXDEPTH ${maxDepth} EXCEEDED`);
+            }
+
+
+
+
+            //GsonClass.traverseObject(value, depth + 1, maxDepth, false, true);
             //GsonClass.lognl()
           })
           GsonClass.lognl(`${tabs}}`);
@@ -156,13 +180,13 @@ class GsonClass {
           else {
             GsonClass.lognl(`${tabs}{`)
           }
-          
+
           obj.forEach(function (value: any) {
             GsonClass.traverseObject(value, depth + 1, maxDepth);
           });
           GsonClass.lognl(`${tabs}}`);
           break;
-        case Array:          
+        case Array:
           if (suppressInitialTabs) {
             GsonClass.lognl(`[`);
           }
@@ -181,14 +205,14 @@ class GsonClass {
           //  GsonClass.lognl(`{{`);
           //}
           //else {
-            
-            if (suppressInitialTabs) {
-              GsonClass.lognl(`{{`);
-            }
-            else {
-              GsonClass.lognl(`${tabs}{{`);
-            }
-          
+
+          if (suppressInitialTabs) {
+            GsonClass.lognl(`{{`);
+          }
+          else {
+            GsonClass.lognl(`${tabs}{{`);
+          }
+
           for (const [key, value] of Object.entries(obj)) {
             if (obj.__excludeKeys && obj.__excludeKeys.has(key)) {
               continue;
@@ -207,10 +231,14 @@ class GsonClass {
               //GsonClass.log("Key __useJSONForKeys EXISTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
               if (depth <= maxDepth)
                 this.traverseObject(value, depth + 1, maxDepth, obj.__useJSONForKeys.has(key), true);
+              else
+                GsonClass.lognl(`MAXDEPTH ${maxDepth} EXCEEDED`);
             }
             else {
               if (depth <= maxDepth)
                 this.traverseObject(value, depth + 1, maxDepth, false, true);
+              else
+                GsonClass.lognl(`MAXDEPTH ${maxDepth} EXCEEDED`);
             }
 
           }
