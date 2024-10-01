@@ -118,10 +118,22 @@ class GsonClass {
           GsonClass.lognl(`${tabs}"${obj}"`)
           break;
         case String:
-          GsonClass.lognl(`${tabs}"${obj}"`)
+          if (suppressInitialTabs) {
+            GsonClass.lognl(`|STR|"${obj}"`)
+          }
+          else {
+            GsonClass.lognl(`${tabs}|STR|"${obj}"`)
+          }
+          
           break;
         case Number:
-          GsonClass.lognl(`${tabs}"${obj}"`);
+          
+          if (suppressInitialTabs) {
+            GsonClass.lognl(`|NUM|"${obj}"`);
+          }
+          else {
+            GsonClass.lognl(`${tabs}|NUM|"${obj}"`);
+          }
           break;
         case Map:
           // if (suppressInitialTabs) {
@@ -169,8 +181,14 @@ class GsonClass {
           //  GsonClass.lognl(`{{`);
           //}
           //else {
-            GsonClass.lognl(`${tabs}{{`);
-          //}
+            
+            if (suppressInitialTabs) {
+              GsonClass.lognl(`{{`);
+            }
+            else {
+              GsonClass.lognl(`${tabs}{{`);
+            }
+          
           for (const [key, value] of Object.entries(obj)) {
             if (obj.__excludeKeys && obj.__excludeKeys.has(key)) {
               continue;
