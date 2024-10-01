@@ -136,15 +136,15 @@ class GsonClass {
           }
           break;
         case Map:
-          // if (suppressInitialTabs) {
-          //   GsonClass.lognl(`{`);
-          // }
-          // else {
+          if (suppressInitialTabs) {
+            GsonClass.lognl(`{`);
+          }
+          else {
             GsonClass.lognl(`${tabs}{`);
-          //}          
+          }          
           obj.forEach((value: any, key: any) => {
             GsonClass.log(`${tabs}"${key}" : `)
-            GsonClass.traverseObject(value, depth + 1, maxDepth, false, false);
+            GsonClass.traverseObject(value, depth + 1, maxDepth, false, true);
             //GsonClass.lognl()
           })
           GsonClass.lognl(`${tabs}}`);
