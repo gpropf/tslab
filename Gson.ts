@@ -217,16 +217,7 @@ class GsonClass {
             if (obj.__excludeKeys && obj.__excludeKeys.has(key)) {
               continue;
             }
-            try { GsonClass.log(`${tabs}"${key}" :`); }
-            catch (e: unknown) { // <-- note `e` has explicit `unknown` type
-              (e as Error).message // errors
-              if (typeof e === "string") {
-                e.toUpperCase() // works, `e` narrowed to string
-              } else if (e instanceof Error) {
-                e.message // works, `e` narrowed to Error
-              }
-              // ... handle other error types 
-            }
+            GsonClass.log(`${tabs}"${key}" :`);            
             if (obj.__useJSONForKeys) {
               //GsonClass.log("Key __useJSONForKeys EXISTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
               if (depth <= maxDepth)
