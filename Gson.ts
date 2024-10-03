@@ -98,19 +98,22 @@ class GsonClass {
     return this.__excludeKeys;
   }
 
-  public static traverseObject2(obj: any, tabs: string = ""): string {
+  public static traverseObject2(obj: any, tabs: string = "", isValue: boolean = false): string {
     
     let rstr: string = ""
     let rstrs: string[] = []
     let openBracket = ""
     let closeBracket = ""
     if (obj === null) {
+      if (isValue) tabs = "";
       return `${tabs}NULL "${obj}"`;
     }
     else if (obj === undefined) {
+      if (isValue) tabs = "";
       return `${tabs}UNDEF "${obj}"`;
     }
     else if (obj.constructor === undefined) {
+      if (isValue) tabs = "";
       return `${tabs}NO CONSTRUCTOR"${obj}"`;
     }
     else {
@@ -118,19 +121,23 @@ class GsonClass {
       switch (obj.constructor) {
         case Boolean:
           objType = "BOOL";
+          if (isValue) tabs = "";
           return `${tabs}${objType}: "${obj}"`;
           break;
         case Number:
           objType = "NUM";
+          if (isValue) tabs = "";
           return `${tabs}${objType}: "${obj}"`;
           break;
         case String:
           objType = "STR";
+          if (isValue) tabs = "";
           return `${tabs}${objType}: "${obj}"`;
           break;
         case Set:
           openBracket = "{"
           closeBracket = "}"
+          if (isValue) tabs = "";
           obj.forEach(function (value: any) {
             rstrs.push(GsonClass.traverseObject2(value, `${tabs}\t`));
           });
@@ -138,26 +145,27 @@ class GsonClass {
         case Array:
           openBracket = "["
           closeBracket = "]"
+          if (isValue) tabs = "";
           obj.forEach(function (value: any) {
             rstrs.push(GsonClass.traverseObject2(value, `${tabs}\t`));
           });
           return openBracket + rstrs.join(",") + closeBracket
         case Map:
           openBracket = "{\n"
-          closeBracket = "\n}\n"
+          closeBracket = `\n${tabs}}\n`
           
           obj.forEach((value: any, key: any) => {
             let mapStr = ""
-            mapStr += GsonClass.traverseObject2(key, `${tabs}\t`) + " : " + GsonClass.traverseObject2(value, `${tabs}\t`)
+            mapStr += GsonClass.traverseObject2(key, `${tabs}\t`) + " : " + GsonClass.traverseObject2(value, `${tabs}\t`, true)
             rstrs.push(mapStr);
           });
           return openBracket + rstrs.join(",\n") + closeBracket
         default:
           openBracket = "{{\n"
-          closeBracket = "\n}}\n"
+          closeBracket = `\n${tabs}}}\n`
           for (const [key, value] of Object.entries(obj)) {
             let mapStr = ""
-            mapStr += GsonClass.traverseObject2(key, `${tabs}\t`) + " : " + GsonClass.traverseObject2(value, `${tabs}\t`)
+            mapStr += GsonClass.traverseObject2(key, `${tabs}\t`) + " : " + GsonClass.traverseObject2(value, `${tabs}\t`, true)
             rstrs.push(mapStr);          
           }
           return openBracket + rstrs.join(",\n") + closeBracket          

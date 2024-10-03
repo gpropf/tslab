@@ -263,7 +263,7 @@ const mainGridRef = ref<InstanceType<typeof ParametricGridVC>>()
     <button @click="console.log('PR Ids: ', prRef.getAllRuleIds())">Print PR rule IDs</button>
     <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(prRef)))">Gson Serialize</button>
     <button @click="console.log('stringify PR: ', JSON.stringify(prRef))">stringify PR</button>
-    <button @click="GsonClass.clear(); objStr =  GsonClass.traverseObject2(gstest); console.log(objStr)">traverseObject(PR)"</button>
+    <button @click="GsonClass.clear(); objStr =  GsonClass.traverseObject2(gstest, '', false); console.log(objStr)">traverseObject(PR)"</button>
     <button @click="console.log('Clearing Main Grid'); prRef.clearMainGrid()">Clear Main Grid</button>
 
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
