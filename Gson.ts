@@ -60,7 +60,10 @@ class Gson {
 
 //=== 2nd attempt below this line
 
-
+export interface TraversalFlags {
+  isValue: boolean,
+  printTypes: boolean
+}
 
 class GsonClass {
   protected __gsonClassName = "GsonClass"
@@ -96,6 +99,103 @@ class GsonClass {
 
   public get excludeKeys() {
     return this.__excludeKeys;
+  }
+
+  
+
+  public static traverseObject3(obj: any, tabs: string = "", traversalFlags: TraversalFlags = { isValue: false, printTypes: true}): string {
+    let traversalFlagsModified: TraversalFlags =  {
+      isValue: true,
+      printTypes: traversalFlags.printTypes
+    }
+    
+    
+    
+    //traversalFlagsModified.isValue = traversalFlags.isValue;
+    //traversalFlagsModified.isValue = true;
+    // if (traversalFlags.isValue == false) {
+    //   console.log(`traversalFlags.isValue: ${traversalFlags.isValue}`)
+    // }
+    // else {
+    //   console.log(`traversalFlags.isValue: ${traversalFlags.isValue}`)
+    // }
+
+
+    let rstr: string = ""
+    let rstrs: string[] = []
+    let openBracket = ""
+    let closeBracket = ""
+    if (obj === null) {
+      if (traversalFlags.isValue) tabs = "";
+      return `${tabs}NULL "${obj}"`;
+    }
+    else if (obj === undefined) {
+      if (traversalFlags.isValue) tabs = "";
+      return `${tabs}UNDEF "${obj}"`;
+    }
+    else if (obj.constructor === undefined) {
+      if (traversalFlags.isValue) tabs = "";
+      return `${tabs}NO CONSTRUCTOR"${obj}"`;
+    }
+    else {
+      let objType = "";
+      switch (obj.constructor) {
+        case Boolean:
+          objType = "BOOL: ";
+          if (traversalFlags.isValue) tabs = "";
+          return `${tabs}${objType}"${obj}"`;
+          break;
+        case Number:
+          objType = "NUM: ";
+          if (traversalFlags.isValue) tabs = "";
+          return `${tabs}${objType}"${obj}"`;
+          break;
+        case String:
+          objType = "STR: ";
+          if (traversalFlags.isValue) tabs = "";
+          return `${tabs}${objType}"${obj}"`;
+          break;
+        case Set:
+          openBracket = "{"
+          closeBracket = "}"
+          if (traversalFlags.isValue) tabs = "";
+          obj.forEach(function (value: any) {
+            rstrs.push(GsonClass.traverseObject3(value, `${tabs}\t`));
+          });
+          return openBracket + rstrs.join(",") + closeBracket
+        case Array:
+          openBracket = "["
+          closeBracket = "]"
+          if (traversalFlags.isValue) tabs = "";
+          obj.forEach(function (value: any) {
+            rstrs.push(GsonClass.traverseObject3(value, `${tabs}\t`));
+          });
+          return openBracket + rstrs.join(",") + closeBracket
+        case Map:
+          openBracket = "{\n"
+          closeBracket = `\n${tabs}}\n`
+          
+          
+          obj.forEach((value: any, key: any) => {
+            let mapStr = ""
+            mapStr += GsonClass.traverseObject3(key, `${tabs}\t`) + " : " + GsonClass.traverseObject3(value, `${tabs}\t`, traversalFlagsModified)
+            rstrs.push(mapStr);
+          });
+          return openBracket + rstrs.join(",\n") + closeBracket
+        default:
+          openBracket = "{{\n"
+          closeBracket = `\n${tabs}}}\n`
+          //let traversalFlagsModified =  traversalFlags;
+          
+          for (const [key, value] of Object.entries(obj)) {
+            let mapStr = ""
+            mapStr += GsonClass.traverseObject3(key, `${tabs}\t`) + " : " + GsonClass.traverseObject3(value, `${tabs}\t`, traversalFlagsModified)
+            rstrs.push(mapStr);          
+          }
+          return openBracket + rstrs.join(",\n") + closeBracket          
+      }
+    }
+
   }
 
   public static traverseObject2(obj: any, tabs: string = "", isValue: boolean = false): string {
