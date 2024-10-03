@@ -120,19 +120,19 @@ class GsonClass {
       let objType = "";
       switch (obj.constructor) {
         case Boolean:
-          objType = "BOOL";
+          objType = "BOOL: ";
           if (isValue) tabs = "";
-          return `${tabs}${objType}: "${obj}"`;
+          return `${tabs}${objType}"${obj}"`;
           break;
         case Number:
-          objType = "NUM";
+          objType = "NUM: ";
           if (isValue) tabs = "";
-          return `${tabs}${objType}: "${obj}"`;
+          return `${tabs}${objType}"${obj}"`;
           break;
         case String:
-          objType = "STR";
+          objType = "STR: ";
           if (isValue) tabs = "";
-          return `${tabs}${objType}: "${obj}"`;
+          return `${tabs}${objType}"${obj}"`;
           break;
         case Set:
           openBracket = "{"
