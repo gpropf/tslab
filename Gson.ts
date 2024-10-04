@@ -155,8 +155,8 @@ class GsonClass {
             return `${tabs}"${obj}"`;
           break;
         case Set:
-          openBracket = "{"
-          closeBracket = "}"
+          openBracket = "["
+          closeBracket = "]"
           if (traversalFlags.isValue) tabs = "";
           obj.forEach(function (value: any) {
             rstrs.push(GsonClass.traverseObject3(value, `${tabs}\t`));
@@ -182,8 +182,8 @@ class GsonClass {
           });
           return openBracket + rstrs.join(",\n") + closeBracket
         default:
-          openBracket = "{{\n"
-          closeBracket = `\n${tabs}}}\n`
+          openBracket = "{\n"
+          closeBracket = `\n${tabs}}\n`
           //let traversalFlagsModified =  traversalFlags;
 
           for (const [key, value] of Object.entries(obj)) {
