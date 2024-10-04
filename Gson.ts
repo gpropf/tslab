@@ -75,6 +75,8 @@ class GsonClass {
     }
   }
 
+  public static printTypes: boolean = false;
+
   private static __logBuffer: string = ""
 
   public static log(text: string) {
@@ -101,25 +103,13 @@ class GsonClass {
     return this.__excludeKeys;
   }
 
-  
 
-  public static traverseObject3(obj: any, tabs: string = "", traversalFlags: TraversalFlags = { isValue: false, printTypes: true}): string {
-    let traversalFlagsModified: TraversalFlags =  {
+
+  public static traverseObject3(obj: any, tabs: string = "", traversalFlags: TraversalFlags = { isValue: false, printTypes: true }): string {
+    let traversalFlagsModified: TraversalFlags = {
       isValue: true,
       printTypes: traversalFlags.printTypes
     }
-    
-    
-    
-    //traversalFlagsModified.isValue = traversalFlags.isValue;
-    //traversalFlagsModified.isValue = true;
-    // if (traversalFlags.isValue == false) {
-    //   console.log(`traversalFlags.isValue: ${traversalFlags.isValue}`)
-    // }
-    // else {
-    //   console.log(`traversalFlags.isValue: ${traversalFlags.isValue}`)
-    // }
-
 
     let rstr: string = ""
     let rstrs: string[] = []
@@ -143,17 +133,26 @@ class GsonClass {
         case Boolean:
           objType = "BOOL: ";
           if (traversalFlags.isValue) tabs = "";
-          return `${tabs}${objType}"${obj}"`;
+          if (GsonClass.printTypes)
+            return `${tabs}${objType}"${obj}"`;
+          else
+            return `${tabs}"${obj}"`;
           break;
         case Number:
           objType = "NUM: ";
           if (traversalFlags.isValue) tabs = "";
-          return `${tabs}${objType}"${obj}"`;
+          if (GsonClass.printTypes)
+            return `${tabs}${objType}"${obj}"`;
+          else
+            return `${tabs}"${obj}"`;
           break;
         case String:
           objType = "STR: ";
           if (traversalFlags.isValue) tabs = "";
-          return `${tabs}${objType}"${obj}"`;
+          if (GsonClass.printTypes)
+            return `${tabs}${objType}"${obj}"`;
+          else
+            return `${tabs}"${obj}"`;
           break;
         case Set:
           openBracket = "{"
@@ -174,8 +173,8 @@ class GsonClass {
         case Map:
           openBracket = "{\n"
           closeBracket = `\n${tabs}}\n`
-          
-          
+
+
           obj.forEach((value: any, key: any) => {
             let mapStr = ""
             mapStr += GsonClass.traverseObject3(key, `${tabs}\t`) + " : " + GsonClass.traverseObject3(value, `${tabs}\t`, traversalFlagsModified)
@@ -186,20 +185,20 @@ class GsonClass {
           openBracket = "{{\n"
           closeBracket = `\n${tabs}}}\n`
           //let traversalFlagsModified =  traversalFlags;
-          
+
           for (const [key, value] of Object.entries(obj)) {
             let mapStr = ""
             mapStr += GsonClass.traverseObject3(key, `${tabs}\t`) + " : " + GsonClass.traverseObject3(value, `${tabs}\t`, traversalFlagsModified)
-            rstrs.push(mapStr);          
+            rstrs.push(mapStr);
           }
-          return openBracket + rstrs.join(",\n") + closeBracket          
+          return openBracket + rstrs.join(",\n") + closeBracket
       }
     }
 
   }
 
   public static traverseObject2(obj: any, tabs: string = "", isValue: boolean = false): string {
-    
+
     let rstr: string = ""
     let rstrs: string[] = []
     let openBracket = ""
@@ -253,7 +252,7 @@ class GsonClass {
         case Map:
           openBracket = "{\n"
           closeBracket = `\n${tabs}}\n`
-          
+
           obj.forEach((value: any, key: any) => {
             let mapStr = ""
             mapStr += GsonClass.traverseObject2(key, `${tabs}\t`) + " : " + GsonClass.traverseObject2(value, `${tabs}\t`, true)
@@ -266,9 +265,9 @@ class GsonClass {
           for (const [key, value] of Object.entries(obj)) {
             let mapStr = ""
             mapStr += GsonClass.traverseObject2(key, `${tabs}\t`) + " : " + GsonClass.traverseObject2(value, `${tabs}\t`, true)
-            rstrs.push(mapStr);          
+            rstrs.push(mapStr);
           }
-          return openBracket + rstrs.join(",\n") + closeBracket          
+          return openBracket + rstrs.join(",\n") + closeBracket
       }
     }
 
@@ -470,13 +469,17 @@ class GsonClass {
 
 class GsonFoo extends GsonClass {
   public s: string;
+
+  public fooFlag: boolean;
   public myMap: Map<string, number>;
 
   constructor() {
     super();
+    this.fooFlag = true;
     this.s = "I'm a FOO!"
     this.myMap = new Map();
     this.myMap.set("Foo", 7);
+    //this.myMap.set("mapFlag", true);
   }
 }
 
@@ -488,6 +491,8 @@ class GSTestClass extends GsonClass {
   public singleGSTestObj: GsonFoo;
   public _id: string;
   public myMap: Map<string, number>;
+
+  public testSet: Set<string>;
 
   public get id() {
     return this._id;
@@ -504,6 +509,7 @@ class GSTestClass extends GsonClass {
     this.__gsonClassName = "GSTestClass"
     this.singleGSTestObj = new GsonFoo()
     this.myMap = new Map();
+    this.testSet = new Set(["fee", "fii", "foo", "fum", "fee"]);
     this.myMap.set("Foo", 1);
     this.__useJSONForKeys.add("_innerObjects")
     if (level < 1) {
