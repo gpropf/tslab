@@ -87,6 +87,9 @@ class GsonClass {
     }
   }
 
+  //public static readonly factoryMap: Map<string, Function>;
+
+
   public static printTypes: boolean = false;
 
   private static __logBuffer: string = ""
@@ -149,7 +152,8 @@ class GsonClass {
     }
   }
 
-  public static traverseObject3(obj: any, tabs: string = "", traversalFlags: TraversalFlags = { isValue: false, printTypes: true }): string {
+  public static traverseObject3(obj: any, tabs: string = "",
+    traversalFlags: TraversalFlags = { isValue: false, printTypes: true }): string {
     let traversalFlagsModified: TraversalFlags = {
       isValue: true,
       printTypes: traversalFlags.printTypes
@@ -317,152 +321,7 @@ class GsonClass {
 
   }
 
-  // public static traverseObject(obj: any, depth: number = 0, maxDepth: number = 8,
-  //   useJSON: boolean = false, suppressInitialTabs: boolean = false) {
-  //   let tabs: string = ""
-  //   //if (!suppressTabs) {
-  //   let tab: string = "\t"
-  //   for (let i = 0; i < depth; i++) {
-  //     tabs += tab;
-  //   }
-  //   //}
-  //   // if (obj.__useJSONForKeys) {
-  //   //   GsonClass.log(`obj.__useJSONForKeys EXISTS!!!!: ${obj.__useJSONForKeys}`)
-  //   // }
-  //   if (useJSON) {
-  //     if (suppressInitialTabs) {
-  //       GsonClass.lognl(`${JSON.stringify(obj)}`)
-  //     }
-  //     else {
-  //       GsonClass.lognl(`${tabs}${JSON.stringify(obj)}`)
-  //     }
-  //   } else if (obj !== null && obj.constructor !== undefined) {
-  //     switch (obj.constructor) {
-  //       case Boolean:
-  //         GsonClass.lognl(`${tabs}"${obj}"`)
-  //         break;
-  //       case String:
-  //         if (suppressInitialTabs) {
-  //           GsonClass.lognl(`|STR|"${obj}"`)
-  //         }
-  //         else {
-  //           GsonClass.lognl(`${tabs}|STR|"${obj}"`)
-  //         }
 
-  //         break;
-  //       case Number:
-
-  //         if (suppressInitialTabs) {
-  //           GsonClass.lognl(`|NUM|"${obj}"`);
-  //         }
-  //         else {
-  //           GsonClass.lognl(`${tabs}|NUM|"${obj}"`);
-  //         }
-  //         break;
-  //       case Map:
-  //         if (suppressInitialTabs) {
-  //           GsonClass.lognl(`{`);
-  //         }
-  //         else {
-  //           GsonClass.lognl(`${tabs}{`);
-  //         }
-  //         obj.forEach((value: any, key: any) => {
-  //           GsonClass.log(`${tabs}"${key}" : `)
-
-
-  //           if (obj.__useJSONForKeys) {
-  //             //GsonClass.log("Key __useJSONForKeys EXISTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-  //             if (depth <= maxDepth)
-  //               this.traverseObject(value, depth + 1, maxDepth, obj.__useJSONForKeys.has(key), true);
-  //             else
-  //               GsonClass.lognl(`MAXDEPTH ${maxDepth} EXCEEDED`);
-  //           }
-  //           else {
-  //             if (depth <= maxDepth)
-  //               this.traverseObject(value, depth + 1, maxDepth, false, true);
-  //             else
-  //               GsonClass.lognl(`MAXDEPTH ${maxDepth} EXCEEDED`);
-  //           }
-
-
-
-
-  //           //GsonClass.traverseObject(value, depth + 1, maxDepth, false, true);
-  //           //GsonClass.lognl()
-  //         })
-  //         GsonClass.lognl(`${tabs}}`);
-  //         break;
-  //       case Set:
-  //         if (suppressInitialTabs) {
-  //           GsonClass.lognl(`{`)
-  //         }
-  //         else {
-  //           GsonClass.lognl(`${tabs}{`)
-  //         }
-
-  //         obj.forEach(function (value: any) {
-  //           GsonClass.traverseObject(value, depth + 1, maxDepth);
-  //         });
-  //         GsonClass.lognl(`${tabs}}`);
-  //         break;
-  //       case Array:
-  //         if (suppressInitialTabs) {
-  //           GsonClass.lognl(`[`);
-  //         }
-  //         else {
-  //           GsonClass.lognl(`${tabs}[`);
-  //         }
-  //         for (let key of obj) {
-  //           //GsonClass.log(`${tabs}ITEM: ${key}`);
-  //           this.traverseObject(key, depth + 1, maxDepth);
-  //         }
-  //         GsonClass.lognl(`${tabs}]`)
-  //         break;
-  //       default: // Object of some type
-  //         //GsonClass.lognl(`${tabs}{{`);
-  //         //if (suppressInitialTabs) {
-  //         //  GsonClass.lognl(`{{`);
-  //         //}
-  //         //else {
-
-  //         if (suppressInitialTabs) {
-  //           GsonClass.lognl(`{{`);
-  //         }
-  //         else {
-  //           GsonClass.lognl(`${tabs}{{`);
-  //         }
-
-  //         for (const [key, value] of Object.entries(obj)) {
-  //           if (obj.__excludeKeys && obj.__excludeKeys.has(key)) {
-  //             continue;
-  //           }
-  //           GsonClass.log(`${tabs}"${key}" :`);
-  //           if (obj.__useJSONForKeys) {
-  //             //GsonClass.log("Key __useJSONForKeys EXISTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-  //             if (depth <= maxDepth)
-  //               this.traverseObject(value, depth + 1, maxDepth, obj.__useJSONForKeys.has(key), true);
-  //             else
-  //               GsonClass.lognl(`MAXDEPTH ${maxDepth} EXCEEDED`);
-  //           }
-  //           else {
-  //             if (depth <= maxDepth)
-  //               this.traverseObject(value, depth + 1, maxDepth, false, true);
-  //             else
-  //               GsonClass.lognl(`MAXDEPTH ${maxDepth} EXCEEDED`);
-  //           }
-
-  //         }
-  //         GsonClass.lognl(`${tabs}}}`);
-
-  //     }
-  //   }
-  //   else {
-  //     // obj has no constructor so we just stringify it.
-  //     GsonClass.lognl(`${tabs}${JSON.stringify(obj)}`)
-  //   }
-
-
-  // }
 
   public static makeTypedObjectFromGenericObject2(genObj: any) {
     let objKeys = Object.keys(genObj)
@@ -478,40 +337,43 @@ class GsonClass {
 
         let keyObjType = GsonClass.distinguishType(keyObj);
 
-        
-            switch (keyObjType) {
-              case GsonTypes.BOOLEAN:
-                return GsonTypes.BOOLEAN;
-              case GsonTypes.NUMBER:
-                return GsonTypes.NUMBER;
-              case GsonTypes.STRING:
-                return GsonTypes.STRING;
-              case GsonTypes.SET:
-                return GsonTypes.SET;
-              case GsonTypes.ARRAY:
-                return GsonTypes.ARRAY;
-              case GsonTypes.MAP:
-                return GsonTypes.MAP;
-              case GsonTypes.SYMBOL:
-                return GsonTypes.SYMBOL;
-              default:
-                return GsonTypes.OBJECT;
-            }
-          });
-          return specificObject;
+
+        switch (keyObjType) {
+          case GsonTypes.BOOLEAN:
+          case GsonTypes.NUMBER:
+          case GsonTypes.STRING:
+            specificObject[key] = genObj[key]
+            break;
+          case GsonTypes.SET:
+            specificObject[key] = new Set(genObj[key])
+            break;
+          case GsonTypes.ARRAY:
+            specificObject[key] = genObj[key];
+            break;
+          case GsonTypes.MAP:
+            return GsonTypes.MAP;
+            break;
+          case GsonTypes.SYMBOL:
+            return GsonTypes.SYMBOL;
+            break;
+          default:
+            specificObject[key] = GsonClass.makeTypedObjectFromGenericObject2(genObj[key]);
         }
-        return null;
-      }
-        
-      
-        
+      });
+      return specificObject;
+    }
+    return null;
+  }
 
 
 
 
 
 
-  
+
+
+
+
 
   public static makeTypedObjectFromGenericObject(genObj: any) {
     let objKeys = Object.keys(genObj)
@@ -563,11 +425,13 @@ class GsonClass {
 class GsonFoo extends GsonClass {
   public s: string;
 
+  public fooSet: Set<number>;
   public fooFlag: boolean;
   public myMap: Map<string, number>;
 
-  constructor() {
+  constructor(numThings: number) {
     super();
+    this.fooSet = new Set<number>();
     this.fooFlag = true;
     this.s = "I'm a FOO!"
     this.myMap = new Map();
@@ -600,7 +464,7 @@ class GSTestClass extends GsonClass {
     this._id = id;
     this._innerObjects = []
     this.__gsonClassName = "GSTestClass"
-    this.singleGSTestObj = new GsonFoo()
+    this.singleGSTestObj = new GsonFoo(5)
     this.myMap = new Map();
     this.testSet = new Set(["fee", "fii", "foo", "fum", "fee"]);
     this.myMap.set("Foo", 1);

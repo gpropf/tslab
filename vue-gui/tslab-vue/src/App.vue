@@ -42,11 +42,7 @@ function conversionFn(v: string) {
 }
 // End helpers
 
-let gstest = new GSTestClass("FOO");
 
-console.log("Original gstest: ", gstest)
-
-GsonClass.traverseObject2(gstest);
 //let gstestFromJSON = GSTestClass.fromJSON(gstestString)
 //console.log("Reconstituted GSTEST: ", gstestFromJSON)
 
@@ -110,7 +106,7 @@ function createTestRules() {
   let rule2 = prRef.value.getRule("rule-2");
   let rule3 = prRef.value.getRule("rule-3");
   let mainGrid = prRef.value.getRule("MAIN");
-  if (rule1 && rule2 && rule3 && mainGrid) {    
+  if (rule1 && rule2 && rule3 && mainGrid) {
     rule1.priority = 10;
     rule2.priority = 10;
     rule1.setLocation(1, 1, 1);
@@ -128,9 +124,9 @@ function createTestRules() {
     rule3.setLocation(4, 0, 1);
     rule3.setLocation(0, 4, 1);
     rule3.setLocation(4, 4, 1);
-    rule2.successorOffset = [-1, -1];    
+    rule2.successorOffset = [-1, -1];
     rule1.successor = rule2;
-    rule2.successor = rule3;    
+    rule2.successor = rule3;
     mainGrid.setLocation(30, 20, 1);
 
   }
@@ -221,12 +217,19 @@ let objStr = ""
 //PixelReactor.initClass();
 //console.log("transformToPriorityOffsetMap: ", PixelReactor.transformToPriorityOffsetMap)
 
-const mainGridRef = ref<InstanceType<typeof ParametricGridVC>>()
+const mainGridRef = ref<InstanceType<typeof ParametricGridVC>>();
 
-const genObjJson = `{\n\t"__gsonClassName" : "GSTestClass",\n\t"__useJSONForKeys" : [\t"_innerObjects"],\n\t"__excludeKeys" : [],\n\t"_id" : "FOO",\n\t"_innerObjects" : [{\n\t\t"__gsonClassName" : "GSTestClass",\n\t\t"__useJSONForKeys" : [\t"_innerObjects"],\n\t\t"__excludeKeys" : [],\n\t\t"_id" : "FOO-0",\n\t\t"_innerObjects" : [],\n\t\t"singleGSTestObj" : {\n\t\t\t"__gsonClassName" : "GsonClass",\n\t\t\t"__useJSONForKeys" : [],\n\t\t\t"__excludeKeys" : [],\n\t\t\t"fooFlag" : "true",\n\t\t\t"s" : "I'm a FOO!",\n\t\t\t"myMap" : {\n\t\t\t\t"Foo" : "7"\n\t\t\t}\n\n\t\t}\n,\n\t\t"myMap" : {\n\t\t\t"Foo" : "1"\n\t\t}\n,\n\t\t"testSet" : [\t"fee",\t"fii",\t"foo",\t"fum"]\n\t}\n,{\n\t\t"__gsonClassName" : "GSTestClass",\n\t\t"__useJSONForKeys" : [\t"_innerObjects"],\n\t\t"__excludeKeys" : [],\n\t\t"_id" : "FOO-1",\n\t\t"_innerObjects" : [],\n\t\t"singleGSTestObj" : {\n\t\t\t"__gsonClassName" : "GsonClass",\n\t\t\t"__useJSONForKeys" : [],\n\t\t\t"__excludeKeys" : [],\n\t\t\t"fooFlag" : "true",\n\t\t\t"s" : "I'm a FOO!",\n\t\t\t"myMap" : {\n\t\t\t\t"Foo" : "7"\n\t\t\t}\n\n\t\t}\n,\n\t\t"myMap" : {\n\t\t\t"Foo" : "1"\n\t\t}\n,\n\t\t"testSet" : [\t"fee",\t"fii",\t"foo",\t"fum"]\n\t}\n,{\n\t\t"__gsonClassName" : "GSTestClass",\n\t\t"__useJSONForKeys" : [\t"_innerObjects"],\n\t\t"__excludeKeys" : [],\n\t\t"_id" : "FOO-2",\n\t\t"_innerObjects" : [],\n\t\t"singleGSTestObj" : {\n\t\t\t"__gsonClassName" : "GsonClass",\n\t\t\t"__useJSONForKeys" : [],\n\t\t\t"__excludeKeys" : [],\n\t\t\t"fooFlag" : "true",\n\t\t\t"s" : "I'm a FOO!",\n\t\t\t"myMap" : {\n\t\t\t\t"Foo" : "7"\n\t\t\t}\n\n\t\t}\n,\n\t\t"myMap" : {\n\t\t\t"Foo" : "1"\n\t\t}\n,\n\t\t"testSet" : [\t"fee",\t"fii",\t"foo",\t"fum"]\n\t}\n,{\n\t\t"__gsonClassName" : "GSTestClass",\n\t\t"__useJSONForKeys" : [\t"_innerObjects"],\n\t\t"__excludeKeys" : [],\n\t\t"_id" : "FOO-3",\n\t\t"_innerObjects" : [],\n\t\t"singleGSTestObj" : {\n\t\t\t"__gsonClassName" : "GsonClass",\n\t\t\t"__useJSONForKeys" : [],\n\t\t\t"__excludeKeys" : [],\n\t\t\t"fooFlag" : "true",\n\t\t\t"s" : "I'm a FOO!",\n\t\t\t"myMap" : {\n\t\t\t\t"Foo" : "7"\n\t\t\t}\n\n\t\t}\n,\n\t\t"myMap" : {\n\t\t\t"Foo" : "1"\n\t\t}\n,\n\t\t"testSet" : [\t"fee",\t"fii",\t"foo",\t"fum"]\n\t}\n,{\n\t\t"__gsonClassName" : "GSTestClass",\n\t\t"__useJSONForKeys" : [\t"_innerObjects"],\n\t\t"__excludeKeys" : [],\n\t\t"_id" : "FOO-4",\n\t\t"_innerObjects" : [],\n\t\t"singleGSTestObj" : {\n\t\t\t"__gsonClassName" : "GsonClass",\n\t\t\t"__useJSONForKeys" : [],\n\t\t\t"__excludeKeys" : [],\n\t\t\t"fooFlag" : "true",\n\t\t\t"s" : "I'm a FOO!",\n\t\t\t"myMap" : {\n\t\t\t\t"Foo" : "7"\n\t\t\t}\n\n\t\t}\n,\n\t\t"myMap" : {\n\t\t\t"Foo" : "1"\n\t\t}\n,\n\t\t"testSet" : [\t"fee",\t"fii",\t"foo",\t"fum"]\n\t}\n],\n\t"singleGSTestObj" : {\n\t\t"__gsonClassName" : "GsonClass",\n\t\t"__useJSONForKeys" : [],\n\t\t"__excludeKeys" : [],\n\t\t"fooFlag" : "true",\n\t\t"s" : "I'm a FOO!",\n\t\t"myMap" : {\n\t\t\t"Foo" : "7"\n\t\t}\n\n\t}\n,\n\t"myMap" : {\n\t\t"Foo" : "1"\n\t}\n,\n\t"testSet" : [\t"fee",\t"fii",\t"foo",\t"fum"]\n}\n`
+let gstest = new GSTestClass("FOO");
+
+console.log("Original gstest: ", gstest);
+
+const genObjJson = GsonClass.traverseObject3(gstest);
+
+
+//const genObjJson = `{\n\t"__gsonClassName" : "GSTestClass",\n\t"__useJSONForKeys" : [\t"_innerObjects"],\n\t"__excludeKeys" : [],\n\t"_id" : "FOO",\n\t"_innerObjects" : [{\n\t\t"__gsonClassName" : "GSTestClass",\n\t\t"__useJSONForKeys" : [\t"_innerObjects"],\n\t\t"__excludeKeys" : [],\n\t\t"_id" : "FOO-0",\n\t\t"_innerObjects" : [],\n\t\t"singleGSTestObj" : {\n\t\t\t"__gsonClassName" : "GsonClass",\n\t\t\t"__useJSONForKeys" : [],\n\t\t\t"__excludeKeys" : [],\n\t\t\t"fooFlag" : "true",\n\t\t\t"s" : "I'm a FOO!",\n\t\t\t"myMap" : {\n\t\t\t\t"Foo" : "7"\n\t\t\t}\n\n\t\t}\n,\n\t\t"myMap" : {\n\t\t\t"Foo" : "1"\n\t\t}\n,\n\t\t"testSet" : [\t"fee",\t"fii",\t"foo",\t"fum"]\n\t}\n,{\n\t\t"__gsonClassName" : "GSTestClass",\n\t\t"__useJSONForKeys" : [\t"_innerObjects"],\n\t\t"__excludeKeys" : [],\n\t\t"_id" : "FOO-1",\n\t\t"_innerObjects" : [],\n\t\t"singleGSTestObj" : {\n\t\t\t"__gsonClassName" : "GsonClass",\n\t\t\t"__useJSONForKeys" : [],\n\t\t\t"__excludeKeys" : [],\n\t\t\t"fooFlag" : "true",\n\t\t\t"s" : "I'm a FOO!",\n\t\t\t"myMap" : {\n\t\t\t\t"Foo" : "7"\n\t\t\t}\n\n\t\t}\n,\n\t\t"myMap" : {\n\t\t\t"Foo" : "1"\n\t\t}\n,\n\t\t"testSet" : [\t"fee",\t"fii",\t"foo",\t"fum"]\n\t}\n,{\n\t\t"__gsonClassName" : "GSTestClass",\n\t\t"__useJSONForKeys" : [\t"_innerObjects"],\n\t\t"__excludeKeys" : [],\n\t\t"_id" : "FOO-2",\n\t\t"_innerObjects" : [],\n\t\t"singleGSTestObj" : {\n\t\t\t"__gsonClassName" : "GsonClass",\n\t\t\t"__useJSONForKeys" : [],\n\t\t\t"__excludeKeys" : [],\n\t\t\t"fooFlag" : "true",\n\t\t\t"s" : "I'm a FOO!",\n\t\t\t"myMap" : {\n\t\t\t\t"Foo" : "7"\n\t\t\t}\n\n\t\t}\n,\n\t\t"myMap" : {\n\t\t\t"Foo" : "1"\n\t\t}\n,\n\t\t"testSet" : [\t"fee",\t"fii",\t"foo",\t"fum"]\n\t}\n,{\n\t\t"__gsonClassName" : "GSTestClass",\n\t\t"__useJSONForKeys" : [\t"_innerObjects"],\n\t\t"__excludeKeys" : [],\n\t\t"_id" : "FOO-3",\n\t\t"_innerObjects" : [],\n\t\t"singleGSTestObj" : {\n\t\t\t"__gsonClassName" : "GsonClass",\n\t\t\t"__useJSONForKeys" : [],\n\t\t\t"__excludeKeys" : [],\n\t\t\t"fooFlag" : "true",\n\t\t\t"s" : "I'm a FOO!",\n\t\t\t"myMap" : {\n\t\t\t\t"Foo" : "7"\n\t\t\t}\n\n\t\t}\n,\n\t\t"myMap" : {\n\t\t\t"Foo" : "1"\n\t\t}\n,\n\t\t"testSet" : [\t"fee",\t"fii",\t"foo",\t"fum"]\n\t}\n,{\n\t\t"__gsonClassName" : "GSTestClass",\n\t\t"__useJSONForKeys" : [\t"_innerObjects"],\n\t\t"__excludeKeys" : [],\n\t\t"_id" : "FOO-4",\n\t\t"_innerObjects" : [],\n\t\t"singleGSTestObj" : {\n\t\t\t"__gsonClassName" : "GsonClass",\n\t\t\t"__useJSONForKeys" : [],\n\t\t\t"__excludeKeys" : [],\n\t\t\t"fooFlag" : "true",\n\t\t\t"s" : "I'm a FOO!",\n\t\t\t"myMap" : {\n\t\t\t\t"Foo" : "7"\n\t\t\t}\n\n\t\t}\n,\n\t\t"myMap" : {\n\t\t\t"Foo" : "1"\n\t\t}\n,\n\t\t"testSet" : [\t"fee",\t"fii",\t"foo",\t"fum"]\n\t}\n],\n\t"singleGSTestObj" : {\n\t\t"__gsonClassName" : "GsonClass",\n\t\t"__useJSONForKeys" : [],\n\t\t"__excludeKeys" : [],\n\t\t"fooFlag" : "true",\n\t\t"s" : "I'm a FOO!",\n\t\t"myMap" : {\n\t\t\t"Foo" : "7"\n\t\t}\n\n\t}\n,\n\t"myMap" : {\n\t\t"Foo" : "1"\n\t}\n,\n\t"testSet" : [\t"fee",\t"fii",\t"foo",\t"fum"]\n}\n`
 
 let restoredObj = GsonClass.makeTypedObjectFromGenericObject(JSON.parse(genObjJson));
-console.log("RESTORED OBJ: ", restoredObj)
+console.log("RESTORED OBJ 1: ", restoredObj)
 
 restoredObj = GsonClass.makeTypedObjectFromGenericObject2(JSON.parse(genObjJson));
 console.log("RESTORED OBJ 2: ", restoredObj)

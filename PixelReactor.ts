@@ -406,14 +406,14 @@ export class PixelReactor<T> {
     this._ruleGridMap.delete(id)
   }
 
-  public serialize(): string {
-    return this.serializeRules();
-  }
+  // public serialize(): string {
+  //   return this.serializeRules();
+  // }
 
-  public serializeRules() {
-    const obj = Object.fromEntries(this._ruleGridMap);
-    return JSON.stringify(obj);
-  }
+  // public serializeRules() {
+  //   const obj = Object.fromEntries(this._ruleGridMap);
+  //   return JSON.stringify(obj);
+  // }
 
   public toJSON(): Object {
     //console.log("PR.toJSON called")
@@ -421,7 +421,7 @@ export class PixelReactor<T> {
       foo: "bar",
       pixelReactorString: "PR Text",
       //ruleGridMap: Object.fromEntries(this._ruleGridMap),
-      ruleGridMap: this._ruleGridMap
+      ruleGridMap: (this._ruleGridMap).toJSON()
       //mainGrid: this._ruleGridMap.get("MAIN")
     }
   }
