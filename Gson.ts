@@ -110,6 +110,14 @@ class GsonClass {
     console.log(this.__logBuffer);
   }
 
+  public static objectifyMap(m: Map<any, any>) {
+    let mapObj = Object();
+    m.forEach((value: any, key: any) => {
+      mapObj[key] = value;      
+    });
+    return mapObj;
+  }
+
   public get useJSONForKeys() {
     return this.__useJSONForKeys;
   }
