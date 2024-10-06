@@ -498,6 +498,8 @@ export class ParametricGrid<T> extends GsonClass {
   private _height: number;
   private _grid: T[][] = [];
 
+  public testSet: Set<number>;
+
   private _vueComponent: any;
 
 
@@ -511,6 +513,7 @@ export class ParametricGrid<T> extends GsonClass {
 
   constructor(width: number, height: number, initialValue: T, id: string, grid?: T[][]) {
     super();
+    this.testSet = new Set<number>([1,2,4,5,4,3,2,2,1]);
     this.__useJSONForKeys.add("_grid")
     this.__excludeKeys.add("_vueComponent")
     this._id = id;
@@ -671,7 +674,7 @@ export class ParametricGrid<T> extends GsonClass {
   // }
 
   public toJSON(): any {
-    return {
+    return {      
       width: this._width,
       height: this._height,
       grid: this._grid,
@@ -747,6 +750,7 @@ export class RuleGrid<T> extends ParametricGrid<T> {
 
   public toJSON(): Object {
     return {
+      testSet: GsonClass.objectifySet(this.testSet),
       width: this.width,
       height: this.height,
       grid: this.grid,

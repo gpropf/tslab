@@ -118,6 +118,11 @@ class GsonClass {
     return mapObj;
   }
 
+  public static objectifySet(s: Set<any>) {
+    let setArr = Array.from(s);
+    return setArr;
+  }
+
   public get useJSONForKeys() {
     return this.__useJSONForKeys;
   }
