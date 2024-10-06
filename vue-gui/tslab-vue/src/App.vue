@@ -12,12 +12,10 @@ import { type ColorInfo } from './components/ParametricGridVC.vue';
 import { createApp } from 'vue';
 
 import { provide, ref } from 'vue'
-//import {  } from 'vue'
+
 import LabelledInput from './components/LabelledInput.vue';
 import ParametricGridVC from './components/ParametricGridVC.vue';
 import { Gson, Rocket, GsonClass, GSTestClass, type TraversalFlags } from "../../../Gson"
-//import test from 'node:test';
-
 
 
 const rules = useRulesStore();
@@ -31,8 +29,9 @@ numberToColorMap.set(3, "#FF00FF");
 numberToColorMap.set(4, "#AA00AA");
 numberToColorMap.set(5, "#00AAFF");
 const numColors = numberToColorMap.size;
-let rgm: Map<string, string> = new Map<string, string>();
+//let rgm: Map<string, string> = new Map<string, string>();
 
+// Some helper functions for the grids.
 function vizFn(cellval: number) {
   let hexColor = numberToColorMap.get(cellval % numColors);
   let colorInfo: ColorInfo = { fillRGB: `${hexColor}`, strokeRGB: "#BBAABB" }; return colorInfo;
@@ -41,21 +40,17 @@ function vizFn(cellval: number) {
 function conversionFn(v: string) {
   return parseInt(v);
 }
+// End helpers
 
 
 
 let gstest = new GSTestClass("FOO");
-//gstest.useJSONForKeys.set()
+
 console.log("Original gstest: ", gstest)
-//let gstestString = JSON.stringify(gstest);
-//console.log("GSTEST: ", gstestString)
+
 GsonClass.traverseObject(gstest);
 //let gstestFromJSON = GSTestClass.fromJSON(gstestString)
 //console.log("Reconstituted GSTEST: ", gstestFromJSON)
-
-
-
-
 
 const newRuleId = ref("rule-1")
 const onClickValue = ref("1")
@@ -67,15 +62,12 @@ const pgwidth = ref("3");
 const pgheight = ref("3")
 const screenWidth = ref(600);
 const screenHeight = ref(400);
-//const fromRule = ref("");
-//const toRule = ref("");
 
+// Create main PR and load it into the store.
 let pixelReactor = new PixelReactor<number>();
-
-
 setPixelReactor(pixelReactor);
-
 let prRef = getPixelReactor();
+
 
 let mouseLocation = getMouseLocation();
 
@@ -85,10 +77,14 @@ function formatVector(v: Vec2d) {
 
 let gson = new Gson()
 
-let prMatches: Map<string, [string, string][]> = new Map<string, [string, string][]>()
-let pattternHistograms = new Map<string, Map<number, Vec2d[]>>()
+// let prMatches: Map<string, [string, string][]> = new Map<string, [string, string][]>()
+// let pattternHistograms = new Map<string, Map<number, Vec2d[]>>()
 
-
+/**
+ * Creates a new rule grid and fails if you try to reuse an id.
+ * @param inwidth 
+ * @param inheight 
+ */
 function createRuleGrid(inwidth: string, inheight: string) {
   let existingRule = prRef.value.getRule(newRuleId.value);
   if (existingRule != undefined) {
@@ -104,10 +100,10 @@ function createRuleGrid(inwidth: string, inheight: string) {
 
 }
 
-function checkPixels() {
-  prRef.value.iterate();
-}
-
+/**
+ * createTestRules: Creates the rules from the C++ implementation
+ * 
+ */
 function createTestRules() {
   createRuleGrid("3", "3");
   createRuleGrid("3", "3");
@@ -116,8 +112,7 @@ function createTestRules() {
   let rule2 = prRef.value.getRule("rule-2");
   let rule3 = prRef.value.getRule("rule-3");
   let mainGrid = prRef.value.getRule("MAIN");
-  if (rule1 && rule2 && rule3 && mainGrid) {
-    //rule1.setLocation(0, 1, 1);
+  if (rule1 && rule2 && rule3 && mainGrid) {    
     rule1.priority = 10;
     rule2.priority = 10;
     rule1.setLocation(1, 1, 1);
@@ -135,21 +130,17 @@ function createTestRules() {
     rule3.setLocation(4, 0, 1);
     rule3.setLocation(0, 4, 1);
     rule3.setLocation(4, 4, 1);
-    rule2.successorOffset = [-1, -1];
-    //rule1.setLocation(2, 1, 1);
+    rule2.successorOffset = [-1, -1];    
     rule1.successor = rule2;
-    rule2.successor = rule3;
-    // mainGrid.setLocation(10, 12, 1);
-    // mainGrid.setLocation(11, 12, 1);
-    // mainGrid.setLocation(12, 12, 1);
-    // mainGrid.setLocation(30, 15, 1);
-    // mainGrid.setLocation(30, 16, 1);
-    // mainGrid.setLocation(30, 17, 1);
+    rule2.successor = rule3;    
     mainGrid.setLocation(30, 20, 1);
 
   }
 }
 
+/**
+ * Creates the rules from the original ClojureScript app.
+ */
 function createTestRules2() {
   createRuleGrid("3", "3");
   createRuleGrid("3", "3");
@@ -219,15 +210,15 @@ function createTestRules2() {
   }
 }
 
-let traversalFlags: TraversalFlags = {
-  isValue: false,
-  printTypes: true
-}
+// let traversalFlags: TraversalFlags = {
+//   isValue: false,
+//   printTypes: true
+// }
 let objStr = ""
-let testMap = new Map();
-testMap.set("Foo", 7);
-testMap.set("Bar", 8);
-testMap.set("Baz", 10);
+// let testMap = new Map();
+// testMap.set("Foo", 7);
+// testMap.set("Bar", 8);
+// testMap.set("Baz", 10);
 
 //PixelReactor.initClass();
 //console.log("transformToPriorityOffsetMap: ", PixelReactor.transformToPriorityOffsetMap)
