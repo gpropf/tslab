@@ -83,11 +83,6 @@ function formatVector(v: Vec2d) {
   return `< ${v[0]},${v[1]} >`
 }
 
-function serializeWorkspace() {
-  let workspaceString = prRef.value.serialize();
-  console.log(workspaceString)
-}
-
 let gson = new Gson()
 
 let prMatches: Map<string, [string, string][]> = new Map<string, [string, string][]>()
@@ -110,7 +105,7 @@ function createRuleGrid(inwidth: string, inheight: string) {
 }
 
 function checkPixels() {
-  prRef.value.iterate();  
+  prRef.value.iterate();
 }
 
 function createTestRules() {
@@ -225,7 +220,7 @@ function createTestRules2() {
 }
 
 let traversalFlags: TraversalFlags = {
-  isValue: false, 
+  isValue: false,
   printTypes: true
 }
 let objStr = ""
@@ -263,19 +258,27 @@ console.log("RESTORED OBJ: ", restoredObj)
     <div> Mouse Location: {{ formatVector(mouseLocation) }}</div>
     <button @click="createRuleGrid(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
-    <button @click="serializeWorkspace()">Test Serialization</button>
-    <button @click="createTestRules()">Create Test Rules</button>
-    <button @click="createTestRules2()">Create Test Rules 2</button>
-    <!-- <button @click="checkPixels(); mainGridRef?.$forceUpdate()">Build Match Map</button> -->
-    <button @click="prRef.iterate()">Build Match Map</button>
+
+    <button @click="prRef.iterate()">Single Step</button>
     <button @click="prRef.toggleRun()">Toggle Run</button>
-    <button @click="console.log('PR Ids: ', prRef.getAllRuleIds())">Print PR rule IDs</button>
-    <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(prRef)))">Gson Serialize</button>
-    <button @click="console.log('stringify PR: ', JSON.stringify(prRef))">stringify PR</button>
-    <button @click="GsonClass.clear(); objStr =  GsonClass.traverseObject3(gstest, ''); console.log(objStr)">traverseObject 3</button>
-    <button @click="GsonClass.clear(); objStr =  GsonClass.traverseObject2(gstest, '', false); console.log(objStr)">traverseObject 2</button>
-    <button @click="objStr =  JSON.stringify(gstest); console.log(objStr)">JSON.stringify</button>
     <button @click="console.log('Clearing Main Grid'); prRef.clearMainGrid()">Clear Main Grid</button>
+    <div>
+      <button @click="createTestRules()">Create Test Rules</button>
+      <button @click="createTestRules2()">Create Test Rules 2</button>
+    </div>
+
+    <div>
+      <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(prRef)))">Gson Serialize</button>
+      <button @click="console.log('stringify PR: ', JSON.stringify(prRef))">stringify PR</button>
+      <button
+        @click="GsonClass.clear(); objStr = GsonClass.traverseObject3(gstest, ''); console.log(objStr)">traverseObject
+        3</button>
+      <button
+        @click="GsonClass.clear(); objStr = GsonClass.traverseObject2(gstest, '', false); console.log(objStr)">traverseObject
+        2</button>
+      <button @click="objStr = JSON.stringify(gstest); console.log(objStr)">JSON.stringify</button>
+    </div>
+
 
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
       placeholder="Enter Id string for new rule" componentName="New Rule Id" size="20" />
