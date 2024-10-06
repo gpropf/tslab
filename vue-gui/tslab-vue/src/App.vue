@@ -228,6 +228,9 @@ const genObjJson = `{\n\t"__gsonClassName" : "GSTestClass",\n\t"__useJSONForKeys
 let restoredObj = GsonClass.makeTypedObjectFromGenericObject(JSON.parse(genObjJson));
 console.log("RESTORED OBJ: ", restoredObj)
 
+restoredObj = GsonClass.makeTypedObjectFromGenericObject2(JSON.parse(genObjJson));
+console.log("RESTORED OBJ 2: ", restoredObj)
+
 </script>
 
 <template>

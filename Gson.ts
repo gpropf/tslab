@@ -464,6 +464,55 @@ class GsonClass {
 
   // }
 
+  public static makeTypedObjectFromGenericObject2(genObj: any) {
+    let objKeys = Object.keys(genObj)
+    if (objKeys.find(keyName => keyName == "__gsonClassName")) {
+      console.log("Object is GsonClass!!!!!!!!!!!!!!!!!!!!!!!!")
+      let ObjClass = genObj["__gsonClassName"];
+      let specificObject = eval(`new ${ObjClass}()`);
+
+      let objKeys = Object.keys(genObj)
+      objKeys.forEach(key => {
+
+        let keyObj = genObj[key];
+
+        let keyObjType = GsonClass.distinguishType(keyObj);
+
+        
+            switch (keyObjType) {
+              case GsonTypes.BOOLEAN:
+                return GsonTypes.BOOLEAN;
+              case GsonTypes.NUMBER:
+                return GsonTypes.NUMBER;
+              case GsonTypes.STRING:
+                return GsonTypes.STRING;
+              case GsonTypes.SET:
+                return GsonTypes.SET;
+              case GsonTypes.ARRAY:
+                return GsonTypes.ARRAY;
+              case GsonTypes.MAP:
+                return GsonTypes.MAP;
+              case GsonTypes.SYMBOL:
+                return GsonTypes.SYMBOL;
+              default:
+                return GsonTypes.OBJECT;
+            }
+          });
+          return specificObject;
+        }
+        return null;
+      }
+        
+      
+        
+
+
+
+
+
+
+  
+
   public static makeTypedObjectFromGenericObject(genObj: any) {
     let objKeys = Object.keys(genObj)
     if (objKeys.find(keyName => keyName == "__gsonClassName")) {
