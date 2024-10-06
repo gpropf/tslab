@@ -65,6 +65,20 @@ export interface TraversalFlags {
   printTypes: boolean
 }
 
+enum GsonTypes {
+  STRING = 1,
+  NUMBER = 2,
+  BOOLEAN = 3,
+  NULL = 4,
+  UNDEFINED = 5,
+  UNKNOWN = 6,
+  SYMBOL = 7,
+  ARRAY = 11,
+  SET = 12,
+  MAP = 13,
+  OBJECT = 14
+}
+
 class GsonClass {
   protected __gsonClassName = "GsonClass"
   protected __useJSONForKeys = new Set()
@@ -104,6 +118,38 @@ class GsonClass {
   }
 
 
+  public static distinguishType(obj: any) {
+    if (obj === null) {
+      return GsonTypes.NULL;
+    }
+    else if (obj === undefined) {
+      return GsonTypes.UNDEFINED;
+    }
+    else if (obj.constructor === undefined) {
+      return GsonTypes.UNKNOWN;
+    }
+    else {
+      let objType = "";
+      switch (obj.constructor) {
+        case Boolean:
+          return GsonTypes.BOOLEAN;
+        case Number:
+          return GsonTypes.NUMBER;
+        case String:
+          return GsonTypes.STRING;
+        case Set:
+          return GsonTypes.SET;
+        case Array:
+          return GsonTypes.ARRAY;
+        case Map:
+          return GsonTypes.MAP;
+        case Symbol:
+          return GsonTypes.SYMBOL;
+        default:
+          return GsonTypes.OBJECT;
+      }
+    }
+  }
 
   public static traverseObject3(obj: any, tabs: string = "", traversalFlags: TraversalFlags = { isValue: false, printTypes: true }): string {
     let traversalFlagsModified: TraversalFlags = {
