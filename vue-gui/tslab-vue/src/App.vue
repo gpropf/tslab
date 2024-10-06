@@ -42,13 +42,11 @@ function conversionFn(v: string) {
 }
 // End helpers
 
-
-
 let gstest = new GSTestClass("FOO");
 
 console.log("Original gstest: ", gstest)
 
-GsonClass.traverseObject(gstest);
+GsonClass.traverseObject2(gstest);
 //let gstestFromJSON = GSTestClass.fromJSON(gstestString)
 //console.log("Reconstituted GSTEST: ", gstestFromJSON)
 
