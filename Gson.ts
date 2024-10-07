@@ -496,7 +496,17 @@ class GSTestClass extends GsonClass {
     let jsonObj: any = super.toJSON();
     jsonObj['_innerObjects'] = this._innerObjects;
     jsonObj.id = this._id;
-    jsonObj.myMap = this.myMap;
+    jsonObj.myMap = Object();
+    jsonObj.foo = this.myMap;
+    
+
+    for (const [key, value] of this.myMap.entries()) {
+      console.log(key, value);
+      jsonObj.myMap[key] = value;
+    }
+    // (this.myMap).forEach((val, key) => {
+    //   jsonObj.myMap.set(key, val);
+    // })
     return jsonObj;
   }
 
