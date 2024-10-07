@@ -504,6 +504,8 @@ class GSTestClass extends GsonClass {
       console.log(key, value);
       jsonObj.myMap[key] = value;
     }
+
+    jsonObj.bar = GsonClass.objectifyMap(this.myMap);
     // (this.myMap).forEach((val, key) => {
     //   jsonObj.myMap.set(key, val);
     // })
