@@ -118,7 +118,17 @@ class GsonClass {
     return mapObj;
   }
 
-  public static objectifySet(s: Set<any>) {
+  public static mapifyObject(m: Object) {
+    let map = new Map<any,any>();
+    let keys = Object.keys(m)
+    keys.forEach((key) => {
+      map.set(key, m[key]);
+    });
+    return map;
+  }
+
+
+  public static setToArray(s: Set<any>) {
     let setArr = Array.from(s);
     return setArr;
   }
@@ -130,7 +140,107 @@ class GsonClass {
   public get excludeKeys() {
     return this.__excludeKeys;
   }
+}
 
+
+class GsonFoo extends GsonClass {
+  public s: string;
+
+  public fooSet: Set<number>;
+  public fooFlag: boolean;
+  public myMap: Map<string, number>;
+
+  constructor(numThings: number) {
+    super();
+    this.fooSet = new Set<number>();
+    this.fooFlag = true;
+    this.s = "I'm a FOO!"
+    this.myMap = new Map();
+    this.myMap.set("Foo", 7);
+    //this.myMap.set("mapFlag", true);
+    this.fooSet.add(23);
+    this.fooSet.add(27);
+    this.fooSet.add(29);
+    this.fooSet.add(23);
+  }
+
+  toJSON() {
+    let jsonObj: any = super.toJSON();
+    jsonObj["fooSet"] = GsonClass.setToArray(this.fooSet);
+    jsonObj["s"] = this.s;
+    jsonObj["myMap"] = GsonClass.objectifyMap(this.myMap);
+    jsonObj["GsonFootoJSONWorks"] = true;
+    return jsonObj;
+  }
+}
+
+
+class GSTestClass extends GsonClass {
+
+  private _innerObjects: GSTestClass[];
+
+  public singleGSFooObj: GsonFoo;
+  public _id: string;
+  public myMap: Map<string, number>;
+
+  public testSet: Set<string>;
+
+  public get id() {
+    return this._id;
+  }
+
+  public set id(id) {
+    this._id = id;
+  }
+
+  constructor(id: string = "", level: number = 0) {
+    super();
+    this._id = id;
+    this._innerObjects = []
+    this.__gsonClassName = "GSTestClass"
+    this.singleGSFooObj = new GsonFoo(5)
+    this.myMap = new Map();
+    this.testSet = new Set(["fee", "fii", "foo", "fum", "fee"]);
+    this.myMap.set("Foo", 1);
+    this.__useJSONForKeys.add("_innerObjects")
+    if (level < 1) {
+      for (let i = 0; i < 5; i++) {
+        let obj = new GSTestClass(`${id}-${i}`, ++level);
+        this._innerObjects.push(obj)
+      }
+    }
+
+
+  }
+
+  public toJSON() {
+    let jsonObj: any = super.toJSON();
+    jsonObj['_innerObjects'] = this._innerObjects;
+    jsonObj.id = this._id;
+    jsonObj.myMap = Object();
+    jsonObj.foo = this.myMap;
+    jsonObj.singleGSFooObj = this.singleGSFooObj;
+
+    for (const [key, value] of this.myMap.entries()) {
+      console.log(key, value);
+      jsonObj.myMap[key] = value;
+    }
+
+    jsonObj.bar = GsonClass.objectifyMap(this.myMap);
+    // (this.myMap).forEach((val, key) => {
+    //   jsonObj.myMap.set(key, val);
+    // })
+    return jsonObj;
+  }
+
+
+
+}
+
+export { Rocket, JsonClass, Gson, GsonClass, GSTestClass }
+//console.log(`Is the rocket empty? ${(rocket as any).isEmpty()}`)
+
+/*
 
   public static distinguishType(obj: any) {
     if (obj === null) {
@@ -435,87 +545,7 @@ class GsonClass {
 }
 
 
-class GsonFoo extends GsonClass {
-  public s: string;
-
-  public fooSet: Set<number>;
-  public fooFlag: boolean;
-  public myMap: Map<string, number>;
-
-  constructor(numThings: number) {
-    super();
-    this.fooSet = new Set<number>();
-    this.fooFlag = true;
-    this.s = "I'm a FOO!"
-    this.myMap = new Map();
-    this.myMap.set("Foo", 7);
-    //this.myMap.set("mapFlag", true);
-  }
-}
-
-
-class GSTestClass extends GsonClass {
-
-  private _innerObjects: GSTestClass[];
-
-  public singleGSTestObj: GsonFoo;
-  public _id: string;
-  public myMap: Map<string, number>;
-
-  public testSet: Set<string>;
-
-  public get id() {
-    return this._id;
-  }
-
-  public set id(id) {
-    this._id = id;
-  }
-
-  constructor(id: string = "", level: number = 0) {
-    super();
-    this._id = id;
-    this._innerObjects = []
-    this.__gsonClassName = "GSTestClass"
-    this.singleGSTestObj = new GsonFoo(5)
-    this.myMap = new Map();
-    this.testSet = new Set(["fee", "fii", "foo", "fum", "fee"]);
-    this.myMap.set("Foo", 1);
-    this.__useJSONForKeys.add("_innerObjects")
-    if (level < 1) {
-      for (let i = 0; i < 5; i++) {
-        let obj = new GSTestClass(`${id}-${i}`, ++level);
-        this._innerObjects.push(obj)
-      }
-    }
-
-
-  }
-
-  public toJSON() {
-    let jsonObj: any = super.toJSON();
-    jsonObj['_innerObjects'] = this._innerObjects;
-    jsonObj.id = this._id;
-    jsonObj.myMap = Object();
-    jsonObj.foo = this.myMap;
-    
-
-    for (const [key, value] of this.myMap.entries()) {
-      console.log(key, value);
-      jsonObj.myMap[key] = value;
-    }
-
-    jsonObj.bar = GsonClass.objectifyMap(this.myMap);
-    // (this.myMap).forEach((val, key) => {
-    //   jsonObj.myMap.set(key, val);
-    // })
-    return jsonObj;
-  }
 
 
 
-}
-
-export { Rocket, JsonClass, Gson, GsonClass, GSTestClass }
-//console.log(`Is the rocket empty? ${(rocket as any).isEmpty()}`)
-
+*/

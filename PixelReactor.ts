@@ -750,7 +750,7 @@ export class RuleGrid<T> extends ParametricGrid<T> {
 
   public toJSON(): Object {
     return {
-      testSet: GsonClass.objectifySet(this.testSet),
+      testSet: GsonClass.setToArray(this.testSet),
       width: this.width,
       height: this.height,
       grid: this.grid,
