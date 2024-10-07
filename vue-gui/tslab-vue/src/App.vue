@@ -239,15 +239,18 @@ let revivedObj = JSON.parse(genObjJson, (key, value, context) => {
       return GsonClass.mapifyObject(value);
       break;
     case "singleGSFooObj":
-      if (context && context.source) {
-        let revivedGSFoo = JSON.parse(context.source, (subkey, subvalue, subcontext) => {
-          if (subkey === "fooSet") {
-            let fooSet = new Set(subvalue);
-            return fooSet;
-          }
-          return subvalue;
-        });
-        return revivedGSFoo;
+      if (context) {
+        console.log("CONTEXT EXISTS!: ", context)
+        if (context.source) {
+          let revivedGSFoo = JSON.parse(context.source, (subkey, subvalue, subcontext) => {
+            if (subkey === "fooSet") {
+              let fooSet = new Set(subvalue);
+              return fooSet;
+            }
+            return subvalue;
+          });
+          return revivedGSFoo;
+        }
       }
       return value;
     default:
