@@ -95,6 +95,22 @@ export class PixelReactor<T> {
     return this._updateStacks;
   }
 
+  private _updateView: boolean = true;
+
+  public set updateView(b: boolean) {
+    this._updateView = b;
+    let mainGrid = this.getRule("MAIN");
+    if (mainGrid) mainGrid.updateView = b;
+  }
+
+  public get updateView(): boolean {
+    return this._updateView;
+  }
+
+  public toggleView() {
+    this.updateView = !this.updateView;
+  }
+
   private _running: boolean = false;
 
   private _runMethodId: any = 0;
@@ -498,6 +514,19 @@ export class ParametricGrid<T> extends GsonClass {
   private _height: number;
   private _grid: T[][] = [];
 
+  private _updateView: boolean = true;
+
+  public set updateView(b: boolean) {
+    if (this.updateView == false && this._vueComponent) {
+      this._vueComponent.$forceUpdate();
+    }
+    this._updateView = b;
+  }
+
+  public get updateView(): boolean {
+    return this._updateView;
+  }
+
   public testSet: Set<number>;
 
   private _vueComponent: any;
@@ -619,7 +648,7 @@ export class ParametricGrid<T> extends GsonClass {
     if (this._grid[y][x] == v) return;
     this._grid[y][x] = v;
     this._newPixels.push([x, y, v]);
-    if (this._vueComponent) this._vueComponent.$forceUpdate();
+    if (this._vueComponent && this.updateView) this._vueComponent.$forceUpdate();
     //console.log("Location: ", x, ":", y)
     //console.log("VC: ", this._vueComponent);
   }

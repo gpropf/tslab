@@ -309,6 +309,7 @@ console.log("bigObj: ", bigObj)
     <button @click="prRef.iterate()">Single Step</button>
     <button @click="prRef.toggleRun()">Toggle Run</button>
     <button @click="console.log('Clearing Main Grid'); prRef.clearMainGrid()">Clear Main Grid</button>
+    <button @click="console.log('Toggling view updates'); prRef.toggleView()">Toggle View</button>
     <div>
       <button @click="createTestRules()">Create Test Rules</button>
       <button @click="createTestRules2()">Create Test Rules 2</button>
