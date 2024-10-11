@@ -148,15 +148,15 @@ class GsonFoo extends GsonClass {
 
   public fooSet: Set<number>;
   public fooFlag: boolean;
-  public myMap: Map<string, number>;
+  public fooMap: Map<string, number>;
 
   constructor(numThings: number) {
     super();
     this.fooSet = new Set<number>();
     this.fooFlag = true;
     this.s = "I'm a FOO!"
-    this.myMap = new Map();
-    this.myMap.set("Foo", 7);
+    this.fooMap = new Map();
+    this.fooMap.set("Foo", 7);
     //this.myMap.set("mapFlag", true);
     this.fooSet.add(23);
     this.fooSet.add(27);
@@ -168,7 +168,7 @@ class GsonFoo extends GsonClass {
     let jsonObj: any = super.toJSON();
     jsonObj["fooSet"] = GsonClass.setToArray(this.fooSet);
     jsonObj["s"] = this.s;
-    jsonObj["myMap"] = GsonClass.objectifyMap(this.myMap);
+    jsonObj["myMap"] = GsonClass.objectifyMap(this.fooMap);
     jsonObj["GsonFootoJSONWorks"] = true;
     return jsonObj;
   }

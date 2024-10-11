@@ -233,7 +233,20 @@ console.log("gsonFooStr: ", gsonFooStr)
 
 let revivedObj = JSON.parse(genObjJson, (key, value, context) => {
   console.log("Revived: ", key, value);
+  if (context) {
+    console.log("Parse Root: CONTEXT EXISTS!: ", context)
+    console.log("Parse Root: key: ", key, ", value", value);
+    return value;
+  }
   switch (key) {
+    case "fooSet":
+      let fooSet = new Set(value);
+      return fooSet;
+      break;
+    case "fooMap":
+      console.log("FOUND fooMap!!!!!! ", GsonClass.mapifyObject(value))
+      return GsonClass.mapifyObject(value);
+      break;
     case "myMap":
       console.log("FOUND myMap!!!!!! ", GsonClass.mapifyObject(value))
       return GsonClass.mapifyObject(value);
@@ -241,23 +254,18 @@ let revivedObj = JSON.parse(genObjJson, (key, value, context) => {
     case "singleGSFooObj":
       if (context) {
         console.log("CONTEXT EXISTS!: ", context)
-        if (context.source) {
-          let revivedGSFoo = JSON.parse(context.source, (subkey, subvalue, subcontext) => {
-            if (subkey === "fooSet") {
-              let fooSet = new Set(subvalue);
-              return fooSet;
-            }
-            return subvalue;
-          });
-          return revivedGSFoo;
-        }
+        console.log("value: ", value)
+        return value;
       }
+      console.log("value: ", value)
       return value;
     default:
       return value;
   }
   return value;
 });
+
+console.log("revivedObj: ", revivedObj)
 
 const bigJSON = '{"gross_gdp": 12345678901234567890}';
 const bigObj = JSON.parse(bigJSON, (key, value, context) => {
