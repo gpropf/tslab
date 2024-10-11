@@ -118,7 +118,7 @@ class GsonClass {
     return mapObj;
   }
 
-  public static mapifyObject(m: Object) {
+  public static mapifyObject(m: any) {
     let map = new Map<any, any>();
     let keys = Object.keys(m)
     keys.forEach((key) => {
