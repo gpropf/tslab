@@ -752,7 +752,7 @@ export class RuleGrid<T> extends ParametricGrid<T> {
     return {
       //testSet: GsonClass.setToArray(this.testSet),
       rotatedOffsets: GsonClass.objectifyMap(this._rotatedOffsets),
-      rotatedGrids: GsonClass.objectifyMap(this.rotatedGrids),
+      //rotatedGrids: GsonClass.objectifyMap(this.rotatedGrids),
       width: this.width,
       height: this.height,
       grid: this.grid,
@@ -811,7 +811,7 @@ export class RuleGrid<T> extends ParametricGrid<T> {
     this._rotatedOffsets = new Map<string, Vec2d>();
     this.successorOffset = [0, 0];
     this.__gsonClassName = "RuleGrid";
-    this._rotatedGrids.set("r0", this as ParametricGrid<T>);
+    this._rotatedGrids.set("r0", <ParametricGrid<T>>this);
     this._rotatedGrids.set("r90", new ParametricGrid<T>(this.height, this.width, initialValue, ""));
     this._rotatedGrids.set("r180", new ParametricGrid<T>(this.width, this.height, initialValue, ""));
     this._rotatedGrids.set("r270", new ParametricGrid<T>(this.height, this.width, initialValue, ""));
