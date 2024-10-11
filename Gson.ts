@@ -113,13 +113,13 @@ class GsonClass {
   public static objectifyMap(m: Map<any, any>) {
     let mapObj = Object();
     m.forEach((value: any, key: any) => {
-      mapObj[key] = value;      
+      mapObj[key] = value;
     });
     return mapObj;
   }
 
   public static mapifyObject(m: Object) {
-    let map = new Map<any,any>();
+    let map = new Map<any, any>();
     let keys = Object.keys(m)
     keys.forEach((key) => {
       map.set(key, m[key]);
@@ -140,107 +140,6 @@ class GsonClass {
   public get excludeKeys() {
     return this.__excludeKeys;
   }
-}
-
-
-class GsonFoo extends GsonClass {
-  public s: string;
-
-  public fooSet: Set<number>;
-  public fooFlag: boolean;
-  public fooMap: Map<string, number>;
-
-  constructor(numThings: number) {
-    super();
-    this.fooSet = new Set<number>();
-    this.fooFlag = true;
-    this.s = "I'm a FOO!"
-    this.fooMap = new Map();
-    this.fooMap.set("Foo", 7);
-    //this.myMap.set("mapFlag", true);
-    this.fooSet.add(23);
-    this.fooSet.add(27);
-    this.fooSet.add(29);
-    this.fooSet.add(23);
-  }
-
-  toJSON() {
-    let jsonObj: any = super.toJSON();
-    jsonObj["fooSet"] = GsonClass.setToArray(this.fooSet);
-    jsonObj["s"] = this.s;
-    jsonObj["myMap"] = GsonClass.objectifyMap(this.fooMap);
-    jsonObj["GsonFootoJSONWorks"] = true;
-    return jsonObj;
-  }
-}
-
-
-class GSTestClass extends GsonClass {
-
-  private _innerObjects: GSTestClass[];
-
-  public singleGSFooObj: GsonFoo;
-  public _id: string;
-  public myMap: Map<string, number>;
-
-  public testSet: Set<string>;
-
-  public get id() {
-    return this._id;
-  }
-
-  public set id(id) {
-    this._id = id;
-  }
-
-  constructor(id: string = "", level: number = 0) {
-    super();
-    this._id = id;
-    this._innerObjects = []
-    this.__gsonClassName = "GSTestClass"
-    this.singleGSFooObj = new GsonFoo(5)
-    this.myMap = new Map();
-    this.testSet = new Set(["fee", "fii", "foo", "fum", "fee"]);
-    this.myMap.set("Foo", 1);
-    this.__useJSONForKeys.add("_innerObjects")
-    if (level < 1) {
-      for (let i = 0; i < 5; i++) {
-        let obj = new GSTestClass(`${id}-${i}`, ++level);
-        this._innerObjects.push(obj)
-      }
-    }
-
-
-  }
-
-  public toJSON() {
-    let jsonObj: any = super.toJSON();
-    jsonObj['_innerObjects'] = this._innerObjects;
-    jsonObj.id = this._id;
-    jsonObj.myMap = Object();
-    jsonObj.foo = this.myMap;
-    jsonObj.singleGSFooObj = this.singleGSFooObj;
-
-    for (const [key, value] of this.myMap.entries()) {
-      console.log(key, value);
-      jsonObj.myMap[key] = value;
-    }
-
-    jsonObj.bar = GsonClass.objectifyMap(this.myMap);
-    // (this.myMap).forEach((val, key) => {
-    //   jsonObj.myMap.set(key, val);
-    // })
-    return jsonObj;
-  }
-
-
-
-}
-
-export { Rocket, JsonClass, Gson, GsonClass, GSTestClass }
-//console.log(`Is the rocket empty? ${(rocket as any).isEmpty()}`)
-
-/*
 
   public static distinguishType(obj: any) {
     if (obj === null) {
@@ -274,6 +173,7 @@ export { Rocket, JsonClass, Gson, GsonClass, GSTestClass }
       }
     }
   }
+
 
   public static traverseObject3(obj: any, tabs: string = "",
     traversalFlags: TraversalFlags = { isValue: false, printTypes: true }): string {
@@ -444,7 +344,44 @@ export { Rocket, JsonClass, Gson, GsonClass, GSTestClass }
 
   }
 
-
+  public static makeTypedObjectFromGenericObject(genObj: any) {
+    let objKeys = Object.keys(genObj)
+    if (objKeys.find(keyName => keyName == "__gsonClassName")) {
+      console.log("Object is GsonClass!!!!!!!!!!!!!!!!!!!!!!!!")
+      let ObjClass = genObj["__gsonClassName"];
+  
+  
+      let specificObject = eval(`new ${ObjClass}()`);
+  
+      let objKeys = Object.keys(genObj)
+      objKeys.forEach(key => {
+  
+        let keyObj = genObj[key];
+        console.log(`${genObj.__gsonClassName} key: ${key} -- val: ${keyObj}`)
+        if (typeof (keyObj) == "object") {
+          if (keyObj.constructor === Map) {
+            console.log("Key object is Map!!!!!!!!!!!!!!!!!!!!!!!!")
+          }
+  
+          if (Array.isArray(keyObj)) {
+            console.log(`${key} is Array!!!`)
+            let arr = keyObj as Array<any>
+            let newArr: any = []
+            arr.forEach(item => {
+              newArr.push(this.makeTypedObjectFromGenericObject(item))
+            })
+            keyObj = arr;
+          }
+          else {
+            keyObj = this.makeTypedObjectFromGenericObject(keyObj);
+          }
+        }
+        specificObject[key] = keyObj;
+      })
+      return specificObject;
+    }
+    return genObj;
+  }
 
   public static makeTypedObjectFromGenericObject2(genObj: any) {
     let objKeys = Object.keys(genObj)
@@ -489,63 +426,131 @@ export { Rocket, JsonClass, Gson, GsonClass, GSTestClass }
   }
 
 
+}
 
 
+class GsonFoo extends GsonClass {
+  public s: string;
 
+  public fooSet: Set<number>;
+  public fooFlag: boolean;
+  public fooMap: Map<string, number>;
 
-
-
-
-
-
-  public static makeTypedObjectFromGenericObject(genObj: any) {
-    let objKeys = Object.keys(genObj)
-    if (objKeys.find(keyName => keyName == "__gsonClassName")) {
-      console.log("Object is GsonClass!!!!!!!!!!!!!!!!!!!!!!!!")
-      let ObjClass = genObj["__gsonClassName"];
-
-
-      let specificObject = eval(`new ${ObjClass}()`);
-
-      let objKeys = Object.keys(genObj)
-      objKeys.forEach(key => {
-
-        let keyObj = genObj[key];
-        console.log(`${genObj.__gsonClassName} key: ${key} -- val: ${keyObj}`)
-        if (typeof (keyObj) == "object") {
-          if (keyObj.constructor === Map) {
-            console.log("Key object is Map!!!!!!!!!!!!!!!!!!!!!!!!")
-          }
-
-          if (Array.isArray(keyObj)) {
-            console.log(`${key} is Array!!!`)
-            let arr = keyObj as Array<any>
-            let newArr: any = []
-            arr.forEach(item => {
-              newArr.push(this.makeTypedObjectFromGenericObject(item))
-            })
-            keyObj = arr;
-          }
-          else {
-            keyObj = this.makeTypedObjectFromGenericObject(keyObj);
-          }
-        }
-        specificObject[key] = keyObj;
-      })
-      return specificObject;
-    }
-    return genObj;
+  constructor(numThings: number) {
+    super();
+    this.fooSet = new Set<number>();
+    this.fooFlag = true;
+    this.s = "I'm a FOO!"
+    this.fooMap = new Map();
+    this.fooMap.set("Foo", 7);
+    //this.myMap.set("mapFlag", true);
+    this.fooSet.add(23);
+    this.fooSet.add(27);
+    this.fooSet.add(29);
+    this.fooSet.add(23);
   }
 
-  public static fromJSON(jsonString: string) {
-    let parsedObj = JSON.parse(jsonString)
-    let restoredObj = this.makeTypedObjectFromGenericObject(parsedObj);
-    return restoredObj;
+  toJSON() {
+    let jsonObj: any = super.toJSON();
+    jsonObj["fooSet"] = GsonClass.setToArray(this.fooSet);
+    jsonObj["s"] = this.s;
+    jsonObj["myMap"] = GsonClass.objectifyMap(this.fooMap);
+    jsonObj["GsonFootoJSONWorks"] = true;
+    return jsonObj;
   }
 }
 
 
+class GSTestClass extends GsonClass {
+
+  private _innerObjects: GSTestClass[];
+
+  public singleGSFooObj: GsonFoo;
+  public _id: string;
+  public myMap: Map<string, number>;
+
+  public testSet: Set<string>;
+
+  public get id() {
+    return this._id;
+  }
+
+  public set id(id) {
+    this._id = id;
+  }
+
+  constructor(id: string = "", level: number = 0) {
+    super();
+    this._id = id;
+    this._innerObjects = []
+    this.__gsonClassName = "GSTestClass"
+    this.singleGSFooObj = new GsonFoo(5)
+    this.myMap = new Map();
+    this.testSet = new Set(["fee", "fii", "foo", "fum", "fee"]);
+    this.myMap.set("Foo", 1);
+    this.__useJSONForKeys.add("_innerObjects")
+    if (level < 1) {
+      for (let i = 0; i < 5; i++) {
+        let obj = new GSTestClass(`${id}-${i}`, ++level);
+        this._innerObjects.push(obj)
+      }
+    }
+
+
+  }
+
+  public toJSON() {
+    let jsonObj: any = super.toJSON();
+    jsonObj['_innerObjects'] = this._innerObjects;
+    jsonObj.id = this._id;
+    jsonObj.myMap = Object();
+    jsonObj.foo = this.myMap;
+    jsonObj.singleGSFooObj = this.singleGSFooObj;
+
+    for (const [key, value] of this.myMap.entries()) {
+      console.log(key, value);
+      jsonObj.myMap[key] = value;
+    }
+
+    jsonObj.bar = GsonClass.objectifyMap(this.myMap);
+    // (this.myMap).forEach((val, key) => {
+    //   jsonObj.myMap.set(key, val);
+    // })
+    return jsonObj;
+  }
 
 
 
-*/
+}
+
+export { Rocket, JsonClass, Gson, GsonClass, GSTestClass }
+//console.log(`Is the rocket empty? ${(rocket as any).isEmpty()}`)
+
+
+
+  
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+ 
+
+
+
+
+
+

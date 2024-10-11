@@ -39,7 +39,7 @@ onMounted(() => {
 
 onUpdated(() => {
     // text content should be the same as current `count.value`
-    console.log("SVGGrid updated!")
+    //console.log("SVGGrid updated!")
 })
 
 </script>

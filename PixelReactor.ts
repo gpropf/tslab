@@ -2,7 +2,7 @@ import { main } from "ts-node/dist/bin";
 
 import { GsonClass } from "./Gson"
 
-export const DEBUG_LEVEL = 0;
+export const DEBUG_LEVEL = 2;
 
 export function dbg(message: string, debugLevel: number = 0, ...args: any) {
   if (debugLevel < DEBUG_LEVEL) {
@@ -139,7 +139,7 @@ export class PixelReactor<T> {
     console.log("ITER: ", this._iterationCount);
     this._updateStacks.clear();
     let prMatches = this.buildMatchMap();
-    dbg("prMatches: ", 0, prMatches)
+    dbg("prMatches: ", 4, prMatches)
     let pattternHistograms = this.buildPatternHistograms(prMatches);
     dbg('PH: ', 2, pattternHistograms);
     let mainGrid = this.getRule("MAIN");
@@ -366,7 +366,7 @@ export class PixelReactor<T> {
         if (match) {
           let matchMetadata = uniquePatternMetadata.get(rawGridString)
           if (matchMetadata) {
-            dbg(`For ${rawGridString} match at: ${x},${y} for transforms: ${matchMetadata}`, 0);
+            dbg(`For ${rawGridString} match at: ${x},${y} for transforms: ${matchMetadata}`, 4);
             pushVal(matchMap, rawGridString, pixel);
           }
           else {
@@ -521,6 +521,7 @@ export class ParametricGrid<T> extends GsonClass {
       this._vueComponent.$forceUpdate();
     }
     this._updateView = b;
+    dbg(`PR view is ${this.updateView}!`, 1)
   }
 
   public get updateView(): boolean {
