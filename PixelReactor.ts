@@ -91,6 +91,14 @@ export class PixelReactor<T> {
 
   private _iterationCount: number = 0;
 
+  public set iterationCount(count: number) {
+    this._iterationCount = count;
+  }
+
+  public get iterationCount() {
+    return this._iterationCount;
+  }
+
   public get updateStacks() {
     return this._updateStacks;
   }
@@ -115,6 +123,8 @@ export class PixelReactor<T> {
 
   private _runMethodId: any = 0;
 
+  private _elapsedTime: number = 0;
+
   public set running(b: boolean) {
     this._running = b;
     if (!this._running) clearInterval(this._runMethodId);
@@ -127,8 +137,14 @@ export class PixelReactor<T> {
   public toggleRun() {
     this.running = !this.running;
     if (this._running) {
-      this._runMethodId = setInterval(() => this.iterate(), 10);
+      this._runMethodId = setInterval(() => this.iterate(), 0);
+      this._elapsedTime = window.performance.now();
       //this.iterate();
+    }
+    else {
+      let duration: number = window.performance.now() - this._elapsedTime;
+      dbg(`Elapsed time: ${duration}`, 0)
+      dbg(`Total iterations: ${this.iterationCount}, ms/iter: ${duration/this.iterationCount}`, 0)
     }
     // else {
     //   clearInterval(this._runMethodId);
@@ -145,7 +161,8 @@ export class PixelReactor<T> {
     let mainGrid = this.getRule("MAIN");
     if (mainGrid) {
       if (mainGrid.newPixels.length == 0) {
-        this.running = false;
+        if (this.running) this.toggleRun();
+        else this.running = false;
         return
       }
       this._iterationCount++;

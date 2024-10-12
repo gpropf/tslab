@@ -306,8 +306,9 @@ console.log("revivedObj: ", revivedObj)
     <button @click="createRuleGrid(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
 
-    <button @click="prRef.iterate()">Single Step</button>
-    <button @click="prRef.toggleRun()">Toggle Run</button>
+    <button @click="prRef.iterate();">Single Step</button>
+    <button @click="prRef.toggleRun();">Toggle Run</button>
+    <button @click="prRef.iterationCount = 0;">Zero Iteration Counter</button>
     <button @click="console.log('Clearing Main Grid'); prRef.clearMainGrid()">Clear Main Grid</button>
     <button @click="console.log('Toggling view updates'); prRef.toggleView()">Toggle View</button>
     <div>
