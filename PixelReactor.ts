@@ -93,6 +93,12 @@ export class PixelReactor<T> {
 
   private _iterationCount: number = 0;
 
+  private _msPerIter: number = -1;
+
+  public get msPerIter() {
+    return this._msPerIter;
+  }
+
   public set iterationCount(count: number) {
     this._iterationCount = count;
   }
@@ -136,6 +142,24 @@ export class PixelReactor<T> {
     return this._running;
   }
 
+  public gatherStats() {
+    let timeoutFunc = () => {
+      if (this.msPerIter == -1) {
+        dbg("No data yet...", 0);
+        setTimeout(timeoutFunc, 300);
+      }
+      else {
+        let msPerIter = this.msPerIter;
+        this._msPerIter = -1;
+        this.iterationCount = 0;
+        return msPerIter;
+      }    
+  }
+  this.toggleRun();
+  let msPerIter = setTimeout(timeoutFunc, 300);
+  return msPerIter;
+}
+
   public toggleRun() {
     this.running = !this.running;
     if (this._running) {
@@ -147,6 +171,7 @@ export class PixelReactor<T> {
       let duration: number = window.performance.now() - this._elapsedTime;
       dbg(`Elapsed time: ${duration}`, 0)
       dbg(`Total iterations: ${this.iterationCount}, ms/iter: ${duration/this.iterationCount}`, 0)
+      this._msPerIter = duration/this.iterationCount;
     }
     // else {
     //   clearInterval(this._runMethodId);

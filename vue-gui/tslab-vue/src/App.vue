@@ -267,24 +267,7 @@ let revivedObj = JSON.parse(genObjJson, (key: any, value: any) => {
 
 console.log("revivedObj: ", revivedObj)
 
-// const bigJSON = '{"gross_gdp": 12345678901234567890}';
-// const bigObj = JSON.parse(bigJSON, (key: string, value: any, context: any) => {
-//   if (key === "gross_gdp") {
-//     // Ignore the value because it has already lost precision
-//     return BigInt(context.source);
-//   }
-//   return value;
-// });
-
-// console.log("bigObj: ", bigObj)
-
-//const genObjJson = `{\n\t"__gsonClassName" : "GSTestClass",\n\t"__useJSONForKeys" : [\t"_innerObjects"],\n\t"__excludeKeys" : [],\n\t"_id" : "FOO",\n\t"_innerObjects" : [{\n\t\t"__gsonClassName" : "GSTestClass",\n\t\t"__useJSONForKeys" : [\t"_innerObjects"],\n\t\t"__excludeKeys" : [],\n\t\t"_id" : "FOO-0",\n\t\t"_innerObjects" : [],\n\t\t"singleGSFooObj" : {\n\t\t\t"__gsonClassName" : "GsonClass",\n\t\t\t"__useJSONForKeys" : [],\n\t\t\t"__excludeKeys" : [],\n\t\t\t"fooFlag" : "true",\n\t\t\t"s" : "I'm a FOO!",\n\t\t\t"myMap" : {\n\t\t\t\t"Foo" : "7"\n\t\t\t}\n\n\t\t}\n,\n\t\t"myMap" : {\n\t\t\t"Foo" : "1"\n\t\t}\n,\n\t\t"testSet" : [\t"fee",\t"fii",\t"foo",\t"fum"]\n\t}\n,{\n\t\t"__gsonClassName" : "GSTestClass",\n\t\t"__useJSONForKeys" : [\t"_innerObjects"],\n\t\t"__excludeKeys" : [],\n\t\t"_id" : "FOO-1",\n\t\t"_innerObjects" : [],\n\t\t"singleGSFooObj" : {\n\t\t\t"__gsonClassName" : "GsonClass",\n\t\t\t"__useJSONForKeys" : [],\n\t\t\t"__excludeKeys" : [],\n\t\t\t"fooFlag" : "true",\n\t\t\t"s" : "I'm a FOO!",\n\t\t\t"myMap" : {\n\t\t\t\t"Foo" : "7"\n\t\t\t}\n\n\t\t}\n,\n\t\t"myMap" : {\n\t\t\t"Foo" : "1"\n\t\t}\n,\n\t\t"testSet" : [\t"fee",\t"fii",\t"foo",\t"fum"]\n\t}\n,{\n\t\t"__gsonClassName" : "GSTestClass",\n\t\t"__useJSONForKeys" : [\t"_innerObjects"],\n\t\t"__excludeKeys" : [],\n\t\t"_id" : "FOO-2",\n\t\t"_innerObjects" : [],\n\t\t"singleGSFooObj" : {\n\t\t\t"__gsonClassName" : "GsonClass",\n\t\t\t"__useJSONForKeys" : [],\n\t\t\t"__excludeKeys" : [],\n\t\t\t"fooFlag" : "true",\n\t\t\t"s" : "I'm a FOO!",\n\t\t\t"myMap" : {\n\t\t\t\t"Foo" : "7"\n\t\t\t}\n\n\t\t}\n,\n\t\t"myMap" : {\n\t\t\t"Foo" : "1"\n\t\t}\n,\n\t\t"testSet" : [\t"fee",\t"fii",\t"foo",\t"fum"]\n\t}\n,{\n\t\t"__gsonClassName" : "GSTestClass",\n\t\t"__useJSONForKeys" : [\t"_innerObjects"],\n\t\t"__excludeKeys" : [],\n\t\t"_id" : "FOO-3",\n\t\t"_innerObjects" : [],\n\t\t"singleGSFooObj" : {\n\t\t\t"__gsonClassName" : "GsonClass",\n\t\t\t"__useJSONForKeys" : [],\n\t\t\t"__excludeKeys" : [],\n\t\t\t"fooFlag" : "true",\n\t\t\t"s" : "I'm a FOO!",\n\t\t\t"myMap" : {\n\t\t\t\t"Foo" : "7"\n\t\t\t}\n\n\t\t}\n,\n\t\t"myMap" : {\n\t\t\t"Foo" : "1"\n\t\t}\n,\n\t\t"testSet" : [\t"fee",\t"fii",\t"foo",\t"fum"]\n\t}\n,{\n\t\t"__gsonClassName" : "GSTestClass",\n\t\t"__useJSONForKeys" : [\t"_innerObjects"],\n\t\t"__excludeKeys" : [],\n\t\t"_id" : "FOO-4",\n\t\t"_innerObjects" : [],\n\t\t"singleGSFooObj" : {\n\t\t\t"__gsonClassName" : "GsonClass",\n\t\t\t"__useJSONForKeys" : [],\n\t\t\t"__excludeKeys" : [],\n\t\t\t"fooFlag" : "true",\n\t\t\t"s" : "I'm a FOO!",\n\t\t\t"myMap" : {\n\t\t\t\t"Foo" : "7"\n\t\t\t}\n\n\t\t}\n,\n\t\t"myMap" : {\n\t\t\t"Foo" : "1"\n\t\t}\n,\n\t\t"testSet" : [\t"fee",\t"fii",\t"foo",\t"fum"]\n\t}\n],\n\t"singleGSFooObj" : {\n\t\t"__gsonClassName" : "GsonClass",\n\t\t"__useJSONForKeys" : [],\n\t\t"__excludeKeys" : [],\n\t\t"fooFlag" : "true",\n\t\t"s" : "I'm a FOO!",\n\t\t"myMap" : {\n\t\t\t"Foo" : "7"\n\t\t}\n\n\t}\n,\n\t"myMap" : {\n\t\t"Foo" : "1"\n\t}\n,\n\t"testSet" : [\t"fee",\t"fii",\t"foo",\t"fum"]\n}\n`
-
-// let restoredObj = GsonClass.makeTypedObjectFromGenericObject(JSON.parse(genObjJson));
-// console.log("RESTORED OBJ 1: ", restoredObj)
-
-// restoredObj = GsonClass.makeTypedObjectFromGenericObject2(JSON.parse(genObjJson));
-// console.log("RESTORED OBJ 2: ", restoredObj)
+let msPerIter = prRef.value.msPerIter;
 
 </script>
 
@@ -311,6 +294,7 @@ console.log("revivedObj: ", revivedObj)
     <button @click="prRef.iterationCount = 0;">Zero Iteration Counter</button>
     <button @click="console.log('Clearing Main Grid'); prRef.clearMainGrid()">Clear Main Grid</button>
     <button @click="console.log('Toggling view updates'); prRef.toggleView()">Toggle View</button>
+    <button @click="console.log('Gathering Stats'); msPerIter = prRef.gatherStats(); console.log(`msPerIter: ${msPerIter}`)">Get Stats</button>
     <div>
       <button @click="createTestRules()">Create Test Rules</button>
       <button @click="createTestRules2()">Create Test Rules 2</button>
