@@ -153,6 +153,13 @@ export class PixelReactor<T> {
     // }
   }
 
+  public dumpPatternMapAndMakeAllRulesDirty() {
+    this._patternMap.clear();
+    this._ruleGridMap.forEach((rule, id) => {
+      rule.dirty = true;
+    });
+  }
+
   public iterate() {
     console.log("ITER: ", this._iterationCount);
     this._updateStacks.clear();
@@ -540,6 +547,8 @@ export class ParametricGrid<T> extends GsonClass {
 
   protected _dirty: boolean = false;
 
+  protected _pixelReactor: PixelReactor<T>;
+
   public set dirty(b: boolean) {
     this._dirty = b;
   }
@@ -573,9 +582,11 @@ export class ParametricGrid<T> extends GsonClass {
     return this._vueComponent;
   }
 
-  constructor(width: number, height: number, initialValue: T, id: string, grid?: T[][]) {
+  constructor(pixelReactor: PixelReactor<T>, width: number, height: number, initialValue: T, id: string, grid?: T[][]) {
     super();
+    this._pixelReactor = pixelReactor;
     this.testSet = new Set<number>([1,2,4,5,4,3,2,2,1]);
+
     this.__useJSONForKeys.add("_grid")
     this.__excludeKeys.add("_vueComponent")
     this._id = id;
@@ -679,7 +690,8 @@ export class ParametricGrid<T> extends GsonClass {
 
   public setLocation(x: number, y: number, v: T) {
     if (this._grid[y][x] == v) return;
-    this.dirty = true;
+    if (this.id !== "MAIN") this._pixelReactor.dumpPatternMapAndMakeAllRulesDirty();
+    //this.dirty = true;
     this._grid[y][x] = v;
     this._newPixels.push([x, y, v]);
     if (this._vueComponent && this.updateView) this._vueComponent.$forceUpdate();
@@ -868,16 +880,16 @@ export class RuleGrid<T> extends ParametricGrid<T> {
   //   return false;
   // }
 
-  constructor(width: number, height: number, initialValue: T, id: string, grid?: T[][]) {
-    super(width, height, initialValue, id, grid);
+  constructor(pixelReactor: PixelReactor<T>, width: number, height: number, initialValue: T, id: string, grid?: T[][]) {
+    super(pixelReactor, width, height, initialValue, id, grid);
     this._priority = 100;
     this._rotatedOffsets = new Map<string, Vec2d>();
     this.successorOffset = [0, 0];
     this.__gsonClassName = "RuleGrid";
     this._rotatedGrids.set("r0", <ParametricGrid<T>>this);
-    this._rotatedGrids.set("r90", new ParametricGrid<T>(this.height, this.width, initialValue, ""));
-    this._rotatedGrids.set("r180", new ParametricGrid<T>(this.width, this.height, initialValue, ""));
-    this._rotatedGrids.set("r270", new ParametricGrid<T>(this.height, this.width, initialValue, ""));
+    this._rotatedGrids.set("r90", new ParametricGrid<T>(pixelReactor, this.height, this.width, initialValue, ""));
+    this._rotatedGrids.set("r180", new ParametricGrid<T>(pixelReactor, this.width, this.height, initialValue, ""));
+    this._rotatedGrids.set("r270", new ParametricGrid<T>(pixelReactor, this.height, this.width, initialValue, ""));
 
   }
 

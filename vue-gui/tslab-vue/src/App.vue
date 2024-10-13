@@ -86,7 +86,7 @@ function createRuleGrid(inwidth: string, inheight: string) {
     return;
   }
 
-  let newRule = new RuleGrid(parseInt(inwidth), parseInt(inheight), 0, newRuleId.value);
+  let newRule = new RuleGrid(prRef.value, parseInt(inwidth), parseInt(inheight), 0, newRuleId.value);
   prRef.value.setRule(newRuleId.value, newRule)
 
   let newRuleIndex = prRef.value.getNewRuleIndex();
