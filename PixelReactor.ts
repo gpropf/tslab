@@ -80,6 +80,8 @@ function pushVal<K, V>(map: Map<K, V[]>, key: K, newval: V): Map<K, V[]> {
 // }
 
 export class PixelReactor<T> {
+
+  private _patternMap: Map<RawGridString, [string, string][]>
   private _ruleGridMap: Map<string, RuleGrid<T>>;
 
   //public static readonly transformToPriorityOffsetMap = new Map<string, number>([["r0", 0], ["r90", 0], ["r180", 0], ["r270", 0]]);
@@ -154,9 +156,10 @@ export class PixelReactor<T> {
   public iterate() {
     console.log("ITER: ", this._iterationCount);
     this._updateStacks.clear();
-    let prMatches = this.buildMatchMap();
-    dbg("prMatches: ", 4, prMatches)
-    let pattternHistograms = this.buildPatternHistograms(prMatches);
+    //this._patternMap.clear();
+    this.buildMatchMap();
+    dbg("this._patternMap: ", 4, this._patternMap)
+    let pattternHistograms = this.buildPatternHistograms(this._patternMap);
     dbg('PH: ', 2, pattternHistograms);
     let mainGrid = this.getRule("MAIN");
     if (mainGrid) {
@@ -168,9 +171,9 @@ export class PixelReactor<T> {
       this._iterationCount++;
       let pixelsToCheck = this.buildListOfPixelsToCheckForEachNewPixel(pattternHistograms, mainGrid);
       dbg('Pixels2Check: ', 2, pixelsToCheck)
-      let matchesByRuleAndTransformID = this.matchUniquePatternsForNewPixels(pixelsToCheck, prMatches)
+      let matchesByRuleAndTransformID = this.matchUniquePatternsForNewPixels(pixelsToCheck, this._patternMap)
       dbg("matchesByRuleAndTransformID: ", 2, matchesByRuleAndTransformID)
-      let rawGridStringToSuccessorMap = this.buildRawGridStringToSuccessorMap(prMatches)
+      let rawGridStringToSuccessorMap = this.buildRawGridStringToSuccessorMap(this._patternMap)
       dbg("buildRawGridStringToSuccessorMap:", 2, rawGridStringToSuccessorMap);
 
       let updateStacks = this.updateStacksWithMatchSuccessors(rawGridStringToSuccessorMap,
@@ -182,32 +185,33 @@ export class PixelReactor<T> {
     }
   }
 
-  public buildMatchMap(): Map<RawGridString, [string, string][]> {
-    let matchMap: Map<RawGridString, [string, string][]> = new Map<RawGridString, [string, string][]>();
+  public buildMatchMap(): void {
+    //let matchMap: Map<RawGridString, [string, string][]> = new Map<RawGridString, [string, string][]>();
     this._ruleGridMap.forEach((rule, id) => {
-      if (rule.successor) {
+      if (rule.dirty && rule.successor) {
         rule.rotatedGrids.forEach((rotatedGrid, transform) => {
           //if (true || transform == "r0") {
           dbg(`${[rule.id, transform]}`, 3);
           let stringifiedGrid: RawGridString = JSON.stringify(rotatedGrid.grid);
-          let matchingPatterns = matchMap.get(stringifiedGrid);
+          let matchingPatterns = this._patternMap.get(stringifiedGrid);
           //let priorityOffset = PixelReactor.transformToPriorityOffsetMap.get(transform);
           //if (priorityOffset === undefined) priorityOffset = 0;
           //priorityOffset += rule.priority;
           if (matchingPatterns) {
             matchingPatterns.push([rule.id, transform]);
-            matchMap.set(stringifiedGrid, matchingPatterns);
+            this._patternMap.set(stringifiedGrid, matchingPatterns);
           }
           else {
-            matchMap.set(stringifiedGrid, [[rule.id, transform]]);
+            this._patternMap.set(stringifiedGrid, [[rule.id, transform]]);
           }
           //}
         })
         dbg(`Rule ${id} has a successor ${rule.successor.id}`, 3);
+        rule.dirty = false;
       }
     })
 
-    return matchMap;
+    //return matchMap;
   }
 
   public createHistogramForAnnotatedRawGrid(annotatedRawGrid: AnnotatedRawGrid<T>): Map<T, Vec2d[]> {
@@ -422,6 +426,7 @@ export class PixelReactor<T> {
   constructor() {
     this._ruleGridMap = new Map<string, RuleGrid<T>>;
     this._updateStacks = new Map<LocationString, [T, number][]>();
+    this._patternMap = new Map<RawGridString, [string, string][]>();
   }
 
   public setRule(id: string, pgrid: RuleGrid<T>) {
@@ -532,6 +537,16 @@ export class ParametricGrid<T> extends GsonClass {
   private _grid: T[][] = [];
 
   private _updateView: boolean = true;
+
+  protected _dirty: boolean = false;
+
+  public set dirty(b: boolean) {
+    this._dirty = b;
+  }
+
+  public get dirty(): boolean {
+    return this._dirty;
+  }
 
   public set updateView(b: boolean) {
     if (this.updateView == false && this._vueComponent) {
@@ -664,6 +679,7 @@ export class ParametricGrid<T> extends GsonClass {
 
   public setLocation(x: number, y: number, v: T) {
     if (this._grid[y][x] == v) return;
+    this.dirty = true;
     this._grid[y][x] = v;
     this._newPixels.push([x, y, v]);
     if (this._vueComponent && this.updateView) this._vueComponent.$forceUpdate();
