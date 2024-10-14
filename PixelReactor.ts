@@ -95,6 +95,8 @@ export class PixelReactor<T> {
 
   private _msPerIter: number = -1;
 
+  private _msPerIters: number[] = [];
+
   public get msPerIter() {
     return this._msPerIter;
   }
@@ -143,22 +145,41 @@ export class PixelReactor<T> {
   }
 
   public gatherStats() {
-    let timeoutFunc = () => {
-      if (this.msPerIter == -1) {
-        dbg("No data yet...", 0);
-        setTimeout(timeoutFunc, 300);
-      }
-      else {
-        let msPerIter = this.msPerIter;
-        this._msPerIter = -1;
-        this.iterationCount = 0;
-        return msPerIter;
-      }    
+    //let delayFunc = () => setTimeout(delayFunc, 300);
+    let mainGrid = this.getRule("MAIN");
+
+    if (mainGrid) {
+      this.clearMainGrid();
+      mainGrid.setLocation(30, 20, 1 as T);
+    }
+    else return;
+    this.toggleRun();
   }
-  this.toggleRun();
-  let msPerIter = setTimeout(timeoutFunc, 300);
-  return msPerIter;
-}
+
+  public gatherRepeatedStats(n: number) {
+    //let sum = 0;
+    //let mainGrid = this.getRule("MAIN");
+    let delayFunc = (i: number) => {
+      this.gatherStats();
+      if (i < n) {
+        dbg(`i: ${i}, n: ${n}`, 0)
+        setTimeout(delayFunc, 4000, i + 1)
+      }
+    };
+    //for (let i = 0; i < n; i++) {
+    //setTimeout(delayFunc, 4000, [0]);
+    delayFunc(0);
+
+    //}
+    //dbg(`Average ms/iter: ${sum / n}`, 0)
+  }
+
+  public showStats() {
+    let s = this._msPerIters.reduce((a, b) => a + b, 0);
+    let n = this._msPerIters.length;
+    let avgTime = s / n;
+    dbg(`N = ${n}, AVG Time = ${avgTime}`, 0)
+  }
 
   public toggleRun() {
     this.running = !this.running;
@@ -170,14 +191,22 @@ export class PixelReactor<T> {
     else {
       let duration: number = window.performance.now() - this._elapsedTime;
       dbg(`Elapsed time: ${duration}`, 0)
-      dbg(`Total iterations: ${this.iterationCount}, ms/iter: ${duration/this.iterationCount}`, 0)
-      this._msPerIter = duration/this.iterationCount;
+      dbg(`Total iterations: ${this.iterationCount}, ms/iter: ${duration / this.iterationCount}`, 0)
+      this._msPerIter = duration / this.iterationCount;
+      this._msPerIters.push(this._msPerIter);
+      this.showStats();
+      this.iterationCount = 0;
     }
     // else {
     //   clearInterval(this._runMethodId);
     // }
   }
 
+  /**
+   * When any change occurs in a rule, we call this to destroy the pattern map and dirty
+   * all the rules so it gets rebuilt. This is the simplest approach and is probably only
+   * slightly slower than trying to figure out exactly which patterns need to be dropped.
+   */
   public dumpPatternMapAndMakeAllRulesDirty() {
     this._patternMap.clear();
     this._ruleGridMap.forEach((rule, id) => {
@@ -189,7 +218,8 @@ export class PixelReactor<T> {
     console.log("ITER: ", this._iterationCount);
     this._updateStacks.clear();
     //this._patternMap.clear();
-    this.buildMatchMap();
+    //this.dumpPatternMapAndMakeAllRulesDirty();
+    this.buildPatternMap();
     dbg("this._patternMap: ", 4, this._patternMap)
     let pattternHistograms = this.buildPatternHistograms(this._patternMap);
     dbg('PH: ', 2, pattternHistograms);
@@ -217,7 +247,7 @@ export class PixelReactor<T> {
     }
   }
 
-  public buildMatchMap(): void {
+  public buildPatternMap(): void {
     //let matchMap: Map<RawGridString, [string, string][]> = new Map<RawGridString, [string, string][]>();
     this._ruleGridMap.forEach((rule, id) => {
       if (rule.dirty && rule.successor) {
@@ -488,12 +518,12 @@ export class PixelReactor<T> {
   public toJSON(): Object {
     //console.log("PR.toJSON called")
     return {
-      
+
       foo: "bar",
       pixelReactorString: "PR Text",
       //ruleGridMap: Object.fromEntries(this._ruleGridMap),
       ruleGridMap: GsonClass.objectifyMap(this._ruleGridMap)
-      
+
       //mainGrid: this._ruleGridMap.get("MAIN")
     }
   }
@@ -610,7 +640,7 @@ export class ParametricGrid<T> extends GsonClass {
   constructor(pixelReactor: PixelReactor<T>, width: number, height: number, initialValue: T, id: string, grid?: T[][]) {
     super();
     this._pixelReactor = pixelReactor;
-    this.testSet = new Set<number>([1,2,4,5,4,3,2,2,1]);
+    this.testSet = new Set<number>([1, 2, 4, 5, 4, 3, 2, 2, 1]);
 
     this.__useJSONForKeys.add("_grid")
     this.__excludeKeys.add("_vueComponent")
@@ -774,7 +804,7 @@ export class ParametricGrid<T> extends GsonClass {
   // }
 
   public toJSON(): any {
-    return {      
+    return {
       width: this._width,
       height: this._height,
       grid: this._grid,
