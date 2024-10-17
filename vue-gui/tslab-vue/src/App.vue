@@ -295,7 +295,7 @@ let msPerIter = prRef.value.msPerIter;
     <button @click="console.log('Clearing Main Grid'); prRef.clearMainGrid()">Clear Main Grid</button>
     <button @click="console.log('Toggling view updates'); prRef.toggleView()">Toggle View</button>
     <button @click="console.log('Gathering Stats'); prRef.gatherStats(); console.log(`msPerIter: ${prRef.msPerIter}`)">Get Stats</button>
-    <button @click="prRef.gatherRepeatedStats(50);">Get N Stats</button>
+    <button @click="prRef.gatherRepeatedStats(200);">Get N Stats</button>
     <div>
       <button @click="createTestRules()">Create Test Rules</button>
       <button @click="createTestRules2()">Create Test Rules 2</button>
