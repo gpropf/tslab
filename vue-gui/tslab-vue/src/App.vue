@@ -56,6 +56,8 @@ const pgwidth = ref("3");
 const pgheight = ref("3")
 const screenWidth = ref(600);
 const screenHeight = ref(400);
+const recordingStartIter = ref(0);
+const recordingEndIter = ref(100);
 
 // Create main PR and load it into the store.
 let pixelReactor = new PixelReactor<number>();
@@ -274,18 +276,31 @@ let msPerIter = prRef.value.msPerIter;
 <template>
   <div>
     <h1>{{ title }}</h1>
-    <LabelledInput v-model:inputValue="mainGridWidth" id="main-grid-width-id" inputType="text"
-      placeholder="Enter Main Grid Width" componentName="Main Grid Width" size="4" />
-    <LabelledInput v-model:inputValue="mainGridHeight" id="main-grid-height-id" inputType="text"
-      placeholder="Enter Main Grid Height" componentName="Main Grid Height" size="4" />
-    <LabelledInput v-model:inputValue="onClickValue" id="on-click-value-id" inputType="text"
-      placeholder="Enter Color index number for grids" componentName="Color index" size="2" />
-    <LabelledInput v-model:inputValue="pgwidth" id="rule-grid-width" inputType="text"
-      placeholder="Enter width for rulegrid" componentName="Rulegrid Width" size="4" />
-    <LabelledInput v-model:inputValue="pgheight" id="rule-grid-height" inputType="text"
-      placeholder="Enter height for rulegrid" componentName="Rulegrid Height" size="4" />
+    <div class="control-panel-container">
+      <div class="control-panel-child">
+        <LabelledInput v-model:inputValue="mainGridWidth" id="main-grid-width-id" inputType="text"
+          placeholder="Enter Main Grid Width" componentName="Main Grid Width" size="4" />
+        <LabelledInput v-model:inputValue="mainGridHeight" id="main-grid-height-id" inputType="text"
+          placeholder="Enter Main Grid Height" componentName="Main Grid Height" size="4" />
+        <LabelledInput v-model:inputValue="onClickValue" id="on-click-value-id" inputType="text"
+          placeholder="Enter Color index number for grids" componentName="Color index" size="2" />
+        <LabelledInput v-model:inputValue="pgwidth" id="rule-grid-width" inputType="text"
+          placeholder="Enter width for rulegrid" componentName="Rulegrid Width" size="4" />
+        <LabelledInput v-model:inputValue="pgheight" id="rule-grid-height" inputType="text"
+          placeholder="Enter height for rulegrid" componentName="Rulegrid Height" size="4" />
+      </div>
+      <div class="control-panel-child">
+        <LabelledInput v-model:inputValue="recordingStartIter" id="recording-start-iter" inputType="text"
+          placeholder="Recording Start Iteration" componentName="Recording Start Iteration" size="4" />
+        <LabelledInput v-model:inputValue="recordingEndIter" id="recording-end-iter" inputType="text"
+          placeholder="Recording Ending Iteration" componentName="Recording Ending Iteration" size="4" />
+        <input type="checkbox" id="recordingOn" name="recordingOn" value="false">
+        <label for="recordingOn">Check to Record</label><br>
+      </div>
 
-    <div> Mouse Location: {{ formatVector(mouseLocation) }}</div>
+
+    </div>
+    <div class="control-panel-child"> Mouse Location: {{ formatVector(mouseLocation) }}</div>
     <button @click="createRuleGrid(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
 
@@ -294,7 +309,9 @@ let msPerIter = prRef.value.msPerIter;
     <button @click="prRef.iterationCount = 0;">Zero Iteration Counter</button>
     <button @click="console.log('Clearing Main Grid'); prRef.clearMainGrid()">Clear Main Grid</button>
     <button @click="console.log('Toggling view updates'); prRef.toggleView()">Toggle View</button>
-    <button @click="console.log('Gathering Stats'); prRef.gatherStats(); console.log(`msPerIter: ${prRef.msPerIter}`)">Get Stats</button>
+    <button
+      @click="console.log('Gathering Stats'); prRef.gatherStats(); console.log(`msPerIter: ${prRef.msPerIter}`)">Get
+      Stats</button>
     <button @click="prRef.gatherRepeatedStats(200);">Get N Stats</button>
     <div>
       <button @click="createTestRules()">Create Test Rules</button>
@@ -326,7 +343,7 @@ let msPerIter = prRef.value.msPerIter;
 
 
 
-    <div id="dynamic_content" class="rules"></div>
+    <!-- <div id="dynamic_content" class="rules"></div> -->
   </div>
 </template>
 
@@ -357,6 +374,20 @@ export default {
 
 
 <style>
+.control-panel-container {
+  display: flex;
+}
+
+.control-panel-child {
+  flex: 1;
+  border: 2px solid rgb(120, 131, 233);
+  padding: 5px;
+}
+
+.control-panel-child:first-child {
+  margin-right: 20px;
+}
+
 div {
   margin-bottom: 2px;
 }

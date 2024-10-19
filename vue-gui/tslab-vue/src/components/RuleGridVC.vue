@@ -7,7 +7,7 @@ import { type ColorInfo, type ObjectVisualizationFn, type ConversionFn } from ".
 import SVGGrid from './SVGGrid.vue';
 import LabelledInput from './LabelledInput.vue';
 import RuleSelect from './RuleSelect.vue';
-import { ref, onUpdated } from 'vue'
+import { ref, onUpdated, onMounted } from 'vue'
 
 const rules = useRulesStore();
 const { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor } = rules;
@@ -17,22 +17,22 @@ const { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor } =
 
 
 const props = defineProps<{
-    width: number | undefined,
-    height: number | undefined,
-    screenWidth: number,
-    screenHeight: number,
-    vizFn: ObjectVisualizationFn,
-    defaultValue: any,
-    onClickValue: any,    
-    conversionFn: ConversionFn,
-    id: string,
-    priority: number | undefined
+  width: number | undefined,
+  height: number | undefined,
+  screenWidth: number,
+  screenHeight: number,
+  vizFn: ObjectVisualizationFn,
+  defaultValue: any,
+  onClickValue: any,
+  conversionFn: ConversionFn,
+  id: string,
+  priority: number | undefined
 }>()
 
 let prRef = getPixelReactor();
 
 //let ruleGrid = new RuleGrid<any>(props.width, props.height, props.defaultValue, props.id);
-  let ruleGrid = prRef.value.getRule(props.id)
+let ruleGrid = prRef.value.getRule(props.id)
 let viewBox = `0 0 ${props.width} ${props.height}`;
 const ruleOffsetString = ref("")
 
@@ -56,35 +56,39 @@ function stringToVec(s: string): Vec2d {
 }
 
 function changeOffset() {
-    ruleGrid.successorOffset = stringToVec(ruleOffsetString.value)    
+  ruleGrid.successorOffset = stringToVec(ruleOffsetString.value)
 }
 
 const root = ref<HTMLElement | null>(null);
-//onMounted(() => console.log(root.value));
+
+onMounted(() => {
+  console.log("RuleGridVC mounted!!!")
+  let [sx,sy] = ruleGrid.successorOffset;
+  ruleOffsetString.value = `${sx},${sy}`;
+});
+
 
 onUpdated(() => {
-    // text content should be the same as current `count.value`
-    console.log("RG updated!")
+  // text content should be the same as current `count.value`
+  console.log("RG updated!")
 })
 
 </script>
 
 <template>
   <!-- <div ref="root"> -->
-    <LabelledInput v-model:inputValue="ruleGrid.priority" id="rule-grid-priority" inputType="text"
-    placeholder="Enter priority for rule" componentName="Rule Priority" size="3" labelClass="medium"/>
-    <span>id: {{ props.id }}</span><button @click="prRef.deleteRule(props.id)">Delete Rule</button>
-    <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight"
-      :width="props.width" :height="props.height" :vizFn="props.vizFn" :defaultValue="0"
-      :onClickValue="props.onClickValue" :conversionFn="props.conversionFn"
-       :id="props.id" :prGrid="ruleGrid"/>
-       <RuleSelect :fromRuleId="props.id "/>
-       <input type="text" v-model="ruleOffsetString" placeholder="Offset" size="3"
-        @input="changeOffset">
-    
-       <!-- <LabelledInput v-model:inputValue="ruleOffset" id="rule-offset" inputType="text"
+  <LabelledInput v-model:inputValue="ruleGrid.priority" id="rule-grid-priority" inputType="text"
+    placeholder="Enter priority for rule" componentName="Rule Priority" size="3" labelClass="medium" />
+  <span>id: {{ props.id }}</span><button @click="prRef.deleteRule(props.id)">Delete Rule</button>
+  <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight" :width="props.width"
+    :height="props.height" :vizFn="props.vizFn" :defaultValue="0" :onClickValue="props.onClickValue"
+    :conversionFn="props.conversionFn" :id="props.id" :prGrid="ruleGrid" />
+  <RuleSelect :fromRuleId="props.id" />
+  <input type="text" v-model="ruleOffsetString" placeholder="Offset" size="3" @input="changeOffset">
+
+  <!-- <LabelledInput v-model:inputValue="ruleOffset" id="rule-offset" inputType="text"
       placeholder="Enter offset as a comma-delimited string" componentName="Offset String" size="4"/> -->
-      <!-- </div> -->
+  <!-- </div> -->
 </template>
 
 <script lang="ts">

@@ -218,7 +218,7 @@ export class PixelReactor<T> {
     console.log("ITER: ", this._iterationCount);
     this._updateStacks.clear();
     //this._patternMap.clear();
-    this.dumpPatternMapAndMakeAllRulesDirty();
+    //this.dumpPatternMapAndMakeAllRulesDirty();
     this.buildPatternMap();
     dbg("this._patternMap: ", 4, this._patternMap)
     let pattternHistograms = this.buildPatternHistograms(this._patternMap);
