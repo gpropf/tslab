@@ -83,7 +83,7 @@ onUpdated(() => {
   <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight" :width="props.width"
     :height="props.height" :vizFn="props.vizFn" :defaultValue="0" :onClickValue="props.onClickValue"
     :conversionFn="props.conversionFn" :id="props.id" :prGrid="ruleGrid" />
-  <RuleSelect :fromRuleId="props.id" />
+  <RuleSelect :fromRuleId="props.id"/>
   <input type="text" v-model="ruleOffsetString" placeholder="Offset" size="3" @input="changeOffset">
 
   <!-- <LabelledInput v-model:inputValue="ruleOffset" id="rule-offset" inputType="text"

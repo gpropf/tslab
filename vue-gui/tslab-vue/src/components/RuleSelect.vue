@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 
 
 import { useRulesStore } from '@/stores/rules';
@@ -34,6 +34,16 @@ function changeSelectedRule(event: any) {
     console.log("For rule ", props.fromRuleId, ", Successor: ", selectedRule.value, " @ offset: ", thisRule.successorOffset);
   }
 }
+
+let thisRule = prRef.value.getRule(props.fromRuleId);
+let successorRuleId: string = ""
+if (thisRule.successor)
+  successorRuleId = thisRule.successor.id;
+
+onMounted(() => {
+  console.log("RuleGridSelect mounted!!!")
+  console.log(`For rule ${thisRule.id}, successor is ${successorRuleId}`);
+});
 
 </script>
 
