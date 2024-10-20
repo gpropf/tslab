@@ -24,7 +24,7 @@ const props = defineProps<{
     prGrid: ParametricGrid<any> | RuleGrid<any>
 }>()
 
-let viewBox = `0 0 ${props.width} ${props.height}`;
+let viewBox = `0 0 ${props.prGrid.width} ${props.prGrid.height}`;
 
 const svgGrid = ref()
 
@@ -46,7 +46,7 @@ onUpdated(() => {
 
 <template>    
     <div ref="svgGrid">
-        <svg :viewBox="viewBox" :width="props.screenWidth" :height="props.screenHeight"
+        <svg :viewBox="`0 0 ${props.prGrid.width} ${props.prGrid.height}`" :width="props.screenWidth" :height="props.screenHeight"
             xmlns="http://www.w3.org/2000/svg">
             <svg :key="y" v-for="(row, y) in props.prGrid.grid" xmlns="http://www.w3.org/2000/svg">
                 <svg :key="x" v-for="(cellval, x) in row">
