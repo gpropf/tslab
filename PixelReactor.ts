@@ -84,8 +84,8 @@ export class PixelReactor<T> {
   private _patternMap: Map<RawGridString, [string, string][]>
   private _ruleGridMap: Map<string, RuleGrid<T>>;
 
-  //public static readonly transformToPriorityOffsetMap = new Map<string, number>([["r0", 0], ["r90", 0], ["r180", 0], ["r270", 0]]);
-  public static readonly transformToPriorityOffsetMap = new Map<string, number>([["r0", 0], ["r90", 2], ["r180", 4], ["r270", 6]]);
+  public static readonly transformToPriorityOffsetMap = new Map<string, number>([["r0", 0], ["r90", 0], ["r180", 0], ["r270", 0]]);
+  //public static readonly transformToPriorityOffsetMap = new Map<string, number>([["r0", 0], ["r90", 2], ["r180", 4], ["r270", 6]]);
 
   private _currentRuleIndex: number = 1;
 
@@ -333,9 +333,9 @@ export class PixelReactor<T> {
 
   public putSuccessorOnUpdateStacks(mainGrid: ParametricGrid<T>, upperLeftCorner: Vec2d,
     successorOffset: Vec2d, successor: ParametricGrid<T>, priority: number) {
-    if (successorOffset[0] != 0 && successorOffset[1] != 0) {
-      successorOffset = [-1, -1]
-    }
+    // if (successorOffset[0] != 0 && successorOffset[1] != 0) {
+    //   successorOffset = [-1, -1]
+    // }
     let adjustedUpperLeftCorner: Vec2d = addVec(upperLeftCorner, successorOffset);
     //adjustedUpperLeftCorner = mainGrid.wrapCoordinates(adjustedUpperLeftCorner);
     //let adjustedUpperLeftCornerString: LocationString = JSON.stringify(adjustedUpperLeftCorner);
@@ -378,7 +378,7 @@ export class PixelReactor<T> {
         if (a[1] == b[1]) {
           let anum: any = a[0]
           let bnum: any = b[0]
-          return (bnum - anum);
+          return (anum - bnum);
         }
         return (a[1] - b[1])
       })
@@ -867,17 +867,20 @@ export class RuleGrid<T> extends ParametricGrid<T> {
     this._rotatedOffsets.set("r0", this._successorOffset);
 
     if (rm) {
-      this._rotatedOffsets.set("r90", rm.multiplyByVec(offset))
+      //this._rotatedOffsets.set("r90", rm.multiplyByVec(offset))
+      this._rotatedOffsets.set("r90", this.successorOffset)
       dbg("r90: ", 3, this._rotatedOffsets.get("r90"))
     }
     rm = rotationMap.get("r180");
     if (rm) {
-      this._rotatedOffsets.set("r180", rm.multiplyByVec(offset))
+      //this._rotatedOffsets.set("r180", rm.multiplyByVec(offset))
+      this._rotatedOffsets.set("r180", this.successorOffset)
       dbg("r180: ", 3, this._rotatedOffsets.get("r180"))
     }
     rm = rotationMap.get("r270");
     if (rm) {
-      this._rotatedOffsets.set("r270", rm.multiplyByVec(offset))
+      //this._rotatedOffsets.set("r270", rm.multiplyByVec(offset))
+      this._rotatedOffsets.set("r270", this.successorOffset)
       dbg("r270: ", 3, this._rotatedOffsets.get("r270"))
     }
   }
