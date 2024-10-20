@@ -27,14 +27,24 @@ const props = defineProps<{
 //let ruleIds = props.pixelReactor.getAllRuleIds();
 const ruleroot = ref<HTMLElement | null>(null);
 
+let prRef = getPixelReactor();
+
+function changeOffset() {
+  ruleGrid.successorOffset = stringToVec(ruleOffsetString.value)
+}
 </script>
 
 <template>
   <div class="rules">
     <div v-for="[id, rule] in props.pixelReactor.ruleGridMap"> ID: {{ id }} Rule.id = {{ rule.id }} 
+      <LabelledInput v-model:inputValue="rule.priority" id="rule-grid-priority" inputType="text"
+    placeholder="Enter priority for rule" componentName="Rule Priority" size="3" labelClass="medium" />
+      <span>id: {{ rule.id }}</span><button @click="prRef.deleteRule(rule.id)">Delete Rule</button>
       <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight" :width="rule.width"
     :height="rule.height" :vizFn="props.vizFn" :defaultValue="0" :onClickValue="props.onClickValue"
     :conversionFn="props.conversionFn" :id="rule.id" :prGrid="rule" />
+    <RuleSelect :fromRuleId="rule.id"/>
+  <!-- <input type="text" v-model="ruleOffsetString" placeholder="Offset" size="3" @input="changeOffset"> -->
 
     </div>
 
