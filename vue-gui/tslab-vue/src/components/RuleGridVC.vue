@@ -17,6 +17,7 @@ const { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor } =
 
 
 const props = defineProps<{
+  rule: RuleGrid<any>,
   width: number | undefined,
   height: number | undefined,
   screenWidth: number,
@@ -32,7 +33,8 @@ const props = defineProps<{
 let prRef = getPixelReactor();
 
 //let ruleGrid = new RuleGrid<any>(props.width, props.height, props.defaultValue, props.id);
-let ruleGrid = prRef.value.getRule(props.id)
+//let ruleGrid = prRef.value.getRule(props.id)
+let ruleGrid = props.rule
 let viewBox = `0 0 ${props.width} ${props.height}`;
 const ruleOffsetString = ref("")
 
@@ -79,11 +81,11 @@ onUpdated(() => {
   <!-- <div ref="root"> -->
   <LabelledInput v-model:inputValue="ruleGrid.priority" id="rule-grid-priority" inputType="text"
     placeholder="Enter priority for rule" componentName="Rule Priority" size="3" labelClass="medium" />
-  <span>id: {{ props.id }}</span><button @click="prRef.deleteRule(props.id)">Delete Rule</button>
-  <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight" :width="props.width"
-    :height="props.height" :vizFn="props.vizFn" :defaultValue="0" :onClickValue="props.onClickValue"
+  <span>id: {{ ruleGrid.id }}</span><button @click="prRef.deleteRule(ruleGrid.id)">Delete Rule</button>
+  <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight" :width="ruleGrid.width"
+    :height="ruleGrid.height" :vizFn="props.vizFn" :defaultValue="0" :onClickValue="props.onClickValue"
     :conversionFn="props.conversionFn" :id="props.id" :prGrid="ruleGrid" />
-  <RuleSelect :fromRuleId="props.id"/>
+  <RuleSelect :fromRuleId="ruleGrid.id"/>
   <input type="text" v-model="ruleOffsetString" placeholder="Offset" size="3" @input="changeOffset">
 
   <!-- <LabelledInput v-model:inputValue="ruleOffset" id="rule-offset" inputType="text"

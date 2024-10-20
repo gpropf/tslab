@@ -491,6 +491,10 @@ export class PixelReactor<T> {
     this._patternMap = new Map<RawGridString, [string, string][]>();
   }
 
+  public get ruleGridMap() {
+    return this._ruleGridMap;
+  }
+
   public setRule(id: string, pgrid: RuleGrid<T>) {
     this._ruleGridMap.set(id, pgrid)
     //console.log(this._ruleGridMap)

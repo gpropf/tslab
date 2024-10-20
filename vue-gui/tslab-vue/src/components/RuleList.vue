@@ -31,11 +31,18 @@ const ruleroot = ref<HTMLElement | null>(null);
 
 <template>
   <div class="rules">
-    <div v-for="id in props.pixelReactor.getAllRuleIds()">      
-      <RuleGridVC v-if="id !='MAIN'" :screenWidth="props.screenWidth" :screenHeight="props.screenHeight"
-        :width="props.pixelReactor.getRule(id)?.width" :height="props.pixelReactor.getRule(id)?.height"
+    <div v-for="[id, rule] in props.pixelReactor.ruleGridMap"> ID: {{ id }} Rule.id = {{ rule.id }} 
+      <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight" :width="rule.width"
+    :height="rule.height" :vizFn="props.vizFn" :defaultValue="0" :onClickValue="props.onClickValue"
+    :conversionFn="props.conversionFn" :id="rule.id" :prGrid="rule" />
+
+    </div>
+
+    <div v-for="[id, rule] in props.pixelReactor.ruleGridMap">      
+      <RuleGridVC v-if="rule.id !='MAIN'" :screenWidth="props.screenWidth" :screenHeight="props.screenHeight"
+        :rule="rule" :width="rule.width" :height="rule.height"
         :vizFn="props.vizFn" :defaultValue="0" :onClickValue="props.onClickValue"
-        :conversionFn="props.conversionFn" :id="id" :priority="props.pixelReactor.getRule(id)?.priority"/>
+        :conversionFn="props.conversionFn" :id="rule.id" :priority="rule.priority"/>
       <!-- <button @click="$forceUpdate()">placeholder Button</button> -->
     </div>
 
