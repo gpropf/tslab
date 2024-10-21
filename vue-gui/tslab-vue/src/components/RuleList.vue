@@ -5,6 +5,7 @@ import { PixelReactor, RuleGrid, type Vec2d, zeroVec } from "../../../../PixelRe
 import { type ColorInfo, type ObjectVisualizationFn, type ConversionFn } from "./ParametricGridVC.vue"
 import SVGGrid from './SVGGrid.vue';
 import RuleGridVC from './RuleGridVC.vue';
+import RuleOffset from './RuleOffset.vue'
 import LabelledInput from './LabelledInput.vue';
 import RuleSelect from './RuleSelect.vue';
 import { ref, onMounted, computed } from 'vue'
@@ -64,7 +65,7 @@ const notMainGridIds = computed(() => {
           :height="rule.height" :vizFn="props.vizFn" :defaultValue="0" :onClickValue="props.onClickValue"
           :conversionFn="props.conversionFn" :id="rule.id" :prGrid="rule" />
         <RuleSelect :fromRuleId="rule.id" />
-        <input type="text" v-model="ruleOffsetString" placeholder="Offset" size="3" @input="changeOffset(rule)">
+        <RuleOffset :rule="rule" />
 
       </div>
     </div>
