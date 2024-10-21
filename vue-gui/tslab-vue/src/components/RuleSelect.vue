@@ -45,11 +45,15 @@ onMounted(() => {
   console.log(`For rule ${thisRule.id}, successor is ${successorRuleId}`);
 });
 
+// function keyIsSelected(key: string, selection: string) {
+//   return (key === selection);
+// }
+
 </script>
 
 <template>
   <select @change="changeSelectedRule($event)">
-    <option v-for="key in filteredKeys" :key="key">
+    <option v-for="key in filteredKeys" :key="key" :selected="key === successorRuleId">
       {{ key }}
     </option>
   </select>
