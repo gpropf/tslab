@@ -378,7 +378,7 @@ export class PixelReactor<T> {
         if (a[1] == b[1]) {
           let anum: any = a[0]
           let bnum: any = b[0]
-          return (anum - bnum);
+          return (bnum - anum);
         }
         return (a[1] - b[1])
       })
