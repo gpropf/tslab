@@ -199,10 +199,7 @@ function createTestRules2() {
   }
 }
 
-
 const mainGridRef = ref<InstanceType<typeof ParametricGridVC>>();
-
-
 
 let msPerIter = prRef.value.msPerIter;
 
