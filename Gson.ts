@@ -1,37 +1,4 @@
 
-//import process from "process";
-
-function JsonClass(target: Function, context: any) {
-  //const original = target.prototype.addFuel;
-  target.prototype.class = target.name
-
-
-  target.prototype.toJSON = function () {
-    return {
-
-      class: this.class,
-      //parameterType: typeof (this._grid[0][0])
-    }
-  }
-}
-
-@JsonClass
-class Rocket {
-  fuel: number = 11;
-  name: string;
-  addFuel(amount: number) {
-    this.fuel += amount;
-    console.log(`Rocket now has ${this.fuel} fuel`)
-    let json = JSON.stringify(this)
-    console.log("JSON:", json)
-  }
-
-  constructor(name: string) {
-    this.name = name
-  }
-
-}
-
 
 class Gson {
   public serialize(obj: any): Object {
@@ -87,9 +54,6 @@ class GsonClass {
     }
   }
 
-  //public static readonly factoryMap: Map<string, Function>;
-
-
   public static printTypes: boolean = false;
 
   private static __logBuffer: string = ""
@@ -126,7 +90,6 @@ class GsonClass {
     });
     return map;
   }
-
 
   public static setToArray(s: Set<any>) {
     let setArr = Array.from(s);
@@ -172,176 +135,6 @@ class GsonClass {
           return GsonTypes.OBJECT;
       }
     }
-  }
-
-
-  public static traverseObject3(obj: any, tabs: string = "",
-    traversalFlags: TraversalFlags = { isValue: false, printTypes: true }): string {
-    let traversalFlagsModified: TraversalFlags = {
-      isValue: true,
-      printTypes: traversalFlags.printTypes
-    }
-
-    let rstr: string = ""
-    let rstrs: string[] = []
-    let openBracket = ""
-    let closeBracket = ""
-    if (obj === null) {
-      if (traversalFlags.isValue) tabs = "";
-      return `${tabs}NULL "${obj}"`;
-    }
-    else if (obj === undefined) {
-      if (traversalFlags.isValue) tabs = "";
-      return `${tabs}UNDEF "${obj}"`;
-    }
-    else if (obj.constructor === undefined) {
-      if (traversalFlags.isValue) tabs = "";
-      return `${tabs}NO CONSTRUCTOR"${obj}"`;
-    }
-    else {
-      let objType = "";
-      switch (obj.constructor) {
-        case Boolean:
-          objType = "BOOL: ";
-          if (traversalFlags.isValue) tabs = "";
-          if (GsonClass.printTypes)
-            return `${tabs}${objType}"${obj}"`;
-          else
-            return `${tabs}"${obj}"`;
-          break;
-        case Number:
-          objType = "NUM: ";
-          if (traversalFlags.isValue) tabs = "";
-          if (GsonClass.printTypes)
-            return `${tabs}${objType}"${obj}"`;
-          else
-            return `${tabs}"${obj}"`;
-          break;
-        case String:
-          objType = "STR: ";
-          if (traversalFlags.isValue) tabs = "";
-          if (GsonClass.printTypes)
-            return `${tabs}${objType}"${obj}"`;
-          else
-            return `${tabs}"${obj}"`;
-          break;
-        case Set:
-          openBracket = "["
-          closeBracket = "]"
-          if (traversalFlags.isValue) tabs = "";
-          obj.forEach(function (value: any) {
-            rstrs.push(GsonClass.traverseObject3(value, `${tabs}\t`));
-          });
-          return openBracket + rstrs.join(",") + closeBracket
-        case Array:
-          openBracket = "["
-          closeBracket = "]"
-          if (traversalFlags.isValue) tabs = "";
-          obj.forEach(function (value: any) {
-            rstrs.push(GsonClass.traverseObject3(value, `${tabs}\t`));
-          });
-          return openBracket + rstrs.join(",") + closeBracket
-        case Map:
-          openBracket = "{\n"
-          closeBracket = `\n${tabs}}\n`
-
-
-          obj.forEach((value: any, key: any) => {
-            let mapStr = ""
-            mapStr += GsonClass.traverseObject3(key, `${tabs}\t`) + " : " + GsonClass.traverseObject3(value, `${tabs}\t`, traversalFlagsModified)
-            rstrs.push(mapStr);
-          });
-          return openBracket + rstrs.join(",\n") + closeBracket
-        default:
-          openBracket = "{\n"
-          closeBracket = `\n${tabs}}\n`
-          //let traversalFlagsModified =  traversalFlags;
-
-          for (const [key, value] of Object.entries(obj)) {
-            let mapStr = ""
-            mapStr += GsonClass.traverseObject3(key, `${tabs}\t`) + " : " + GsonClass.traverseObject3(value, `${tabs}\t`, traversalFlagsModified)
-            rstrs.push(mapStr);
-          }
-          return openBracket + rstrs.join(",\n") + closeBracket
-      }
-    }
-
-  }
-
-  public static traverseObject2(obj: any, tabs: string = "", isValue: boolean = false): string {
-
-    let rstr: string = ""
-    let rstrs: string[] = []
-    let openBracket = ""
-    let closeBracket = ""
-    if (obj === null) {
-      if (isValue) tabs = "";
-      return `${tabs}NULL "${obj}"`;
-    }
-    else if (obj === undefined) {
-      if (isValue) tabs = "";
-      return `${tabs}UNDEF "${obj}"`;
-    }
-    else if (obj.constructor === undefined) {
-      if (isValue) tabs = "";
-      return `${tabs}NO CONSTRUCTOR"${obj}"`;
-    }
-    else {
-      let objType = "";
-      switch (obj.constructor) {
-        case Boolean:
-          objType = "BOOL: ";
-          if (isValue) tabs = "";
-          return `${tabs}${objType}"${obj}"`;
-          break;
-        case Number:
-          objType = "NUM: ";
-          if (isValue) tabs = "";
-          return `${tabs}${objType}"${obj}"`;
-          break;
-        case String:
-          objType = "STR: ";
-          if (isValue) tabs = "";
-          return `${tabs}${objType}"${obj}"`;
-          break;
-        case Set:
-          openBracket = "{"
-          closeBracket = "}"
-          if (isValue) tabs = "";
-          obj.forEach(function (value: any) {
-            rstrs.push(GsonClass.traverseObject2(value, `${tabs}\t`));
-          });
-          return openBracket + rstrs.join(",") + closeBracket
-        case Array:
-          openBracket = "["
-          closeBracket = "]"
-          if (isValue) tabs = "";
-          obj.forEach(function (value: any) {
-            rstrs.push(GsonClass.traverseObject2(value, `${tabs}\t`));
-          });
-          return openBracket + rstrs.join(",") + closeBracket
-        case Map:
-          openBracket = "{\n"
-          closeBracket = `\n${tabs}}\n`
-
-          obj.forEach((value: any, key: any) => {
-            let mapStr = ""
-            mapStr += GsonClass.traverseObject2(key, `${tabs}\t`) + " : " + GsonClass.traverseObject2(value, `${tabs}\t`, true)
-            rstrs.push(mapStr);
-          });
-          return openBracket + rstrs.join(",\n") + closeBracket
-        default:
-          openBracket = "{{\n"
-          closeBracket = `\n${tabs}}}\n`
-          for (const [key, value] of Object.entries(obj)) {
-            let mapStr = ""
-            mapStr += GsonClass.traverseObject2(key, `${tabs}\t`) + " : " + GsonClass.traverseObject2(value, `${tabs}\t`, true)
-            rstrs.push(mapStr);
-          }
-          return openBracket + rstrs.join(",\n") + closeBracket
-      }
-    }
-
   }
 
   public static makeTypedObjectFromGenericObject(genObj: any) {
@@ -424,110 +217,9 @@ class GsonClass {
     }
     return null;
   }
-
-
 }
 
-
-class GsonFoo extends GsonClass {
-  public s: string;
-
-  public fooSet: Set<number>;
-  public fooFlag: boolean;
-  public fooMap: Map<string, number>;
-
-  constructor(numThings: number) {
-    super();
-    this.fooSet = new Set<number>();
-    this.fooFlag = true;
-    this.s = "I'm a FOO!"
-    this.fooMap = new Map();
-    this.fooMap.set("Foo", 7);
-    //this.myMap.set("mapFlag", true);
-    this.fooSet.add(23);
-    this.fooSet.add(27);
-    this.fooSet.add(29);
-    this.fooSet.add(23);
-  }
-
-  toJSON() {
-    let jsonObj: any = super.toJSON();
-    jsonObj["fooSet"] = GsonClass.setToArray(this.fooSet);
-    jsonObj["s"] = this.s;
-    jsonObj["myMap"] = GsonClass.objectifyMap(this.fooMap);
-    jsonObj["GsonFootoJSONWorks"] = true;
-    return jsonObj;
-  }
-}
-
-
-class GSTestClass extends GsonClass {
-
-  private _innerObjects: GSTestClass[];
-
-  public singleGSFooObj: GsonFoo;
-  public _id: string;
-  public myMap: Map<string, number>;
-
-  public testSet: Set<string>;
-
-  public get id() {
-    return this._id;
-  }
-
-  public set id(id) {
-    this._id = id;
-  }
-
-  constructor(id: string = "", level: number = 0) {
-    super();
-    this._id = id;
-    this._innerObjects = []
-    this.__gsonClassName = "GSTestClass"
-    this.singleGSFooObj = new GsonFoo(5)
-    this.myMap = new Map();
-    this.testSet = new Set(["fee", "fii", "foo", "fum", "fee"]);
-    this.myMap.set("Foo", 1);
-    this.__useJSONForKeys.add("_innerObjects")
-    if (level < 1) {
-      for (let i = 0; i < 5; i++) {
-        let obj = new GSTestClass(`${id}-${i}`, ++level);
-        this._innerObjects.push(obj)
-      }
-    }
-
-
-  }
-
-  public toJSON() {
-    let jsonObj: any = super.toJSON();
-    jsonObj['_innerObjects'] = this._innerObjects;
-    jsonObj.id = this._id;
-    jsonObj.myMap = Object();
-    jsonObj.foo = this.myMap;
-    jsonObj.singleGSFooObj = this.singleGSFooObj;
-
-    for (const [key, value] of this.myMap.entries()) {
-      console.log(key, value);
-      jsonObj.myMap[key] = value;
-    }
-
-    jsonObj.bar = GsonClass.objectifyMap(this.myMap);
-    // (this.myMap).forEach((val, key) => {
-    //   jsonObj.myMap.set(key, val);
-    // })
-    return jsonObj;
-  }
-
-
-
-}
-
-export { Rocket, JsonClass, Gson, GsonClass, GSTestClass }
-//console.log(`Is the rocket empty? ${(rocket as any).isEmpty()}`)
-
-
-
+export { Gson, GsonClass }
   
   
 
