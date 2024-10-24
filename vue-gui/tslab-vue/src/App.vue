@@ -289,13 +289,16 @@ let msPerIter = prRef.value.msPerIter;
         <LabelledInput v-model:inputValue="pgheight" id="rule-grid-height" inputType="text"
           placeholder="Enter height for rulegrid" componentName="Rulegrid Height" size="4" />
       </div>
-      <div class="control-panel-child" style="width: 85%;">
+      <div class="control-panel-child">
         <LabelledInput v-model:inputValue="recordingStartIter" id="recording-start-iter" inputType="text"
           placeholder="Recording Start Iteration" componentName="Recording Start Iteration" size="4" />
         <LabelledInput v-model:inputValue="recordingEndIter" id="recording-end-iter" inputType="text"
           placeholder="Recording Ending Iteration" componentName="Recording Ending Iteration" size="4" />
         <input type="checkbox" id="recordingOn" name="recordingOn" value="false">
         <label for="recordingOn">Check to Record</label><br>
+      </div>
+      <div class="control-panel-child">
+        <textarea rows="8" cols="25">Placeholder text</textarea>
       </div>
      
 
@@ -332,8 +335,7 @@ let msPerIter = prRef.value.msPerIter;
       <button @click="objStr = JSON.stringify(gstest); console.log(objStr)">JSON.stringify</button>
     </div>
 
-    <div class="control-panel-container">
-      <div class="control-panel-child">
+    
       <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
         placeholder="Enter Id string for new rule" componentName="New Rule Id" size="20" />
 
@@ -343,11 +345,7 @@ let msPerIter = prRef.value.msPerIter;
 
       <RuleList :pixelReactor="prRef" :screenWidth="150" :screenHeight="100" :vizFn="vizFn" :defaultValue="0"
         :onClickValue="onClickValue" :conversionFn="conversionFn"></RuleList>
-      </div>
-      <div class="control-panel-child">
-        <textarea rows="5" cols="25">Placeholder text</textarea>
-      </div>
-    </div>
+    
 
     <!-- <div id="dynamic_content" class="rules"></div> -->
   </div>
@@ -355,15 +353,6 @@ let msPerIter = prRef.value.msPerIter;
 
 <script lang="ts">
 
-//const currentSuccessionRule = ref(null)
-
-// function stringToVec(s: string): Vec2d | null {
-//   const coordinates: string[] = s.split(',');
-//   if (coordinates.length < 2) return zeroVec;
-//   let v: Vec2d = [parseInt(coordinates[0]), parseInt(coordinates[1])];
-//   if (Number.isNaN(v[0]) || Number.isNaN(v[1])) return zeroVec
-//   return v;
-// }
 
 export default {
   data() {
@@ -388,11 +377,12 @@ export default {
   flex: 1;
   border: 2px solid rgb(120, 131, 233);
   padding: 5px;
-}
-
-.control-panel-child:first-child {
   margin-right: 5px;
 }
+
+/* .control-panel-child:first-child {
+  margin-right: 5px;
+} */
 
 div {
   margin-bottom: 2px;
