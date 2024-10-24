@@ -46,7 +46,6 @@ enum GsonTypes {
 
 class GsonClass {
   protected __gsonClassName = "GsonClass"
-  protected __useJSONForKeys = new Set()
   protected __excludeKeys = new Set()
   public toJSON() {
     return {
@@ -95,10 +94,7 @@ class GsonClass {
     let setArr = Array.from(s);
     return setArr;
   }
-
-  public get useJSONForKeys() {
-    return this.__useJSONForKeys;
-  }
+  
 
   public get excludeKeys() {
     return this.__excludeKeys;
@@ -142,20 +138,20 @@ class GsonClass {
   //   if (objKeys.find(keyName => keyName == "__gsonClassName")) {
   //     console.log("Object is GsonClass!!!!!!!!!!!!!!!!!!!!!!!!")
   //     let ObjClass = genObj["__gsonClassName"];
-  
-  
+
+
   //     let specificObject = eval(`new ${ObjClass}()`);
-  
+
   //     let objKeys = Object.keys(genObj)
   //     objKeys.forEach(key => {
-  
+
   //       let keyObj = genObj[key];
   //       console.log(`${genObj.__gsonClassName} key: ${key} -- val: ${keyObj}`)
   //       if (typeof (keyObj) == "object") {
   //         if (keyObj.constructor === Map) {
   //           console.log("Key object is Map!!!!!!!!!!!!!!!!!!!!!!!!")
   //         }
-  
+
   //         if (Array.isArray(keyObj)) {
   //           console.log(`${key} is Array!!!`)
   //           let arr = keyObj as Array<any>
@@ -220,13 +216,6 @@ class GsonClass {
 }
 
 export { Gson, GsonClass }
-  
-  
-
-  
-
-
-  
 
 
 
@@ -237,9 +226,16 @@ export { Gson, GsonClass }
 
 
 
-  
 
- 
+
+
+
+
+
+
+
+
+
 
 
 

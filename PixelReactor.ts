@@ -657,7 +657,7 @@ export class ParametricGrid<T> extends GsonClass {
     this._pixelReactor = pixelReactor;
     this.testSet = new Set<number>([1, 2, 4, 5, 4, 3, 2, 2, 1]);
 
-    this.__useJSONForKeys.add("_grid")
+    //this.__useJSONForKeys.add("_grid")
     this.__excludeKeys.add("_vueComponent")
     this._id = id;
     this._width = width;
