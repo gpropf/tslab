@@ -137,86 +137,86 @@ class GsonClass {
     }
   }
 
-  public static makeTypedObjectFromGenericObject(genObj: any) {
-    let objKeys = Object.keys(genObj)
-    if (objKeys.find(keyName => keyName == "__gsonClassName")) {
-      console.log("Object is GsonClass!!!!!!!!!!!!!!!!!!!!!!!!")
-      let ObjClass = genObj["__gsonClassName"];
+  // public static makeTypedObjectFromGenericObject(genObj: any) {
+  //   let objKeys = Object.keys(genObj)
+  //   if (objKeys.find(keyName => keyName == "__gsonClassName")) {
+  //     console.log("Object is GsonClass!!!!!!!!!!!!!!!!!!!!!!!!")
+  //     let ObjClass = genObj["__gsonClassName"];
   
   
-      let specificObject = eval(`new ${ObjClass}()`);
+  //     let specificObject = eval(`new ${ObjClass}()`);
   
-      let objKeys = Object.keys(genObj)
-      objKeys.forEach(key => {
+  //     let objKeys = Object.keys(genObj)
+  //     objKeys.forEach(key => {
   
-        let keyObj = genObj[key];
-        console.log(`${genObj.__gsonClassName} key: ${key} -- val: ${keyObj}`)
-        if (typeof (keyObj) == "object") {
-          if (keyObj.constructor === Map) {
-            console.log("Key object is Map!!!!!!!!!!!!!!!!!!!!!!!!")
-          }
+  //       let keyObj = genObj[key];
+  //       console.log(`${genObj.__gsonClassName} key: ${key} -- val: ${keyObj}`)
+  //       if (typeof (keyObj) == "object") {
+  //         if (keyObj.constructor === Map) {
+  //           console.log("Key object is Map!!!!!!!!!!!!!!!!!!!!!!!!")
+  //         }
   
-          if (Array.isArray(keyObj)) {
-            console.log(`${key} is Array!!!`)
-            let arr = keyObj as Array<any>
-            let newArr: any = []
-            arr.forEach(item => {
-              newArr.push(this.makeTypedObjectFromGenericObject(item))
-            })
-            keyObj = arr;
-          }
-          else {
-            keyObj = this.makeTypedObjectFromGenericObject(keyObj);
-          }
-        }
-        specificObject[key] = keyObj;
-      })
-      return specificObject;
-    }
-    return genObj;
-  }
+  //         if (Array.isArray(keyObj)) {
+  //           console.log(`${key} is Array!!!`)
+  //           let arr = keyObj as Array<any>
+  //           let newArr: any = []
+  //           arr.forEach(item => {
+  //             newArr.push(this.makeTypedObjectFromGenericObject(item))
+  //           })
+  //           keyObj = arr;
+  //         }
+  //         else {
+  //           keyObj = this.makeTypedObjectFromGenericObject(keyObj);
+  //         }
+  //       }
+  //       specificObject[key] = keyObj;
+  //     })
+  //     return specificObject;
+  //   }
+  //   return genObj;
+  // }
 
-  public static makeTypedObjectFromGenericObject2(genObj: any) {
-    let objKeys = Object.keys(genObj)
-    if (objKeys.find(keyName => keyName == "__gsonClassName")) {
-      console.log("Object is GsonClass!!!!!!!!!!!!!!!!!!!!!!!!")
-      let ObjClass = genObj["__gsonClassName"];
-      let specificObject = eval(`new ${ObjClass}()`);
+  // public static makeTypedObjectFromGenericObject2(genObj: any) {
+  //   let objKeys = Object.keys(genObj)
+  //   if (objKeys.find(keyName => keyName == "__gsonClassName")) {
+  //     console.log("Object is GsonClass!!!!!!!!!!!!!!!!!!!!!!!!")
+  //     let ObjClass = genObj["__gsonClassName"];
+  //     let specificObject = eval(`new ${ObjClass}()`);
 
-      let objKeys = Object.keys(genObj)
-      objKeys.forEach(key => {
+  //     let objKeys = Object.keys(genObj)
+  //     objKeys.forEach(key => {
 
-        let keyObj = genObj[key];
+  //       let keyObj = genObj[key];
 
-        let keyObjType = GsonClass.distinguishType(keyObj);
+  //       let keyObjType = GsonClass.distinguishType(keyObj);
 
 
-        switch (keyObjType) {
-          case GsonTypes.BOOLEAN:
-          case GsonTypes.NUMBER:
-          case GsonTypes.STRING:
-            specificObject[key] = genObj[key]
-            break;
-          case GsonTypes.SET:
-            specificObject[key] = new Set(genObj[key])
-            break;
-          case GsonTypes.ARRAY:
-            specificObject[key] = genObj[key];
-            break;
-          case GsonTypes.MAP:
-            return GsonTypes.MAP;
-            break;
-          case GsonTypes.SYMBOL:
-            return GsonTypes.SYMBOL;
-            break;
-          default:
-            specificObject[key] = GsonClass.makeTypedObjectFromGenericObject2(genObj[key]);
-        }
-      });
-      return specificObject;
-    }
-    return null;
-  }
+  //       switch (keyObjType) {
+  //         case GsonTypes.BOOLEAN:
+  //         case GsonTypes.NUMBER:
+  //         case GsonTypes.STRING:
+  //           specificObject[key] = genObj[key]
+  //           break;
+  //         case GsonTypes.SET:
+  //           specificObject[key] = new Set(genObj[key])
+  //           break;
+  //         case GsonTypes.ARRAY:
+  //           specificObject[key] = genObj[key];
+  //           break;
+  //         case GsonTypes.MAP:
+  //           return GsonTypes.MAP;
+  //           break;
+  //         case GsonTypes.SYMBOL:
+  //           return GsonTypes.SYMBOL;
+  //           break;
+  //         default:
+  //           specificObject[key] = GsonClass.makeTypedObjectFromGenericObject2(genObj[key]);
+  //       }
+  //     });
+  //     return specificObject;
+  //   }
+  //   return null;
+  // }
 }
 
 export { Gson, GsonClass }
