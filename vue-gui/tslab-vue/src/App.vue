@@ -289,7 +289,7 @@ let msPerIter = prRef.value.msPerIter;
         <LabelledInput v-model:inputValue="pgheight" id="rule-grid-height" inputType="text"
           placeholder="Enter height for rulegrid" componentName="Rulegrid Height" size="4" />
       </div>
-      <div class="control-panel-child">
+      <div class="control-panel-child" style="width: 85%;">
         <LabelledInput v-model:inputValue="recordingStartIter" id="recording-start-iter" inputType="text"
           placeholder="Recording Start Iteration" componentName="Recording Start Iteration" size="4" />
         <LabelledInput v-model:inputValue="recordingEndIter" id="recording-end-iter" inputType="text"
@@ -297,9 +297,11 @@ let msPerIter = prRef.value.msPerIter;
         <input type="checkbox" id="recordingOn" name="recordingOn" value="false">
         <label for="recordingOn">Check to Record</label><br>
       </div>
+     
 
 
     </div>
+
     <div class="control-panel-child"> Mouse Location: {{ formatVector(mouseLocation) }}</div>
     <button @click="createRuleGrid(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
@@ -330,18 +332,22 @@ let msPerIter = prRef.value.msPerIter;
       <button @click="objStr = JSON.stringify(gstest); console.log(objStr)">JSON.stringify</button>
     </div>
 
+    <div class="control-panel-container">
+      <div class="control-panel-child">
+      <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
+        placeholder="Enter Id string for new rule" componentName="New Rule Id" size="20" />
 
-    <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
-      placeholder="Enter Id string for new rule" componentName="New Rule Id" size="20" />
+      <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
+        :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
+        :onClickValue="onClickValue" :conversionFn="conversionFn" :id="mainGridName" ref="mainGridRef" />
 
-    <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
-      :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
-      :onClickValue="onClickValue" :conversionFn="conversionFn" :id="mainGridName" ref="mainGridRef" />
-
-    <RuleList :pixelReactor="prRef" :screenWidth="150" :screenHeight="100" :vizFn="vizFn" :defaultValue="0"
-      :onClickValue="onClickValue" :conversionFn="conversionFn"></RuleList>
-
-
+      <RuleList :pixelReactor="prRef" :screenWidth="150" :screenHeight="100" :vizFn="vizFn" :defaultValue="0"
+        :onClickValue="onClickValue" :conversionFn="conversionFn"></RuleList>
+      </div>
+      <div class="control-panel-child">
+        <textarea rows="5" cols="25">Placeholder text</textarea>
+      </div>
+    </div>
 
     <!-- <div id="dynamic_content" class="rules"></div> -->
   </div>
@@ -385,7 +391,7 @@ export default {
 }
 
 .control-panel-child:first-child {
-  margin-right: 20px;
+  margin-right: 5px;
 }
 
 div {
