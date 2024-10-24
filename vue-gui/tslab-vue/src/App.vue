@@ -42,10 +42,6 @@ function conversionFn(v: string) {
 }
 // End helpers
 
-
-//let gstestFromJSON = GSTestClass.fromJSON(gstestString)
-//console.log("Reconstituted GSTEST: ", gstestFromJSON)
-
 const newRuleId = ref("rule-1")
 const onClickValue = ref("1")
 const mainGridName = ref("MAIN")
@@ -72,9 +68,6 @@ function formatVector(v: Vec2d) {
 }
 
 let gson = new Gson()
-
-// let prMatches: Map<string, [string, string][]> = new Map<string, [string, string][]>()
-// let pattternHistograms = new Map<string, Map<number, Vec2d[]>>()
 
 /**
  * Creates a new rule grid and fails if you try to reuse an id.
@@ -206,68 +199,10 @@ function createTestRules2() {
   }
 }
 
-// let traversalFlags: TraversalFlags = {
-//   isValue: false,
-//   printTypes: true
-// }
-let objStr = ""
-// let testMap = new Map();
-// testMap.set("Foo", 7);
-// testMap.set("Bar", 8);
-// testMap.set("Baz", 10);
-
-//PixelReactor.initClass();
-//console.log("transformToPriorityOffsetMap: ", PixelReactor.transformToPriorityOffsetMap)
 
 const mainGridRef = ref<InstanceType<typeof ParametricGridVC>>();
 
-let gstest = new GSTestClass("FOO");
 
-console.log("Original gstest: ", gstest);
-
-const genObjJson = JSON.stringify(gstest);
-
-const gsonFooStr = JSON.stringify(gstest.singleGSFooObj)
-
-console.log(genObjJson)
-
-console.log("gsonFooStr: ", gsonFooStr)
-
-let revivedObj = JSON.parse(genObjJson, (key: any, value: any) => {
-  console.log("Revived: ", key, value);
-  // if (context) {
-  //   console.log("Parse Root: CONTEXT EXISTS!: ", context)
-  //   console.log("Parse Root: key: ", key, ", value", value);
-  //   return value;
-  // }
-  switch (key) {
-    case "fooSet":
-      let fooSet = new Set(value);
-      return fooSet;
-      break;
-    case "fooMap":
-      console.log("FOUND fooMap!!!!!! ", GsonClass.mapifyObject(value))
-      return GsonClass.mapifyObject(value);
-      break;
-    case "myMap":
-      console.log("FOUND myMap!!!!!! ", GsonClass.mapifyObject(value))
-      return GsonClass.mapifyObject(value);
-      break;
-    case "singleGSFooObj":
-      // if (context) {
-      //   console.log("CONTEXT EXISTS!: ", context)
-      //   console.log("value: ", value)
-      //   return value;
-      // }
-      console.log("value: ", value)
-      return value;
-    default:
-      return value;
-  }
-  return value;
-});
-
-console.log("revivedObj: ", revivedObj)
 
 let msPerIter = prRef.value.msPerIter;
 
