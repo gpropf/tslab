@@ -257,14 +257,7 @@ let msPerIter = prRef.value.msPerIter;
 
     <div>
       <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(prRef)))">Gson Serialize</button>
-      <button @click="console.log('stringify PR: ', JSON.stringify(prRef))">stringify PR</button>
-      <button
-        @click="GsonClass.clear(); objStr = GsonClass.traverseObject3(gstest, ''); console.log(objStr)">traverseObject
-        3</button>
-      <button
-        @click="GsonClass.clear(); objStr = GsonClass.traverseObject2(gstest, '', false); console.log(objStr)">traverseObject
-        2</button>
-      <button @click="objStr = JSON.stringify(gstest); console.log(objStr)">JSON.stringify</button>
+      <button @click="console.log('stringify PR: ', JSON.stringify(prRef))">stringify PR</button>      
     </div>
 
     
