@@ -203,6 +203,8 @@ const mainGridRef = ref<InstanceType<typeof ParametricGridVC>>();
 
 let msPerIter = prRef.value.msPerIter;
 
+//const check=ref<boolean>(prRef.value.recordingEnabled);
+
 </script>
 
 <template>
@@ -226,7 +228,7 @@ let msPerIter = prRef.value.msPerIter;
           placeholder="Recording Start Iteration" componentName="Recording Start Iteration" size="4" />
         <LabelledInput v-model:inputValue="recordingEndIter" id="recording-end-iter" inputType="text"
           placeholder="Recording Ending Iteration" componentName="Recording Ending Iteration" size="4" />
-        <input type="checkbox" id="recordingOn" name="recordingOn" value="false">
+        <input type="checkbox" id="recordingOn" name="recordingOn" value="recording" v-model="prRef.recordingEnabled">
         <label for="recordingOn">Check to Record</label><br>
       </div>
       <div class="control-panel-child">

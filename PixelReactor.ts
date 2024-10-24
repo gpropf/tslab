@@ -135,6 +135,17 @@ export class PixelReactor<T> {
 
   private _elapsedTime: number = 0;
 
+  private _recordingEnabled: boolean = false;
+
+  public set recordingEnabled(b: boolean) {
+    this._recordingEnabled = b;
+    dbg(`Checked: ${this._recordingEnabled}`, 0)
+  }
+
+  public get recordingEnabled() {
+    return this._recordingEnabled;
+  }
+
   public set running(b: boolean) {
     this._running = b;
     if (!this._running) clearInterval(this._runMethodId);
