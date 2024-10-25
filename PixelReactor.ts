@@ -1,14 +1,8 @@
 import { main } from "ts-node/dist/bin";
 
-import { GsonClass } from "./Gson"
+import { GsonClass, Gson } from "./Gson"
 
-export const DEBUG_LEVEL = 2;
-
-export function dbg(message: string, debugLevel: number = 0, ...args: any) {
-  if (debugLevel < DEBUG_LEVEL) {
-    console.log(message, args);
-  }
-}
+import { dbg } from "./Util"
 
 export type RawGridString = string;
 
@@ -537,7 +531,7 @@ export class PixelReactor<T> {
       foo: "bar",
       pixelReactorString: "PR Text",
       //ruleGridMap: Object.fromEntries(this._ruleGridMap),
-      ruleGridMap: GsonClass.objectifyMap(this._ruleGridMap)
+      ruleGridMap: Gson.objectifyMap(this._ruleGridMap)
 
       //mainGrid: this._ruleGridMap.get("MAIN")
     }
@@ -608,7 +602,7 @@ export class TransformMatrix {
 export class ParametricGrid<T> extends GsonClass {
 
   private _newPixels: Pixel<T>[] = [];
-  private readonly _id: string;
+  private _id: string;
   private _width: number;
   private _height: number;
   private _grid: T[][] = [];
@@ -639,7 +633,7 @@ export class ParametricGrid<T> extends GsonClass {
     return this._updateView;
   }
 
-  public testSet: Set<number>;
+  //public testSet: Set<number>;
 
   private _vueComponent: any;
 
@@ -655,7 +649,7 @@ export class ParametricGrid<T> extends GsonClass {
   constructor(pixelReactor: PixelReactor<T>, width: number, height: number, initialValue: T, id: string, grid?: T[][]) {
     super();
     this._pixelReactor = pixelReactor;
-    this.testSet = new Set<number>([1, 2, 4, 5, 4, 3, 2, 2, 1]);
+    //this.testSet = new Set<number>([1, 2, 4, 5, 4, 3, 2, 2, 1]);
 
     //this.__useJSONForKeys.add("_grid")
     this.__excludeKeys.add("_vueComponent")
@@ -742,12 +736,24 @@ export class ParametricGrid<T> extends GsonClass {
     return this._id;
   }
 
+  public set id(id: string) {
+    this._id = id;
+  }
+
   public get width() {
     return this._width;
   }
 
+  public set width(w: number) {
+    this._width = w;
+  }
+
   public get height() {
     return this._height;
+  }
+
+  public set height(h: number) {
+    this._height = h;
   }
 
   public get grid() {
@@ -823,7 +829,7 @@ export class ParametricGrid<T> extends GsonClass {
       width: this._width,
       height: this._height,
       grid: this._grid,
-      class: "ParametricGrid",
+      __gsonClassName: "ParametricGrid",
       id: this._id,
       parameterType: typeof (this._grid[0][0])
     }
@@ -855,6 +861,10 @@ export class RuleGrid<T> extends ParametricGrid<T> {
 
   public get rotatedOffsets() {
     return this._rotatedOffsets;
+  }
+
+  public set rotatedOffsets(r) {
+    this._rotatedOffsets = r;
   }
 
   public get successorOffset() {
@@ -899,12 +909,12 @@ export class RuleGrid<T> extends ParametricGrid<T> {
   public toJSON(): Object {
     return {
       //testSet: GsonClass.setToArray(this.testSet),
-      rotatedOffsets: GsonClass.objectifyMap(this._rotatedOffsets),
-      //rotatedGrids: GsonClass.objectifyMap(this.rotatedGrids),
+      rotatedOffsets: Gson.objectifyMap(this._rotatedOffsets),
+      //rotatedGrids: Gson.objectifyMap(this.rotatedGrids),
       width: this.width,
       height: this.height,
       grid: this.grid,
-      class: "RuleGrid",
+      __gsonClassName: "RuleGrid",
       id: this.id,
       priority: this._priority,
       successor: (this._successor) ? this._successor.id : "",

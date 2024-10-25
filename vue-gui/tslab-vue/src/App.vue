@@ -17,6 +17,8 @@ import LabelledInput from './components/LabelledInput.vue';
 import ParametricGridVC from './components/ParametricGridVC.vue';
 import { Gson, GsonClass } from "../../../Gson"
 
+import { dbg } from "../../../Util";
+
 
 const rules = useRulesStore();
 const { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor } = rules;
@@ -205,6 +207,27 @@ let msPerIter = prRef.value.msPerIter;
 
 //const check=ref<boolean>(prRef.value.recordingEnabled);
 
+//let testDeserializeStr = '{"rotatedOffsets":{"r0":[0,0],"r90":[0,0],"r180":[0,0],"r270":[0,0]},"width":3,"height":3,"grid":[[0,0,0],[0,1,0],[0,0,0]],"__gsonClassName":"RuleGrid","id":"rule-1","priority":10,"successor":"rule-2","successorOffset":[0,0],"parameterType":"number"}'
+let testDeserializeStr = '{"rotatedOffsets":{"r0":[0,0],"r90":[0,0],"r180":[0,0],"r270":[0,0]},"width":3,"height":3,"grid":[[0,0,1],[0,0,0],[1,0,1]],"__gsonClassName":"RuleGrid","id":"rule-6","priority":60,"successor":"rule-7","successorOffset":[0,0],"parameterType":"number"}'
+let ruleGridFactory = (genericObj: any) => {
+  let objKeys = new Set(Object.keys(genericObj));
+  try {
+    // pixelReactor: PixelReactor<T>, width: number, height: number, initialValue: T, id: string, grid?: T[][]
+    let rg = new RuleGrid<number>(prRef.value, genericObj["width"],
+     genericObj["height"], 0, genericObj["id"], genericObj["grid"]);
+     return rg;
+  }
+  catch (e) {
+    let result = (e as Error).message;
+    dbg(`Error during factory function: ${result}`, 0)
+  }
+
+};
+gson.setFactory("RuleGrid", ruleGridFactory);
+let rg = gson.deserialize(testDeserializeStr);
+dbg(`RuleGrid: `, 0, rg);
+
+
 </script>
 
 <template>
@@ -234,7 +257,7 @@ let msPerIter = prRef.value.msPerIter;
       <div class="control-panel-child">
         <textarea rows="8" cols="25">Placeholder text</textarea>
       </div>
-     
+
 
 
     </div>
@@ -259,20 +282,20 @@ let msPerIter = prRef.value.msPerIter;
 
     <div>
       <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(prRef)))">Gson Serialize</button>
-      <button @click="console.log('stringify PR: ', JSON.stringify(prRef))">stringify PR</button>      
+      <button @click="console.log('stringify PR: ', JSON.stringify(prRef))">stringify PR</button>
     </div>
 
-    
-      <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
-        placeholder="Enter Id string for new rule" componentName="New Rule Id" size="20" />
 
-      <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
-        :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
-        :onClickValue="onClickValue" :conversionFn="conversionFn" :id="mainGridName" ref="mainGridRef" />
+    <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
+      placeholder="Enter Id string for new rule" componentName="New Rule Id" size="20" />
 
-      <RuleList :pixelReactor="prRef" :screenWidth="150" :screenHeight="100" :vizFn="vizFn" :defaultValue="0"
-        :onClickValue="onClickValue" :conversionFn="conversionFn"></RuleList>
-    
+    <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
+      :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
+      :onClickValue="onClickValue" :conversionFn="conversionFn" :id="mainGridName" ref="mainGridRef" />
+
+    <RuleList :pixelReactor="prRef" :screenWidth="150" :screenHeight="100" :vizFn="vizFn" :defaultValue="0"
+      :onClickValue="onClickValue" :conversionFn="conversionFn"></RuleList>
+
 
     <!-- <div id="dynamic_content" class="rules"></div> -->
   </div>

@@ -1,6 +1,56 @@
+import { isNull } from "util";
+import type { RuleGrid } from "./PixelReactor";
+import { dbg } from "./Util"
 
+type FactoryFunction<T> = (genericObj: any) => T;
 
 class Gson {
+
+  constructor() {
+    this._factoryMap = new Map<string, FactoryFunction<any>>();
+  }
+
+  private _factoryMap: Map<string, Function>;
+
+  public static objectifyMap(m: Map<any, any>) {
+    let mapObj = Object();
+    m.forEach((value: any, key: any) => {
+      mapObj[key] = value;
+    });
+    return mapObj;
+  }
+
+  public static rectifyNewObject(genericObj: any, newObj: any) {
+    let keys = Object.keys(genericObj)
+    keys.forEach((key) => {
+      if (newObj[key] == null)
+      newObj[key] = genericObj[key];
+    });
+    return newObj;
+  }
+
+  public setFactory(className:string, factoryFn: FactoryFunction<any>) {
+    this._factoryMap.set(className, factoryFn);
+  }
+
+  public getFactory(className:string) {
+    return this._factoryMap.get(className);
+  }
+
+  public static mapifyObject(m: any) {
+    let map = new Map<any, any>();
+    let keys = Object.keys(m)
+    keys.forEach((key) => {
+      map.set(key, m[key]);
+    });
+    return map;
+  }
+
+  public static setToArray(s: Set<any>) {
+    let setArr = Array.from(s);
+    return setArr;
+  }
+
   public serialize(obj: any): Object {
     let jsonObj = Object()
     Object.keys(obj).forEach(key => {
@@ -19,16 +69,28 @@ class Gson {
   }
 
   public deserialize(jsonText: string) {
+    dbg(`deserialize: ${jsonText}`)
+    let genericObj: any = JSON.parse(jsonText);
+
+    let objKeys = new Set(Object.keys(genericObj));
+    dbg("KEYS: ", 0, objKeys)
+    if (objKeys.has("__gsonClassName")) {
+      dbg(`__gsonClassName found: ${genericObj["__gsonClassName"]}`, 0)
+      let factoryFn = this.getFactory(genericObj["__gsonClassName"]);
+      if (factoryFn) {
+        let newObj = factoryFn(genericObj);
+        return Gson.rectifyNewObject(genericObj, newObj);
+      }
+      
+    }
 
   }
 }
 
-//=== 2nd attempt below this line
-
-export interface TraversalFlags {
-  isValue: boolean,
-  printTypes: boolean
-}
+// export interface TraversalFlags {
+//   isValue: boolean,
+//   printTypes: boolean
+// }
 
 enum GsonTypes {
   STRING = 1,
@@ -65,36 +127,13 @@ class GsonClass {
     this.__logBuffer += text + "\n";
   }
 
-  public static clear() {
+  public static clearLogBuffer() {
     this.__logBuffer = "";
   }
 
   public static print() {
     console.log(this.__logBuffer);
-  }
-
-  public static objectifyMap(m: Map<any, any>) {
-    let mapObj = Object();
-    m.forEach((value: any, key: any) => {
-      mapObj[key] = value;
-    });
-    return mapObj;
-  }
-
-  public static mapifyObject(m: any) {
-    let map = new Map<any, any>();
-    let keys = Object.keys(m)
-    keys.forEach((key) => {
-      map.set(key, m[key]);
-    });
-    return map;
-  }
-
-  public static setToArray(s: Set<any>) {
-    let setArr = Array.from(s);
-    return setArr;
-  }
-  
+  } 
 
   public get excludeKeys() {
     return this.__excludeKeys;
