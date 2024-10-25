@@ -208,7 +208,7 @@ let msPerIter = prRef.value.msPerIter;
 //const check=ref<boolean>(prRef.value.recordingEnabled);
 
 //let testDeserializeStr = '{"rotatedOffsets":{"r0":[0,0],"r90":[0,0],"r180":[0,0],"r270":[0,0]},"width":3,"height":3,"grid":[[0,0,0],[0,1,0],[0,0,0]],"__gsonClassName":"RuleGrid","id":"rule-1","priority":10,"successor":"rule-2","successorOffset":[0,0],"parameterType":"number"}'
-let testDeserializeStr = '{"rotatedOffsets":{"r0":[0,0],"r90":[0,0],"r180":[0,0],"r270":[0,0]},"width":3,"height":3,"grid":[[0,0,1],[0,0,0],[1,0,1]],"__gsonClassName":"RuleGrid","id":"rule-6","priority":60,"successor":"rule-7","successorOffset":[0,0],"parameterType":"number"}'
+let testDeserializeStr = '{"testSet":[1,2,4,5,3],"rotatedOffsets":{},"width":3,"height":3,"grid":[[0,0,1],[0,0,0],[1,0,1]],"__gsonClassName":"RuleGrid","id":"rule-6","priority":60,"successor":"rule-7","successorOffset":[0,0],"parameterType":"number"}'
 let ruleGridFactory = (genericObj: any) => {
   let objKeys = new Set(Object.keys(genericObj));
   try {

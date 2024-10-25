@@ -418,7 +418,8 @@ export class PixelReactor<T> {
         let rule = this.getRule(ruleId);
         if (rule) {
           let successor = rule.successor;
-          let successorOffset = rule.rotatedOffsets.get(transformId)
+          //let successorOffset = rule.rotatedOffsets.get(transformId)
+          let successorOffset = rule.successorOffset;
           let transformedSuccessor = successor?.rotatedGrids.get(transformId)
           let priorityOffset: number | undefined = PixelReactor.transformToPriorityOffsetMap.get(transformId);
           if (priorityOffset === undefined) {
@@ -633,7 +634,7 @@ export class ParametricGrid<T> extends GsonClass {
     return this._updateView;
   }
 
-  //public testSet: Set<number>;
+  public testSet: Set<number>;
 
   private _vueComponent: any;
 
@@ -649,7 +650,7 @@ export class ParametricGrid<T> extends GsonClass {
   constructor(pixelReactor: PixelReactor<T>, width: number, height: number, initialValue: T, id: string, grid?: T[][]) {
     super();
     this._pixelReactor = pixelReactor;
-    //this.testSet = new Set<number>([1, 2, 4, 5, 4, 3, 2, 2, 1]);
+    this.testSet = new Set<number>([1, 2, 4, 5, 4, 3, 2, 2, 1]);
 
     //this.__useJSONForKeys.add("_grid")
     this.__excludeKeys.add("_vueComponent")
@@ -883,32 +884,32 @@ export class RuleGrid<T> extends ParametricGrid<T> {
   public set successorOffset(offset: Vec2d) {
     this._successorOffset = offset;
     dbg("r0: ", 3, this._successorOffset)
-    let rm = rotationMap.get("r90");
+    // let rm = rotationMap.get("r90");
 
-    this._rotatedOffsets.set("r0", this._successorOffset);
+    // this._rotatedOffsets.set("r0", this._successorOffset);
 
-    if (rm) {
-      //this._rotatedOffsets.set("r90", rm.multiplyByVec(offset))
-      this._rotatedOffsets.set("r90", this.successorOffset)
-      dbg("r90: ", 3, this._rotatedOffsets.get("r90"))
-    }
-    rm = rotationMap.get("r180");
-    if (rm) {
-      //this._rotatedOffsets.set("r180", rm.multiplyByVec(offset))
-      this._rotatedOffsets.set("r180", this.successorOffset)
-      dbg("r180: ", 3, this._rotatedOffsets.get("r180"))
-    }
-    rm = rotationMap.get("r270");
-    if (rm) {
-      //this._rotatedOffsets.set("r270", rm.multiplyByVec(offset))
-      this._rotatedOffsets.set("r270", this.successorOffset)
-      dbg("r270: ", 3, this._rotatedOffsets.get("r270"))
-    }
+    // if (rm) {
+    //   //this._rotatedOffsets.set("r90", rm.multiplyByVec(offset))
+    //   this._rotatedOffsets.set("r90", this.successorOffset)
+    //   dbg("r90: ", 3, this._rotatedOffsets.get("r90"))
+    // }
+    // rm = rotationMap.get("r180");
+    // if (rm) {
+    //   //this._rotatedOffsets.set("r180", rm.multiplyByVec(offset))
+    //   this._rotatedOffsets.set("r180", this.successorOffset)
+    //   dbg("r180: ", 3, this._rotatedOffsets.get("r180"))
+    // }
+    // rm = rotationMap.get("r270");
+    // if (rm) {
+    //   //this._rotatedOffsets.set("r270", rm.multiplyByVec(offset))
+    //   this._rotatedOffsets.set("r270", this.successorOffset)
+    //   dbg("r270: ", 3, this._rotatedOffsets.get("r270"))
+    // }
   }
 
   public toJSON(): Object {
     return {
-      //testSet: GsonClass.setToArray(this.testSet),
+      testSet: Gson.setToArray(this.testSet),
       rotatedOffsets: Gson.objectifyMap(this._rotatedOffsets),
       //rotatedGrids: Gson.objectifyMap(this.rotatedGrids),
       width: this.width,

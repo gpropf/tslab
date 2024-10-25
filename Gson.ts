@@ -23,18 +23,60 @@ class Gson {
   public static rectifyNewObject(genericObj: any, newObj: any) {
     let keys = Object.keys(genericObj)
     keys.forEach((key) => {
-      if (newObj[key] == null)
-      newObj[key] = genericObj[key];
+      //if (newObj[key] == null)
+      let genericObjType = Gson.distinguishType(genericObj[key])
+      let newObjType = Gson.distinguishType(newObj[key])
+      if (newObjType == GsonTypes.MAP && genericObjType == GsonTypes.OBJECT) {
+        newObj[key] = Gson.mapifyObject(genericObj[key]);
+      }
+      else if (newObjType == GsonTypes.SET && genericObjType == GsonTypes.ARRAY) {
+        newObj[key] = Gson.arrayToSet(genericObj[key]);
+      }
+      else
+        newObj[key] = genericObj[key];
     });
     return newObj;
   }
 
-  public setFactory(className:string, factoryFn: FactoryFunction<any>) {
+  public setFactory(className: string, factoryFn: FactoryFunction<any>) {
     this._factoryMap.set(className, factoryFn);
   }
 
-  public getFactory(className:string) {
+  public getFactory(className: string) {
     return this._factoryMap.get(className);
+  }
+
+  public static distinguishType(obj: any) {
+    if (obj === null) {
+      return GsonTypes.NULL;
+    }
+    else if (obj === undefined) {
+      return GsonTypes.UNDEFINED;
+    }
+    else if (obj.constructor === undefined) {
+      return GsonTypes.UNKNOWN;
+    }
+    else {
+      let objType = "";
+      switch (obj.constructor) {
+        case Boolean:
+          return GsonTypes.BOOLEAN;
+        case Number:
+          return GsonTypes.NUMBER;
+        case String:
+          return GsonTypes.STRING;
+        case Set:
+          return GsonTypes.SET;
+        case Array:
+          return GsonTypes.ARRAY;
+        case Map:
+          return GsonTypes.MAP;
+        case Symbol:
+          return GsonTypes.SYMBOL;
+        default:
+          return GsonTypes.OBJECT;
+      }
+    }
   }
 
   public static mapifyObject(m: any) {
@@ -49,6 +91,10 @@ class Gson {
   public static setToArray(s: Set<any>) {
     let setArr = Array.from(s);
     return setArr;
+  }
+
+  public static arrayToSet(a: Array<any>) {
+    return new Set(a);
   }
 
   public serialize(obj: any): Object {
@@ -81,7 +127,7 @@ class Gson {
         let newObj = factoryFn(genericObj);
         return Gson.rectifyNewObject(genericObj, newObj);
       }
-      
+
     }
 
   }
@@ -133,44 +179,13 @@ class GsonClass {
 
   public static print() {
     console.log(this.__logBuffer);
-  } 
+  }
 
   public get excludeKeys() {
     return this.__excludeKeys;
   }
 
-  public static distinguishType(obj: any) {
-    if (obj === null) {
-      return GsonTypes.NULL;
-    }
-    else if (obj === undefined) {
-      return GsonTypes.UNDEFINED;
-    }
-    else if (obj.constructor === undefined) {
-      return GsonTypes.UNKNOWN;
-    }
-    else {
-      let objType = "";
-      switch (obj.constructor) {
-        case Boolean:
-          return GsonTypes.BOOLEAN;
-        case Number:
-          return GsonTypes.NUMBER;
-        case String:
-          return GsonTypes.STRING;
-        case Set:
-          return GsonTypes.SET;
-        case Array:
-          return GsonTypes.ARRAY;
-        case Map:
-          return GsonTypes.MAP;
-        case Symbol:
-          return GsonTypes.SYMBOL;
-        default:
-          return GsonTypes.OBJECT;
-      }
-    }
-  }
+
 
   // public static makeTypedObjectFromGenericObject(genObj: any) {
   //   let objKeys = Object.keys(genObj)
