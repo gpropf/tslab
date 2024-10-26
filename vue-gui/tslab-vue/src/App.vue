@@ -206,16 +206,16 @@ const mainGridRef = ref<InstanceType<typeof ParametricGridVC>>();
 let msPerIter = prRef.value.msPerIter;
 
 //const check=ref<boolean>(prRef.value.recordingEnabled);
-
-//let testDeserializeStr = '{"rotatedOffsets":{"r0":[0,0],"r90":[0,0],"r180":[0,0],"r270":[0,0]},"width":3,"height":3,"grid":[[0,0,0],[0,1,0],[0,0,0]],"__gsonClassName":"RuleGrid","id":"rule-1","priority":10,"successor":"rule-2","successorOffset":[0,0],"parameterType":"number"}'
-let testDeserializeStr = '{"testSet":[1,2,4,5,3],"rotatedOffsets":{},"width":3,"height":3,"grid":[[0,0,1],[0,0,0],[1,0,1]],"__gsonClassName":"RuleGrid","id":"rule-6","priority":60,"successor":"rule-7","successorOffset":[0,0],"parameterType":"number"}'
+let prDSTestStr = '{"foo":"bar","pixelReactorString":"PR Text","ruleGridMap":{"MAIN":{"width":60,"height":40,"grid":[[1,0,0],[0,0,0]],"__gsonClassName":"ParametricGrid","id":"MAIN","parameterType":"number"},"rule-1":{"testSet":[1,2,4,5,3],"rotatedOffsets":{},"width":3,"height":3,"grid":[[0,1,0],[0,0,0]],"__gsonClassName":"RuleGrid","id":"rule-1","priority":10,"successor":"rule-2","successorOffset":[0,0],"parameterType":"number"},"rule-2":{"testSet":[1,2,4,5,3],"rotatedOffsets":{},"width":3,"height":3,"grid":[[0,1,0],[1,1,1],[0,1,0]],"__gsonClassName":"RuleGrid","id":"rule-2","priority":20,"successor":"rule-3","successorOffset":[-1,-1],"parameterType":"number"},"rule-3":{"testSet":[1,2,4,5,3],"rotatedOffsets":{},"width":5,"height":5,"grid":[[0,0,2,0,0],[0,0,1,0,0],[2,1,1,1,2],[0,0,1,0,0],[0,0,2,0,0]],"__gsonClassName":"RuleGrid","id":"rule-3","priority":100,"successor":"","successorOffset":[0,0],"parameterType":"number"},"rule-4":{"testSet":[1,2,4,5,3],"rotatedOffsets":{},"width":3,"height":1,"grid":[[1,2,0]],"__gsonClassName":"RuleGrid","id":"rule-4","priority":67,"successor":"rule-5","successorOffset":[0,0],"parameterType":"number"},"rule-5":{"testSet":[1,2,4,5,3],"rotatedOffsets":{},"width":3,"height":1,"grid":[[0,1,2]],"__gsonClassName":"RuleGrid","id":"rule-5","priority":100,"successor":"","successorOffset":[0,0],"parameterType":"number"},"rule-6":{"testSet":[1,2,4,5,3],"rotatedOffsets":{},"width":3,"height":3,"grid":[[0,0,1],[1,0,1]],"__gsonClassName":"RuleGrid","id":"rule-6","priority":60,"successor":"rule-7","successorOffset":[0,0],"parameterType":"number"},"rule-7":{"testSet":[1,2,4,5,3],"rotatedOffsets":{},"width":3,"height":3,"grid":[[1,0,1],[1,0,1]],"__gsonClassName":"RuleGrid","id":"rule-7","priority":100,"successor":"","successorOffset":[0,0],"parameterType":"number"}},"__gsonClassName":"PixelReactor"}';
+//let testDeserializeStr = '{"rotatedOffsets":{"r0":[0,0],"r90":[0,0],"r180":[0,0],"r270":[0,0]},"width":3,"height":3,"grid":[[0,1,0],[0,0,0]],"__gsonClassName":"RuleGrid","id":"rule-1","priority":10,"successor":"rule-2","successorOffset":[0,0],"parameterType":"number"}'
+let testDeserializeStr = '{"testSet":[1,2,4,5,3],"rotatedOffsets":{},"width":3,"height":3,"grid":[[0,0,1],[1,0,1]],"__gsonClassName":"RuleGrid","id":"rule-6","priority":60,"successor":"rule-7","successorOffset":[0,0],"parameterType":"number"}'
 let ruleGridFactory = (genericObj: any) => {
   let objKeys = new Set(Object.keys(genericObj));
   try {
     // pixelReactor: PixelReactor<T>, width: number, height: number, initialValue: T, id: string, grid?: T[][]
     let rg = new RuleGrid<number>(prRef.value, genericObj["width"],
-     genericObj["height"], 0, genericObj["id"], genericObj["grid"]);
-     return rg;
+      genericObj["height"], 0, genericObj["id"], genericObj["grid"]);
+    return rg;
   }
   catch (e) {
     let result = (e as Error).message;
@@ -223,9 +223,35 @@ let ruleGridFactory = (genericObj: any) => {
   }
 
 };
+
+let pixelReactorFactory = (genericObj: any) => {
+  let objKeys = new Set(Object.keys(genericObj));
+  try {
+    // pixelReactor: PixelReactor<T>, width: number, height: number, initialValue: T, id: string, grid?: T[][]
+    let pr = new PixelReactor<number>();
+    return pr;
+  }
+  catch (e) {
+    let result = (e as Error).message;
+    dbg(`Error during PixelReactor factory function: ${result}`, 0)
+  }
+
+};
+
+
+gson.setFactory("PixelReactor", pixelReactorFactory);
 gson.setFactory("RuleGrid", ruleGridFactory);
-let rg = gson.deserialize(testDeserializeStr);
-dbg(`RuleGrid: `, 0, rg);
+// let rg = gson.deserialize(testDeserializeStr);
+// rg = gson.deserializeObj(rg);
+// dbg(`RuleGrid: `, 0, rg);
+
+//let pr = gson.deserialize(prDSTestStr);
+let pr = JSON.parse(prDSTestStr);
+dbg(`PR deserialized: `, 0, pr);
+pr = gson.deserializeObj(pr);
+dbg(`PR merged: `, 0, pr);
+let parseTestStr = '{"ruleGridMap":{"MAIN":{"width":60,"height":40}}}';
+dbg(`parseTestStr: `, 0, JSON.parse(parseTestStr));
 
 
 </script>

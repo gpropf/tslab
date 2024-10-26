@@ -127,9 +127,38 @@ class Gson {
         let newObj = factoryFn(genericObj);
         return Gson.rectifyNewObject(genericObj, newObj);
       }
+    }
+  }
+
+  public deserializeObj(obj: any) {
+    let genericObjType = Gson.distinguishType(obj);
+    switch (genericObjType) {
+      case GsonTypes.OBJECT:
+        let objKeys = Object.keys(obj);
+        objKeys.forEach((key) => {
+          obj[key] = this.deserializeObj(obj[key]);
+        })
+        if (objKeys.find((obj) => obj === "__gsonClassName")) {
+          dbg(`__gsonClassName found: ${obj["__gsonClassName"]}`, 0)
+          let factoryFn = this.getFactory(obj["__gsonClassName"]);
+          if (factoryFn) {
+            let newObj = factoryFn(obj);
+            return Gson.rectifyNewObject(obj, newObj);
+          }
+        }
+        break;
+      case GsonTypes.ARRAY:
+        let newArr: any[] = [];
+        obj.forEach((element: any) => {
+          element = this.deserializeObj(element);
+          newArr.push(element);
+        });
+        return newArr;
+        break;
+      default:
+        return obj;
 
     }
-
   }
 }
 

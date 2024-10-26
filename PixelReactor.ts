@@ -73,7 +73,7 @@ function pushVal<K, V>(map: Map<K, V[]>, key: K, newval: V): Map<K, V[]> {
 //   console.log("TICK!") 
 // }
 
-export class PixelReactor<T> {
+export class PixelReactor<T> extends GsonClass{
 
   private _patternMap: Map<RawGridString, [string, string][]>
   private _ruleGridMap: Map<string, RuleGrid<T>>;
@@ -492,6 +492,7 @@ export class PixelReactor<T> {
   }
 
   constructor() {
+    super();
     this._ruleGridMap = new Map<string, RuleGrid<T>>;
     this._updateStacks = new Map<LocationString, [T, number][]>();
     this._patternMap = new Map<RawGridString, [string, string][]>();
@@ -499,6 +500,10 @@ export class PixelReactor<T> {
 
   public get ruleGridMap() {
     return this._ruleGridMap;
+  }
+
+  public set ruleGridMap(rgm) {
+    this._ruleGridMap = rgm;
   }
 
   public setRule(id: string, pgrid: RuleGrid<T>) {
@@ -525,15 +530,15 @@ export class PixelReactor<T> {
   //   return JSON.stringify(obj);
   // }
 
-  public toJSON(): Object {
+  public toJSON(): any {
     //console.log("PR.toJSON called")
     return {
 
       foo: "bar",
       pixelReactorString: "PR Text",
       //ruleGridMap: Object.fromEntries(this._ruleGridMap),
-      ruleGridMap: Gson.objectifyMap(this._ruleGridMap)
-
+      ruleGridMap: Gson.objectifyMap(this._ruleGridMap),
+      __gsonClassName: "PixelReactor",
       //mainGrid: this._ruleGridMap.get("MAIN")
     }
   }
@@ -606,7 +611,7 @@ export class ParametricGrid<T> extends GsonClass {
   private _id: string;
   private _width: number;
   private _height: number;
-  private _grid: T[][] = [];
+  protected _grid: T[][] = [];
 
   private _updateView: boolean = true;
 
@@ -908,19 +913,20 @@ export class RuleGrid<T> extends ParametricGrid<T> {
   }
 
   public toJSON(): Object {
+    let rotatedGridsObj = Gson.objectifyMap(this._rotatedGrids);
     return {
       testSet: Gson.setToArray(this.testSet),
       rotatedOffsets: Gson.objectifyMap(this._rotatedOffsets),
-      //rotatedGrids: Gson.objectifyMap(this.rotatedGrids),
+      //rotatedGrids: rotatedGridsObj,
       width: this.width,
       height: this.height,
-      grid: this.grid,
+      grid: this._grid,
       __gsonClassName: "RuleGrid",
       id: this.id,
       priority: this._priority,
       successor: (this._successor) ? this._successor.id : "",
       successorOffset: this._successorOffset,
-      parameterType: typeof (this.grid[0][0])
+      parameterType: typeof (this._grid[0][0])
     }
   }
 
