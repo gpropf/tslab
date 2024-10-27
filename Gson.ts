@@ -135,8 +135,8 @@ class Gson {
     switch (genericObjType) {
       case GsonTypes.OBJECT:
         let objKeys = Object.keys(obj);
-        
-        if (objKeys.find((obj) => obj === "__gsonClassName")) {
+
+        if (objKeys.find((objKey) => objKey === "__gsonClassName")) {
           dbg(`${tabs}:__gsonClassName found: ${obj["__gsonClassName"]}`, 0)
           let factoryFn = this.getFactory(obj["__gsonClassName"]);
           if (factoryFn) {
@@ -158,11 +158,72 @@ class Gson {
         });
         return newArr;
         break;
+      case GsonTypes.MAP:
+        obj.forEach((val: any, key: any) => {
+          (obj as Map<any, any>).set(key, this.deserializeObj(val));
+        });
+        return obj;
       default:
         return obj;
 
     }
   }
+
+  public traverseObj(obj: any, depth: number = 0) {
+    let genericObjType = Gson.distinguishType(obj);
+    let maxDepth = 0;
+    let checkMax = (d: number) => {
+      d > maxDepth? maxDepth = d: null;
+    };
+    let tabs = "\t".repeat(depth);
+    switch (genericObjType) {
+      case GsonTypes.OBJECT:
+        let objKeys = Object.keys(obj);
+
+        objKeys.forEach((key) => {          
+          dbg(`${tabs}OBJ[${key}] => `, 0);
+          if (key !== "grid" && key !== "__gsonClassName")
+            checkMax(this.traverseObj(obj[key], depth + 1));
+          dbg(`${tabs}maxDepth:${maxDepth}`, 0);
+        })
+        // if (objKeys.find((objkey) => objkey === "__gsonClassName")) {
+        //   dbg(`${tabs}:__gsonClassName found: ${obj["__gsonClassName"]}`, 0)
+        //   let factoryFn = this.getFactory(obj["__gsonClassName"]);
+        //   if (factoryFn) {
+        //     let newObj = factoryFn(obj);
+        //     return Gson.rectifyNewObject(obj, newObj);
+        //   }
+        // }
+
+        break;
+      case GsonTypes.ARRAY:
+        //let newArr: any[] = [];
+        let i = 0;
+        obj.forEach((element: any) => {
+          dbg(`${tabs}ARRAY[${i++}] => `, 0);
+          checkMax(this.traverseObj(element, depth + 1));
+        });
+        dbg(`${tabs}maxDepth:${maxDepth}`, 0);
+        break;
+      case GsonTypes.MAP:
+        obj.forEach((val: any, key: any) => {
+          dbg(`${tabs}MAP[${key}] => `, 0);
+          checkMax(this.traverseObj(val, depth + 1));
+        });
+        dbg(`${tabs}maxDepth:${maxDepth}`, 0);
+        break
+      default:
+        dbg(`${tabs}OBJ:${obj}`, 0);
+        dbg(`${tabs}maxDepth:${maxDepth}`, 0);
+        //this.traverseObj(obj);
+        break;
+
+    }
+    return maxDepth + 1;
+  }
+
+
+
 }
 
 // export interface TraversalFlags {

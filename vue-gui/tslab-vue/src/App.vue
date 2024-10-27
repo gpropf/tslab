@@ -264,6 +264,11 @@ function mergePR() {
    console.log('Merged PR: ', mergedPRVal);
 }
 
+function traverse() {
+  let revivedPRObjVal = revivedPRObj.value;
+  gson.traverseObj(revivedPRObjVal); 
+}
+
 </script>
 
 <template>
@@ -322,6 +327,7 @@ function mergePR() {
       <button @click="prJsonBuffer = JSON.stringify(prRef); console.log('stringify PR: ', prJsonBuffer);">stringify PR</button>
       <button @click="revivedPRObj = JSON.parse(prJsonBuffer); console.log('revivedPRObj: ', revivedPRObj);">Revive PR</button>
       <button @click="mergePR()">Merge PR</button>
+      <button @click="traverse()">Traverse PR</button>
     </div>
 
 
