@@ -537,7 +537,7 @@ export class PixelReactor<T> extends GsonClass{
       foo: "bar",
       pixelReactorString: "PR Text",
       //ruleGridMap: Object.fromEntries(this._ruleGridMap),
-      ruleGridMap: Gson.objectifyMap(this._ruleGridMap),
+      _ruleGridMap: Gson.objectifyMap(this._ruleGridMap),
       __gsonClassName: "PixelReactor",
       //mainGrid: this._ruleGridMap.get("MAIN")
     }

@@ -1,4 +1,4 @@
-import { isNull } from "util";
+//import { isNull } from "util";
 import type { RuleGrid } from "./PixelReactor";
 import { dbg } from "./Util"
 
@@ -130,27 +130,30 @@ class Gson {
     }
   }
 
-  public deserializeObj(obj: any) {
+  public deserializeObj(obj: any, tabs: string = "") {
     let genericObjType = Gson.distinguishType(obj);
     switch (genericObjType) {
       case GsonTypes.OBJECT:
         let objKeys = Object.keys(obj);
-        objKeys.forEach((key) => {
-          obj[key] = this.deserializeObj(obj[key]);
-        })
+        
         if (objKeys.find((obj) => obj === "__gsonClassName")) {
-          dbg(`__gsonClassName found: ${obj["__gsonClassName"]}`, 0)
+          dbg(`${tabs}:__gsonClassName found: ${obj["__gsonClassName"]}`, 0)
           let factoryFn = this.getFactory(obj["__gsonClassName"]);
           if (factoryFn) {
             let newObj = factoryFn(obj);
             return Gson.rectifyNewObject(obj, newObj);
           }
         }
+        else {
+          objKeys.forEach((key) => {
+            obj[key] = this.deserializeObj(obj[key]);
+          })
+        }
         break;
       case GsonTypes.ARRAY:
         let newArr: any[] = [];
         obj.forEach((element: any) => {
-          element = this.deserializeObj(element);
+          element = this.deserializeObj(element, tabs + "\t");
           newArr.push(element);
         });
         return newArr;
