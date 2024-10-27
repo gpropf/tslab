@@ -173,18 +173,21 @@ class Gson {
     let genericObjType = Gson.distinguishType(obj);
     let maxDepth = 0;
     let checkMax = (d: number) => {
-      d > maxDepth? maxDepth = d: null;
+      d > maxDepth ? maxDepth = d : null;
     };
     let tabs = "\t".repeat(depth);
     switch (genericObjType) {
       case GsonTypes.OBJECT:
         let objKeys = Object.keys(obj);
 
-        objKeys.forEach((key) => {          
+        objKeys.forEach((key) => {
           dbg(`${tabs}OBJ[${key}] => `, 0);
-          if (key !== "grid" && key !== "__gsonClassName")
+          if (key !== "grid")
             checkMax(this.traverseObj(obj[key], depth + 1));
-          dbg(`${tabs}maxDepth:${maxDepth}`, 0);
+          if (key === "__gsonClassName")
+            dbg(`${tabs}CLASS: ${obj["__gsonClassName"]}, maxDepth:${maxDepth}`, 0)
+          else
+            dbg(`${tabs}maxDepth:${maxDepth}`, 0);
         })
         // if (objKeys.find((objkey) => objkey === "__gsonClassName")) {
         //   dbg(`${tabs}:__gsonClassName found: ${obj["__gsonClassName"]}`, 0)
