@@ -562,6 +562,13 @@ public static fromJSON(jsonStr: string) {
     this._ruleGridMap.delete(id)
   }
 
+  public deleteAllRules() {
+    let ruleIds = this.getAllRuleIds();
+    ruleIds.forEach(id => {
+      this.deleteRule(id);
+    });
+  }
+
   // public serialize(): string {
   //   return this.serializeRules();
   // }
