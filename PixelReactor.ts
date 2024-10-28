@@ -569,12 +569,17 @@ public static fromJSON(jsonStr: string) {
     //console.log("PR.toJSON called")
     return {
 
-      foo: "bar",
-      pixelReactorString: "PR Text",
+      //foo: "bar",
+      //pixelReactorString: "PR Text",
       //ruleGridMap: Object.fromEntries(this._ruleGridMap),
       _ruleGridMap: Gson.objectifyMap(this._ruleGridMap),
       __gsonClassName: "PixelReactor",
-      _currentRuleIndex: this._currentRuleIndex
+      _currentRuleIndex: this._currentRuleIndex,
+      //_patternMap: Gson.objectifyMap(this._patternMap),
+      _iterationCount: this._iterationCount,
+      _updateView: this._updateView,
+      //_updateStacks: Gson.objectifyMap(this._updateStacks)
+
       //mainGrid: this._ruleGridMap.get("MAIN")
     }
   }
