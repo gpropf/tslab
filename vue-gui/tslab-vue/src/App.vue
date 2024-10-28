@@ -269,6 +269,13 @@ function prFromJSON() {
   let prFromJSON = PixelReactor.fromJSON(prJsonBuffer.value)
   
    console.log('prFromJSON: ', prFromJSON);
+   
+}
+
+function loadNewPR() {
+  let newPR = PixelReactor.fromJSON(loadJSONText.value);
+  Object.assign(prRef.value, newPR);
+  console.log('prFromJSON: ', prRef);
 }
 
 function traverse() {
@@ -283,7 +290,7 @@ function traverse() {
 //   }
 //   return value;
 // }
-
+const loadJSONText = ref("foo");
 
 </script>
 
@@ -312,7 +319,7 @@ function traverse() {
         <label for="recordingOn">Check to Record</label><br>
       </div>
       <div class="control-panel-child">
-        <textarea rows="8" cols="25">Placeholder text</textarea>
+        <textarea rows="8" cols="25" v-model="loadJSONText" >{{ loadJSONText }}</textarea>
       </div>
 
 
@@ -345,6 +352,7 @@ function traverse() {
       <button @click="mergePR()">Merge PR</button>
       <button @click="prFromJSON()">PR.fromJSON</button>
       <button @click="traverse()">Traverse PR</button>
+      <button @click="loadNewPR()">Load PR</button>
       <!-- <button @click="console.log('stringify with replacer: ', JSON.stringify(prRef, replacer));">stringify with replacer</button> -->
     </div>
 

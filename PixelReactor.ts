@@ -180,6 +180,12 @@ public static fromJSON(jsonStr: string) {
     let mergedRG = Gson.rectifyNewObject(ruleGenObj, pgrg);
     newPR.ruleGridMap.set(id, mergedRG);
   });
+  newPR.ruleGridMap.forEach((ruleGrid:any, id: string) => {
+    if (ruleGrid.successor) {
+      let rgSuccessor = newPR.ruleGridMap.get(ruleGrid.successor);
+      ruleGrid.successor = rgSuccessor;
+    }
+  });
   return newPR;
 }
 
