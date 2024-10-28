@@ -264,10 +264,26 @@ function mergePR() {
    console.log('Merged PR: ', mergedPRVal);
 }
 
+function prFromJSON() {
+  
+  let prFromJSON = PixelReactor.fromJSON(prJsonBuffer.value)
+  
+   console.log('prFromJSON: ', prFromJSON);
+}
+
 function traverse() {
   let revivedPRObjVal = revivedPRObj.value;
   gson.traverseObj(revivedPRObjVal); 
 }
+
+// function replacer(key, value) {
+//   // Filtering out properties
+//   if (key == "_ruleGridMap") {
+//     return Gson.objectifyMap(value);
+//   }
+//   return value;
+// }
+
 
 </script>
 
@@ -327,7 +343,9 @@ function traverse() {
       <button @click="prJsonBuffer = JSON.stringify(prRef); console.log('stringify PR: ', prJsonBuffer);">stringify PR</button>
       <button @click="revivedPRObj = JSON.parse(prJsonBuffer); console.log('revivedPRObj: ', revivedPRObj);">Revive PR</button>
       <button @click="mergePR()">Merge PR</button>
+      <button @click="prFromJSON()">PR.fromJSON</button>
       <button @click="traverse()">Traverse PR</button>
+      <!-- <button @click="console.log('stringify with replacer: ', JSON.stringify(prRef, replacer));">stringify with replacer</button> -->
     </div>
 
 

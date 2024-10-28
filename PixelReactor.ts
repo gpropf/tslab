@@ -149,6 +149,41 @@ export class PixelReactor<T> extends GsonClass{
     return this._running;
   }
 
+
+  public static pixelReactorFactory(genericObj: any) {
+    let objKeys = new Set(Object.keys(genericObj));
+    try {
+      // pixelReactor: PixelReactor<T>, width: number, height: number, initialValue: T, id: string, grid?: T[][]
+      let pr = new PixelReactor<number>();
+      return pr;
+    }
+    catch (e) {
+      let result = (e as Error).message;
+      dbg(`Error during PixelReactor factory function: ${result}`, 0)
+    }
+  
+  };
+
+public static fromJSON(jsonStr: string) {
+  let genericObj = JSON.parse(jsonStr);
+  let prObj = new PixelReactor<number>();
+  let newPR = Gson.rectifyNewObject(genericObj, prObj);
+  newPR.ruleGridMap.forEach((ruleGenObj:any, id: string) => {
+    let pgrg = null;
+    if (id == "MAIN") {
+      pgrg = ParametricGrid.parametricGridFactory(ruleGenObj, newPR);
+    }
+    else {
+      pgrg = RuleGrid.ruleGridFactory(ruleGenObj, newPR);
+    }
+    
+    let mergedRG = Gson.rectifyNewObject(ruleGenObj, pgrg);
+    newPR.ruleGridMap.set(id, mergedRG);
+  });
+  return newPR;
+}
+
+
   public gatherStats() {
     //let delayFunc = () => setTimeout(delayFunc, 300);
     let mainGrid = this.getRule("MAIN");
@@ -539,6 +574,7 @@ export class PixelReactor<T> extends GsonClass{
       //ruleGridMap: Object.fromEntries(this._ruleGridMap),
       _ruleGridMap: Gson.objectifyMap(this._ruleGridMap),
       __gsonClassName: "PixelReactor",
+      _currentRuleIndex: this._currentRuleIndex
       //mainGrid: this._ruleGridMap.get("MAIN")
     }
   }
@@ -670,6 +706,21 @@ export class ParametricGrid<T> extends GsonClass {
       this._grid = new Array(height).fill(undefined).map(
         () => new Array(width).fill(initialValue));
     }
+  }
+
+  public static parametricGridFactory(genericObj: any, pixelReactor: PixelReactor<number>) {
+    //let objKeys = new Set(Object.keys(genericObj));
+    try {
+      // pixelReactor: PixelReactor<T>, width: number, height: number, initialValue: T, id: string, grid?: T[][]
+      let rg = new ParametricGrid<number>(pixelReactor, genericObj["width"],
+        genericObj["height"], 0, genericObj["id"], genericObj["grid"]);
+      return rg;
+    }
+    catch (e) {
+      let result = (e as Error).message;
+      dbg(`Error during factory function: ${result}`, 0)
+    }
+  
   }
 
   public simpleMatchRawGrid(rawGrid: T[][], offsetX: number, offsetY: number,
@@ -911,6 +962,22 @@ export class RuleGrid<T> extends ParametricGrid<T> {
     //   dbg("r270: ", 3, this._rotatedOffsets.get("r270"))
     // }
   }
+
+
+  public static ruleGridFactory(genericObj: any, pixelReactor: PixelReactor<number>) {
+    let objKeys = new Set(Object.keys(genericObj));
+    try {
+      // pixelReactor: PixelReactor<T>, width: number, height: number, initialValue: T, id: string, grid?: T[][]
+      let rg = new RuleGrid<number>(pixelReactor, genericObj["width"],
+        genericObj["height"], 0, genericObj["id"], genericObj["grid"]);
+      return rg;
+    }
+    catch (e) {
+      let result = (e as Error).message;
+      dbg(`Error during factory function: ${result}`, 0)
+    }
+  
+  };
 
   public toJSON(): Object {
     let rotatedGridsObj = Gson.objectifyMap(this._rotatedGrids);
