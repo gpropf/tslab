@@ -81,7 +81,7 @@ export class PixelReactor<T> extends GsonClass {
   //public static readonly transformToPriorityOffsetMap = new Map<string, number>([["r0", 0], ["r90", 0], ["r180", 0], ["r270", 0]]);
   public static readonly transformToPriorityOffsetMap = new Map<string, number>([["r0", 0], ["r90", 2], ["r180", 4], ["r270", 6]]);
 
-  private _currentRuleIndex: number = 1;
+  private _currentRuleIndex: number = 0;
 
   private _updateStacks: Map<LocationString, [T, number][]>;
 
@@ -929,6 +929,7 @@ export class ParametricGrid<T> extends GsonClass {
 
   public toJSON(): any {
   return {
+    newPixels: this._newPixels,
     width: this._width,
     height: this._height,
     grid: this._grid,
@@ -1026,21 +1027,38 @@ export class RuleGrid<T> extends ParametricGrid<T> {
   };
 
   public toJSON(): Object {
-    let rotatedGridsObj = Gson.objectifyMap(this._rotatedGrids);
-    return {
+    //let rotatedGridsObj = Gson.objectifyMap(this._rotatedGrids);
+    let pgObj = super.toJSON();
+    let rgObj = {
       testSet: Gson.setToArray(this.testSet),
       rotatedOffsets: Gson.objectifyMap(this._rotatedOffsets),
       //rotatedGrids: rotatedGridsObj,
-      width: this.width,
-      height: this.height,
-      grid: this._grid,
+      // width: this.width,
+      // height: this.height,
+      // grid: this._grid,
       __gsonClassName: "RuleGrid",
-      id: this.id,
+      //id: this.id,
       priority: this._priority,
       successor: (this._successor) ? this._successor.id : "",
       successorOffset: this._successorOffset,
       parameterType: typeof (this._grid[0][0])
     }
+    Object.assign(pgObj, rgObj);
+    return pgObj;
+    // {
+    //   testSet: Gson.setToArray(this.testSet),
+    //   rotatedOffsets: Gson.objectifyMap(this._rotatedOffsets),
+    //   //rotatedGrids: rotatedGridsObj,
+    //   width: this.width,
+    //   height: this.height,
+    //   grid: this._grid,
+    //   __gsonClassName: "RuleGrid",
+    //   id: this.id,
+    //   priority: this._priority,
+    //   successor: (this._successor) ? this._successor.id : "",
+    //   successorOffset: this._successorOffset,
+    //   parameterType: typeof (this._grid[0][0])
+    // }
   }
 
 
