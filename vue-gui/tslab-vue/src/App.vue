@@ -76,32 +76,33 @@ let gson = new Gson()
  * @param inwidth 
  * @param inheight 
  */
-function createRuleGrid(inwidth: string, inheight: string) {
-  let existingRule = prRef.value.getRule(newRuleId.value);
-  if (existingRule != undefined) {
-    alert(`Rule id '${newRuleId.value}' is in use. Choose another id.`);
-    return;
-  }
+// function createRuleGrid(inwidth: string, inheight: string) {
+//   let existingRule = prRef.value.getRule(newRuleId.value);
+//   if (existingRule != undefined) {
+//     alert(`Rule id '${newRuleId.value}' is in use. Choose another id.`);
+//     return;
+//   }
 
-  let newRule = new RuleGrid(prRef.value, parseInt(inwidth), parseInt(inheight), 0, newRuleId.value);
-  prRef.value.setRule(newRuleId.value, newRule)
+//   let newRule = new RuleGrid(prRef.value, parseInt(inwidth), parseInt(inheight), 0, newRuleId.value);
+//   prRef.value.setRule(newRuleId.value, newRule)
+//   let createdRuleId = newRuleId.value;
 
-  let newRuleIndex = prRef.value.getNewRuleIndex();
-  newRuleId.value = `rule-${newRuleIndex}`
-
-}
+//   let newRuleIndex = prRef.value.getNewRuleIndex();
+//   newRuleId.value = `rule-${newRuleIndex}`
+//   return createdRuleId;
+// }
 
 /**
  * createTestRules: Creates the rules from the C++ implementation
  * 
  */
 function createTestRules() {
-  createRuleGrid("3", "3");
-  createRuleGrid("3", "3");
-  createRuleGrid("5", "5");
-  let rule1 = prRef.value.getRule("rule-1");
-  let rule2 = prRef.value.getRule("rule-2");
-  let rule3 = prRef.value.getRule("rule-3");
+  let rule1Id = prRef.value.createRuleGrid("3", "3");
+  let rule2Id = prRef.value.createRuleGrid("3", "3");
+  let rule3Id = prRef.value.createRuleGrid("5", "5");
+  let rule1 = prRef.value.getRule(rule1Id);
+  let rule2 = prRef.value.getRule(rule2Id);
+  let rule3 = prRef.value.getRule(rule3Id);
   let mainGrid = prRef.value.getRule("MAIN");
   if (rule1 && rule2 && rule3 && mainGrid) {
     rule1.priority = 10;
@@ -133,20 +134,20 @@ function createTestRules() {
  * Creates the rules from the original ClojureScript app.
  */
 function createTestRules2() {
-  createRuleGrid("3", "3");
-  createRuleGrid("3", "3");
-  createRuleGrid("5", "5");
-  createRuleGrid("3", "1");
-  createRuleGrid("3", "1");
-  createRuleGrid("3", "3");
-  createRuleGrid("3", "3");
-  let rule1 = prRef.value.getRule("rule-1");
-  let rule2 = prRef.value.getRule("rule-2");
-  let rule3 = prRef.value.getRule("rule-3");
-  let rule4 = prRef.value.getRule("rule-4");
-  let rule5 = prRef.value.getRule("rule-5");
-  let rule6 = prRef.value.getRule("rule-6");
-  let rule7 = prRef.value.getRule("rule-7");
+  let rule1Id = prRef.value.createRuleGrid("3", "3");
+  let rule2Id = prRef.value.createRuleGrid("3", "3");
+  let rule3Id = prRef.value.createRuleGrid("5", "5");
+  let rule4Id = prRef.value.createRuleGrid("3", "1");
+  let rule5Id = prRef.value.createRuleGrid("3", "1");
+  let rule6Id = prRef.value.createRuleGrid("3", "3");
+  let rule7Id = prRef.value.createRuleGrid("3", "3");
+  let rule1 = prRef.value.getRule(rule1Id);
+  let rule2 = prRef.value.getRule(rule2Id);
+  let rule3 = prRef.value.getRule(rule3Id);
+  let rule4 = prRef.value.getRule(rule4Id);
+  let rule5 = prRef.value.getRule(rule5Id);
+  let rule6 = prRef.value.getRule(rule6Id);
+  let rule7 = prRef.value.getRule(rule7Id);
   let mainGrid = prRef.value.getRule("MAIN");
   if (rule1 && rule2 && rule3 && rule4 && rule5 && rule6 && rule7 && mainGrid) {
 
