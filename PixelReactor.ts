@@ -749,75 +749,78 @@ export class ParametricGrid<T> extends GsonClass {
     }
   }
 
-  public copyOtherGridIntoThis(other: ParametricGrid<T> ): void {
-
+  public copyOtherGridIntoThis(other: ParametricGrid<T>): void {
+    for (let y = 0; y < other.height; y++) {
+      for (let x = 0; x < other.width; x++) {
+      }
+    }
   }
 
 
   public static parametricGridFactory(genericObj: any, pixelReactor: PixelReactor<number>) {
-  //let objKeys = new Set(Object.keys(genericObj));
-  try {
-    // pixelReactor: PixelReactor<T>, width: number, height: number, initialValue: T, id: string, grid?: T[][]
-    let rg = new ParametricGrid<number>(pixelReactor, genericObj["width"],
-      genericObj["height"], 0, genericObj["id"], genericObj["grid"]);
-    return rg;
-  }
-  catch (e) {
-    let result = (e as Error).message;
-    dbg(`Error during factory function: ${result}`, 0)
-  }
+    //let objKeys = new Set(Object.keys(genericObj));
+    try {
+      // pixelReactor: PixelReactor<T>, width: number, height: number, initialValue: T, id: string, grid?: T[][]
+      let rg = new ParametricGrid<number>(pixelReactor, genericObj["width"],
+        genericObj["height"], 0, genericObj["id"], genericObj["grid"]);
+      return rg;
+    }
+    catch (e) {
+      let result = (e as Error).message;
+      dbg(`Error during factory function: ${result}`, 0)
+    }
 
-}
+  }
 
   public simpleMatchRawGrid(rawGrid: T[][], offsetX: number, offsetY: number,
-  rawGridWidth: number, rawGridHeight: number): boolean {
-  //let y: number = 0;
-  for (let y = 0; y < rawGridHeight; y++) {
-    let thisY = y + offsetY;
-    //alert(y, thisY)
-    //let x: number = 0;
-    for (let x = 0; x < rawGridWidth; x++) {
-      let otherVal: T = rawGrid[y][x];
-      let thisX: any = x + offsetX;
-      let thisVec: Vec2d = [thisX, thisY];
-      thisVec = this.wrapCoordinates(thisVec);
-      let [wx, wy] = thisVec;
-      // if (this.grid === undefined) {
-      //   console.log("ERROR!!!: grid is undefined for ", [wx, wy])
-      // }
-      //else {
-      let thisVal = this.grid[wy][wx];
-      if (thisVal != otherVal) {
-        //console.log(`thisVal: ${thisVal}, otherVal: ${otherVal}. This loc: ${thisVec}, Other loc: ${[x, y]}`)
-        return false;
-        //}
-      }
-    }
-  }
-  return true;
-}
-
-  public simpleMatchAllTransforms(otherGrid: RuleGrid<T>) {
-  let otherGridTransformMap = otherGrid.rotatedGrids;
-  let matchesByTransform = new Map<string, Vec2d[]>();
-  otherGridTransformMap.forEach((transformedGrid: ParametricGrid<T>, transformKey: string) => {
-    let matches = []
-    let rawGrid: T[][] = transformedGrid.grid;
-    for (let y: number = 0; y < this._height; y++) {
-      for (let x: number = 0; x < this._width; x++) {
-        let match: boolean = this.simpleMatchRawGrid(rawGrid, x, y, transformedGrid.width, transformedGrid.height)
-        if (match) {
-          let matchLoc: Vec2d = [x, y]
-          matches.push(matchLoc);
-          // console.log(`Transform: ${transformKey}: ${matches}`)
+    rawGridWidth: number, rawGridHeight: number): boolean {
+    //let y: number = 0;
+    for (let y = 0; y < rawGridHeight; y++) {
+      let thisY = y + offsetY;
+      //alert(y, thisY)
+      //let x: number = 0;
+      for (let x = 0; x < rawGridWidth; x++) {
+        let otherVal: T = rawGrid[y][x];
+        let thisX: any = x + offsetX;
+        let thisVec: Vec2d = [thisX, thisY];
+        thisVec = this.wrapCoordinates(thisVec);
+        let [wx, wy] = thisVec;
+        // if (this.grid === undefined) {
+        //   console.log("ERROR!!!: grid is undefined for ", [wx, wy])
+        // }
+        //else {
+        let thisVal = this.grid[wy][wx];
+        if (thisVal != otherVal) {
+          //console.log(`thisVal: ${thisVal}, otherVal: ${otherVal}. This loc: ${thisVec}, Other loc: ${[x, y]}`)
+          return false;
+          //}
         }
       }
     }
-    // console.log(`Transform: ${transformKey}: ${matches}`);
-    matchesByTransform.set(transformKey, matches);
-  })
-  return matchesByTransform;
-}
+    return true;
+  }
+
+  public simpleMatchAllTransforms(otherGrid: RuleGrid<T>) {
+    let otherGridTransformMap = otherGrid.rotatedGrids;
+    let matchesByTransform = new Map<string, Vec2d[]>();
+    otherGridTransformMap.forEach((transformedGrid: ParametricGrid<T>, transformKey: string) => {
+      let matches = []
+      let rawGrid: T[][] = transformedGrid.grid;
+      for (let y: number = 0; y < this._height; y++) {
+        for (let x: number = 0; x < this._width; x++) {
+          let match: boolean = this.simpleMatchRawGrid(rawGrid, x, y, transformedGrid.width, transformedGrid.height)
+          if (match) {
+            let matchLoc: Vec2d = [x, y]
+            matches.push(matchLoc);
+            // console.log(`Transform: ${transformKey}: ${matches}`)
+          }
+        }
+      }
+      // console.log(`Transform: ${transformKey}: ${matches}`);
+      matchesByTransform.set(transformKey, matches);
+    })
+    return matchesByTransform;
+  }
 
   // public simpleMatchTransformedRule(otherGrid: RuleGrid<T>, offsetX: number, offsetY: number, ruleKey: string): boolean {
   //   let transformedGrid = otherGrid.getTransformedGrid(ruleKey);
@@ -828,66 +831,66 @@ export class ParametricGrid<T> extends GsonClass {
   // }
 
   public get newPixels() {
-  return this._newPixels;
-}
+    return this._newPixels;
+  }
 
   public set newPixels(np) {
-  this._newPixels = np;
-}
+    this._newPixels = np;
+  }
 
   public get id() {
-  return this._id;
-}
+    return this._id;
+  }
 
   public set id(id: string) {
-  this._id = id;
-}
+    this._id = id;
+  }
 
   public get width() {
-  return this._width;
-}
+    return this._width;
+  }
 
   public set width(w: number) {
-  this._width = w;
-}
+    this._width = w;
+  }
 
   public get height() {
-  return this._height;
-}
+    return this._height;
+  }
 
   public set height(h: number) {
-  this._height = h;
-}
+    this._height = h;
+  }
 
   public get grid() {
-  return this._grid;
-}
+    return this._grid;
+  }
 
   public set grid(g: T[][]) {
-  this._grid = g;
-}
+    this._grid = g;
+  }
 
   public setLocation(x: number, y: number, v: T) {
-  if (this._grid[y][x] == v) return;
-  if (this.id !== "MAIN") this._pixelReactor.dumpPatternMapAndMakeAllRulesDirty();
-  //this.dirty = true;
-  this._grid[y][x] = v;
-  this._newPixels.push([x, y, v]);
-  if (this._vueComponent && this.updateView) this._vueComponent.$forceUpdate();
-  //console.log("Location: ", x, ":", y)
-  //console.log("VC: ", this._vueComponent);
-}
+    if (this._grid[y][x] == v) return;
+    if (this.id !== "MAIN") this._pixelReactor.dumpPatternMapAndMakeAllRulesDirty();
+    //this.dirty = true;
+    this._grid[y][x] = v;
+    this._newPixels.push([x, y, v]);
+    if (this._vueComponent && this.updateView) this._vueComponent.$forceUpdate();
+    //console.log("Location: ", x, ":", y)
+    //console.log("VC: ", this._vueComponent);
+  }
 
   public getLocation(x: number, y: number): T {
-  let v = this._grid[y][x];
-  //console.log(`Location (${x},${y}) = ${v}`);
-  return v;
-}
+    let v = this._grid[y][x];
+    //console.log(`Location (${x},${y}) = ${v}`);
+    return v;
+  }
 
   public wrapCoordinates(inVec: Vec2d): Vec2d {
-  let [x, y] = inVec;
-  return [(x + this._width) % this._width, (y + this._height) % this._height]
-}
+    let [x, y] = inVec;
+    return [(x + this._width) % this._width, (y + this._height) % this._height]
+  }
 
   // public findMatches(otherGrid: ParametricGrid<T>): Vec2d[] {
   //   let matches: Vec2d[] = [];
@@ -928,16 +931,16 @@ export class ParametricGrid<T> extends GsonClass {
   // }
 
   public toJSON(): any {
-  return {
-    newPixels: this._newPixels,
-    width: this._width,
-    height: this._height,
-    grid: this._grid,
-    __gsonClassName: "ParametricGrid",
-    id: this._id,
-    parameterType: typeof (this._grid[0][0])
+    return {
+      newPixels: this._newPixels,
+      width: this._width,
+      height: this._height,
+      grid: this._grid,
+      __gsonClassName: "ParametricGrid",
+      id: this._id,
+      parameterType: typeof (this._grid[0][0])
+    }
   }
-}
 
   // public reviver(s: string) {
 

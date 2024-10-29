@@ -275,7 +275,7 @@ function prFromJSON() {
 
 function loadNewPR() {
   let newPR = PixelReactor.fromJSON(loadJSONText.value);
-  Object.assign(prRef.value, newPR);
+  Object.assign(prRef.value, newPR);  
   console.log('prFromJSON: ', prRef);
 }
 
