@@ -338,7 +338,7 @@ export class PixelReactor<T> extends GsonClass {
     console.log("ITER: ", this._iterationCount);
     this._updateStacks.clear();
     //this._patternMap.clear();
-    //this.dumpPatternMapAndMakeAllRulesDirty();
+    this.dumpPatternMapAndMakeAllRulesDirty();
     this.buildPatternMap();
     dbg("this._patternMap: ", 4, this._patternMap)
     let pattternHistograms = this.buildPatternHistograms(this._patternMap);
@@ -809,7 +809,8 @@ export class ParametricGrid<T> extends GsonClass {
   public copyOtherGridIntoThis(other: ParametricGrid<T>): void {
     for (let y = 0; y < other.height; y++) {
       for (let x = 0; x < other.width; x++) {
-        this._grid[y][x] = other.grid[y][x];
+        this.setLocation(x, y, other.grid[y][x]);
+        //this._grid[y][x] = other.grid[y][x];
       }
     }
     this._newPixels = other.newPixels;
