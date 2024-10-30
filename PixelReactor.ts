@@ -187,8 +187,59 @@ export class PixelReactor<T> extends GsonClass {
     return ruleId;
   }
 
+  public restoreFromJSON(jsonStr: string) {
+    let genericObj = JSON.parse(jsonStr);
+    console.log('PR in fromJSON: ', genericObj);
+    let mainGrid = this.getRule("MAIN");
+    let otherMainGrid = genericObj["_ruleGridMap"]["MAIN"];
+    if (mainGrid && otherMainGrid) {
+      mainGrid.copyOtherGridIntoThis(otherMainGrid);
+      console.log("Restored Main Grid: ", mainGrid)
+    }
+    let rulesFromJSON = genericObj["_ruleGridMap"]
+    let ruleKeys = this.getAllRuleIds2(rulesFromJSON);
+
+    //dbg("Rulenames found: ", 0, ruleKeys);
+    ruleKeys.forEach((key) => {
+      let ruleFromJSON = rulesFromJSON[key];
+      this.createRuleGrid(`${ruleFromJSON["width"]}`, `${ruleFromJSON["height"]}`, key);
+    });
+    ruleKeys.forEach((key) => {
+      let rule: RuleGrid<T> | undefined = this.getRule(key);
+
+      if (rule) {
+        let ruleFromJSON = rulesFromJSON[key];
+        rule.copyOtherGridIntoThis(ruleFromJSON);
+
+        let ruleFromJSONSuccessorId: string = ruleFromJSON["successor"];
+        if (ruleFromJSONSuccessorId) {
+          
+            let successor = this.getRule(ruleFromJSONSuccessorId);
+            if (successor) {
+              rule.successor = successor;
+              rule.successorOffset = ruleFromJSON["successorOffset"];
+              rule.priority = ruleFromJSON["priority"];
+              //rule.copyOtherGridIntoThis(ruleFromJSON);
+            }
+          
+        }
+      }
+
+    });
+
+    // this.ruleGridMap.forEach((ruleGrid: any, id: string) => {
+    //   if (ruleGrid.successor) {
+    //     let rgSuccessor = newPR.ruleGridMap.get(ruleGrid.successor);
+    //     ruleGrid.successor = rgSuccessor;
+    //   }
+    // });
+  }
+
+
   public static fromJSON(jsonStr: string) {
     let genericObj = JSON.parse(jsonStr);
+    console.log('PR in fromJSON: ', genericObj);
+
     let prObj = new PixelReactor<number>();
     let newPR = Gson.rectifyNewObject(genericObj, prObj);
     newPR.ruleGridMap.forEach((ruleGenObj: any, id: string) => {
@@ -626,6 +677,12 @@ export class PixelReactor<T> extends GsonClass {
     return ruleKeys.filter(key => key != "MAIN");
   }
 
+  public getAllRuleIds2(ruleGridMap: any) {
+    let ruleKeys: string[] = Object.keys(ruleGridMap)
+    //ruleKeys = ruleKeys.fil
+    return ruleKeys.filter(key => key != "MAIN");
+  }
+
   public getAllMatches() {
     let ruleKeys = this.getAllRuleIds();
     let mainGrid = this._ruleGridMap.get("MAIN");
@@ -752,8 +809,10 @@ export class ParametricGrid<T> extends GsonClass {
   public copyOtherGridIntoThis(other: ParametricGrid<T>): void {
     for (let y = 0; y < other.height; y++) {
       for (let x = 0; x < other.width; x++) {
+        this._grid[y][x] = other.grid[y][x];
       }
     }
+    this._newPixels = other.newPixels;
   }
 
 

@@ -275,8 +275,9 @@ function prFromJSON() {
 
 function loadNewPR() {
   let newPR = PixelReactor.fromJSON(loadJSONText.value);
-  Object.assign(prRef.value, newPR);  
-  console.log('prFromJSON: ', prRef);
+  //Object.assign(prRef.value, newPR);  
+  prRef.value.restoreFromJSON(loadJSONText.value);
+  //console.log('prFromJSON: ', newPR);
 }
 
 function traverse() {
@@ -328,7 +329,7 @@ const loadJSONText = ref("foo");
     </div>
 
     <div class="control-panel-child"> Mouse Location: {{ formatVector(mouseLocation) }}</div>
-    <button @click="createRuleGrid(pgwidth, pgheight)">New Grid</button>
+    <button @click="prRef.createRuleGrid(pgwidth, pgheight)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
 
     <button @click="prRef.iterate();">Single Step</button>
