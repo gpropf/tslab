@@ -292,7 +292,7 @@ function traverse() {
 //   }
 //   return value;
 // }
-const loadJSONText = ref("foo");
+const loadJSONText = ref("");
 
 </script>
 
@@ -337,10 +337,10 @@ const loadJSONText = ref("foo");
     <button @click="prRef.iterationCount = 0;">Zero Iteration Counter</button>
     <button @click="console.log('Clearing Main Grid'); prRef.clearMainGrid()">Clear Main Grid</button>
     <button @click="console.log('Toggling view updates'); prRef.toggleView()">Toggle View</button>
-    <button
+    <!-- <button
       @click="console.log('Gathering Stats'); prRef.gatherStats(); console.log(`msPerIter: ${prRef.msPerIter}`)">Get
       Stats</button>
-    <button @click="prRef.gatherRepeatedStats(200);">Get N Stats</button>
+    <button @click="prRef.gatherRepeatedStats(200);">Get N Stats</button> -->
     <div>
       <button @click="createTestRules()">Create Test Rules</button>
       <button @click="createTestRules2()">Create Test Rules 2</button>
@@ -351,10 +351,10 @@ const loadJSONText = ref("foo");
     <div>
       <!-- <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(prRef)))">Gson Serialize</button> -->
       <button @click="prJsonBuffer = JSON.stringify(prRef); console.log('stringify PR: ', prJsonBuffer);">stringify PR</button>
-      <button @click="revivedPRObj = JSON.parse(prJsonBuffer); console.log('revivedPRObj: ', revivedPRObj);">Revive PR</button>
+      <!-- <button @click="revivedPRObj = JSON.parse(prJsonBuffer); console.log('revivedPRObj: ', revivedPRObj);">Revive PR</button>
       <button @click="mergePR()">Merge PR</button>
       <button @click="prFromJSON()">PR.fromJSON</button>
-      <button @click="traverse()">Traverse PR</button>
+      <button @click="traverse()">Traverse PR</button> -->
       <button @click="loadNewPR()">Load PR</button>
       <!-- <button @click="console.log('stringify with replacer: ', JSON.stringify(prRef, replacer));">stringify with replacer</button> -->
     </div>
