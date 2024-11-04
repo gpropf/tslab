@@ -31,7 +31,7 @@ numberToColorMap.set(3, "#FF00FF");
 numberToColorMap.set(4, "#AA00AA");
 numberToColorMap.set(5, "#00AAFF");
 const numColors = numberToColorMap.size;
-//let rgm: Map<string, string> = new Map<string, string>();
+
 
 // Some helper functions for the grids.
 function vizFn(cellval: number) {
@@ -329,7 +329,7 @@ const loadJSONText = ref("");
     </div>
 
     <div class="control-panel-child"> Mouse Location: {{ formatVector(mouseLocation) }}</div>
-    <button @click="prRef.createRuleGrid(pgwidth, pgheight)">New Grid</button>
+    <button @click="prRef.createRuleGrid(pgwidth, pgheight, newRuleId)">New Grid</button>
     <button @click="mainGridKey++">Resize Main Grid</button>
 
     <button @click="prRef.iterate();">Single Step</button>
