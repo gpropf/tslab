@@ -169,6 +169,13 @@ export class PixelReactor<T> extends GsonClass {
     return `rule-${i}`
   }
 
+  /**
+   * Creates a new rule grid and fails if you try to reuse an id.
+   * @param inwidth 
+   * @param inheight 
+   * @param ruleId 
+   * @returns 
+   */
   public createRuleGrid(inwidth: string, inheight: string, ruleId: string = "") {
     if (ruleId === "") {
       let i: number = this.getNewRuleIndex();

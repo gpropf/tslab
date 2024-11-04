@@ -15,7 +15,7 @@ import { provide, ref } from 'vue'
 
 import LabelledInput from './components/LabelledInput.vue';
 import ParametricGridVC from './components/ParametricGridVC.vue';
-import { Gson, GsonClass } from "../../../Gson"
+//import { Gson, GsonClass } from "../../../Gson"
 
 import { dbg } from "../../../Util";
 
@@ -39,12 +39,17 @@ function vizFn(cellval: number) {
   let colorInfo: ColorInfo = { fillRGB: `${hexColor}`, strokeRGB: "#BBAABB" }; return colorInfo;
 }
 
+/**
+ * conversionFn: This function is passed as a parameter along with the onClickValue to
+ * components like SVGGrid. Its job is to convert onClickValue into the type T in ParametericGrid<T>.
+ * @param v 
+ */
 function conversionFn(v: string) {
   return parseInt(v);
 }
 // End helpers
 
-const newRuleId = ref("rule-1")
+const newRuleId = ref("")
 const onClickValue = ref("1")
 const mainGridName = ref("MAIN")
 const mainGridKey = ref(0);
@@ -56,41 +61,21 @@ const screenWidth = ref(600);
 const screenHeight = ref(400);
 const recordingStartIter = ref(0);
 const recordingEndIter = ref(100);
+const mainGridRef = ref<InstanceType<typeof ParametricGridVC>>();
+const prJsonBuffer = ref("");
+const loadJSONText = ref("");
+
 
 // Create main PR and load it into the store.
 let pixelReactor = new PixelReactor<number>();
 setPixelReactor(pixelReactor);
 let prRef = getPixelReactor();
 
-
 let mouseLocation = getMouseLocation();
 
 function formatVector(v: Vec2d) {
   return `< ${v[0]},${v[1]} >`
 }
-
-let gson = new Gson()
-
-/**
- * Creates a new rule grid and fails if you try to reuse an id.
- * @param inwidth 
- * @param inheight 
- */
-// function createRuleGrid(inwidth: string, inheight: string) {
-//   let existingRule = prRef.value.getRule(newRuleId.value);
-//   if (existingRule != undefined) {
-//     alert(`Rule id '${newRuleId.value}' is in use. Choose another id.`);
-//     return;
-//   }
-
-//   let newRule = new RuleGrid(prRef.value, parseInt(inwidth), parseInt(inheight), 0, newRuleId.value);
-//   prRef.value.setRule(newRuleId.value, newRule)
-//   let createdRuleId = newRuleId.value;
-
-//   let newRuleIndex = prRef.value.getNewRuleIndex();
-//   newRuleId.value = `rule-${newRuleIndex}`
-//   return createdRuleId;
-// }
 
 /**
  * createTestRules: Creates the rules from the C++ implementation
@@ -126,7 +111,6 @@ function createTestRules() {
     rule1.successor = rule2;
     rule2.successor = rule3;
     mainGrid.setLocation(30, 20, 1);
-
   }
 }
 
@@ -165,7 +149,7 @@ function createTestRules2() {
     rule3.setLocation(2, 1, 1);
     rule3.setLocation(2, 3, 1);
     rule3.setLocation(2, 2, 1);
-    //rule3.setLocation(0, 0, 1);
+
     rule3.setLocation(2, 0, 2);
     rule3.setLocation(4, 2, 2);
     rule3.setLocation(0, 2, 2);
@@ -187,112 +171,26 @@ function createTestRules2() {
     rule6.setLocation(2, 0, 1);
     rule6.setLocation(2, 2, 1);
     rule6.setLocation(0, 2, 1);
-
     rule6.successor = rule7;
 
     rule7.setLocation(0, 0, 1);
     rule7.setLocation(2, 0, 1);
     rule7.setLocation(2, 2, 1);
     rule7.setLocation(0, 2, 1);
-
     rule6.priority = 60;
-    //rule6.setLocation(2, 4, 2);
 
     mainGrid.setLocation(45, 30, 1);
   }
 }
 
-const mainGridRef = ref<InstanceType<typeof ParametricGridVC>>();
 
-let msPerIter = prRef.value.msPerIter;
-
-//const check=ref<boolean>(prRef.value.recordingEnabled);
-let prDSTestStr = JSON.stringify(prRef.value);
-//let testDeserializeStr = '{"rotatedOffsets":{"r0":[0,0],"r90":[0,0],"r180":[0,0],"r270":[0,0]},"width":3,"height":3,"grid":[[0,1,0],[0,0,0]],"__gsonClassName":"RuleGrid","id":"rule-1","priority":10,"successor":"rule-2","successorOffset":[0,0],"parameterType":"number"}'
-let testDeserializeStr = '{"testSet":[1,2,4,5,3],"rotatedOffsets":{},"width":3,"height":3,"grid":[[0,0,1],[1,0,1]],"__gsonClassName":"RuleGrid","id":"rule-6","priority":60,"successor":"rule-7","successorOffset":[0,0],"parameterType":"number"}'
-let ruleGridFactory = (genericObj: any) => {
-  let objKeys = new Set(Object.keys(genericObj));
-  try {
-    // pixelReactor: PixelReactor<T>, width: number, height: number, initialValue: T, id: string, grid?: T[][]
-    let rg = new RuleGrid<number>(prRef.value, genericObj["width"],
-      genericObj["height"], 0, genericObj["id"], genericObj["grid"]);
-    return rg;
-  }
-  catch (e) {
-    let result = (e as Error).message;
-    dbg(`Error during factory function: ${result}`, 0)
-  }
-
-};
-
-let pixelReactorFactory = (genericObj: any) => {
-  let objKeys = new Set(Object.keys(genericObj));
-  try {
-    // pixelReactor: PixelReactor<T>, width: number, height: number, initialValue: T, id: string, grid?: T[][]
-    let pr = new PixelReactor<number>();
-    return pr;
-  }
-  catch (e) {
-    let result = (e as Error).message;
-    dbg(`Error during PixelReactor factory function: ${result}`, 0)
-  }
-
-};
-
-
-gson.setFactory("PixelReactor", pixelReactorFactory);
-gson.setFactory("RuleGrid", ruleGridFactory);
-// let rg = gson.deserialize(testDeserializeStr);
-// rg = gson.deserializeObj(rg);
-// dbg(`RuleGrid: `, 0, rg);
-
-//let pr = gson.deserialize(prDSTestStr);
-// let pr = JSON.parse(prDSTestStr);
-// console.log(`PR deserialized: `, pr);
-// pr = gson.deserializeObj(pr);
-// dbg(`PR merged: `, 0, pr);
-// let parseTestStr = '{"ruleGridMap":{"MAIN":{"width":60,"height":40}}}';
-// dbg(`parseTestStr: `, 0, JSON.parse(testDeserializeStr));
-const prJsonBuffer = ref("");
-const revivedPRObj = ref({});
-
-const mergedPR = ref({});
-
-function mergePR() {
-  let revivedPRObjVal = revivedPRObj.value;
-  mergedPR.value = gson.deserializeObj(revivedPRObj.value);
-  let mergedPRVal = mergedPR.value;
-   console.log('Merged PR: ', mergedPRVal);
-}
-
-function prFromJSON() {
-  
-  let prFromJSON = PixelReactor.fromJSON(prJsonBuffer.value)
-  
-   console.log('prFromJSON: ', prFromJSON);
-   
-}
-
+/**
+ * Loads a new PR from whatever is found in the textarea.
+ */
 function loadNewPR() {
   let newPR = PixelReactor.fromJSON(loadJSONText.value);
-  //Object.assign(prRef.value, newPR);  
   prRef.value.restoreFromJSON(loadJSONText.value);
-  //console.log('prFromJSON: ', newPR);
 }
-
-function traverse() {
-  let revivedPRObjVal = revivedPRObj.value;
-  gson.traverseObj(revivedPRObjVal); 
-}
-
-// function replacer(key, value) {
-//   // Filtering out properties
-//   if (key == "_ruleGridMap") {
-//     return Gson.objectifyMap(value);
-//   }
-//   return value;
-// }
-const loadJSONText = ref("");
 
 </script>
 
@@ -321,7 +219,7 @@ const loadJSONText = ref("");
         <label for="recordingOn">Check to Record</label><br>
       </div>
       <div class="control-panel-child">
-        <textarea rows="8" cols="25" v-model="loadJSONText" >{{ loadJSONText }}</textarea>
+        <textarea rows="8" cols="25" v-model="loadJSONText">{{ loadJSONText }}</textarea>
       </div>
 
 
@@ -345,12 +243,12 @@ const loadJSONText = ref("");
       <button @click="createTestRules()">Create Test Rules</button>
       <button @click="createTestRules2()">Create Test Rules 2</button>
       <button @click="prRef.deleteAllRules();">Delete All Rules!</button>
-      
     </div>
 
     <div>
       <!-- <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(prRef)))">Gson Serialize</button> -->
-      <button @click="prJsonBuffer = JSON.stringify(prRef); console.log('stringify PR: ', prJsonBuffer);">stringify PR</button>
+      <button @click="prJsonBuffer = JSON.stringify(prRef); console.log('stringify PR: ', prJsonBuffer);">stringify
+        PR</button>
       <!-- <button @click="revivedPRObj = JSON.parse(prJsonBuffer); console.log('revivedPRObj: ', revivedPRObj);">Revive PR</button>
       <button @click="mergePR()">Merge PR</button>
       <button @click="prFromJSON()">PR.fromJSON</button>
@@ -370,8 +268,6 @@ const loadJSONText = ref("");
     <RuleList :pixelReactor="prRef" :screenWidth="150" :screenHeight="100" :vizFn="vizFn" :defaultValue="0"
       :onClickValue="onClickValue" :conversionFn="conversionFn"></RuleList>
 
-
-    <!-- <div id="dynamic_content" class="rules"></div> -->
   </div>
 </template>
 
