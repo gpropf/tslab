@@ -11,7 +11,7 @@ import RuleList from './components/RuleList.vue';
 import { type ColorInfo } from './components/ParametricGridVC.vue';
 import { createApp } from 'vue';
 
-import { provide, ref } from 'vue'
+import { provide, ref, onMounted, getCurrentInstance } from 'vue'
 
 import LabelledInput from './components/LabelledInput.vue';
 import ParametricGridVC from './components/ParametricGridVC.vue';
@@ -187,10 +187,26 @@ function createTestRules2() {
 /**
  * Loads a new PR from whatever is found in the textarea.
  */
-function loadNewPR() {
-  let newPR = PixelReactor.fromJSON(loadJSONText.value);
-  prRef.value.restoreFromJSON(loadJSONText.value);
+function loadNewPR(resizeOnly: boolean = false) {
+  //let newPR = PixelReactor.fromJSON(loadJSONText.value);
+  prRef.value.restoreFromJSON(loadJSONText.value, resizeOnly);
 }
+
+
+let vueComponent: any;
+
+function delayedLoad() {
+  setTimeout(() => {loadNewPR();}, 1000);
+}
+
+onMounted(() => {
+    // text content should be the same as current `count.value`
+    //console.log("SVGGrid mounted!")
+    const instance = getCurrentInstance();
+    vueComponent = instance?.proxy;
+    //console.log("VC (SVGGrid): ", props.prGrid.vueComponent);
+
+})
 
 </script>
 
@@ -199,9 +215,9 @@ function loadNewPR() {
     <h1>{{ title }}</h1>
     <div class="control-panel-container">
       <div class="control-panel-child">
-        <LabelledInput v-model:inputValue="mainGridWidth" id="main-grid-width-id" inputType="text"
+        <LabelledInput v-model:inputValue="prRef.mainGridWidth" id="main-grid-width-id" inputType="text"
           placeholder="Enter Main Grid Width" componentName="Main Grid Width" size="4" />
-        <LabelledInput v-model:inputValue="mainGridHeight" id="main-grid-height-id" inputType="text"
+        <LabelledInput v-model:inputValue="prRef.mainGridHeight" id="main-grid-height-id" inputType="text"
           placeholder="Enter Main Grid Height" componentName="Main Grid Height" size="4" />
         <LabelledInput v-model:inputValue="onClickValue" id="on-click-value-id" inputType="text"
           placeholder="Enter Color index number for grids" componentName="Color index" size="2" />
@@ -225,7 +241,7 @@ function loadNewPR() {
 
     <div class="control-panel-child"> Mouse Location: {{ formatVector(mouseLocation) }}</div>
     <button @click="prRef.createRuleGrid(pgwidth, pgheight, newRuleId)">New Grid</button>
-    <button @click="mainGridKey++">Resize Main Grid</button>
+    <button @click="prRef.mainGridKey++;">Resize Main Grid</button>
 
     <button @click="prRef.iterate();">Single Step</button>
     <button @click="prRef.toggleRun();">Toggle Run</button>
@@ -250,7 +266,13 @@ function loadNewPR() {
       <button @click="mergePR()">Merge PR</button>
       <button @click="prFromJSON()">PR.fromJSON</button>
       <button @click="traverse()">Traverse PR</button> -->
+
+
+
+      
       <button @click="loadNewPR()">Load PR</button>
+      <button @click="loadNewPR(true)">Load PR (resize)</button>
+      <button @click="loadNewPR(true); delayedLoad();">Load PR (resize & load)</button>
       <!-- <button @click="console.log('stringify with replacer: ', JSON.stringify(prRef, replacer));">stringify with replacer</button> -->
     </div>
 
@@ -258,8 +280,8 @@ function loadNewPR() {
     <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
       placeholder="Enter Id string for new rule" componentName="New Rule Id" size="20" />
 
-    <ParametricGridVC :key="mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
-      :width="parseInt(mainGridWidth)" :height="parseInt(mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
+    <ParametricGridVC :key="prRef.mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
+      :width="parseInt(prRef.mainGridWidth)" :height="parseInt(prRef.mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
       :onClickValue="onClickValue" :conversionFn="conversionFn" :id="mainGridName" ref="mainGridRef" />
 
     <RuleList :pixelReactor="prRef" :screenWidth="150" :screenHeight="100" :vizFn="vizFn" :defaultValue="0"

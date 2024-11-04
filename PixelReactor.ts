@@ -91,6 +91,36 @@ export class PixelReactor<T> extends GsonClass {
 
   private _msPerIters: number[] = [];
 
+  private _mainGridWidth: number = 60;
+
+  private _mainGridHeight: number = 40;
+
+  private _mainGridKey: number = 0;
+
+  public set mainGridKey(v: number) {
+    this._mainGridKey = v;
+  }
+
+  public get mainGridKey(): number {
+    return this._mainGridKey;
+  }
+
+  public get mainGridWidth(): number {
+    return this._mainGridWidth;
+  }
+
+  public set mainGridWidth(v: number) {
+    this._mainGridWidth = v;
+  }
+
+  public get mainGridHeight(): number {
+    return this._mainGridHeight;
+  }
+
+  public set mainGridHeight(v: number) {
+    this._mainGridHeight = v;
+  }
+
   public get msPerIter() {
     return this._msPerIter;
   }
@@ -194,15 +224,34 @@ export class PixelReactor<T> extends GsonClass {
     return ruleId;
   }
 
-  public restoreFromJSON(jsonStr: string) {
+  public restoreFromJSON(jsonStr: string, resizeOnly: boolean = false) {
     let genericObj = JSON.parse(jsonStr);
     console.log('PR in fromJSON: ', genericObj);
     let mainGrid = this.getRule("MAIN");
     let otherMainGrid = genericObj["_ruleGridMap"]["MAIN"];
+
+    this.mainGridWidth = otherMainGrid.width;
+    this.mainGridHeight = otherMainGrid.height;
+
+    if (resizeOnly) {
+      this.mainGridKey++;
+      return;
+    }
+    //this.mainGridKey++;
+
+    //mainGrid = this.getRule("MAIN");
+
+
     if (mainGrid && otherMainGrid) {
+      // if (mainGrid.width != otherMainGrid.width || mainGrid.height != otherMainGrid.height) {
+      //   this.mainGridKey++;
+      //   mainGrid = this.getRule("MAIN");
+      // }
+      // if (mainGrid)
       mainGrid.copyOtherGridIntoThis(otherMainGrid);
       console.log("Restored Main Grid: ", mainGrid)
     }
+    this.iterationCount = genericObj["_iterationCount"]
     let rulesFromJSON = genericObj["_ruleGridMap"]
     let ruleKeys = this.getAllRuleIds2(rulesFromJSON);
 
@@ -220,15 +269,15 @@ export class PixelReactor<T> extends GsonClass {
 
         let ruleFromJSONSuccessorId: string = ruleFromJSON["successor"];
         if (ruleFromJSONSuccessorId) {
-          
-            let successor = this.getRule(ruleFromJSONSuccessorId);
-            if (successor) {
-              rule.successor = successor;
-              rule.successorOffset = ruleFromJSON["successorOffset"];
-              rule.priority = ruleFromJSON["priority"];
-              //rule.copyOtherGridIntoThis(ruleFromJSON);
-            }
-          
+
+          let successor = this.getRule(ruleFromJSONSuccessorId);
+          if (successor) {
+            rule.successor = successor;
+            rule.successorOffset = ruleFromJSON["successorOffset"];
+            rule.priority = ruleFromJSON["priority"];
+            //rule.copyOtherGridIntoThis(ruleFromJSON);
+          }
+
         }
       }
 
@@ -322,7 +371,7 @@ export class PixelReactor<T> extends GsonClass {
       this._msPerIter = duration / this.iterationCount;
       this._msPerIters.push(this._msPerIter);
       this.showStats();
-      this.iterationCount = 0;
+      //this.iterationCount = 0;
     }
     // else {
     //   clearInterval(this._runMethodId);

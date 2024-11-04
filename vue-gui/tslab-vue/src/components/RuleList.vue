@@ -57,7 +57,7 @@ const notMainGridIds = computed(() => {
   <div class="rules">
     <div v-for="[id, rule] in props.pixelReactor.ruleGridMap" :key="id">
       <div v-if="id != 'MAIN'">
-        ID: {{ id }} Rule.id = {{ rule.id }}
+        ID: {{ id }}
         <LabelledInput v-model:inputValue="rule.priority" id="rule-grid-priority" inputType="text"
           placeholder="Enter priority for rule" componentName="Rule Priority" size="3" labelClass="medium" />
         <span>id: {{ rule.id }}</span><button @click="prRef.deleteRule(rule.id)">Delete Rule</button>
