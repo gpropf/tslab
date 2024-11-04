@@ -221,9 +221,6 @@ function loadNewPR() {
       <div class="control-panel-child">
         <textarea rows="8" cols="25" v-model="loadJSONText">{{ loadJSONText }}</textarea>
       </div>
-
-
-
     </div>
 
     <div class="control-panel-child"> Mouse Location: {{ formatVector(mouseLocation) }}</div>
