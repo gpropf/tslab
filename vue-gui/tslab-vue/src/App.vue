@@ -230,8 +230,8 @@ function loadNewPR() {
     <button @click="prRef.iterate();">Single Step</button>
     <button @click="prRef.toggleRun();">Toggle Run</button>
     <button @click="prRef.iterationCount = 0;">Zero Iteration Counter</button>
-    <button @click="console.log('Clearing Main Grid'); prRef.clearMainGrid()">Clear Main Grid</button>
-    <button @click="console.log('Toggling view updates'); prRef.toggleView()">Toggle View</button>
+    <button @click="dbg('Clearing Main Grid', 0); prRef.clearMainGrid()">Clear Main Grid</button>
+    <button @click="dbg('Toggling view updates', 0); prRef.toggleView()">Toggle View</button>
     <!-- <button
       @click="console.log('Gathering Stats'); prRef.gatherStats(); console.log(`msPerIter: ${prRef.msPerIter}`)">Get
       Stats</button>
