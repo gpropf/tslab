@@ -46,16 +46,36 @@ function changeOffset(rule: RuleGrid<any>) {
 
 const ids = ref(Array.from(props.pixelReactor.ruleGridMap.keys()));
 
-const notMainGridIds = computed(() => {
-  return ids.value.filter((id) => id != "MAIN");
-})
+// const notMainGridIds = computed(() => {
+//   return ids.value.filter((id) => id != "MAIN");
+// })
 
+// const filteredGridMap = ref(new Map<string, RuleGrid<any>>());
+// ids.value.forEach((id) => {
+//   if (id != "MAIN") {
+//     let rule = props.pixelReactor.ruleGridMap.get(id);
+//     if (rule)
+//       filteredGridMap.value.set(id, rule);
+//   }
+// })
+
+function filterGridMap(gridMap: Map<string, RuleGrid<any>>) {
+  let filteredGridMap: Map<string, RuleGrid<any>> = new Map<string, RuleGrid<any>>();
+  gridMap.forEach((rule: RuleGrid<any>, id: string) => {
+    if (id != "MAIN") {
+      filteredGridMap.set(id, rule);
+    }
+  });
+  return filteredGridMap;
+}
+
+//props.pixelReactor.ruleGridMap.get()
 
 </script>
 
 <template>
   <div class="rules">
-    <div v-for="[id, rule] in props.pixelReactor.ruleGridMap" :key="id">
+    <div v-for="[id, rule] in filterGridMap(props.pixelReactor.ruleGridMap)" :key="id">
       <div v-if="id != 'MAIN'">
         ID: {{ id }}
         <LabelledInput v-model:inputValue="rule.priority" id="rule-grid-priority" inputType="text"
