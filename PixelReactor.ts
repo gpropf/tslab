@@ -407,6 +407,7 @@ export class PixelReactor<T> extends GsonClass {
         return
       }
       this._iterationCount++;
+      //let pixelsToCheck = this.buildListOfAllPixels(pattternHistograms, mainGrid.width, mainGrid.height);
       let pixelsToCheck = this.buildListOfPixelsToCheckForEachNewPixel(pattternHistograms, mainGrid);
       dbg('Pixels2Check: ', 2, pixelsToCheck)
       let matchesByRuleAndTransformID = this.matchUniquePatternsForNewPixels(pixelsToCheck, this._patternMap)
@@ -468,6 +469,22 @@ export class PixelReactor<T> extends GsonClass {
       }
     }
     return valueHistogram;
+  }
+
+  public buildListOfAllPixels(patternHistograms: Map<RawGridString, Map<T, Vec2d[]>>,
+    width: number, height: number): Map<RawGridString, Vec2d[]> {
+    let pixelsToCheck: Vec2d[] = [];
+    let pixelsToCheckByPattern = new Map<RawGridString, Vec2d[]>();
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        let pixel: Vec2d = [x, y];
+        pixelsToCheck.push(pixel);
+      }
+    }
+    patternHistograms.forEach((histogram: Map<T, Vec2d[]>, patternString: RawGridString) => {
+      pixelsToCheckByPattern.set(patternString, pixelsToCheck);
+    });
+    return pixelsToCheckByPattern;
   }
 
   public buildListOfPixelsToCheckForEachNewPixel(patternHistograms: Map<RawGridString, Map<T, Vec2d[]>>,
@@ -987,7 +1004,7 @@ export class ParametricGrid<T> extends GsonClass {
   }
 
   public setLocation(x: number, y: number, v: T) {
-    if (this._grid[y][x] == v) return;
+    //if (this._grid[y][x] == v) return;
     if (this.id !== "MAIN") this._pixelReactor.dumpPatternMapAndMakeAllRulesDirty();
     //this.dirty = true;
     this._grid[y][x] = v;
