@@ -270,8 +270,8 @@ onMounted(() => {
 
 
       
-      <button @click="loadNewPR()">Load PR</button>
-      <button @click="loadNewPR(true)">Load PR (resize)</button>
+      <!-- <button @click="loadNewPR()">Load PR</button>
+      <button @click="loadNewPR(true)">Load PR (resize)</button> -->
       <button @click="loadNewPR(true); delayedLoad();">Load PR (resize & load)</button>
       <!-- <button @click="console.log('stringify with replacer: ', JSON.stringify(prRef, replacer));">stringify with replacer</button> -->
     </div>
