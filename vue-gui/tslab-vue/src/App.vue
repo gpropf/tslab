@@ -248,9 +248,9 @@ onMounted(() => {
       </div>
     </div>
     <div class="control-panel-container">
-    <div class="control-panel-child"> Mouse Location: {{ formatVector(mouseLocation) }}</div>
-    <div class="control-panel-child"> Iteration Count: {{ prRef.iterationCount }}</div>
-</div>
+      <div class="control-panel-child"> Mouse Location: {{ formatVector(mouseLocation) }}</div>
+      <div class="control-panel-child"> Iteration Count: {{ prRef.iterationCount }}</div>
+    </div>
 
 
 
@@ -280,14 +280,32 @@ onMounted(() => {
           :defaultValue="0" :onClickValue="onClickValue" :conversionFn="conversionFn" :id="mainGridName"
           ref="mainGridRef" />
       </div>
-      <div class="control-panel-child">
-        <button @click="prRef.iterate();">Single Step</button>
-        <button @click="prRef.toggleRun();">Toggle Run</button>
-        <button @click="prRef.iterationCount = 0;">Zero Iteration Counter</button>
-        <button @click="dbg('Clearing Main Grid', 0); prRef.clearMainGrid()">Clear Main Grid</button>
-        <button @click="dbg('Toggling view updates', 0); prRef.toggleView()">Toggle View</button>
+      <div class="control-panel-child" style="display: flex; flex-direction: column;">
+        <div class="control-panel-child">
+          <button @click="prRef.iterate();">Single Step</button>
+          <button @click="prRef.toggleRun();">Toggle Run</button>
+          <button @click="prRef.iterationCount = 0;">Zero Iteration Counter</button>
+        </div>
+        <div class="control-panel-child" style="display: flex; flex-direction: row;">
+          Palette: <br/>
+          <div v-for="[id, color] in numberToColorMap" :key="id">
+            <input type="radio" id="color" name="color" :value="id">
+
+          </div>
+          
+         
+        
+        </div>
+
+
+        <div class="control-panel-child" style="flex-direction: column;">
+          <button @click="dbg('Clearing Main Grid', 0); prRef.clearMainGrid()">Clear Main Grid</button>
+          <button @click="dbg('Toggling view updates', 0); prRef.toggleView()">Toggle View</button>
+        </div>
+
 
       </div>
+
     </div>
 
 
@@ -321,6 +339,14 @@ export default {
 
 .control-panel-child {
   flex: 1;
+  border: 2px solid rgb(120, 131, 233);
+  padding: 5px;
+  margin-right: 5px;
+}
+
+.control-panel-vertical-child {
+  display: flex;
+  flex-direction: column;
   border: 2px solid rgb(120, 131, 233);
   padding: 5px;
   margin-right: 5px;
