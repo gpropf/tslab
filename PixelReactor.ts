@@ -391,7 +391,7 @@ export class PixelReactor<T> extends GsonClass {
   }
 
   public iterate() {
-    console.log("ITER: ", this._iterationCount);
+    //console.log("ITER: ", this._iterationCount);
     this._updateStacks.clear();
     //this._patternMap.clear();
     this.dumpPatternMapAndMakeAllRulesDirty();

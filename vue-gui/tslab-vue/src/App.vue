@@ -247,9 +247,10 @@ onMounted(() => {
         <button @click="loadNewPR(true); delayedLoad();">Load PR (resize & load)</button>
       </div>
     </div>
-
+    <div class="control-panel-container">
     <div class="control-panel-child"> Mouse Location: {{ formatVector(mouseLocation) }}</div>
-
+    <div class="control-panel-child"> Iteration Count: {{ prRef.iterationCount }}</div>
+</div>
 
 
 
