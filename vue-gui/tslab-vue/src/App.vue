@@ -196,15 +196,15 @@ function loadNewPR(resizeOnly: boolean = false) {
 let vueComponent: any;
 
 function delayedLoad() {
-  setTimeout(() => {loadNewPR();}, 1000);
+  setTimeout(() => { loadNewPR(); }, 1000);
 }
 
 onMounted(() => {
-    // text content should be the same as current `count.value`
-    //console.log("SVGGrid mounted!")
-    const instance = getCurrentInstance();
-    vueComponent = instance?.proxy;
-    //console.log("VC (SVGGrid): ", props.prGrid.vueComponent);
+  // text content should be the same as current `count.value`
+  //console.log("SVGGrid mounted!")
+  const instance = getCurrentInstance();
+  vueComponent = instance?.proxy;
+  //console.log("VC (SVGGrid): ", props.prGrid.vueComponent);
 
 })
 
@@ -219,12 +219,16 @@ onMounted(() => {
           placeholder="Enter Main Grid Width" componentName="Main Grid Width" size="4" />
         <LabelledInput v-model:inputValue="prRef.mainGridHeight" id="main-grid-height-id" inputType="text"
           placeholder="Enter Main Grid Height" componentName="Main Grid Height" size="4" />
+        <button @click="prRef.mainGridKey++;">Resize Main Grid</button>
+      </div>
+      <div class="control-panel-child">
         <LabelledInput v-model:inputValue="onClickValue" id="on-click-value-id" inputType="text"
           placeholder="Enter Color index number for grids" componentName="Color index" size="2" />
         <LabelledInput v-model:inputValue="pgwidth" id="rule-grid-width" inputType="text"
           placeholder="Enter width for rulegrid" componentName="Rulegrid Width" size="4" />
         <LabelledInput v-model:inputValue="pgheight" id="rule-grid-height" inputType="text"
           placeholder="Enter height for rulegrid" componentName="Rulegrid Height" size="4" />
+        <button @click="prRef.createRuleGrid(pgwidth, pgheight, newRuleId)">New Grid</button>
       </div>
       <div class="control-panel-child">
         <LabelledInput v-model:inputValue="recordingStartIter" id="recording-start-iter" inputType="text"
@@ -233,21 +237,22 @@ onMounted(() => {
           placeholder="Recording Ending Iteration" componentName="Recording Ending Iteration" size="4" />
         <input type="checkbox" id="recordingOn" name="recordingOn" value="recording" v-model="prRef.recordingEnabled">
         <label for="recordingOn">Check to Record</label><br>
+
       </div>
       <div class="control-panel-child">
         <textarea rows="8" cols="25" v-model="loadJSONText">{{ loadJSONText }}</textarea>
+        <button @click="prJsonBuffer = JSON.stringify(prRef); console.log('stringify PR: ', prJsonBuffer);">stringify
+          PR</button>
+
+        <button @click="loadNewPR(true); delayedLoad();">Load PR (resize & load)</button>
       </div>
     </div>
 
     <div class="control-panel-child"> Mouse Location: {{ formatVector(mouseLocation) }}</div>
-    <button @click="prRef.createRuleGrid(pgwidth, pgheight, newRuleId)">New Grid</button>
-    <button @click="prRef.mainGridKey++;">Resize Main Grid</button>
 
-    <button @click="prRef.iterate();">Single Step</button>
-    <button @click="prRef.toggleRun();">Toggle Run</button>
-    <button @click="prRef.iterationCount = 0;">Zero Iteration Counter</button>
-    <button @click="dbg('Clearing Main Grid', 0); prRef.clearMainGrid()">Clear Main Grid</button>
-    <button @click="dbg('Toggling view updates', 0); prRef.toggleView()">Toggle View</button>
+
+
+
     <!-- <button
       @click="console.log('Gathering Stats'); prRef.gatherStats(); console.log(`msPerIter: ${prRef.msPerIter}`)">Get
       Stats</button>
@@ -260,29 +265,30 @@ onMounted(() => {
 
     <div>
       <!-- <button @click="console.log('Gson(PR): ', JSON.stringify(gson.serialize(prRef)))">Gson Serialize</button> -->
-      <button @click="prJsonBuffer = JSON.stringify(prRef); console.log('stringify PR: ', prJsonBuffer);">stringify
-        PR</button>
-      <!-- <button @click="revivedPRObj = JSON.parse(prJsonBuffer); console.log('revivedPRObj: ', revivedPRObj);">Revive PR</button>
-      <button @click="mergePR()">Merge PR</button>
-      <button @click="prFromJSON()">PR.fromJSON</button>
-      <button @click="traverse()">Traverse PR</button> -->
 
-
-
-      
-      <!-- <button @click="loadNewPR()">Load PR</button>
-      <button @click="loadNewPR(true)">Load PR (resize)</button> -->
-      <button @click="loadNewPR(true); delayedLoad();">Load PR (resize & load)</button>
       <!-- <button @click="console.log('stringify with replacer: ', JSON.stringify(prRef, replacer));">stringify with replacer</button> -->
     </div>
+    <div class="control-panel-container">
+      <div class="control-panel-child">
 
+        <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
+          placeholder="Enter Id string for new rule" componentName="New Rule Id" size="20" />
 
-    <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
-      placeholder="Enter Id string for new rule" componentName="New Rule Id" size="20" />
+        <ParametricGridVC :key="prRef.mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
+          :width="parseInt(prRef.mainGridWidth)" :height="parseInt(prRef.mainGridHeight)" :vizFn="vizFn"
+          :defaultValue="0" :onClickValue="onClickValue" :conversionFn="conversionFn" :id="mainGridName"
+          ref="mainGridRef" />
+      </div>
+      <div class="control-panel-child">
+        <button @click="prRef.iterate();">Single Step</button>
+        <button @click="prRef.toggleRun();">Toggle Run</button>
+        <button @click="prRef.iterationCount = 0;">Zero Iteration Counter</button>
+        <button @click="dbg('Clearing Main Grid', 0); prRef.clearMainGrid()">Clear Main Grid</button>
+        <button @click="dbg('Toggling view updates', 0); prRef.toggleView()">Toggle View</button>
 
-    <ParametricGridVC :key="prRef.mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
-      :width="parseInt(prRef.mainGridWidth)" :height="parseInt(prRef.mainGridHeight)" :vizFn="vizFn" :defaultValue="0"
-      :onClickValue="onClickValue" :conversionFn="conversionFn" :id="mainGridName" ref="mainGridRef" />
+      </div>
+    </div>
+
 
     <RuleList :pixelReactor="prRef" :screenWidth="150" :screenHeight="100" :vizFn="vizFn" :defaultValue="0"
       :onClickValue="onClickValue" :conversionFn="conversionFn"></RuleList>
