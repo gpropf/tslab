@@ -163,7 +163,7 @@ export class PixelReactor<T> extends GsonClass {
 
   public set recordingEnabled(b: boolean) {
     this._recordingEnabled = b;
-    dbg(`Checked: ${this._recordingEnabled}`, 0)
+    dbg(`Recording Enabled: ${this._recordingEnabled}`, 0)
   }
 
   public get recordingEnabled() {
