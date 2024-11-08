@@ -288,8 +288,8 @@ onMounted(() => {
         </div>
         <div class="control-panel-child" style="display: flex; flex-direction: row;">
           Palette: <br/>
-          <div v-for="[id, color] in numberToColorMap" :key="id">
-            <input type="radio" id="color" name="color" :value="id">
+          <div class="palette-radio-button" v-for="[id, color] in numberToColorMap" :key="id" :style="{ backgroundColor: numberToColorMap.get(id) }">
+            <input v-model="onClickValue" type="radio" id="color" name="color" :value="id"> {{ id }}
 
           </div>
           
@@ -333,6 +333,11 @@ export default {
 
 
 <style>
+
+.palette-radio-button {
+  padding: 10px;
+}
+
 .control-panel-container {
   display: flex;
 }
