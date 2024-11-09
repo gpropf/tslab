@@ -182,7 +182,6 @@ export class PixelReactor<T> extends GsonClass {
     return this._priorityAsc;
   }
 
-
   public toggleView() {
     this.updateView = !this.updateView;
   }
@@ -213,6 +212,10 @@ export class PixelReactor<T> extends GsonClass {
     return this._running;
   }
 
+  private _paletteMap = new Map<number, string>();
+  
+
+// Main methods follow -=-=-=-=-
 
   public static pixelReactorFactory(genericObj: any) {
     let objKeys = new Set(Object.keys(genericObj));
@@ -285,8 +288,11 @@ export class PixelReactor<T> extends GsonClass {
       mainGrid.copyOtherGridIntoThis(otherMainGrid);
       console.log("Restored Main Grid: ", mainGrid)
     }
-    this.iterationCount = genericObj["_iterationCount"]
-    let rulesFromJSON = genericObj["_ruleGridMap"]
+    this.iterationCount = genericObj["_iterationCount"];
+    this.colorAsc = genericObj["_colorAsc"];
+    this.priorityAsc = genericObj["_priorityAsc"];
+    this.useTieBreaker = genericObj["_useTieBreaker"];
+    let rulesFromJSON = genericObj["_ruleGridMap"];
     let ruleKeys = this.getAllRuleIds2(rulesFromJSON);
 
     //dbg("Rulenames found: ", 0, ruleKeys);
@@ -722,6 +728,12 @@ export class PixelReactor<T> extends GsonClass {
     this._ruleGridMap = new Map<string, RuleGrid<T>>;
     this._updateStacks = new Map<LocationString, [T, number][]>();
     this._patternMap = new Map<RawGridString, [string, string][]>();
+    this._paletteMap.set(0, "#000000");
+    this._paletteMap.set(1, "#00FF00");
+    this._paletteMap.set(2, "#00AA00");
+    this._paletteMap.set(3, "#FF00FF");
+    this._paletteMap.set(4, "#AA00AA");
+    this._paletteMap.set(5, "#00AAFF");
   }
 
   public get ruleGridMap() {
@@ -776,6 +788,10 @@ export class PixelReactor<T> extends GsonClass {
       //_patternMap: Gson.objectifyMap(this._patternMap),
       _iterationCount: this._iterationCount,
       _updateView: this._updateView,
+      _colorAsc: this._colorAsc,
+      _priorityAsc: this._priorityAsc,
+      _useTieBreaker: this._useTieBreaker,
+      _paletteMap: Gson.objectifyMap(this._paletteMap)
       //_updateStacks: Gson.objectifyMap(this._updateStacks)
 
       //mainGrid: this._ruleGridMap.get("MAIN")
