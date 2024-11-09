@@ -160,9 +160,9 @@ export class PixelReactor<T> extends GsonClass {
     return this._useTieBreaker;
   }
 
-  private _colorAsc: boolean = true;
+  private _colorAsc: number = 0;
 
-  public set colorAsc(b: boolean) {
+  public set colorAsc(b: number) {
     this._colorAsc = b;
     dbg(`Color Ascending: ${this._colorAsc}`, 0)
   }
@@ -606,10 +606,10 @@ export class PixelReactor<T> extends GsonClass {
   public sortUpdateStacks() {
     this._updateStacks.forEach((updatePixels: [T, number][]) => {
       updatePixels.sort((a: [T, number], b: [T, number]) => {
-        if (a[1] == b[1]) {
+        if (this.useTieBreaker && a[1] == b[1]) {
           let aclr: any = a[0]
           let bclr: any = b[0]
-          return (bclr - aclr);
+          return (PixelReactor.prioritySortFns[this.colorAsc](aclr,bclr));
         }
         return (PixelReactor.prioritySortFns[this.priorityAsc](a[1],b[1]))
       })

@@ -295,16 +295,14 @@ onMounted(() => {
 
         </div>
         <div class="control-panel-child" style="display: flex; flex-direction: row;">
-
-          <label for="use-tie-breaker"> Use tie-breaker
-            <input type="checkbox" id="use-tie-breaker" v-model="prRef.useTieBreaker">
-
-          </label>
           <label for="color-asc-t"> Color Sort Ascending
-            <input v-model="prRef.colorAsc" type="radio" id="color-asc-t" name="color-asc" value="true">
+            <input v-model="prRef.colorAsc" type="radio" id="color-asc-t" name="color-asc" value="0">
           </label>
           <label for="color-asc-f"> Color Sort Descending
-            <input v-model="prRef.colorAsc" type="radio" id="color-asc-f" name="color-asc" value="false">
+            <input v-model="prRef.colorAsc" type="radio" id="color-asc-f" name="color-asc" value="1">
+          </label>
+          <label for="use-tie-breaker"> Use tie-breaker
+            <input type="checkbox" id="use-tie-breaker" v-model="prRef.useTieBreaker">
           </label>
         </div>
         <div class="control-panel-child" style="display: flex; flex-direction: row;">
