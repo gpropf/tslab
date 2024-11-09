@@ -290,8 +290,15 @@ onMounted(() => {
           Palette: <br/>
           <div class="palette-radio-button" v-for="[id, color] in numberToColorMap" :key="id" :style="{ backgroundColor: numberToColorMap.get(id) }">
             <input v-model="onClickValue" type="radio" id="color" name="color" :value="id"> {{ id }}
-
           </div>
+          
+        </div>
+        <div class="control-panel-child" style="display: flex; flex-direction: row;">
+          
+          <label for="use-tie-breaker"> Use tie-breaker
+            <input type="checkbox" id="use-tie-breaker" v-model="prRef.useTieBreaker">
+
+          </label>
           
          
         

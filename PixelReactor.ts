@@ -149,6 +149,17 @@ export class PixelReactor<T> extends GsonClass {
     return this._updateView;
   }
 
+  private _useTieBreaker: boolean = true;
+
+  public set useTieBreaker(b: boolean) {
+    this._useTieBreaker = b;
+    dbg(`Tie Breaker Enabled: ${this._useTieBreaker}`, 0)
+  }
+
+  public get useTieBreaker() {
+    return this._useTieBreaker;
+  }
+
   public toggleView() {
     this.updateView = !this.updateView;
   }
@@ -566,7 +577,7 @@ export class PixelReactor<T> extends GsonClass {
   }
 
   public sortUpdateStacks() {
-    this._updateStacks.forEach((updatePixels: [T, number][], locationString: LocationString) => {
+    this._updateStacks.forEach((updatePixels: [T, number][]) => {
       updatePixels.sort((a: [T, number], b: [T, number]) => {
         if (a[1] == b[1]) {
           let anum: any = a[0]
