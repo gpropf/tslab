@@ -171,7 +171,7 @@ export class PixelReactor<T> extends GsonClass {
     return this._colorAsc;
   }
 
-  private _priorityAsc: number = 1;
+  private _priorityAsc: number = 0;
 
   public set priorityAsc(i: number) {
     this._priorityAsc = i;

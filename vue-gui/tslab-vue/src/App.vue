@@ -309,10 +309,10 @@ onMounted(() => {
         </div>
         <div class="control-panel-child" style="display: flex; flex-direction: row;">
           <label for="priority-asc-t"> Priority Sort Ascending
-            <input v-model="prRef.priorityAsc" type="radio" id="priority-asc-t" name="priority-asc" value="1">
+            <input v-model="prRef.priorityAsc" type="radio" id="priority-asc-t" name="priority-asc" value="0">
           </label>
           <label for="priority-asc-f"> Priority Sort Descending
-            <input v-model="prRef.priorityAsc" type="radio" id="priority-asc-f" name="priority-asc" value="0">
+            <input v-model="prRef.priorityAsc" type="radio" id="priority-asc-f" name="priority-asc" value="1">
           </label>
         </div>
 
