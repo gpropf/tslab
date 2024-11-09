@@ -214,6 +214,13 @@ export class PixelReactor<T> extends GsonClass {
 
   private _paletteMap = new Map<number, string>();
   
+  public get paletteMap() {
+    return this._paletteMap;
+  }
+
+  public set paletteMap(pm: Map<number, string>) {
+    this._paletteMap = pm;
+  }
 
 // Main methods follow -=-=-=-=-
 
@@ -267,8 +274,10 @@ export class PixelReactor<T> extends GsonClass {
     let mainGrid = this.getRule("MAIN");
     let otherMainGrid = genericObj["_ruleGridMap"]["MAIN"];
 
+
     this.mainGridWidth = otherMainGrid.width;
     this.mainGridHeight = otherMainGrid.height;
+    this.paletteMap = Gson.mapifyObject(genericObj["_paletteMap"], true);
 
     if (resizeOnly) {
       this.mainGridKey++;
@@ -322,13 +331,6 @@ export class PixelReactor<T> extends GsonClass {
       }
 
     });
-
-    // this.ruleGridMap.forEach((ruleGrid: any, id: string) => {
-    //   if (ruleGrid.successor) {
-    //     let rgSuccessor = newPR.ruleGridMap.get(ruleGrid.successor);
-    //     ruleGrid.successor = rgSuccessor;
-    //   }
-    // });
   }
 
 

@@ -23,19 +23,19 @@ import { dbg } from "../../../Util";
 const rules = useRulesStore();
 const { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor } = rules;
 
-const numberToColorMap = new Map();
-numberToColorMap.set(0, "#000000");
-numberToColorMap.set(1, "#00FF00");
-numberToColorMap.set(2, "#00AA00");
-numberToColorMap.set(3, "#FF00FF");
-numberToColorMap.set(4, "#AA00AA");
-numberToColorMap.set(5, "#00AAFF");
-const numColors = numberToColorMap.size;
+// const numberToColorMap = new Map();
+// numberToColorMap.set(0, "#000000");
+// numberToColorMap.set(1, "#00FF00");
+// numberToColorMap.set(2, "#00AA00");
+// numberToColorMap.set(3, "#FF00FF");
+// numberToColorMap.set(4, "#AA00AA");
+// numberToColorMap.set(5, "#00AAFF");
+// const numColors = numberToColorMap.size;
 
 
 // Some helper functions for the grids.
-function vizFn(cellval: number) {
-  let hexColor = numberToColorMap.get(cellval % numColors);
+function vizFn(cellval: number) { 
+  let hexColor = prRef.value.paletteMap.get(cellval % prRef.value.paletteMap.size);  
   let colorInfo: ColorInfo = { fillRGB: `${hexColor}`, strokeRGB: "#BBAABB" }; return colorInfo;
 }
 
@@ -288,8 +288,8 @@ onMounted(() => {
         </div>
         <div class="control-panel-child" style="display: flex; flex-direction: row;">
           Palette: <br />
-          <div class="palette-radio-button" v-for="[id, color] in numberToColorMap" :key="id"
-            :style="{ backgroundColor: numberToColorMap.get(id) }">
+          <div class="palette-radio-button" v-for="[id, color] in prRef.paletteMap" :key="id"
+            :style="{ backgroundColor: prRef.paletteMap.get(id) }">
             <input v-model="onClickValue" type="radio" id="color" name="color" :value="id"> {{ id }}
           </div>
 

@@ -79,9 +79,12 @@ class Gson {
     }
   }
 
-  public static mapifyObject(m: any) {
+  public static mapifyObject<KeyType, ValueType>(m: any, keysAreNumbers = false) {
     let map = new Map<any, any>();
-    let keys = Object.keys(m)
+    let keys: number[] | string[] = Object.keys(m)
+    if (keysAreNumbers) {
+      keys = keys.map(key => parseInt(key));
+    }
     keys.forEach((key) => {
       map.set(key, m[key]);
     });
