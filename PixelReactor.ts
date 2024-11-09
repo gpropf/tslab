@@ -160,6 +160,29 @@ export class PixelReactor<T> extends GsonClass {
     return this._useTieBreaker;
   }
 
+  private _colorAsc: boolean = true;
+
+  public set colorAsc(b: boolean) {
+    this._colorAsc = b;
+    dbg(`Color Ascending: ${this._colorAsc}`, 0)
+  }
+
+  public get colorAsc() {
+    return this._colorAsc;
+  }
+
+  private _priorityAsc: number = 1;
+
+  public set priorityAsc(i: number) {
+    this._priorityAsc = i;
+    dbg(`Priority Ascending: ${this._priorityAsc}`, 0)
+  }
+
+  public get priorityAsc() {
+    return this._priorityAsc;
+  }
+
+
   public toggleView() {
     this.updateView = !this.updateView;
   }
@@ -576,6 +599,10 @@ export class PixelReactor<T> extends GsonClass {
 
   }
 
+  public static prioritySortFns = [
+    (a: number, b: number) => { return a - b }, (a: number, b: number) => { return b - a }
+  ]
+
   public sortUpdateStacks() {
     this._updateStacks.forEach((updatePixels: [T, number][]) => {
       updatePixels.sort((a: [T, number], b: [T, number]) => {
@@ -584,7 +611,7 @@ export class PixelReactor<T> extends GsonClass {
           let bclr: any = b[0]
           return (bclr - aclr);
         }
-        return (a[1] - b[1])
+        return (PixelReactor.prioritySortFns[this.priorityAsc](a[1],b[1]))
       })
     })
   }
