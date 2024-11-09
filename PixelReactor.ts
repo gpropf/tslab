@@ -580,9 +580,9 @@ export class PixelReactor<T> extends GsonClass {
     this._updateStacks.forEach((updatePixels: [T, number][]) => {
       updatePixels.sort((a: [T, number], b: [T, number]) => {
         if (a[1] == b[1]) {
-          let anum: any = a[0]
-          let bnum: any = b[0]
-          return (bnum - anum);
+          let aclr: any = a[0]
+          let bclr: any = b[0]
+          return (bclr - aclr);
         }
         return (a[1] - b[1])
       })
