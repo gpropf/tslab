@@ -505,7 +505,7 @@ export class PixelReactor<T> extends GsonClass {
       this.writeUpdatePixels()
 
       if (this._recordingEnabled &&
-        this._iterationCount >= this._recordingStartFrame &&
+        this._iterationCount > this._recordingStartFrame &&
         this._iterationCount <= this._recordingEndFrame) {
         let thisFrame = new Frame(mainGrid.newDifferencePixels,
           mainGrid.width, mainGrid.height, this._iterationCount);
