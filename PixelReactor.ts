@@ -443,7 +443,7 @@ export class PixelReactor<T> extends GsonClass {
     dbg('PH: ', 2, pattternHistograms);
     let mainGrid = this.getRule("MAIN");
     if (mainGrid) {
-      if (mainGrid.newPixels.length == 0) {
+      if (mainGrid.newPixels.length == 0 || mainGrid.newDifferencePixels.length == 0) {
         if (this.running) this.toggleRun();
         else this.running = false;
         return
@@ -628,6 +628,8 @@ export class PixelReactor<T> extends GsonClass {
     let mainGrid = this.getRule("MAIN")
     if (mainGrid === undefined) return
     mainGrid.newPixels = [];
+    mainGrid.newDifferencePixels = [];
+  
 
     this._updateStacks.forEach((updatePixels: [T, number][], locationString: LocationString) => {
       let topPixel = updatePixels[updatePixels.length - 1];
@@ -710,7 +712,8 @@ export class PixelReactor<T> extends GsonClass {
         mainGrid.setLocation(x, y, 0 as T);
       }
     }
-    mainGrid.newPixels = []
+    mainGrid.newPixels = [];
+    mainGrid.newDifferencePixels = [];
   }
 
   public getNewRuleIndex(): number {
@@ -871,6 +874,8 @@ export class TransformMatrix {
 export class ParametricGrid<T> extends GsonClass {
 
   private _newPixels: Pixel<T>[] = [];
+
+  private _newDifferencePixels: Pixel<T>[] = [];
   private _id: string;
   private _width: number;
   private _height: number;
@@ -943,6 +948,7 @@ export class ParametricGrid<T> extends GsonClass {
       }
     }
     this._newPixels = other.newPixels;
+    this._newDifferencePixels = other.newDifferencePixels;
   }
 
 
@@ -1027,6 +1033,14 @@ export class ParametricGrid<T> extends GsonClass {
     this._newPixels = np;
   }
 
+  public get newDifferencePixels() {
+    return this._newDifferencePixels;
+  }
+
+  public set newDifferencePixels(np) {
+    this._newDifferencePixels = np;
+  }
+
   public get id() {
     return this._id;
   }
@@ -1060,7 +1074,9 @@ export class ParametricGrid<T> extends GsonClass {
   }
 
   public setLocation(x: number, y: number, v: T) {
-    //if (this._grid[y][x] == v) return;
+    if (this._grid[y][x] != v) {
+      this._newDifferencePixels.push([x, y, v]);
+    }
     if (this.id !== "MAIN") this._pixelReactor.dumpPatternMapAndMakeAllRulesDirty();
     //this.dirty = true;
     this._grid[y][x] = v;
@@ -1122,6 +1138,7 @@ export class ParametricGrid<T> extends GsonClass {
   public toJSON(): any {
     return {
       newPixels: this._newPixels,
+      newDifferencePixels: this._newDifferencePixels,
       width: this._width,
       height: this._height,
       grid: this._grid,
