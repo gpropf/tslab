@@ -953,7 +953,7 @@ export class ParametricGrid<T> extends GsonClass {
 
   protected _dirty: boolean = false;
 
-  protected _pixelReactor: PixelReactor<T>;
+  protected _pixelReactor: PixelReactor<T> | null;
 
   public set dirty(b: boolean) {
     this._dirty = b;
@@ -988,7 +988,7 @@ export class ParametricGrid<T> extends GsonClass {
     return this._vueComponent;
   }
 
-  constructor(pixelReactor: PixelReactor<T>, width: number, height: number, initialValue: T, id: string, grid?: T[][]) {
+  constructor(pixelReactor: PixelReactor<T> | null, width: number, height: number, initialValue: T, id: string, grid?: T[][]) {
     super();
     this._pixelReactor = pixelReactor;
     this.testSet = new Set<number>([1, 2, 4, 5, 4, 3, 2, 2, 1]);
@@ -1145,7 +1145,7 @@ export class ParametricGrid<T> extends GsonClass {
     if (this._grid[y][x] != v) {
       this._newDifferencePixels.push([x, y, v]);
     }
-    if (this.id !== "MAIN") this._pixelReactor.dumpPatternMapAndMakeAllRulesDirty();
+    if (this.id !== "MAIN" && this._pixelReactor) this._pixelReactor.dumpPatternMapAndMakeAllRulesDirty();
     //this.dirty = true;
     this._grid[y][x] = v;
     this._newPixels.push([x, y, v]);

@@ -63,7 +63,7 @@ const recordingStartIter = ref(0);
 const recordingEndIter = ref(100);
 const mainGridRef = ref<InstanceType<typeof ParametricGridVC>>();
 const prJsonBuffer = ref("");
-const loadJSONText = ref("");
+const inOutBuffer = ref("");
 
 
 // Create main PR and load it into the store.
@@ -187,9 +187,8 @@ function createTestRules2() {
 /**
  * Loads a new PR from whatever is found in the textarea.
  */
-function loadNewPR(resizeOnly: boolean = false) {
-  //let newPR = PixelReactor.fromJSON(loadJSONText.value);
-  prRef.value.restoreFromJSON(loadJSONText.value, resizeOnly);
+function loadNewPR(resizeOnly: boolean = false) {  
+  prRef.value.restoreFromJSON(inOutBuffer.value, resizeOnly);
 }
 
 
@@ -240,9 +239,10 @@ onMounted(() => {
 
       </div>
       <div class="control-panel-child">
-        <textarea rows="8" cols="25" v-model="loadJSONText">{{ loadJSONText }}</textarea>
-        <button @click="prJsonBuffer = JSON.stringify(prRef); console.log('stringify PR: ', prJsonBuffer);">stringify
+        <textarea rows="8" cols="25" v-model="inOutBuffer">{{ inOutBuffer }}</textarea>
+        <button @click="inOutBuffer = JSON.stringify(prRef); console.log('stringify PR: ', prJsonBuffer);">stringify
           PR</button>
+          <button @click="inOutBuffer = JSON.stringify(prRef.recordedFrames); console.log('Frames: ', inOutBuffer);">Output Frames</button>
 
         <button @click="loadNewPR(true); delayedLoad();">Load PR (resize & load)</button>
       </div>

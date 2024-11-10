@@ -13,6 +13,7 @@
   ],
   "compilerOptions": {
     "types": ["node"],
+    "target": "ES2018",
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
