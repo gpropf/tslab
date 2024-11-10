@@ -222,6 +222,30 @@ export class PixelReactor<T> extends GsonClass {
     this._paletteMap = pm;
   }
 
+  private _recordingStartFrame: number;
+
+  private _recordingEndFrame: number;
+
+  public get recordingStartFrame(): number {
+    return this._recordingStartFrame;
+  }
+
+  public set recordingStartFrame(v: number) {
+    this._recordingStartFrame = v;
+    dbg(`recordingStartFrame: ${this.recordingStartFrame}`, 0)
+  }
+
+  public get recordingEndFrame(): number {
+    return this._recordingEndFrame;
+    
+  }
+
+  public set recordingEndFrame(v: number) {
+    this._recordingEndFrame = v;
+    dbg(`recordingEndFrame: ${this.recordingEndFrame}`, 0)
+  }
+
+
 // Main methods follow -=-=-=-=-
 
   public static pixelReactorFactory(genericObj: any) {
@@ -739,6 +763,9 @@ export class PixelReactor<T> extends GsonClass {
     this._paletteMap.set(3, "#FF00FF");
     this._paletteMap.set(4, "#AA00AA");
     this._paletteMap.set(5, "#00AAFF");
+    this._recordingStartFrame = 0;
+    this._recordingEndFrame = 200;
+
   }
 
   public get ruleGridMap() {
@@ -869,6 +896,20 @@ export class TransformMatrix {
   }
   // For left handed coordinate system we use [cos(t), sin(-t); sin(t), cos(-t)] 
   // for the rotation part.
+}
+
+export class Frame<T> {
+  private _newDifferencePixels: Pixel<T>[];
+  private _width: number;
+  private _height: number;
+  private _frameNumber: number;
+
+  constructor(newDifferencePixels: Pixel<T>[], width: number, height: number, frameNumber:number) {
+    this._width = width;
+    this._height = height;
+    this._frameNumber = frameNumber;
+    this._newDifferencePixels = newDifferencePixels;
+  }
 }
 
 export class ParametricGrid<T> extends GsonClass {

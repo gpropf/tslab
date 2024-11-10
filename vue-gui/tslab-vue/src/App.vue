@@ -231,9 +231,9 @@ onMounted(() => {
         <button @click="prRef.createRuleGrid(pgwidth, pgheight, newRuleId)">New Grid</button>
       </div>
       <div class="control-panel-child">
-        <LabelledInput v-model:inputValue="recordingStartIter" id="recording-start-iter" inputType="text"
+        <LabelledInput v-model:inputValue="prRef.recordingStartFrame" id="recording-start-iter" inputType="text"
           placeholder="Recording Start Iteration" componentName="Recording Start Iteration" size="4" />
-        <LabelledInput v-model:inputValue="recordingEndIter" id="recording-end-iter" inputType="text"
+        <LabelledInput v-model:inputValue="prRef.recordingEndFrame" id="recording-end-iter" inputType="text"
           placeholder="Recording Ending Iteration" componentName="Recording Ending Iteration" size="4" />
         <input type="checkbox" id="recordingOn" name="recordingOn" value="recording" v-model="prRef.recordingEnabled">
         <label for="recordingOn">Check to Record</label><br>
