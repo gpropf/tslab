@@ -213,7 +213,7 @@ export class PixelReactor<T> extends GsonClass {
   }
 
   private _paletteMap = new Map<number, string>();
-  
+
   public get paletteMap() {
     return this._paletteMap;
   }
@@ -237,7 +237,7 @@ export class PixelReactor<T> extends GsonClass {
 
   public get recordingEndFrame(): number {
     return this._recordingEndFrame;
-    
+
   }
 
   public set recordingEndFrame(v: number) {
@@ -245,8 +245,17 @@ export class PixelReactor<T> extends GsonClass {
     dbg(`recordingEndFrame: ${this.recordingEndFrame}`, 0)
   }
 
+  private _recordedFrames: Frame<T>[];
 
-// Main methods follow -=-=-=-=-
+  public get recordedFrames(): Frame<T>[] {
+    return this._recordedFrames;
+  }
+
+  public set recordedFrames(v: Frame<T>[]) {
+    this._recordedFrames = v;
+    dbg(`_recordedFrames: `, 0, this.recordedFrames)
+  }
+  // Main methods follow -=-=-=-=-
 
   public static pixelReactorFactory(genericObj: any) {
     let objKeys = new Set(Object.keys(genericObj));
@@ -457,6 +466,7 @@ export class PixelReactor<T> extends GsonClass {
   }
 
   public iterate() {
+
     //console.log("ITER: ", this._iterationCount);
     this._updateStacks.clear();
     //this._patternMap.clear();
@@ -467,6 +477,12 @@ export class PixelReactor<T> extends GsonClass {
     dbg('PH: ', 2, pattternHistograms);
     let mainGrid = this.getRule("MAIN");
     if (mainGrid) {
+      if (this._recordingEnabled &&
+        this._iterationCount == this._recordingStartFrame) {
+        let thisFrame = new Frame(mainGrid.newDifferencePixels,
+          mainGrid.width, mainGrid.height, this._iterationCount);
+        this._recordedFrames.push(thisFrame);
+      }
       if (mainGrid.newPixels.length == 0 || mainGrid.newDifferencePixels.length == 0) {
         if (this.running) this.toggleRun();
         else this.running = false;
@@ -487,6 +503,15 @@ export class PixelReactor<T> extends GsonClass {
       this.sortUpdateStacks();
       dbg("updateStacks (after sort): ", 2, updateStacks)
       this.writeUpdatePixels()
+
+      if (this._recordingEnabled &&
+        this._iterationCount >= this._recordingStartFrame &&
+        this._iterationCount <= this._recordingEndFrame) {
+        let thisFrame = new Frame(mainGrid.newDifferencePixels,
+          mainGrid.width, mainGrid.height, this._iterationCount);
+        this._recordedFrames.push(thisFrame);
+
+      }
     }
   }
 
@@ -641,9 +666,9 @@ export class PixelReactor<T> extends GsonClass {
         if (this.useTieBreaker && a[1] == b[1]) {
           let aclr: any = a[0]
           let bclr: any = b[0]
-          return (PixelReactor.prioritySortFns[this.colorAsc](aclr,bclr));
+          return (PixelReactor.prioritySortFns[this.colorAsc](aclr, bclr));
         }
-        return (PixelReactor.prioritySortFns[this.priorityAsc](a[1],b[1]))
+        return (PixelReactor.prioritySortFns[this.priorityAsc](a[1], b[1]))
       })
     })
   }
@@ -653,7 +678,7 @@ export class PixelReactor<T> extends GsonClass {
     if (mainGrid === undefined) return
     mainGrid.newPixels = [];
     mainGrid.newDifferencePixels = [];
-  
+
 
     this._updateStacks.forEach((updatePixels: [T, number][], locationString: LocationString) => {
       let topPixel = updatePixels[updatePixels.length - 1];
@@ -765,6 +790,7 @@ export class PixelReactor<T> extends GsonClass {
     this._paletteMap.set(5, "#00AAFF");
     this._recordingStartFrame = 0;
     this._recordingEndFrame = 200;
+    this._recordedFrames = [];
 
   }
 
@@ -823,7 +849,8 @@ export class PixelReactor<T> extends GsonClass {
       _colorAsc: this._colorAsc,
       _priorityAsc: this._priorityAsc,
       _useTieBreaker: this._useTieBreaker,
-      _paletteMap: Gson.objectifyMap(this._paletteMap)
+      _paletteMap: Gson.objectifyMap(this._paletteMap),
+      _recordedFrames: this._recordedFrames
       //_updateStacks: Gson.objectifyMap(this._updateStacks)
 
       //mainGrid: this._ruleGridMap.get("MAIN")
@@ -904,7 +931,7 @@ export class Frame<T> {
   private _height: number;
   private _frameNumber: number;
 
-  constructor(newDifferencePixels: Pixel<T>[], width: number, height: number, frameNumber:number) {
+  constructor(newDifferencePixels: Pixel<T>[], width: number, height: number, frameNumber: number) {
     this._width = width;
     this._height = height;
     this._frameNumber = frameNumber;
