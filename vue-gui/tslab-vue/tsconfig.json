@@ -12,6 +12,7 @@
     }
   ],
   "compilerOptions": {
+    "types": ["node"],
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
