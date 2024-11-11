@@ -1,9 +1,19 @@
 {
   "files": [],
   "references": [
-    
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.vitest.json"
+    }
   ],
   "compilerOptions": {
+    "types": ["node"],
+    "target": "ES2018",
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
