@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import { useRulesStore } from '@/stores/rules'
-import { PixelReactor, RuleGrid, type Vec2d, zeroVec } from "../../../../PixelReactor"
+import { PixelReactor, RuleGrid, type Vec2d, zeroVec } from "../../PixelReactor"
 
 import { ref, onMounted, computed } from 'vue'
 

@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { ParametricGrid } from "../../../../PixelReactor"
+import { ParametricGrid } from "../../PixelReactor"
 
 export const useCounterStore = defineStore('counter', () => {
   const count = ref(0)
@@ -25,7 +25,7 @@ export const useCounterStore = defineStore('counter', () => {
     const rg = ruleGridMap.value.get(id)
     console.log(rg)
   }
-  
+
 
   return { count, doubleCount, ruleGridMap, increment, setRule, getRule }
 })

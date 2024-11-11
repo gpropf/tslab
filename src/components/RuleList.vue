@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import { useRulesStore } from '@/stores/rules'
-import { PixelReactor, RuleGrid, type Vec2d, zeroVec } from "../../../../PixelReactor"
+import { PixelReactor, RuleGrid, type Vec2d, zeroVec } from "../../PixelReactor"
 import { type ColorInfo, type ObjectVisualizationFn, type ConversionFn } from "./ParametricGridVC.vue"
 import SVGGrid from './SVGGrid.vue';
 import RuleGridVC from './RuleGridVC.vue';

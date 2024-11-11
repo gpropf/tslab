@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 // import { useRulesStore } from '@/stores/rules'
-import { ParametricGrid, RuleGrid } from "../../../../PixelReactor"
+import { ParametricGrid, RuleGrid } from "../../PixelReactor"
 import { type ColorInfo, type ObjectVisualizationFn, type ConversionFn } from "./ParametricGridVC.vue"
 import { inject, ref, onUpdated, onMounted, getCurrentInstance } from 'vue'
 import { useRulesStore } from '@/stores/rules'
@@ -18,7 +18,7 @@ const props = defineProps<{
     screenHeight: number,
     vizFn: ObjectVisualizationFn,
     defaultValue: any,
-    onClickValue: any,    
+    onClickValue: any,
     conversionFn: ConversionFn,
     id: string,
     prGrid: ParametricGrid<any> | RuleGrid<any>
@@ -44,15 +44,16 @@ onUpdated(() => {
 
 </script>
 
-<template>    
+<template>
     <div ref="svgGrid">
-        <svg :viewBox="`0 0 ${props.prGrid.width} ${props.prGrid.height}`" :width="props.screenWidth" :height="props.screenHeight"
-            xmlns="http://www.w3.org/2000/svg">
+        <svg :viewBox="`0 0 ${props.prGrid.width} ${props.prGrid.height}`" :width="props.screenWidth"
+            :height="props.screenHeight" xmlns="http://www.w3.org/2000/svg">
             <svg :key="y" v-for="(row, y) in props.prGrid.grid" xmlns="http://www.w3.org/2000/svg">
                 <svg :key="x" v-for="(cellval, x) in row">
                     <rect
                         @click="props.prGrid.setLocation(x, y, props.conversionFn(props.onClickValue)); console.log(props.vizFn(props.conversionFn(props.onClickValue)));"
-                        :x="x" :y="y" width="1" height="1" stroke-width="0.05" :stroke="props.vizFn(cellval).strokeRGB" :fill="props.vizFn(cellval).fillRGB" @mouseover="setMouseLocation([x,y])"/>
+                        :x="x" :y="y" width="1" height="1" stroke-width="0.05" :stroke="props.vizFn(cellval).strokeRGB"
+                        :fill="props.vizFn(cellval).fillRGB" @mouseover="setMouseLocation([x, y])" />
                 </svg>
             </svg>
         </svg>

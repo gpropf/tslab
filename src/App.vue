@@ -2,7 +2,7 @@
 
 
 import { useRulesStore } from '@/stores/rules'
-import { ParametricGrid, PixelReactor, RuleGrid, type Vec2d } from "../../../PixelReactor"
+import { ParametricGrid, PixelReactor, RuleGrid, type Vec2d } from "../PixelReactor"
 
 /// <reference path="./../../../ParametricGrid.ts"/>
 
@@ -17,7 +17,7 @@ import LabelledInput from './components/LabelledInput.vue';
 import ParametricGridVC from './components/ParametricGridVC.vue';
 //import { Gson, GsonClass } from "../../../Gson"
 
-import { dbg } from "../../../Util";
+import { dbg } from "../Util";
 
 
 const rules = useRulesStore();
@@ -34,8 +34,8 @@ const { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor } =
 
 
 // Some helper functions for the grids.
-function vizFn(cellval: number) { 
-  let hexColor = prRef.value.paletteMap.get(cellval % prRef.value.paletteMap.size);  
+function vizFn(cellval: number) {
+  let hexColor = prRef.value.paletteMap.get(cellval % prRef.value.paletteMap.size);
   let colorInfo: ColorInfo = { fillRGB: `${hexColor}`, strokeRGB: "#BBAABB" }; return colorInfo;
 }
 
@@ -187,7 +187,7 @@ function createTestRules2() {
 /**
  * Loads a new PR from whatever is found in the textarea.
  */
-function loadNewPR(resizeOnly: boolean = false) {  
+function loadNewPR(resizeOnly: boolean = false) {
   prRef.value.restoreFromJSON(inOutBuffer.value, resizeOnly);
 }
 
@@ -242,7 +242,9 @@ onMounted(() => {
         <textarea rows="8" cols="25" v-model="inOutBuffer">{{ inOutBuffer }}</textarea>
         <button @click="inOutBuffer = JSON.stringify(prRef); console.log('stringify PR: ', prJsonBuffer);">stringify
           PR</button>
-          <button @click="inOutBuffer = JSON.stringify(prRef.recordedFrames); console.log('Frames: ', inOutBuffer);">Output Frames</button>
+        <button
+          @click="inOutBuffer = JSON.stringify(prRef.recordedFrames); console.log('Frames: ', inOutBuffer);">Output
+          Frames</button>
 
         <button @click="loadNewPR(true); delayedLoad();">Load PR (resize & load)</button>
       </div>

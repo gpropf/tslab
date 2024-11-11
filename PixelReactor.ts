@@ -1,4 +1,4 @@
-import { main } from "ts-node/dist/bin";
+//import { main } from "ts-node/dist/bin";
 
 import { GsonClass, Gson } from "./Gson"
 

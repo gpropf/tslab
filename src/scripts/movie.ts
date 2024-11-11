@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 //import process from 'process';
-import { ParametricGrid } from "../../../../PixelReactor";
+import { ParametricGrid } from "../../PixelReactor";
 
 let args = process.argv.slice(2);
 

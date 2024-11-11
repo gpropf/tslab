@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import { useRulesStore } from '@/stores/rules'
-import { RuleGrid, type Vec2d, zeroVec } from "../../../../PixelReactor"
+import { RuleGrid, type Vec2d, zeroVec } from "../../PixelReactor"
 //import { type ColorInfo } from "./ParametricGridVC.vue"
 import { type ColorInfo, type ObjectVisualizationFn, type ConversionFn } from "./ParametricGridVC.vue"
 import SVGGrid from './SVGGrid.vue';
@@ -65,7 +65,7 @@ const root = ref<HTMLElement | null>(null);
 
 onMounted(() => {
   console.log("RuleGridVC mounted!!!")
-  let [sx,sy] = ruleGrid.successorOffset;
+  let [sx, sy] = ruleGrid.successorOffset;
   ruleOffsetString.value = `${sx},${sy}`;
 });
 
@@ -85,7 +85,7 @@ onUpdated(() => {
   <SVGGrid :screenWidth="props.screenWidth" :screenHeight="props.screenHeight" :width="ruleGrid.width"
     :height="ruleGrid.height" :vizFn="props.vizFn" :defaultValue="0" :onClickValue="props.onClickValue"
     :conversionFn="props.conversionFn" :id="props.id" :prGrid="ruleGrid" />
-  <RuleSelect :fromRuleId="ruleGrid.id"/>
+  <RuleSelect :fromRuleId="ruleGrid.id" />
   <input type="text" v-model="ruleOffsetString" placeholder="Offset" size="3" @input="changeOffset">
 
   <!-- <LabelledInput v-model:inputValue="ruleOffset" id="rule-offset" inputType="text"
