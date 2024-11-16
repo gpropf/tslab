@@ -247,6 +247,8 @@ onMounted(() => {
           Frames</button>
 
         <button @click="loadNewPR(true); delayedLoad();">Load PR (resize & load)</button>
+        <button @click="prRef.loadPalette(inOutBuffer); console.log('Loaded Palette: ', inOutBuffer);">Load
+          Custom Palette</button>
       </div>
     </div>
     <div class="control-panel-container">

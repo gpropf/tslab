@@ -301,6 +301,11 @@ export class PixelReactor<T> extends GsonClass {
     return ruleId;
   }
 
+  public loadPalette(jsonStr: string) {
+    let paletteObj = JSON.parse(jsonStr);
+    this.paletteMap = Gson.mapifyObject(paletteObj["_paletteMap"], true);
+  }
+
   public restoreFromJSON(jsonStr: string, resizeOnly: boolean = false) {
     let genericObj = JSON.parse(jsonStr);
     console.log('PR in fromJSON: ', genericObj);
