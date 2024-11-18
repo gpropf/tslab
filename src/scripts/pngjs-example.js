@@ -19,10 +19,10 @@ export function makePNG(outfile) {
     for (var x = 0; x < png.width; x++) {
       var idx = (png.width * y + x) << 2
       pixelNum++
-      pixelNum = pixelNum % 255
+      pixelNum = pixelNum % 256
       // invert color
-      png.data[idx] = x % png.width
-      png.data[idx + 1] = y % png.height
+      png.data[idx] = x % 256
+      png.data[idx + 1] = y % 256
       png.data[idx + 2] = 255 - pixelNum / 2
 
       // and reduce opacity
