@@ -6,10 +6,12 @@
     "src/**/*.vue",
     "./PixelReactor.ts",
     "./Gson.ts",
-    "./Util.ts"
+    "./Util.ts",
+    "src/scripts/pngjs-example.js"
   ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
+    "allowJs": true,
     "types": ["node"],
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",

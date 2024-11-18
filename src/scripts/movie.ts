@@ -1,10 +1,12 @@
 import * as fs from 'fs';
 //import process from 'process';
 import { ParametricGrid } from "../../PixelReactor";
+import { makePNG } from './pngjs-example';
 
 let args = process.argv.slice(2);
 
 //console.log(args);
+makePNG("panalytics-logo-1.png", "panalytics-logo-1-out.png")
 
 
 let jsonText = fs.readFileSync(args[0], 'utf8');
