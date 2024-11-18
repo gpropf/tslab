@@ -38,7 +38,7 @@ function scaleGrid<T>(pGrid: ParametricGrid<T>, scaleX: number, scaleY: number) 
 
 let jsonText = fs.readFileSync(args[0], 'utf8');
 let jsonObj = JSON.parse(jsonText);
-let scaleX = 10, scaleY = 10;
+let scaleX = 1, scaleY = 1;
 
 let keys = Object.keys(jsonObj);
 
