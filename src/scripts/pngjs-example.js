@@ -1,12 +1,18 @@
 var fs = require('fs'),
   PNG = require('pngjs').PNG
 
-export function makePNG(outfile) {
+const paletteMap = new Map([
+  [0, [0, 0, 0]],
+  [1, [0, 255, 0]],
+  [2, [0, 170, 0]]
+])
+
+export function makePNG(outfile, data, width, height) {
   var pixelNum = 0
   let png = new PNG({
     filterType: 4,
-    width: 600,
-    height: 400
+    width: width,
+    height: height
   })
   for (var y = 0; y < png.height; y++) {
     for (var x = 0; x < png.width; x++) {

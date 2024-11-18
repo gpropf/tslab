@@ -950,8 +950,8 @@ export class ParametricGrid<T> extends GsonClass {
 
   private _newDifferencePixels: Pixel<T>[] = [];
   private _id: string;
-  private _width: number;
-  private _height: number;
+  protected _width: number;
+  protected _height: number;
   protected _grid: T[][] = [];
 
   private _updateView: boolean = true;
