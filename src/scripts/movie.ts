@@ -6,7 +6,7 @@ import { makePNG } from './pngjs-example';
 let args = process.argv.slice(2);
 
 //console.log(args);
-makePNG("panalytics-logo-1.png", "panalytics-logo-1-out.png")
+makePNG("foo.png");
 
 
 let jsonText = fs.readFileSync(args[0], 'utf8');
