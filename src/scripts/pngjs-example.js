@@ -7,24 +7,24 @@ const paletteMap = new Map([
   [2, [0, 170, 0]]
 ])
 
-export function makePNG(outfile, data, width, height) {
+export function makePNG(outfile, data, width, height, scaleX, scaleY) {
   var pixelNum = 0
   let png = new PNG({
     filterType: 4,
-    width: width,
-    height: height
+    width: width * scaleX,
+    height: height * scaleY
   })
-  for (var y = 0; y < png.height; y++) {
-    for (var x = 0; x < png.width; x++) {
-      var idx = (png.width * y + x) << 2
-      pixelNum++
-      pixelNum = pixelNum % 256
-      png.data[idx] = x % 256 // Red
-      png.data[idx + 1] = y % 256 // Green
-      png.data[idx + 2] = 255 - pixelNum / 2 // Blue
-      png.data[idx + 3] = 255 // opacity
-    }
-  }
+  //   for (var y = 0; y < png.height; y++) {
+  //     for (var x = 0; x < png.width; x++) {
+  //       var idx = (png.width * y + x) << 2
+
+  //       png.data[idx] = x % 256 // Red
+  //       png.data[idx + 1] = y % 256 // Green
+  //       png.data[idx + 2] = 255 - pixelNum / 2 // Blue
+  //       png.data[idx + 3] = 255 // opacity
+  //     }
+  //   }
+  png.data = data
 
   png.pack().pipe(fs.createWriteStream(outfile))
   console.log(png.data)
