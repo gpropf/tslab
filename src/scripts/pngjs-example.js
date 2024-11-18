@@ -21,12 +21,12 @@ export function makePNG(outfile) {
       pixelNum++
       pixelNum = pixelNum % 255
       // invert color
-      png.data[idx] = pixelNum
-      png.data[idx + 1] = 255 - pixelNum
+      png.data[idx] = x % png.width
+      png.data[idx + 1] = y % png.height
       png.data[idx + 2] = 255 - pixelNum / 2
 
       // and reduce opacity
-      png.data[idx + 3] = 100
+      png.data[idx + 3] = 255
     }
   }
 
