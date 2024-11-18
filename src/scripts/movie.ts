@@ -5,41 +5,6 @@ import { makePNG } from './pngjs-example';
 
 let args = process.argv.slice(2);
 
-class ExportableGrid<T> extends ParametricGrid<T> {
-
-    private _paletteMap = new Map<T, number[]>([
-        [0 as T, [0, 0, 0, 255]],
-        [1 as T, [0, 255, 0, 255]],
-        [2 as T, [0, 170, 0, 255]]
-    ]);
-
-    constructor(pixelReactor: PixelReactor<T> | null, width: number, height: number, initialValue: T, id: string, grid?: T[][]) {
-        super(null, width, height, 0 as T, "MAIN");
-    }
-
-    public _scaleX: number = 3;
-    public _scaleY: number = 3;
-
-    public exportGrid() {
-        let scaledWidth = this._width * this._scaleX;
-        let scaledHeight = this._height * this._scaleY;
-        let data: number[] = new Array(scaledWidth * scaledHeight * 4)
-        for (let y: number = 0; y < scaledHeight; y++) {
-            for (let x: number = 0; x < scaledWidth; x++) {
-                let idx = (this._width * y + x) << 2
-                let v: T = this.getLocation(Math.round(x / this._scaleX), Math.round(y / this._scaleY));
-                let rgba = this._paletteMap.get(v)
-                if (rgba) {
-                    data[idx] = rgba[0]; // Red
-                    data[idx + 1] = rgba[1] // Green
-                    data[idx + 2] = rgba[2] // Blue
-                    data[idx + 3] = rgba[3] // opacity
-                }
-            }
-        }
-        return data;
-    }
-}
 
 function scaleGrid<T>(pGrid: ParametricGrid<T>, scaleX: number, scaleY: number) {
     const paletteMap = new Map<T, number[]>([
@@ -51,6 +16,7 @@ function scaleGrid<T>(pGrid: ParametricGrid<T>, scaleX: number, scaleY: number) 
     let scaledWidth = pGrid.width * scaleX;
     let scaledHeight = pGrid.height * scaleY;
     let data: number[] = new Array(scaledWidth * scaledHeight * 4)
+    console.log(`scaleGrid(): data.length: ${data.length}`)
     for (let y: number = 0; y < scaledHeight; y++) {
         for (let x: number = 0; x < scaledWidth; x++) {
             let idx = (pGrid.width * y + x) << 2

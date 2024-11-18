@@ -25,7 +25,9 @@ export function makePNG(outfile, data, width, height, scaleX, scaleY) {
   //     }
   //   }
   png.data = data
-  //console.log(`PNG.width: ${png.width}, PNG.height: ${png.height}`)
+  console.log(
+    `PNG.width: ${png.width}, PNG.height: ${png.height}, data array length: ${png.data.length}`
+  )
 
   png.pack().pipe(fs.createWriteStream(outfile))
   //console.log(png.data)
