@@ -1010,6 +1010,7 @@ export class ParametricGrid<T> extends GsonClass {
     else {
       this._grid = new Array(height).fill(undefined).map(
         () => new Array(width).fill(initialValue));
+      //console.log("GRID IN CONSTRUCTOR: ", this._grid);
     }
   }
 
@@ -1161,7 +1162,7 @@ export class ParametricGrid<T> extends GsonClass {
 
   public getLocation(x: number, y: number): T {
     let v = this._grid[y][x];
-    //console.log(`Location (${x},${y}) = ${v}`);
+    //console.log(`getLocation() -- Location (${x},${y}) = ${v}`);
     return v;
   }
 

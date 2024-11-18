@@ -41,13 +41,38 @@ class ExportableGrid<T> extends ParametricGrid<T> {
     }
 }
 
-//let frameGrid = new ExportableGrid<number>(null, 800, 600, 0, "foo")
-//console.log(args);
+function scaleGrid<T>(pGrid: ParametricGrid<T>, scaleX: number, scaleY: number) {
+    const paletteMap = new Map<T, number[]>([
+        [0 as T, [0, 0, 0, 255]],
+        [1 as T, [0, 255, 0, 255]],
+        [2 as T, [0, 170, 0, 255]]
+    ]);
+
+    let scaledWidth = pGrid.width * scaleX;
+    let scaledHeight = pGrid.height * scaleY;
+    let data: number[] = new Array(scaledWidth * scaledHeight * 4)
+    for (let y: number = 0; y < scaledHeight; y++) {
+        for (let x: number = 0; x < scaledWidth; x++) {
+            let idx = (pGrid.width * y + x) << 2
+            let v: T = pGrid.getLocation(Math.floor(x / scaleX), Math.floor(y / scaleY));
+            let rgba = paletteMap.get(v)
+            if (rgba) {
+                data[idx] = rgba[0]; // Red
+                data[idx + 1] = rgba[1] // Green
+                data[idx + 2] = rgba[2] // Blue
+                data[idx + 3] = rgba[3] // opacity
+            }
+        }
+    }
+    return data;
+}
+
 
 
 
 let jsonText = fs.readFileSync(args[0], 'utf8');
 let jsonObj = JSON.parse(jsonText);
+let scaleX = 10, scaleY = 10;
 
 let keys = Object.keys(jsonObj);
 
@@ -76,8 +101,8 @@ keys.forEach(key => {
                     let [x, y, v] = pixel;
                     mainGrid.setLocation(x, y, v);
                 }
-                //data = mainGrid.exportGrid();
-                //makePNG(`foo-${frameNum}.png`, data, mainGrid.width, mainGrid.height, mainGrid._scaleX, mainGrid._scaleY);
+                data = scaleGrid<number>(mainGrid, scaleX, scaleY)
+                makePNG(`foo-${frameNum}.png`, data, mainGrid.width, mainGrid.height, scaleX, scaleY);
             }
 
 
