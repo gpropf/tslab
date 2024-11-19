@@ -242,8 +242,7 @@ onMounted(() => {
         <textarea rows="8" cols="25" v-model="inOutBuffer">{{ inOutBuffer }}</textarea>
         <button @click="inOutBuffer = JSON.stringify(prRef); console.log('stringify PR: ', prJsonBuffer);">stringify
           PR</button>
-        <button
-          @click="inOutBuffer = JSON.stringify(prRef.recordedFrames); console.log('Frames: ', inOutBuffer);">Output
+        <button @click="inOutBuffer = prRef.framesToJson(); console.log('Frames: ', inOutBuffer);">Output
           Frames</button>
 
         <button @click="loadNewPR(true); delayedLoad();">Load PR (resize & load)</button>

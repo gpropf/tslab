@@ -257,6 +257,16 @@ export class PixelReactor<T> extends GsonClass {
   }
   // Main methods follow -=-=-=-=-
 
+  public framesToJson() {
+    let framesObj = {
+      "frames": this.recordedFrames,
+      "palette": Gson.objectifyMap(this._paletteMap)
+    }
+    return JSON.stringify(framesObj);
+  }
+
+
+
   public static pixelReactorFactory(genericObj: any) {
     let objKeys = new Set(Object.keys(genericObj));
     try {
