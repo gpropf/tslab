@@ -265,6 +265,24 @@ export class PixelReactor<T> extends GsonClass {
     return JSON.stringify(framesObj);
   }
 
+  public makeAllNonZeroPixelsNew() {
+    let mainGrid = this.getRule("MAIN");
+    if (mainGrid) {
+      mainGrid.newPixels = mainGrid.newDifferencePixels = []
+
+      for (let y: number = 0; y < mainGrid.height; y++) {
+        for (let x: number = 0; x < mainGrid.width; x++) {
+          let v: T = mainGrid.getLocation(x, y);
+          if (v as number != 0) {
+            let p: Pixel<T> = [x, y, v];
+            mainGrid.newDifferencePixels.push(p);
+            mainGrid.newPixels.push(p);
+          }
+        }
+      }
+      dbg(`Main grid has ${mainGrid.newDifferencePixels.length} pixels.`)
+    }
+  }
 
 
   public static pixelReactorFactory(genericObj: any) {
@@ -1302,7 +1320,6 @@ export class RuleGrid<T> extends ParametricGrid<T> {
     //   dbg("r270: ", 3, this._rotatedOffsets.get("r270"))
     // }
   }
-
 
   public static ruleGridFactory(genericObj: any, pixelReactor: PixelReactor<number>) {
     let objKeys = new Set(Object.keys(genericObj));
