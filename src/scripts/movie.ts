@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 //import process from 'process';
 import { ParametricGrid, PixelReactor } from "../../PixelReactor";
+import { leftPad } from '../../Util';
 import { makePNG } from './pngjs-example';
 
 let args = process.argv.slice(2);
@@ -34,55 +35,63 @@ function scaleGrid<T>(pGrid: ParametricGrid<T>, scaleX: number, scaleY: number) 
 }
 
 
+const inputFilename = args[0];
 
+createFrames(inputFilename, "paddedframe", 5, 5, 5);
 
-let jsonText = fs.readFileSync(args[0], 'utf8');
-let jsonObj = JSON.parse(jsonText);
-let scaleX = 10, scaleY = 10;
+function createFrames(inputFilename: string, imageRootFilename: string, scaleX: number, scaleY: number, padLength: number = 3) {
+    let jsonText = fs.readFileSync(inputFilename, 'utf8');
+    let jsonObj = JSON.parse(jsonText);
+    //let scaleX = 10, scaleY = 10;
 
-let keys = Object.keys(jsonObj);
+    let keys = Object.keys(jsonObj);
 
-let mainGrid: ParametricGrid<number> | null = null;
-//pixelReactor: PixelReactor<T>, width: number, height: number, initialValue: T, id: string, grid?: T[][]
+    let mainGrid: ParametricGrid<number> | null = null;
+    //pixelReactor: PixelReactor<T>, width: number, height: number, initialValue: T, id: string, grid?: T[][]
 
-keys.forEach(key => {
-    if (key == "frames") {
-        let frames = jsonObj["frames"];
-        console.log(`frames: ${frames.length}`);
-        let firstFrame: boolean = true;
-        for (let frame of frames) {
+    keys.forEach(key => {
+        if (key == "frames") {
+            let frames = jsonObj["frames"];
+            console.log(`frames: ${frames.length}`);
+            let firstFrame: boolean = true;
+            for (let frame of frames) {
 
-            if (firstFrame) {
-                let width = frame["_width"];
-                let height = frame["_height"];
-                firstFrame = false;
-                mainGrid = new ParametricGrid<number>(null, width, height, 0, "MAIN");
-            }
-            let newDifferencePixels = frame["_newDifferencePixels"];
-            let frameNum = frame["_frameNumber"];
-            console.log(`frame: ${frameNum} has ${newDifferencePixels.length} pixels.`);
-            let data: number[] = [];
-            if (mainGrid) {
-                for (let pixel of newDifferencePixels) {
-                    let [x, y, v] = pixel;
-                    mainGrid.setLocation(x, y, v);
+                if (firstFrame) {
+                    let width = frame["_width"];
+                    let height = frame["_height"];
+                    firstFrame = false;
+                    mainGrid = new ParametricGrid<number>(null, width, height, 0, "MAIN");
                 }
-                data = scaleGrid<number>(mainGrid, scaleX, scaleY)
-                makePNG(`foo-${frameNum}.png`, data, mainGrid.width, mainGrid.height, scaleX, scaleY);
+                let newDifferencePixels = frame["_newDifferencePixels"];
+                let frameNum: number = frame["_frameNumber"];
+                //while (frameNum.length < 6) frameNum = "0" + frameNum;
+                let frameNumStr = leftPad(frameNum, padLength);
+                console.log(`frame: ${frameNumStr} has ${newDifferencePixels.length} pixels.`);
+                let data: number[] = [];
+                if (mainGrid) {
+                    for (let pixel of newDifferencePixels) {
+                        let [x, y, v] = pixel;
+                        mainGrid.setLocation(x, y, v);
+                    }
+                    data = scaleGrid<number>(mainGrid, scaleX, scaleY)
+                    makePNG(`${imageRootFilename}-${frameNumStr}.png`, data, mainGrid.width, mainGrid.height, scaleX, scaleY);
+                }
+
+
             }
+            // frames.forEach(frame:any => {
+
+            // })
 
 
         }
-        // frames.forEach(frame:any => {
 
-        // })
-
-
+    })
+    if (mainGrid) {
+        console.log(JSON.stringify(mainGrid))
     }
 
-})
-if (mainGrid) {
-    console.log(JSON.stringify(mainGrid))
 }
+
 
 //console.log(jsonObj);

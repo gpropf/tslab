@@ -17,7 +17,7 @@ import LabelledInput from './components/LabelledInput.vue';
 import ParametricGridVC from './components/ParametricGridVC.vue';
 //import { Gson, GsonClass } from "../../../Gson"
 
-import { dbg } from "../Util";
+import { dbg, leftPad } from "../Util";
 
 
 const rules = useRulesStore();
@@ -32,6 +32,7 @@ const { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor } =
 // numberToColorMap.set(5, "#00AAFF");
 // const numColors = numberToColorMap.size;
 
+//console.log(`LEFT PAD test: `, leftPadString("13", 5));
 
 // Some helper functions for the grids.
 function vizFn(cellval: number) {
