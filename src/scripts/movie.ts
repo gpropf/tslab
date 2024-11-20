@@ -37,9 +37,10 @@ function scaleGrid<T>(pGrid: ParametricGrid<T>, scaleX: number, scaleY: number) 
 
 const inputFilename = args[0];
 
-createFrames(inputFilename, "paddedframe", 5, 5, 5);
+createFrames(inputFilename, "paddedframe", 4, 4, 5, 0, 75);
 
-function createFrames(inputFilename: string, imageRootFilename: string, scaleX: number, scaleY: number, padLength: number = 3) {
+function createFrames(inputFilename: string, imageRootFilename: string, scaleX: number,
+    scaleY: number, padLength: number = 3, startFrame: number = 0, endFrame: number = 100) {
     let jsonText = fs.readFileSync(inputFilename, 'utf8');
     let jsonObj = JSON.parse(jsonText);
     //let scaleX = 10, scaleY = 10;
@@ -64,6 +65,7 @@ function createFrames(inputFilename: string, imageRootFilename: string, scaleX: 
                 }
                 let newDifferencePixels = frame["_newDifferencePixels"];
                 let frameNum: number = frame["_frameNumber"];
+
                 //while (frameNum.length < 6) frameNum = "0" + frameNum;
                 let frameNumStr = leftPad(frameNum, padLength);
                 console.log(`frame: ${frameNumStr} has ${newDifferencePixels.length} pixels.`);
@@ -73,8 +75,12 @@ function createFrames(inputFilename: string, imageRootFilename: string, scaleX: 
                         let [x, y, v] = pixel;
                         mainGrid.setLocation(x, y, v);
                     }
-                    data = scaleGrid<number>(mainGrid, scaleX, scaleY)
-                    makePNG(`${imageRootFilename}-${frameNumStr}.png`, data, mainGrid.width, mainGrid.height, scaleX, scaleY);
+                    if (frameNum >= startFrame && frameNum <= endFrame) {
+                        data = scaleGrid<number>(mainGrid, scaleX, scaleY)
+                        makePNG(`${imageRootFilename}-${frameNumStr}.png`, data, mainGrid.width,
+                            mainGrid.height, scaleX, scaleY);
+                    }
+
                 }
 
 
@@ -87,9 +93,9 @@ function createFrames(inputFilename: string, imageRootFilename: string, scaleX: 
         }
 
     })
-    if (mainGrid) {
-        console.log(JSON.stringify(mainGrid))
-    }
+    //if (mainGrid) {
+    //console.log(JSON.stringify(mainGrid))
+    //}
 
 }
 
