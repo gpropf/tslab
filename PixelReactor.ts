@@ -162,23 +162,33 @@ export class PixelReactor<T> extends GsonClass {
 
   private _colorAsc: number = 0;
 
-  public set colorAsc(b: number) {
-    this._colorAsc = b;
+  public set colorAsc(i: number | string) {
+    if (typeof (i) === 'number') {
+      this._colorAsc = i;
+    }
+    else {
+      this._colorAsc = parseInt(i);
+    }
     dbg(`Color Ascending: ${this._colorAsc}`, 0)
   }
 
-  public get colorAsc() {
+  public get colorAsc(): number {
     return this._colorAsc;
   }
 
   private _priorityAsc: number = 0;
 
-  public set priorityAsc(i: number) {
-    this._priorityAsc = i;
+  public set priorityAsc(i: number | string) {
+    if (typeof (i) === 'number') {
+      this._priorityAsc = i;
+    }
+    else {
+      this._priorityAsc = parseInt(i);
+    }
     dbg(`Priority Ascending: ${this._priorityAsc}`, 0)
   }
 
-  public get priorityAsc() {
+  public get priorityAsc(): number {
     return this._priorityAsc;
   }
 
