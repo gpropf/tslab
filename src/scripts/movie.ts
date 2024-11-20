@@ -17,7 +17,7 @@ function scaleGrid<T>(pGrid: ParametricGrid<T>, scaleX: number, scaleY: number) 
     let scaledWidth = pGrid.width * scaleX;
     let scaledHeight = pGrid.height * scaleY;
     let data: number[] = new Array(scaledWidth * scaledHeight * 4)
-    console.log(`scaleGrid(): data.length: ${data.length}`)
+    //console.log(`scaleGrid(): data.length: ${data.length}`)
     for (let y: number = 0; y < scaledHeight; y++) {
         for (let x: number = 0; x < scaledWidth; x++) {
             let idx = (scaledWidth * y + x) << 2
