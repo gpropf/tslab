@@ -1,9 +1,9 @@
 {
-  "inputFilename": "movies/test-11-19.movie-data.json",
-  "imageRootFilename": "test-frames-11-19",
+  "inputFilename": "movies/mandala-138-160x90.movie-data.json",
+  "imageRootFilename": "mandala-138",
   "scaleX": 8,
   "scaleY": 8,
-  "padLength": 3,
-  "startFrame": 2,
-  "endFrame": 10
+  "padLength": 4,
+  "startFrame": 0,
+  "endFrame": 50
 }

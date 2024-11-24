@@ -1,11 +1,20 @@
 import * as fs from 'fs';
-//import process from 'process';
 import { ParametricGrid, PixelReactor } from "../../PixelReactor";
 import { leftPad } from '../../Util';
-import { makePNG } from './pngjs-example';
+import { makePNG } from './pngjs-helper';
 import { Gson } from '../../Gson';
 
 let args = process.argv.slice(2);
+
+
+const inputFilename = args[0];
+const jsonText = fs.readFileSync(inputFilename, 'utf8');
+const md = JSON.parse(jsonText);
+console.log("Movie desc:", md);
+
+createFrames(md.inputFilename, md.imageRootFilename, md.scaleX,
+    md.scaleY, md.padLength, md.startFrame, md.endFrame);
+
 
 // hexToRgb From: https://www.webdevtutor.net/blog/typescript-hex-to-rgb#google_vignette
 function hexToRgb(hex: string, alpha = 255): [r: number, g: number, b: number, alpha: number] {
@@ -44,19 +53,6 @@ function scaleGrid<T>(pGrid: ParametricGrid<T>, scaleX: number, scaleY: number,
 }
 
 
-const inputFilename = args[0];
-
-const jsonText = fs.readFileSync(inputFilename, 'utf8');
-const md = JSON.parse(jsonText);
-console.log("Movie desc:", md)
-
-createFrames(md.inputFilename, md.imageRootFilename, md.scaleX,
-    md.scaleY, md.padLength, md.startFrame, md.endFrame)
-
-//process.exit(0)
-
-
-
 function createFrames(inputFilename: string, imageRootFilename: string, scaleX: number,
     scaleY: number, padLength: number = 3, startFrame: number = 0, endFrame: number = 100) {
     let jsonText = fs.readFileSync(inputFilename, 'utf8');
@@ -66,10 +62,6 @@ function createFrames(inputFilename: string, imageRootFilename: string, scaleX: 
     let keys = Object.keys(jsonObj);
 
     let mainGrid: ParametricGrid<number> | null = null;
-    //pixelReactor: PixelReactor<T>, width: number, height: number, initialValue: T, id: string, grid?: T[][]
-
-    //keys.forEach(key => {
-    //if (key == "frames") //{
     let paletteMapRGB: Map<number, number[]> = new Map<number, number[]>();
     let paletteMap = Gson.mapifyObject(jsonObj["palette"], true);
     paletteMap.forEach((hexcolor: string, idx: number) => {
@@ -81,7 +73,6 @@ function createFrames(inputFilename: string, imageRootFilename: string, scaleX: 
     console.log(`frames: ${frames.length}`);
     let firstFrame: boolean = true;
     for (let frame of frames) {
-
         if (firstFrame) {
             let width = frame["_width"];
             let height = frame["_height"];
@@ -90,8 +81,6 @@ function createFrames(inputFilename: string, imageRootFilename: string, scaleX: 
         }
         let newDifferencePixels = frame["_newDifferencePixels"];
         let frameNum: number = frame["_frameNumber"];
-
-        //while (frameNum.length < 6) frameNum = "0" + frameNum;
         let frameNumStr = leftPad(frameNum, padLength);
         console.log(`frame: ${frameNumStr} has ${newDifferencePixels.length} pixels.`);
         let data: number[] = [];
@@ -105,27 +94,6 @@ function createFrames(inputFilename: string, imageRootFilename: string, scaleX: 
                 makePNG(`${imageRootFilename}-${frameNumStr}.png`, data, mainGrid.width,
                     mainGrid.height, scaleX, scaleY);
             }
-
         }
-
-
     }
-    // frames.forEach(frame:any => {
-
-    // })
-
-
-    //}
-    //else if (key == "palette") //{
-
-    //}
-
-    //})
-    //if (mainGrid) {
-    //console.log(JSON.stringify(mainGrid))
-    //}
-
 }
-
-
-//console.log(jsonObj);
