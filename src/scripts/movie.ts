@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import { ParametricGrid, PixelReactor } from "../../PixelReactor";
 import { leftPad } from '../../Util';
 import { makePNG } from './pngjs-example';
+import { Gson } from '../../Gson';
 
 let args = process.argv.slice(2);
 
@@ -99,6 +100,12 @@ function createFrames(inputFilename: string, imageRootFilename: string, scaleX: 
             // })
 
 
+        }
+        else if (key == "palette") {
+            let paletteMap = Gson.mapifyObject(jsonObj["palette"], true);
+            paletteMap.forEach((hexcolor: string, idx: number) => {
+                console.log(`Color[${idx}] = ${hexcolor}`)
+            });
         }
 
     })
