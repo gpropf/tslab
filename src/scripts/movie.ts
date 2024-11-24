@@ -68,55 +68,59 @@ function createFrames(inputFilename: string, imageRootFilename: string, scaleX: 
     let mainGrid: ParametricGrid<number> | null = null;
     //pixelReactor: PixelReactor<T>, width: number, height: number, initialValue: T, id: string, grid?: T[][]
 
-    keys.forEach(key => {
-        if (key == "frames") {
-            let frames = jsonObj["frames"];
-            console.log(`frames: ${frames.length}`);
-            let firstFrame: boolean = true;
-            for (let frame of frames) {
+    //keys.forEach(key => {
+    //if (key == "frames") //{
+    let paletteMapRGB: Map<number, number[]> = new Map<number, number[]>();
+    let paletteMap = Gson.mapifyObject(jsonObj["palette"], true);
+    paletteMap.forEach((hexcolor: string, idx: number) => {
+        let rgba = hexToRgb(hexcolor);
+        console.log(`Color[${idx}] = ${rgba}`)
+        paletteMapRGB.set(idx, rgba);
+    });
+    let frames = jsonObj["frames"];
+    console.log(`frames: ${frames.length}`);
+    let firstFrame: boolean = true;
+    for (let frame of frames) {
 
-                if (firstFrame) {
-                    let width = frame["_width"];
-                    let height = frame["_height"];
-                    firstFrame = false;
-                    mainGrid = new ParametricGrid<number>(null, width, height, 0, "MAIN");
-                }
-                let newDifferencePixels = frame["_newDifferencePixels"];
-                let frameNum: number = frame["_frameNumber"];
+        if (firstFrame) {
+            let width = frame["_width"];
+            let height = frame["_height"];
+            firstFrame = false;
+            mainGrid = new ParametricGrid<number>(null, width, height, 0, "MAIN");
+        }
+        let newDifferencePixels = frame["_newDifferencePixels"];
+        let frameNum: number = frame["_frameNumber"];
 
-                //while (frameNum.length < 6) frameNum = "0" + frameNum;
-                let frameNumStr = leftPad(frameNum, padLength);
-                console.log(`frame: ${frameNumStr} has ${newDifferencePixels.length} pixels.`);
-                let data: number[] = [];
-                if (mainGrid) {
-                    for (let pixel of newDifferencePixels) {
-                        let [x, y, v] = pixel;
-                        mainGrid.setLocation(x, y, v);
-                    }
-                    if (frameNum >= startFrame && frameNum <= endFrame) {
-                        data = scaleGrid<number>(mainGrid, scaleX, scaleY)
-                        makePNG(`${imageRootFilename}-${frameNumStr}.png`, data, mainGrid.width,
-                            mainGrid.height, scaleX, scaleY);
-                    }
-
-                }
-
-
+        //while (frameNum.length < 6) frameNum = "0" + frameNum;
+        let frameNumStr = leftPad(frameNum, padLength);
+        console.log(`frame: ${frameNumStr} has ${newDifferencePixels.length} pixels.`);
+        let data: number[] = [];
+        if (mainGrid) {
+            for (let pixel of newDifferencePixels) {
+                let [x, y, v] = pixel;
+                mainGrid.setLocation(x, y, v);
             }
-            // frames.forEach(frame:any => {
-
-            // })
-
+            if (frameNum >= startFrame && frameNum <= endFrame) {
+                data = scaleGrid<number>(mainGrid, scaleX, scaleY, paletteMapRGB)
+                makePNG(`${imageRootFilename}-${frameNumStr}.png`, data, mainGrid.width,
+                    mainGrid.height, scaleX, scaleY);
+            }
 
         }
-        else if (key == "palette") {
-            let paletteMap = Gson.mapifyObject(jsonObj["palette"], true);
-            paletteMap.forEach((hexcolor: string, idx: number) => {
-                console.log(`Color[${idx}] = ${hexToRgb(hexcolor)}`)
-            });
-        }
 
-    })
+
+    }
+    // frames.forEach(frame:any => {
+
+    // })
+
+
+    //}
+    //else if (key == "palette") //{
+
+    //}
+
+    //})
     //if (mainGrid) {
     //console.log(JSON.stringify(mainGrid))
     //}
