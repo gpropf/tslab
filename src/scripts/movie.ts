@@ -37,7 +37,16 @@ function scaleGrid<T>(pGrid: ParametricGrid<T>, scaleX: number, scaleY: number) 
 
 const inputFilename = args[0];
 
-createFrames(inputFilename, "paddedframe", 4, 4, 5, 0, 75);
+const jsonText = fs.readFileSync(inputFilename, 'utf8');
+const md = JSON.parse(jsonText);
+console.log("Movie desc:", md)
+
+createFrames(md.inputFilename, md.imageRootFilename, md.scaleX,
+    md.scaleY, md.padLength, md.startFrame, md.endFrame)
+
+//process.exit(0)
+
+
 
 function createFrames(inputFilename: string, imageRootFilename: string, scaleX: number,
     scaleY: number, padLength: number = 3, startFrame: number = 0, endFrame: number = 100) {
