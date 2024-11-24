@@ -7,13 +7,21 @@ import { Gson } from '../../Gson';
 
 let args = process.argv.slice(2);
 
+// hexToRgb From: https://www.webdevtutor.net/blog/typescript-hex-to-rgb#google_vignette
+function hexToRgb(hex: string, alpha = 255): [r: number, g: number, b: number, alpha: number] {
+    const hexNumber = parseInt(hex.replace(/^#/, ''), 16);
+    const r = (hexNumber >> 16) & 255;
+    const g = (hexNumber >> 8) & 255;
+    const b = hexNumber & 255;
+    return [r, g, b, alpha];
+}
 
-function scaleGrid<T>(pGrid: ParametricGrid<T>, scaleX: number, scaleY: number) {
-    const paletteMap = new Map<T, number[]>([
+function scaleGrid<T>(pGrid: ParametricGrid<T>, scaleX: number, scaleY: number,
+    paletteMap: Map<T, number[]> = new Map<T, number[]>([
         [0 as T, [0, 0, 0, 255]],
         [1 as T, [0, 255, 0, 255]],
         [2 as T, [0, 170, 0, 255]]
-    ]);
+    ])) {
 
     let scaledWidth = pGrid.width * scaleX;
     let scaledHeight = pGrid.height * scaleY;
@@ -104,7 +112,7 @@ function createFrames(inputFilename: string, imageRootFilename: string, scaleX: 
         else if (key == "palette") {
             let paletteMap = Gson.mapifyObject(jsonObj["palette"], true);
             paletteMap.forEach((hexcolor: string, idx: number) => {
-                console.log(`Color[${idx}] = ${hexcolor}`)
+                console.log(`Color[${idx}] = ${hexToRgb(hexcolor)}`)
             });
         }
 
