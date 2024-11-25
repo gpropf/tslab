@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import { ParametricGrid, PixelReactor } from "../../PixelReactor";
 import { leftPad } from '../../Util';
-import { makePNG } from './pngjs-helper';
+import { makePNGts } from './png-helper';
 import { Gson } from '../../Gson';
 
 let args = process.argv.slice(2);
@@ -98,12 +98,12 @@ function createFrames(inputFilename: string, imageRootFilename: string, scaleX: 
         }
     }
 }
-function writeFrame(data: number[] | null, mainGrid: ParametricGrid<number>,
+function writeFrame(data: number[], mainGrid: ParametricGrid<number>,
     scaleX: number, scaleY: number, paletteMapRGB: Map<number, number[]>,
     imageRootFilename: string, frameNumStr: string) {
     data = scaleGrid<number>(mainGrid, scaleX, scaleY, paletteMapRGB);
-    //makePNG(`${imageRootFilename}-${frameNumStr}.png`, data, mainGrid.width,
-    //  mainGrid.height, scaleX, scaleY);
+    makePNGts(`${imageRootFilename}-${frameNumStr}.png`, data, mainGrid.width,
+        mainGrid.height, scaleX, scaleY);
     let memUse = process.memoryUsage();
     console.log(`MEM:`, memUse);
     if (memUse.heapUsed > 2e9) {
@@ -111,6 +111,6 @@ function writeFrame(data: number[] | null, mainGrid: ParametricGrid<number>,
         console.log("QUITTING! Too much heap usage!");
         process.exit();
     }
-    data = null;
+
 }
 
