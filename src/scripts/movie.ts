@@ -53,13 +53,11 @@ function scaleGrid<T>(pGrid: ParametricGrid<T>, scaleX: number, scaleY: number,
 }
 
 
+
 function createFrames(inputFilename: string, imageRootFilename: string, scaleX: number,
     scaleY: number, padLength: number = 3, startFrame: number = 0, endFrame: number = 100) {
     let jsonText = fs.readFileSync(inputFilename, 'utf8');
     let jsonObj = JSON.parse(jsonText);
-    //let scaleX = 10, scaleY = 10;
-
-    let keys = Object.keys(jsonObj);
 
     let mainGrid: ParametricGrid<number> | null = null;
     let paletteMapRGB: Map<number, number[]> = new Map<number, number[]>();
@@ -70,9 +68,11 @@ function createFrames(inputFilename: string, imageRootFilename: string, scaleX: 
         paletteMapRGB.set(idx, rgba);
     });
     let frames = jsonObj["frames"];
+    delete jsonObj["frames"];
     console.log(`frames: ${frames.length}`);
     let firstFrame: boolean = true;
-    for (let frame of frames) {
+    let frame;
+    while (frame = frames.shift()) {
         if (firstFrame) {
             let width = frame["_width"];
             let height = frame["_height"];
@@ -90,10 +90,27 @@ function createFrames(inputFilename: string, imageRootFilename: string, scaleX: 
                 mainGrid.setLocation(x, y, v);
             }
             if (frameNum >= startFrame && frameNum <= endFrame) {
-                data = scaleGrid<number>(mainGrid, scaleX, scaleY, paletteMapRGB)
-                makePNG(`${imageRootFilename}-${frameNumStr}.png`, data, mainGrid.width,
-                    mainGrid.height, scaleX, scaleY);
+                writeFrame(data, mainGrid, scaleX, scaleY, paletteMapRGB, imageRootFilename, frameNumStr);
             }
+            frame = null;
+            mainGrid.newPixels = []
+            mainGrid.newDifferencePixels = []
         }
     }
 }
+function writeFrame(data: number[] | null, mainGrid: ParametricGrid<number>,
+    scaleX: number, scaleY: number, paletteMapRGB: Map<number, number[]>,
+    imageRootFilename: string, frameNumStr: string) {
+    data = scaleGrid<number>(mainGrid, scaleX, scaleY, paletteMapRGB);
+    //makePNG(`${imageRootFilename}-${frameNumStr}.png`, data, mainGrid.width,
+    //  mainGrid.height, scaleX, scaleY);
+    let memUse = process.memoryUsage();
+    console.log(`MEM:`, memUse);
+    if (memUse.heapUsed > 2e9) {
+        process.exitCode = 1;
+        console.log("QUITTING! Too much heap usage!");
+        process.exit();
+    }
+    data = null;
+}
+

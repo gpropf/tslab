@@ -6,7 +6,7 @@ var fs = require('fs'),
   PNG = require('pngjs').PNG
 
 export function makePNG(outfile, data, width, height, scaleX, scaleY) {
-  var pixelNum = 0
+  //var pixelNum = 0
   let png = new PNG({
     filterType: 4,
     width: width * scaleX,
@@ -19,4 +19,6 @@ export function makePNG(outfile, data, width, height, scaleX, scaleY) {
   )
 
   png.pack().pipe(fs.createWriteStream(outfile))
+  png = null
+  data = null
 }

@@ -7,7 +7,7 @@
     "./PixelReactor.ts",
     "./Gson.ts",
     "./Util.ts",
-    "src/scripts/pngjs-example.js"
+    "src/scripts/pngjs-helper.js"
   ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
