@@ -68,7 +68,8 @@ function createFrames(inputFilename: string, imageRootFilename: string, scaleX: 
         paletteMapRGB.set(idx, rgba);
     });
     let frames = jsonObj["frames"];
-    delete jsonObj["frames"];
+    //delete jsonObj["frames"];
+    jsonObj = null;
     console.log(`frames: ${frames.length}`);
     let firstFrame: boolean = true;
     let frame;
@@ -91,6 +92,7 @@ function createFrames(inputFilename: string, imageRootFilename: string, scaleX: 
             }
             if (frameNum >= startFrame && frameNum <= endFrame) {
                 writeFrame(data, mainGrid, scaleX, scaleY, paletteMapRGB, imageRootFilename, frameNumStr);
+                forceGarbageCollection();
             }
             frame = null;
             mainGrid.newPixels = []
@@ -106,11 +108,19 @@ function writeFrame(data: number[], mainGrid: ParametricGrid<number>,
         mainGrid.height, scaleX, scaleY);
     let memUse = process.memoryUsage();
     console.log(`MEM:`, memUse);
-    if (memUse.heapUsed > 2e9) {
+    if (memUse.heapUsed > 4e9) {
         process.exitCode = 1;
         console.log("QUITTING! Too much heap usage!");
         process.exit();
     }
 
+}
+
+function forceGarbageCollection() {
+    if (global.gc) {
+        global.gc();
+    } else {
+        console.warn('Garbage collection unavailable. Pass --expose-gc when launching Node.js.');
+    }
 }
 
