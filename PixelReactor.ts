@@ -87,6 +87,8 @@ export class PixelReactor<T> extends GsonClass {
 
   private _iterationCount: number = 0;
 
+  private _iterationDelay: number = 0;
+
   private _msPerIter: number = -1;
 
   private _msPerIters: number[] = [];
@@ -119,6 +121,15 @@ export class PixelReactor<T> extends GsonClass {
 
   public set mainGridHeight(v: number) {
     this._mainGridHeight = v;
+  }
+
+  public get iterationDelay(): number {
+    return this._iterationDelay;
+  }
+
+  public set iterationDelay(v: number) {
+    this._iterationDelay = v;
+    //dbg(`Iteration delay set to ${v}.`, 0);
   }
 
   public get msPerIter() {
@@ -478,7 +489,7 @@ export class PixelReactor<T> extends GsonClass {
   public toggleRun() {
     this.running = !this.running;
     if (this._running) {
-      this._runMethodId = setInterval(() => this.iterate(), 0);
+      this._runMethodId = setInterval(() => this.iterate(), this._iterationDelay);
       this._elapsedTime = window.performance.now();
       //this.iterate();
     }

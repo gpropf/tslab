@@ -289,6 +289,8 @@ onMounted(() => {
         <div class="control-panel-child">
           <button @click="prRef.iterate();">Single Step</button>
           <button @click="prRef.toggleRun();">Toggle Run</button>
+          <LabelledInput v-model:inputValue="prRef.iterationDelay" id="iteration-delay-id" inputType="text"
+            placeholder="Iteration delay (ms)" componentName="Iteration delay (ms)" size="5" />
           <button @click="prRef.iterationCount = 0;">Zero Iteration Counter</button>
         </div>
         <div class="control-panel-child" style="display: flex; flex-direction: row;">
