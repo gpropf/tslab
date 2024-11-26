@@ -3,6 +3,15 @@ import { ParametricGrid, PixelReactor } from "../../PixelReactor";
 import { leftPad } from '../../Util';
 import { makePNGts } from './png-helper';
 import { Gson } from '../../Gson';
+import { setFlagsFromString } from 'v8';
+import { runInNewContext } from 'vm';
+
+// Turn the pngs into a lossless movie with
+// `ffmpeg -framerate 10 -i imageRootFilename-%04d.png -c:v libx264rgb -crf 0 output.mp4`
+
+setFlagsFromString('--expose_gc');
+const gc = runInNewContext('gc'); // nocommit
+gc();
 
 let args = process.argv.slice(2);
 
@@ -11,6 +20,8 @@ const inputFilename = args[0];
 const jsonText = fs.readFileSync(inputFilename, 'utf8');
 const md = JSON.parse(jsonText);
 console.log("Movie desc:", md);
+
+
 
 createFrames(md.inputFilename, md.imageRootFilename, md.scaleX,
     md.scaleY, md.padLength, md.startFrame, md.endFrame);
@@ -54,7 +65,7 @@ function scaleGrid<T>(pGrid: ParametricGrid<T>, scaleX: number, scaleY: number,
 
 
 
-function createFrames(inputFilename: string, imageRootFilename: string, scaleX: number,
+async function createFrames(inputFilename: string, imageRootFilename: string, scaleX: number,
     scaleY: number, padLength: number = 3, startFrame: number = 0, endFrame: number = 100) {
     let jsonText = fs.readFileSync(inputFilename, 'utf8');
     let jsonObj = JSON.parse(jsonText);
@@ -92,7 +103,8 @@ function createFrames(inputFilename: string, imageRootFilename: string, scaleX: 
             }
             if (frameNum >= startFrame && frameNum <= endFrame) {
                 writeFrame(data, mainGrid, scaleX, scaleY, paletteMapRGB, imageRootFilename, frameNumStr);
-                forceGarbageCollection();
+                //forceGarbageCollection();
+                await delay(50);
             }
             frame = null;
             mainGrid.newPixels = []
@@ -108,7 +120,7 @@ function writeFrame(data: number[], mainGrid: ParametricGrid<number>,
         mainGrid.height, scaleX, scaleY);
     let memUse = process.memoryUsage();
     console.log(`MEM:`, memUse);
-    if (memUse.heapUsed > 4e9) {
+    if (memUse.heapUsed > 5e8) {
         process.exitCode = 1;
         console.log("QUITTING! Too much heap usage!");
         process.exit();
@@ -116,9 +128,14 @@ function writeFrame(data: number[], mainGrid: ParametricGrid<number>,
 
 }
 
+function delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function forceGarbageCollection() {
-    if (global.gc) {
-        global.gc();
+    if (gc) {
+        console.warn('GARBAGE COLLECTION ACTIVATED');
+        gc();
     } else {
         console.warn('Garbage collection unavailable. Pass --expose-gc when launching Node.js.');
     }
