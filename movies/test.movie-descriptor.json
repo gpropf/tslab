@@ -1,6 +1,6 @@
 {
-  "inputFilename": "movies/mandala-138-160x90.movie-data.json",
-  "imageRootFilename": "mandala-138",
+  "inputFilename": "movies/ruleset-1.movie-data.json",
+  "imageRootFilename": "ruleset-1-160x120",
   "scaleX": 8,
   "scaleY": 8,
   "padLength": 4,
