@@ -352,7 +352,7 @@ export class PixelReactor<T> extends GsonClass {
 
   public loadPalette(jsonStr: string) {
     let paletteObj = JSON.parse(jsonStr);
-    this.paletteMap = Gson.mapifyObject(paletteObj["_paletteMap"], true);
+    this.paletteMap = Gson.mapifyObject(paletteObj, true);
   }
 
   public restoreFromJSON(jsonStr: string, resizeOnly: boolean = false) {
