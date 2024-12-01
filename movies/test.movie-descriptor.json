@@ -1,8 +1,8 @@
 {
-  "inputFilename": "movies/ruleset-1.movie-data.json",
-  "imageRootFilename": "ruleset-1-160x120",
-  "scaleX": 8,
-  "scaleY": 8,
+  "inputFilename": "movies/pinwheel-2.movie-data.json",
+  "imageRootFilename": "pinwheel-2-160x160.json",
+  "scaleX": 6,
+  "scaleY": 6,
   "padLength": 4,
   "startFrame": 0,
   "endFrame": 500

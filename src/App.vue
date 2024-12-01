@@ -228,7 +228,9 @@ onMounted(() => {
           placeholder="Enter width for rulegrid" componentName="Rulegrid Width" size="4" />
         <LabelledInput v-model:inputValue="pgheight" id="rule-grid-height" inputType="text"
           placeholder="Enter height for rulegrid" componentName="Rulegrid Height" size="4" />
-        <button @click="prRef.createRuleGrid(pgwidth, pgheight, newRuleId)">New Grid</button>
+        <button @click="prRef.createRuleGrid(pgwidth, pgheight, newRuleId)">New Rule Grid</button>
+        <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
+          placeholder="Enter Id string for new rule" componentName="New Rule Id" size="20" />
       </div>
       <div class="control-panel-child">
         <LabelledInput v-model:inputValue="prRef.recordingStartFrame" id="recording-start-iter" inputType="text"
@@ -277,8 +279,7 @@ onMounted(() => {
     <div class="control-panel-container">
       <div class="control-panel-child">
 
-        <LabelledInput v-model:inputValue="newRuleId" id="new-rule-id" inputType="text"
-          placeholder="Enter Id string for new rule" componentName="New Rule Id" size="20" />
+
 
         <ParametricGridVC :key="prRef.mainGridKey" :screenWidth="screenWidth" :screenHeight="screenHeight"
           :width="parseInt(prRef.mainGridWidth)" :height="parseInt(prRef.mainGridHeight)" :vizFn="vizFn"
@@ -391,8 +392,8 @@ div {
 label {
   display: inline-block;
   width: 150px;
-  text-align: right;
-  margin-right: 10px;
+  /* text-align: right; */
+  margin-left: 5px;
 }
 
 .rules {
