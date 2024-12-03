@@ -103,6 +103,8 @@ export class PixelReactor<T> extends GsonClass {
     this._mainGridKey = v;
   }
 
+  public static readonly __ignoredPixelVal: number = 6;
+
   public get mainGridKey(): number {
     return this._mainGridKey;
   }
@@ -289,7 +291,8 @@ export class PixelReactor<T> extends GsonClass {
   public makeAllNonZeroPixelsNew() {
     let mainGrid = this.getRule("MAIN");
     if (mainGrid) {
-      mainGrid.newPixels = mainGrid.newDifferencePixels = []
+      mainGrid.newPixels = []
+      mainGrid.newDifferencePixels = []
 
       for (let y: number = 0; y < mainGrid.height; y++) {
         for (let x: number = 0; x < mainGrid.width; x++) {
@@ -603,6 +606,7 @@ export class PixelReactor<T> extends GsonClass {
     for (let y: number = 0; y < annotatedRawGrid.height; y++) {
       for (let x: number = 0; x < annotatedRawGrid.width; x++) {
         let v = annotatedRawGrid.grid[y][x];
+        if (v == PixelReactor.__ignoredPixelVal) continue;
         let pixelList = valueHistogram.get(v);
         if (pixelList) {
           pixelList.push([x, y]);
@@ -681,6 +685,7 @@ export class PixelReactor<T> extends GsonClass {
       for (let x: number = 0; x < successor.width; x++) {
         let successorLocation: Vec2d = [x, y];
         let pixelVal = successor.getLocation(x, y)
+        if (pixelVal == PixelReactor.__ignoredPixelVal) continue;
         let mainGridLocation = addVec(successorLocation, adjustedUpperLeftCorner);
         mainGridLocation = mainGrid.wrapCoordinates(mainGridLocation);
         let mainGridLocationString: LocationString = JSON.stringify(mainGridLocation);
@@ -842,6 +847,7 @@ export class PixelReactor<T> extends GsonClass {
     this._paletteMap.set(3, "#FF00FF");
     this._paletteMap.set(4, "#AA00AA");
     this._paletteMap.set(5, "#00AAFF");
+    this._paletteMap.set(PixelReactor.__ignoredPixelVal, "#888888");
     this._recordingStartFrame = 0;
     this._recordingEndFrame = 200;
     this._recordedFrames = [];
@@ -1099,6 +1105,7 @@ export class ParametricGrid<T> extends GsonClass {
       //let x: number = 0;
       for (let x = 0; x < rawGridWidth; x++) {
         let otherVal: T = rawGrid[y][x];
+        if (otherVal == PixelReactor.__ignoredPixelVal) continue;
         let thisX: any = x + offsetX;
         let thisVec: Vec2d = [thisX, thisY];
         thisVec = this.wrapCoordinates(thisVec);
@@ -1108,6 +1115,7 @@ export class ParametricGrid<T> extends GsonClass {
         // }
         //else {
         let thisVal = this.grid[wy][wx];
+
         if (thisVal != otherVal) {
           //console.log(`thisVal: ${thisVal}, otherVal: ${otherVal}. This loc: ${thisVec}, Other loc: ${[x, y]}`)
           return false;
