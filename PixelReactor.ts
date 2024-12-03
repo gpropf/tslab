@@ -545,6 +545,9 @@ export class PixelReactor<T> extends GsonClass {
         else this.running = false;
         return
       }
+      else {
+        dbg(`NDP length: ${mainGrid.newDifferencePixels.length}`)
+      }
       this._iterationCount++;
       //let pixelsToCheck = this.buildListOfAllPixels(pattternHistograms, mainGrid.width, mainGrid.height);
       let pixelsToCheck = this.buildListOfPixelsToCheckForEachNewPixel(pattternHistograms, mainGrid);
