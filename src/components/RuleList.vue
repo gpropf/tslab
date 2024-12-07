@@ -39,6 +39,7 @@ function stringToVec(s: string): Vec2d {
 let prRef = getPixelReactor();
 
 const ruleOffsetString = ref("")
+const selectedRule = ref("")
 
 function changeOffset(rule: RuleGrid<any>) {
   rule.successorOffset = stringToVec(ruleOffsetString.value)
@@ -77,7 +78,8 @@ function filterGridMap(gridMap: Map<string, RuleGrid<any>>) {
   <div class="rules">
     <div v-for="[id, rule] in filterGridMap(props.pixelReactor.ruleGridMap)" :key="id">
       <div v-if="id != 'MAIN'" class="rule-grid">
-        <!-- ID: {{ id }} -->
+        <input v-model="selectedRule" type="radio" name="selectedRule" id="id" :value="id"
+          @change="console.log('SR:', selectedRule)">
         <LabelledInput v-model:inputValue="rule.priority" id="rule-grid-priority" inputType="text"
           placeholder="Enter priority for rule" componentName="Rule Priority" size="3" labelClass="medium" />
         <span>{{ rule.id }}</span><button @click="prRef.deleteRule(rule.id)">Delete Rule</button>
