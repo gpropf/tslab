@@ -57,5 +57,6 @@ onUpdated(() => {
                 </svg>
             </svg>
         </svg>
+        <button @click="props.prGrid.fillWithValue(props.conversionFn(props.onClickValue))">Fill w/ Color</button>
     </div>
 </template>

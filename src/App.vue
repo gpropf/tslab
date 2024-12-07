@@ -6,7 +6,7 @@ import { ParametricGrid, PixelReactor, RuleGrid, type Vec2d } from "../PixelReac
 
 /// <reference path="./../../../ParametricGrid.ts"/>
 
-import RuleGridVC from './components/RuleGridVC.vue';
+
 import RuleList from './components/RuleList.vue';
 import { type ColorInfo } from './components/ParametricGridVC.vue';
 import { createApp } from 'vue';
@@ -291,7 +291,7 @@ onMounted(() => {
           <button @click="prRef.iterate();">Single Step</button>
           <button @click="prRef.toggleRun();">Toggle Run</button>
           <LabelledInput v-model:inputValue="prRef.iterationDelay" id="iteration-delay-id" inputType="text"
-            placeholder="Iteration delay (ms)" componentName="Iteration delay (ms)" size="5" />
+            placeholder="Iteration delay (ms)" componentName="Iteration delay (ms)" size="3" />
           <button @click="prRef.iterationCount = 0;">Zero Iteration Counter</button>
         </div>
         <div class="control-panel-child" style="display: flex; flex-direction: row;">
@@ -384,6 +384,10 @@ export default {
 /* .control-panel-child:first-child {
   margin-right: 5px;
 } */
+
+button {
+  margin: 2px;
+}
 
 div {
   margin-bottom: 2px;

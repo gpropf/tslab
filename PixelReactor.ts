@@ -1083,6 +1083,14 @@ export class ParametricGrid<T> extends GsonClass {
     this._newDifferencePixels = other.newDifferencePixels;
   }
 
+  public fillWithValue(v: T) {
+    for (let y = 0; y < this.height; y++) {
+      for (let x = 0; x < this.width; x++) {
+        this.setLocation(x, y, v);
+      }
+    }
+  }
+
 
   public static parametricGridFactory(genericObj: any, pixelReactor: PixelReactor<number>) {
     //let objKeys = new Set(Object.keys(genericObj));
