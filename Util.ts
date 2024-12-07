@@ -1,4 +1,4 @@
-
+import { PixelReactor, RuleGrid, type Vec2d, zeroVec } from "./PixelReactor"
 export const DEBUG_LEVEL = 2;
 
 export function leftPad(num: number, size: number) {
@@ -14,4 +14,15 @@ export function dbg(message: string, debugLevel: number = 0, ...args: any) {
     else
       console.log(message);
   }
+}
+
+export function stringToVec(s: string | undefined): Vec2d {
+  if (s) {
+    const coordinates: string[] = s.split(',');
+    if (coordinates.length < 2) return zeroVec;
+    let v: Vec2d = [parseInt(coordinates[0]), parseInt(coordinates[1])];
+    if (Number.isNaN(v[0]) || Number.isNaN(v[1])) return zeroVec
+    return v;
+  }
+  return zeroVec;
 }
