@@ -293,7 +293,7 @@ export class PixelReactor<T> extends GsonClass {
     let mainGrid = this.getRule("MAIN");
     let rule = this.getRule(ruleId);
     if (mainGrid && rule) {
-
+      mainGrid.copyOtherGridIntoThis(rule, location, false);
     }
   }
 
@@ -1081,13 +1081,14 @@ export class ParametricGrid<T> extends GsonClass {
     }
   }
 
-  public copyOtherGridIntoThis(other: ParametricGrid<T>): void {
+  public copyOtherGridIntoThis(other: ParametricGrid<T>, offset: Vec2d = zeroVec, copyNewPixels: boolean = true): void {
     for (let y = 0; y < other.height; y++) {
       for (let x = 0; x < other.width; x++) {
-        this.setLocation(x, y, other.grid[y][x]);
+        this.setLocation(x + offset[0], y + offset[1], other.grid[y][x]);
         //this._grid[y][x] = other.grid[y][x];
       }
     }
+    if (!copyNewPixels) return;
     this._newPixels = other.newPixels;
     this._newDifferencePixels = other.newDifferencePixels;
   }
