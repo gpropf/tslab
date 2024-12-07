@@ -14,6 +14,7 @@ import { ref, onMounted, computed } from 'vue'
 const rules = useRulesStore();
 const { getMouseLocation, setMouseLocation, setPixelReactor, getPixelReactor } = rules;
 
+const selectedRule = defineModel('selectedRule')
 
 const props = defineProps<{
   pixelReactor: PixelReactor<any>,
@@ -34,7 +35,7 @@ const ruleroot = ref<HTMLElement | null>(null);
 let prRef = getPixelReactor();
 
 const ruleOffsetString = ref("")
-const selectedRule = ref("")
+//const selectedRule = ref("")
 
 function changeOffset(rule: RuleGrid<any>) {
   rule.successorOffset = stringToVec(ruleOffsetString.value)

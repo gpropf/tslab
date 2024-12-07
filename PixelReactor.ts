@@ -288,6 +288,15 @@ export class PixelReactor<T> extends GsonClass {
     return JSON.stringify(framesObj);
   }
 
+  public copyRuleIntoMainGrid(ruleId: string, location: Vec2d) {
+    dbg(`Copying rule '${ruleId}' at ${location}`)
+    let mainGrid = this.getRule("MAIN");
+    let rule = this.getRule(ruleId);
+    if (mainGrid && rule) {
+
+    }
+  }
+
   public makeAllNonZeroPixelsNew() {
     let mainGrid = this.getRule("MAIN");
     if (mainGrid) {

@@ -17,7 +17,7 @@ import LabelledInput from './components/LabelledInput.vue';
 import ParametricGridVC from './components/ParametricGridVC.vue';
 //import { Gson, GsonClass } from "../../../Gson"
 
-import { dbg, leftPad } from "../Util";
+import { dbg, leftPad, stringToVec } from "../Util";
 
 
 const rules = useRulesStore();
@@ -65,6 +65,8 @@ const recordingEndIter = ref(100);
 const mainGridRef = ref<InstanceType<typeof ParametricGridVC>>();
 const prJsonBuffer = ref("");
 const inOutBuffer = ref("");
+const selectedRule = ref("");
+const copyRuleAtLoc = ref("0,0");
 
 
 // Create main PR and load it into the store.
@@ -326,6 +328,10 @@ onMounted(() => {
         <div class="control-panel-child" style="flex-direction: column;">
           <button @click="dbg('Clearing Main Grid', 0); prRef.clearMainGrid()">Clear Main Grid</button>
           <button @click="dbg('Toggling view updates', 0); prRef.toggleView()">Toggle View</button>
+          <button
+            @click="console.log(`Selected Rule: ${selectedRule}`); prRef.copyRuleIntoMainGrid(selectedRule, stringToVec(copyRuleAtLoc))">Copy
+            Rule into Main @ loc: </button>
+          <input type="text" v-model="copyRuleAtLoc" placeholder="copyRuleAtLoc" size="3"></input>
         </div>
 
 
@@ -335,7 +341,7 @@ onMounted(() => {
 
 
     <RuleList :pixelReactor="prRef" :screenWidth="150" :screenHeight="100" :vizFn="vizFn" :defaultValue="0"
-      :onClickValue="onClickValue" :conversionFn="conversionFn"></RuleList>
+      :onClickValue="onClickValue" :conversionFn="conversionFn" v-model:selectedRule="selectedRule"></RuleList>
 
   </div>
 </template>
