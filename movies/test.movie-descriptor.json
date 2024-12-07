@@ -1,8 +1,8 @@
 {
-  "inputFilename": "movies/pinwheel-2.movie-data.json",
-  "imageRootFilename": "pinwheel-2-160x160.json",
-  "scaleX": 6,
-  "scaleY": 6,
+  "inputFilename": "movies/dominoes-2.movie-data.json",
+  "imageRootFilename": "dominoes-2-120x80",
+  "scaleX": 10,
+  "scaleY": 10,
   "padLength": 4,
   "startFrame": 0,
   "endFrame": 500

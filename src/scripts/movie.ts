@@ -6,6 +6,9 @@ import { Gson } from '../../Gson';
 import { setFlagsFromString } from 'v8';
 import { runInNewContext } from 'vm';
 
+// Create PNGs from a movie-data file with
+// npx ts-node src/scripts/movie.ts movies/test.movie-descriptor.json
+
 // Turn the pngs into a lossless movie with
 // `ffmpeg -framerate 10 -i imageRootFilename-%04d.png -c:v libx264rgb -crf 0 output.mp4`
 
