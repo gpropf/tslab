@@ -1084,7 +1084,9 @@ export class ParametricGrid<T> extends GsonClass {
   public copyOtherGridIntoThis(other: ParametricGrid<T>, offset: Vec2d = zeroVec, copyNewPixels: boolean = true): void {
     for (let y = 0; y < other.height; y++) {
       for (let x = 0; x < other.width; x++) {
-        this.setLocation(x + offset[0], y + offset[1], other.grid[y][x]);
+        let otherPixelVal: T = other.grid[y][x];
+        if (otherPixelVal == PixelReactor.__ignoredPixelVal) continue;
+        this.setLocation(x + offset[0], y + offset[1], otherPixelVal);
         //this._grid[y][x] = other.grid[y][x];
       }
     }
