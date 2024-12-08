@@ -1,8 +1,8 @@
 {
-  "inputFilename": "movies/skulls.movie-data.json",
-  "imageRootFilename": "skulls",
-  "scaleX": 15,
-  "scaleY": 15,
+  "inputFilename": "movies/tr1-with-decay.movie-data.json",
+  "imageRootFilename": "tr1-with-decay",
+  "scaleX": 6,
+  "scaleY": 6,
   "padLength": 4,
   "startFrame": 0,
   "endFrame": 500
