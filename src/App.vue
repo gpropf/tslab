@@ -249,6 +249,8 @@ onMounted(() => {
           PR</button>
         <button @click="inOutBuffer = prRef.framesToJson(); console.log('Frames: ', inOutBuffer);">Output
           Frames</button>
+        <button @click="prRef.recordedFrames = []; console.log('Recorded Frames now: ', prRef.recordedFrames);">Clear
+          Frames</button>
 
         <button @click="loadNewPR(true); delayedLoad();">Load PR (resize & load)</button>
         <button @click="prRef.makeAllNonZeroPixelsNew();">Refresh Pixels</button>
