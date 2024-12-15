@@ -210,12 +210,15 @@ onMounted(() => {
 
 })
 
+const workerRef = ref();
+
 // This worker code from: https://stackoverflow.com/questions/73862386/how-do-i-compile-web-workers-with-vue3vite
 if (typeof Worker !== "undefined") {
   const workerUrl = new URL("workerTest.ts", import.meta.url);
   const worker = new Worker(workerUrl, { type: "module" });
   console.log(workerUrl);
-  worker.postMessage({ type: "destroy", value: "Foo" },);
+  workerRef.value = worker;
+  workerRef.value.postMessage({ type: "connect", value: JSON.stringify(prRef.value) },);
   //worker.onmessage = combineValues;
   // onUnmounted(() => {
   //   worker.postMessage({type:"destroy"},);
@@ -226,6 +229,8 @@ if (typeof Worker !== "undefined") {
   // connect(channelInfo, combineValues)
   // onUnmounted(() => destroy())
 }
+
+
 
 </script>
 
@@ -310,6 +315,8 @@ if (typeof Worker !== "undefined") {
       <div class="control-panel-child" style="display: flex; flex-direction: column;">
         <div class="control-panel-child">
           <button @click="prRef.iterate();">Single Step</button>
+          <button @click="workerRef.postMessage({ type: 'connect', value: JSON.stringify(prRef) },);">Test Worker
+            Thread</button>
           <button @click="prRef.toggleRun();">Toggle Run</button>
           <LabelledInput v-model:inputValue="prRef.iterationDelay" id="iteration-delay-id" inputType="text"
             placeholder="Iteration delay (ms)" componentName="Iteration delay (ms)" size="3" />
