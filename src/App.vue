@@ -210,6 +210,23 @@ onMounted(() => {
 
 })
 
+// This worker code from: https://stackoverflow.com/questions/73862386/how-do-i-compile-web-workers-with-vue3vite
+if (typeof Worker !== "undefined") {
+  const workerUrl = new URL("workerTest.ts", import.meta.url);
+  const worker = new Worker(workerUrl, { type: "module" });
+  console.log(workerUrl);
+  worker.postMessage({ type: "destroy", value: "Foo" },);
+  //worker.onmessage = combineValues;
+  // onUnmounted(() => {
+  //   worker.postMessage({type:"destroy"},);
+  //   worker.terminate();
+  // })
+} else {
+  console.log("Workers not allowed. Reverting to single threaded application.");
+  // connect(channelInfo, combineValues)
+  // onUnmounted(() => destroy())
+}
+
 </script>
 
 <template>
