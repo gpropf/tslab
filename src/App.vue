@@ -270,7 +270,7 @@ onMounted(() => {
       Stats</button>
     <button @click="prRef.gatherRepeatedStats(200);">Get N Stats</button> -->
     <div>
-      <button @click="createTestRules()">Create Test Rules</button>
+      <button @click="createTestRules()">Create Test Rules 1</button>
       <button @click="createTestRules2()">Create Test Rules 2</button>
       <button @click="prRef.deleteAllRules();">Delete All Rules!</button>
     </div>
