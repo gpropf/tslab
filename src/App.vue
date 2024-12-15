@@ -393,6 +393,10 @@ export default {
   margin-right: 5px;
 } */
 
+input[type="checkbox"] {
+  margin-left: 5px;
+}
+
 button {
   margin: 2px;
 }

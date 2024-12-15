@@ -76,6 +76,8 @@ function filterGridMap(gridMap: Map<string, RuleGrid<any>>) {
       <div v-if="id != 'MAIN'" class="rule-grid">
         <input v-model="selectedRule" type="radio" name="selectedRule" id="id" :value="id"
           @change="console.log('SR:', selectedRule)">
+        <input type="checkbox" :id="`${id}-enabled`" v-model="rule.enabled">
+        <label :for="`${id}-enabled`">Enable Rule</label>
         <LabelledInput v-model:inputValue="rule.priority" id="rule-grid-priority" inputType="text"
           placeholder="Enter priority for rule" componentName="Rule Priority" size="3" labelClass="medium" />
         <span>{{ rule.id }}</span><button @click="prRef.deleteRule(rule.id)">Delete Rule</button>

@@ -587,7 +587,7 @@ export class PixelReactor<T> extends GsonClass {
   public buildPatternMap(): void {
     //let matchMap: Map<RawGridString, [string, string][]> = new Map<RawGridString, [string, string][]>();
     this._ruleGridMap.forEach((rule, id) => {
-      if (rule.dirty && rule.successor) {
+      if (rule.dirty && rule.successor && rule.enabled) {
         rule.rotatedGrids.forEach((rotatedGrid, transform) => {
           //if (true || transform == "r0") {
           dbg(`${[rule.id, transform]}`, 3);
@@ -1314,6 +1314,17 @@ rotationMap.set("r180", new TransformMatrix(Math.PI, [0, 0], [-1, 0, 0, -1]))
 rotationMap.set("r270", new TransformMatrix(Math.PI * 3 / 2, [0, 0], [0, 1, -1, 0]))
 
 export class RuleGrid<T> extends ParametricGrid<T> {
+
+  private _enabled: boolean = true;
+
+  public set enabled(v: boolean) {
+    this._enabled = v;
+    dbg(`Rule ${this.id} enabled = ${v}`, 0);
+  }
+
+  public get enabled() {
+    return this._enabled;
+  }
   private _priority: number = 0;
   private _rotatedOffsets: Map<string, Vec2d>;
 
