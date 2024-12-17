@@ -534,6 +534,7 @@ export class PixelReactor<T> extends GsonClass {
   public iterate() {
 
     //console.log("ITER: ", this._iterationCount);
+
     this._updateStacks.clear();
     //this._patternMap.clear();
     this.dumpPatternMapAndMakeAllRulesDirty();
@@ -744,6 +745,13 @@ export class PixelReactor<T> extends GsonClass {
     })
   }
 
+  public printUpdateStack(mouseLocation: Vec2d) {
+    let locationString: LocationString = JSON.stringify(mouseLocation)
+    let stackAtLoc = this.updateStacks.get(locationString)
+    //dbg(`${locationString}`, 0, stackAtLoc)
+    return stackAtLoc;
+  }
+
   public writeUpdatePixels() {
     let mainGrid = this.getRule("MAIN")
     if (mainGrid === undefined) return
@@ -752,6 +760,7 @@ export class PixelReactor<T> extends GsonClass {
 
 
     this._updateStacks.forEach((updatePixels: [T, number][], locationString: LocationString) => {
+      //let topPixel = updatePixels[updatePixels.length - 1];
       let topPixel = updatePixels[updatePixels.length - 1];
       if (topPixel === undefined) return;
       let [pixelVal, _] = topPixel;
@@ -1497,8 +1506,9 @@ export class RuleGrid<T> extends ParametricGrid<T> {
     return this._priority;
   }
 
-  public set priority(p: number) {
+  public set priority(p: number | string) {
     //console.log(`Old Priority = ${this._priority}, New Priority = ${p}`)
-    this._priority = p;
+    if (typeof p === 'string') this._priority = Number(p)
+    else this._priority = p;
   }
 }

@@ -282,6 +282,8 @@ if (typeof Worker !== "undefined") {
     </div>
     <div class="control-panel-container">
       <div class="control-panel-child"> Mouse Location: {{ formatVector(mouseLocation) }}</div>
+      <div class="control-panel-child" id="update-stack"> Update Stack: {{ prRef.printUpdateStack(mouseLocation) }}
+      </div>
       <div class="control-panel-child"> Iteration Count: {{ prRef.iterationCount }}</div>
     </div>
 
@@ -390,6 +392,10 @@ export default {
 
 
 <style>
+div#update-stack {
+  min-height: 100px;
+}
+
 .palette-radio-button {
   padding: 10px;
 }
