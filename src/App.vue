@@ -214,9 +214,12 @@ const workerRef = ref();
 
 // This worker code from: https://stackoverflow.com/questions/73862386/how-do-i-compile-web-workers-with-vue3vite
 if (typeof Worker !== "undefined") {
-  const workerUrl = new URL("workerTest.ts", import.meta.url);
-  const worker = new Worker(workerUrl, { type: "module" });
-  console.log(workerUrl);
+  //const workerUrl = new URL("workerTest.ts", import.meta.url);
+
+  // The path to the worker needs to be directly in the worker constructor, see - https://vite.dev/guide/features.html#web-workers
+  // From the reference: "The worker detection will only work if the new URL() constructor is used directly inside the new Worker() declaration"
+  const worker = new Worker(new URL("workerTest.ts", import.meta.url), { type: "module" });
+  console.log(worker);
   workerRef.value = worker;
   workerRef.value.postMessage({ type: "connect", value: JSON.stringify(prRef.value) },);
   //worker.onmessage = combineValues;
