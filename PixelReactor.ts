@@ -413,7 +413,7 @@ export class PixelReactor<T> extends GsonClass {
 
       if (rule) {
         let ruleFromJSON = rulesFromJSON[key];
-        rule.copyOtherGridIntoThis(ruleFromJSON);
+        rule.copyOtherGridIntoThis(ruleFromJSON, zeroVec, true, true);
 
         let ruleFromJSONSuccessorId: string = ruleFromJSON["successor"];
         if (ruleFromJSONSuccessorId) {
@@ -1090,11 +1090,12 @@ export class ParametricGrid<T> extends GsonClass {
     }
   }
 
-  public copyOtherGridIntoThis(other: ParametricGrid<T>, offset: Vec2d = zeroVec, copyNewPixels: boolean = true): void {
+  public copyOtherGridIntoThis(other: ParametricGrid<T>, offset: Vec2d = zeroVec,
+    copyNewPixels: boolean = true, copyIgnoredValues: boolean = false): void {
     for (let y = 0; y < other.height; y++) {
       for (let x = 0; x < other.width; x++) {
         let otherPixelVal: T = other.grid[y][x];
-        if (otherPixelVal == PixelReactor.__ignoredPixelVal) continue;
+        if (!copyIgnoredValues && otherPixelVal == PixelReactor.__ignoredPixelVal) continue;
         this.setLocation(x + offset[0], y + offset[1], otherPixelVal);
         //this._grid[y][x] = other.grid[y][x];
       }
