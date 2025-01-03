@@ -103,6 +103,12 @@ export class PixelReactor<T> extends GsonClass {
     this._mainGridKey = v;
   }
 
+  /**
+   * __ignoredPixelVal: Used to mean "not checked". If used in a predecessor
+   *  pattern for a given pixel it means that pixel's value is not considered
+   * in matching. If used in a successor pattern it means the pixel will be left as it
+   * is when writing out the successors.
+   */
   public static readonly __ignoredPixelVal: number = 6;
 
   public get mainGridKey(): number {
