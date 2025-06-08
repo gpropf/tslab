@@ -547,23 +547,12 @@ export class PixelReactor<T> extends GsonClass {
     dbg('pattternHistograms: ', 2, pattternHistograms);
     let mainGrid = this.getRule("MAIN");
     if (mainGrid) {
-      // If we're recording this and the `_iterationCount` is at the position we
-      // start recording we save the `newDifferencePixels` as a frame.
-      if (this._recordingEnabled &&
-        this._iterationCount == this._recordingStartFrame) {
-        let thisFrame = new Frame(mainGrid.newDifferencePixels,
-          mainGrid.width, mainGrid.height, this._iterationCount);
-        this._recordedFrames.push(thisFrame);
-      }
-      // If there's nothing changing in the grid anymore we stop auto-iterating.
-      if (mainGrid.newPixels.length == 0 || mainGrid.newDifferencePixels.length == 0) {
-        if (this.running) this.toggleRun();
-        //else this.running = false;
-        return
-      }
-      else {
-        dbg(`New Diff Pixels length: ${mainGrid.newDifferencePixels.length}`)
-      }
+      // if (this._recordingEnabled &&
+      //   this._iterationCount == this._recordingStartFrame) {
+      //   let thisFrame = new Frame(mainGrid.newDifferencePixels,
+      //     mainGrid.width, mainGrid.height, this._iterationCount);
+      //   this._recordedFrames.push(thisFrame);
+      // }
       this._iterationCount++;
       //let pixelsToCheck = this.buildListOfAllPixels(pattternHistograms, mainGrid.width, mainGrid.height);
       let pixelsToCheck = this.buildListOfPixelsToCheckForEachNewPixel(pattternHistograms, mainGrid);
@@ -580,13 +569,25 @@ export class PixelReactor<T> extends GsonClass {
       dbg("updateStacks (after sort): ", 2, updateStacks)
       this.writeUpdatePixels()
 
+      // If we're recording this and the `_iterationCount` is at or beyond the position we
+      // start recording we save the `newDifferencePixels` as a frame. If the `_iterationCount`
+      // is past the end frame we don't record it.
       if (this._recordingEnabled &&
-        this._iterationCount > this._recordingStartFrame &&
+        this._iterationCount >= this._recordingStartFrame &&
         this._iterationCount <= this._recordingEndFrame) {
         let thisFrame = new Frame(mainGrid.newDifferencePixels,
           mainGrid.width, mainGrid.height, this._iterationCount);
         this._recordedFrames.push(thisFrame);
+      }
 
+      // If there's nothing changing in the grid anymore we stop auto-iterating.
+      if (mainGrid.newPixels.length == 0 || mainGrid.newDifferencePixels.length == 0) {
+        if (this.running) this.toggleRun();
+        //else this.running = false;
+        return
+      }
+      else {
+        dbg(`New Diff Pixels length: ${mainGrid.newDifferencePixels.length}`)
       }
     }
   }
@@ -640,9 +641,18 @@ export class PixelReactor<T> extends GsonClass {
     })
   }
 
+  /**
+   * For each unique grid pattern (not necessarily each rule and rotation) we build a histogram of data values and
+   * their locations expressed as a mapping from data values (of type T) to a list of locations relative to the upper
+   * left corner of the pattern with the upper left being <0,0>. We use this information to determine where in the main
+   * grid to look for matches with the unique rule patterns.
+   * @param uniquePatterns: Map<RawGridString, [string, string][]>
+   *  
+   * @returns: Map<RawGridString, Map<T, Vec2d[]>>
+   */
   public buildPatternHistograms(uniquePatterns: Map<RawGridString, [string, string][]>): Map<RawGridString, Map<T, Vec2d[]>> {
-    let uniquePatternKeys = Array.from(uniquePatterns.keys());
-    let patternHistograms = new Map<RawGridString, Map<T, Vec2d[]>>();
+    let uniquePatternKeys: RawGridString[] = Array.from(uniquePatterns.keys());
+    let patternHistograms: Map<RawGridString, Map<T, Vec2d[]>> = new Map<RawGridString, Map<T, Vec2d[]>>();
     uniquePatternKeys.forEach(pattern => {
       let rawGrid = JSON.parse(pattern);
       let annotatedRawGrid = new AnnotatedRawGrid<T>(rawGrid);
@@ -651,6 +661,32 @@ export class PixelReactor<T> extends GsonClass {
     })
     return patternHistograms;
   }
+
+  public buildListOfPixelsToCheckForEachNewPixel(patternHistograms: Map<RawGridString, Map<T, Vec2d[]>>,
+    mainGrid: ParametricGrid<T>): Map<RawGridString, Vec2d[]> {
+    let pixelsToCheckByPattern = new Map<RawGridString, Vec2d[]>()
+    patternHistograms.forEach((histogram: Map<T, Vec2d[]>, patternString: RawGridString) => {
+      let pixelsToCheck: Vec2d[] = [];
+      let rawGrid = JSON.parse(patternString)
+      let annotatedRawGrid = new AnnotatedRawGrid(rawGrid);
+      mainGrid.newPixels.forEach(pixel => {
+        let [x, y, v] = pixel;
+        let locationsOfPixelsByValue = histogram.get(v);
+        if (locationsOfPixelsByValue) {
+          for (let patternPixel of locationsOfPixelsByValue) {
+            let [px, py] = patternPixel;
+            let pixelToCheckX = x - px;
+            let pixelToCheckY = y - py;
+            let pixelToCheck = mainGrid.wrapCoordinates([pixelToCheckX, pixelToCheckY])
+            pixelsToCheck.push(pixelToCheck)
+          }
+        }
+      })
+      pixelsToCheckByPattern.set(patternString, pixelsToCheck)
+    })
+    return pixelsToCheckByPattern;
+  }
+
 
   public createHistogramForAnnotatedRawGrid(annotatedRawGrid: AnnotatedRawGrid<T>): Map<T, Vec2d[]> {
     let valueHistogram = new Map<T, Vec2d[]>()
@@ -687,30 +723,6 @@ export class PixelReactor<T> extends GsonClass {
     return pixelsToCheckByPattern;
   }
 
-  public buildListOfPixelsToCheckForEachNewPixel(patternHistograms: Map<RawGridString, Map<T, Vec2d[]>>,
-    mainGrid: ParametricGrid<T>): Map<RawGridString, Vec2d[]> {
-    let pixelsToCheckByPattern = new Map<RawGridString, Vec2d[]>()
-    patternHistograms.forEach((histogram: Map<T, Vec2d[]>, patternString: RawGridString) => {
-      let pixelsToCheck: Vec2d[] = [];
-      let rawGrid = JSON.parse(patternString)
-      let annotatedRawGrid = new AnnotatedRawGrid(rawGrid);
-      mainGrid.newPixels.forEach(pixel => {
-        let [x, y, v] = pixel;
-        let locationsOfPixelsByValue = histogram.get(v);
-        if (locationsOfPixelsByValue) {
-          for (let patternPixel of locationsOfPixelsByValue) {
-            let [px, py] = patternPixel;
-            let pixelToCheckX = x - px;
-            let pixelToCheckY = y - py;
-            let pixelToCheck = mainGrid.wrapCoordinates([pixelToCheckX, pixelToCheckY])
-            pixelsToCheck.push(pixelToCheck)
-          }
-        }
-      })
-      pixelsToCheckByPattern.set(patternString, pixelsToCheck)
-    })
-    return pixelsToCheckByPattern;
-  }
 
 
 
