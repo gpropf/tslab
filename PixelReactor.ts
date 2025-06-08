@@ -294,6 +294,12 @@ export class PixelReactor<T> extends GsonClass {
     return JSON.stringify(framesObj);
   }
 
+  /**
+   * Does what the name suggests.
+   * 
+   * @param ruleId id string to look for.
+   * @param location Vec2d to indicate location
+   */
   public copyRuleIntoMainGrid(ruleId: string, location: Vec2d) {
     dbg(`Copying rule '${ruleId}' at ${location}`)
     let mainGrid = this.getRule("MAIN");
@@ -525,29 +531,20 @@ export class PixelReactor<T> extends GsonClass {
     // }
   }
 
+
+
   /**
-   * When any change occurs in a rule, we call this to destroy the pattern map and dirty
-   * all the rules so it gets rebuilt. This is the simplest approach and is probably only
-   * slightly slower than trying to figure out exactly which patterns need to be dropped.
+   * The "master" method. Carries out all the steps needed to carry out a single iteration.
+   * 
+   * @returns void
    */
-  public dumpPatternMapAndMakeAllRulesDirty() {
-    this._patternMap.clear();
-    this._ruleGridMap.forEach((rule, id) => {
-      rule.dirty = true;
-    });
-  }
-
   public iterate() {
-
-    //console.log("ITER: ", this._iterationCount);
-
     this._updateStacks.clear();
-    //this._patternMap.clear();
     this.dumpPatternMapAndMakeAllRulesDirty();
     this.buildPatternMap();
     dbg("this._patternMap: ", 4, this._patternMap)
     let pattternHistograms = this.buildPatternHistograms(this._patternMap);
-    dbg('PH: ', 2, pattternHistograms);
+    dbg('pattternHistograms: ', 2, pattternHistograms);
     let mainGrid = this.getRule("MAIN");
     if (mainGrid) {
       if (this._recordingEnabled &&
@@ -558,11 +555,11 @@ export class PixelReactor<T> extends GsonClass {
       }
       if (mainGrid.newPixels.length == 0 || mainGrid.newDifferencePixels.length == 0) {
         if (this.running) this.toggleRun();
-        else this.running = false;
+        //else this.running = false;
         return
       }
       else {
-        dbg(`NDP length: ${mainGrid.newDifferencePixels.length}`)
+        dbg(`New Diff Pixels length: ${mainGrid.newDifferencePixels.length}`)
       }
       this._iterationCount++;
       //let pixelsToCheck = this.buildListOfAllPixels(pattternHistograms, mainGrid.width, mainGrid.height);
@@ -591,6 +588,18 @@ export class PixelReactor<T> extends GsonClass {
     }
   }
 
+  /**
+   * When any change occurs in a rule, we call this to destroy the pattern map and dirty
+   * all the rules so it gets rebuilt. This is the simplest approach and is probably only
+   * slightly slower than trying to figure out exactly which patterns need to be dropped.
+   */
+  public dumpPatternMapAndMakeAllRulesDirty() {
+    this._patternMap.clear();
+    this._ruleGridMap.forEach((rule, id) => {
+      rule.dirty = true;
+    });
+  }
+
   public buildPatternMap(): void {
     //let matchMap: Map<RawGridString, [string, string][]> = new Map<RawGridString, [string, string][]>();
     this._ruleGridMap.forEach((rule, id) => {
@@ -599,25 +608,39 @@ export class PixelReactor<T> extends GsonClass {
           //if (true || transform == "r0") {
           dbg(`${[rule.id, transform]}`, 3);
           let stringifiedGrid: RawGridString = JSON.stringify(rotatedGrid.grid);
+
+          // If this pattern already exists in the map, get it.
           let matchingPatterns = this._patternMap.get(stringifiedGrid);
           //let priorityOffset = PixelReactor.transformToPriorityOffsetMap.get(transform);
           //if (priorityOffset === undefined) priorityOffset = 0;
           //priorityOffset += rule.priority;
+
+          // If there's already a pattern in the map, push this rule.id and transform id onto the list.
           if (matchingPatterns) {
             matchingPatterns.push([rule.id, transform]);
             this._patternMap.set(stringifiedGrid, matchingPatterns);
           }
+          // Otherwise, create the entry in the map with this rule.id and transform id
           else {
             this._patternMap.set(stringifiedGrid, [[rule.id, transform]]);
           }
-          //}
         })
         dbg(`Rule ${id} has a successor ${rule.successor.id}`, 3);
         rule.dirty = false;
       }
     })
+  }
 
-    //return matchMap;
+  public buildPatternHistograms(uniquePatterns: Map<RawGridString, [string, string][]>): Map<RawGridString, Map<T, Vec2d[]>> {
+    let uniquePatternKeys = Array.from(uniquePatterns.keys());
+    let patternHistograms = new Map<RawGridString, Map<T, Vec2d[]>>();
+    uniquePatternKeys.forEach(pattern => {
+      let rawGrid = JSON.parse(pattern);
+      let annotatedRawGrid = new AnnotatedRawGrid<T>(rawGrid);
+      let valueHistogram = this.createHistogramForAnnotatedRawGrid(annotatedRawGrid);
+      patternHistograms.set(pattern, valueHistogram);
+    })
+    return patternHistograms;
   }
 
   public createHistogramForAnnotatedRawGrid(annotatedRawGrid: AnnotatedRawGrid<T>): Map<T, Vec2d[]> {
@@ -680,17 +703,7 @@ export class PixelReactor<T> extends GsonClass {
     return pixelsToCheckByPattern;
   }
 
-  public buildPatternHistograms(uniquePatterns: Map<RawGridString, [string, string][]>): Map<RawGridString, Map<T, Vec2d[]>> {
-    let uniquePatternKeys = Array.from(uniquePatterns.keys());
-    let patternHistograms = new Map<RawGridString, Map<T, Vec2d[]>>();
-    uniquePatternKeys.forEach(pattern => {
-      let rawGrid = JSON.parse(pattern);
-      let annotatedRawGrid = new AnnotatedRawGrid<T>(rawGrid);
-      let valueHistogram = this.createHistogramForAnnotatedRawGrid(annotatedRawGrid);
-      patternHistograms.set(pattern, valueHistogram);
-    })
-    return patternHistograms;
-  }
+
 
   public putSuccessorOnUpdateStacks(mainGrid: ParametricGrid<T>, upperLeftCorner: Vec2d,
     successorOffset: Vec2d, successor: ParametricGrid<T>, priority: number) {

@@ -1,4 +1,7 @@
 import { PixelReactor, RuleGrid, type Vec2d, zeroVec } from "./PixelReactor"
+/**
+ * DEBUG_LEVEL: set this to a larger value to see more debugging output.
+ */
 export const DEBUG_LEVEL = 2;
 
 export function leftPad(num: number, size: number) {
@@ -7,6 +10,12 @@ export function leftPad(num: number, size: number) {
   return s;
 }
 
+/**
+ * 
+ * @param message String to print.
+ * @param debugLevel What level of output this appears at. Lower values mean more important.
+ * @param args Optional extra varargs to print.
+ */
 export function dbg(message: string, debugLevel: number = 0, ...args: any) {
   if (debugLevel < DEBUG_LEVEL) {
     if (args.length > 0)

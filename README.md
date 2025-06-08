@@ -62,3 +62,7 @@ npm run test:e2e -- --debug
 ```sh
 npm run lint
 ```
+
+### Misc
+
+This regex string finds TS functions in VScode "[a-z0-9_]+\(.[a-z0-9_ :]+\)". At the command line you can use `grep "[A-Za-z0-9_]\+([A-Za-z0-9_ ,:]*):\?.*\s*{" PixelReactor.ts`. This allows you to count functions and methods.
