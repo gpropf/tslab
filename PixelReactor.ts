@@ -547,12 +547,15 @@ export class PixelReactor<T> extends GsonClass {
     dbg('pattternHistograms: ', 2, pattternHistograms);
     let mainGrid = this.getRule("MAIN");
     if (mainGrid) {
+      // If we're recording this and the `_iterationCount` is at the position we
+      // start recording we save the `newDifferencePixels` as a frame.
       if (this._recordingEnabled &&
         this._iterationCount == this._recordingStartFrame) {
         let thisFrame = new Frame(mainGrid.newDifferencePixels,
           mainGrid.width, mainGrid.height, this._iterationCount);
         this._recordedFrames.push(thisFrame);
       }
+      // If there's nothing changing in the grid anymore we stop auto-iterating.
       if (mainGrid.newPixels.length == 0 || mainGrid.newDifferencePixels.length == 0) {
         if (this.running) this.toggleRun();
         //else this.running = false;
@@ -564,7 +567,7 @@ export class PixelReactor<T> extends GsonClass {
       this._iterationCount++;
       //let pixelsToCheck = this.buildListOfAllPixels(pattternHistograms, mainGrid.width, mainGrid.height);
       let pixelsToCheck = this.buildListOfPixelsToCheckForEachNewPixel(pattternHistograms, mainGrid);
-      dbg('Pixels2Check: ', 2, pixelsToCheck)
+      dbg('pixelsToCheck: ', 2, pixelsToCheck)
       let matchesByRuleAndTransformID = this.matchUniquePatternsForNewPixels(pixelsToCheck, this._patternMap)
       dbg("matchesByRuleAndTransformID: ", 2, matchesByRuleAndTransformID)
       let rawGridStringToSuccessorMap = this.buildRawGridStringToSuccessorMap(this._patternMap)
@@ -600,6 +603,12 @@ export class PixelReactor<T> extends GsonClass {
     });
   }
 
+  /**
+   * Maintains a mapping of grid patterns, expressed as JSON strings to lists of pairs of rule ids and transform ids.
+   * This is meant to reflect the fact that many patterns are symmetrical and their rotations will produce identical
+   * grids. We can save time by only looking for the unique grid strings. Initially, I had wanted to use the grids
+   * directly but this proved too complicated so now we stringify them.
+   */
   public buildPatternMap(): void {
     //let matchMap: Map<RawGridString, [string, string][]> = new Map<RawGridString, [string, string][]>();
     this._ruleGridMap.forEach((rule, id) => {
