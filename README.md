@@ -1,4 +1,14 @@
-# tslab-vue
+# Tslab
+
+This repository was originally meant to be a "laboratory" for me to try out TypeScript and the Vue framework. At the moment, there's really only one thing here which is a re-implementation of this app (https://gregorypropf.com/pixreact) located at my old portfolio site. I plan to rework the text on that page so it describes this app but until I do, you can pretty much understand this app by reading about its ancestor. One small improvement is that this implementation of the search-and-replace algorithm does not have the "subtle bug" I mentioned in the original docs. To put it simply, if a pattern is invariant under rotation (rotation angle doesn't matter) or partially degenerate (i.e. 0 and 180 degree rotations look the same) the correct behavior is to say that each occurrence of the pattern can be said to match at all the rotations that look identical. So a pattern like a simple horizontal line, which looks the same rotated by 0 or 180 degrees but not 90 or 270 degrees, should be flagged as matching _both_ the 0 and 180 degree rotated form or _both_ the 90 and 270 degree form. Why does this matter? It matters if the successor pattern does not have the same rotational symmetry. Imagine a simple cross pattern (looks the same at all rotations) that has a thing that looks like the letter "L" as successor. The correct match and replace operation will superimpose 4 of the L patterns rotated at 0,90,180, and 270 degrees. The original app doesn't handle this correctly. This one does. Aren't you happy?
+
+## Todo
+
+Somewhat related to the rotation issues above, this app really needs a way for the user to change the priority weights applied to the successors of different rotations of predecessor patterns. There's a static map at line 82 in `PixelReactor.ts` called `transformToPriorityOffsetMap` that defines these weights. They should be user definable instead.
+
+## What follows is mostly the boilerplate Vue created.
+
+---
 
 This template should help get you started developing with Vue 3 in Vite.
 
@@ -65,4 +75,4 @@ npm run lint
 
 ### Misc
 
-This regex string finds TS functions in VScode "[a-z0-9_]+\(.[a-z0-9_ :]+\)". At the command line you can use `grep "[A-Za-z0-9_]\+([A-Za-z0-9_ ,:]*):\?.*\s*{" PixelReactor.ts`. This allows you to count functions and methods.
+This regex string finds TS functions in VScode "[a-z0-9_]+\(.[a-z0-9_ :]+\)". At the command line you can use `grep "[A-Za-z0-9_]\+([A-Za-z0-9_ ,:]*):\?.*\s*{" PixelReactor.ts`. This allows you to count functions and methods. I use this to locate functions to make sure I've commented them all or get a handle on which ones I haven't documented properly.
