@@ -7,6 +7,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/tslab/',
   plugins: [
     vue(),
     vueJsx(),
@@ -18,3 +19,8 @@ export default defineConfig({
     }
   }
 })
+
+// vite.config.ts
+
+
+
