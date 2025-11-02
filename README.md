@@ -40,6 +40,12 @@ npm install
 npm run dev
 ```
 
+### Serve the compiled version
+
+```sh
+npx serve dist
+```
+
 ### Type-Check, Compile and Minify for Production
 
 ```sh
