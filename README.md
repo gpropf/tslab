@@ -30,6 +30,8 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ## Project Setup
 
+Update Jan 18, 2026 - The latest versions of node break this project. I've tested it with v19.8.1 so to guarantee you can run it do `nvm use 19.8.1` before anything else.
+
 ```sh
 npm install
 ```
