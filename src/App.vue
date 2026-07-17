@@ -383,7 +383,7 @@ if (typeof Worker !== "undefined") {
 export default {
   data() {
     return {
-      title: 'Pixel Reactor v3.0.6-ghp',
+      title: 'Pixel Reactor v3.0.7-ghp',
       pgwidth: '',
       pgheight: '',
       ruleOffset: ''
