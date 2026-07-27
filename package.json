@@ -4,8 +4,8 @@
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "VITE_VERSION=$(git rev-parse --short HEAD) vite",
+    "build": "VITE_VERSION=$(git rev-parse --short HEAD) vite build",
     "preview": "vite preview",
     "test:unit": "vitest",
     "test:e2e": "playwright test",

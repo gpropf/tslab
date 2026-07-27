@@ -378,12 +378,14 @@ if (typeof Worker !== "undefined") {
 </template>
 
 <script lang="ts">
-
+const version = import.meta.env.VITE_VERSION;
+console.log(`Current version: ${version}`);
 
 export default {
+  
   data() {
     return {
-      title: 'Pixel Reactor v3.1.0',
+      title: `Pixel Reactor v3.1.1-${version}`,
       pgwidth: '',
       pgheight: '',
       ruleOffset: ''
